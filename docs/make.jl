@@ -9,6 +9,7 @@ makedocs(
 
 
 deploydocs(
-  deps = Deps.pip("pygments", "mkdics", "python-markdown-math"),
-  julia = "0.5"
+  deps = Deps.pip("pygments", "mkdocs", "python-markdown-math"),
+  repo = "https://github.com/kyungminlee/HartreeFockBogoliubov.jl.git",
+  julia = "0.5",
 )
