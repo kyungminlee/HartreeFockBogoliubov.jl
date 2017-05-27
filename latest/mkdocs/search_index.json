@@ -14,6 +14,36 @@
             "location": "/#basics", 
             "text": "Hartree-Fock-Bogoliubov Theory  Momentum Space Formulation", 
             "title": "Basics"
+        }, 
+        {
+            "location": "/basics/hartreefockbogoliubov/", 
+            "text": "Hartree-Fock-Bogoliubov Theory\n\n\nThis document contains basics of Hartree-Fock-Bogoliubov Theory.\n\n\n$$\n  H =  \\sum_{ij} T_{ij} c_{i}^{\\dagger} c_{j}\n     + \\frac{1}{4} \\sum_{ijkl} V_{ijkl} c_{i}^{\\dagger} c_{j}^{\\dagger} c_{l} c_{k}\n````\n\n\n$$\n\n\nmath   \\Gamma_{ij} = \\sum_{kl} V_{ikjl} \\rho_{kl}\n\n\n\n\n\n\n\nmath   \\Delta_{ij} = 1/2 \\sum_{kl} V_{ijkl} t_{kl} ``", 
+            "title": "Hartree-Fock-Bogoliubov Theory"
+        }, 
+        {
+            "location": "/basics/hartreefockbogoliubov/#hartree-fock-bogoliubov-theory", 
+            "text": "This document contains basics of Hartree-Fock-Bogoliubov Theory.  $$\n  H =  \\sum_{ij} T_{ij} c_{i}^{\\dagger} c_{j}\n     + \\frac{1}{4} \\sum_{ijkl} V_{ijkl} c_{i}^{\\dagger} c_{j}^{\\dagger} c_{l} c_{k}\n````  $$  math   \\Gamma_{ij} = \\sum_{kl} V_{ikjl} \\rho_{kl}    math   \\Delta_{ij} = 1/2 \\sum_{kl} V_{ijkl} t_{kl} ``", 
+            "title": "Hartree-Fock-Bogoliubov Theory"
+        }, 
+        {
+            "location": "/basics/momentumspace/", 
+            "text": "Momentum Space Formulation\n\n\nblah.", 
+            "title": "Momentum Space Formulation"
+        }, 
+        {
+            "location": "/basics/momentumspace/#momentum-space-formulation", 
+            "text": "blah.", 
+            "title": "Momentum Space Formulation"
+        }, 
+        {
+            "location": "/about/", 
+            "text": "About", 
+            "title": "About"
+        }, 
+        {
+            "location": "/about/#about", 
+            "text": "", 
+            "title": "About"
         }
     ]
 }
