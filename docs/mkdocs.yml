@@ -23,3 +23,7 @@ docs_dir: 'build'
 
 pages:
   - Home: index.md
+  - Basics:
+    - Hartree-Fock-Bogoliubov Theory: basics/hartreefockbogoliubov.md
+    - Momentum Space Formulation: basics/momentumspace.md
+  - About: about.md
