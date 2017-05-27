@@ -1,4 +1,4 @@
-module HartreeFockBogoloubov
+module HartreeFockBogoliubov
 
 export HartreeFockBogoliubovModel
 export addinteraction
