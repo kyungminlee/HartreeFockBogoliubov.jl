@@ -2,7 +2,7 @@
     "docs": [
         {
             "location": "/", 
-            "text": "HartreeFockBogoliubov.jl Documentation\n\n\n\n\nBasics", 
+            "text": "HartreeFockBogoliubov.jl Documentation\n\n\n\n\nBasics\n\n\n\n\nHartree-Fock-Bogoliubov Theory\n\n\nMomentum Space Formulation", 
             "title": "Home"
         }, 
         {
@@ -12,7 +12,7 @@
         }, 
         {
             "location": "/#basics", 
-            "text": "", 
+            "text": "Hartree-Fock-Bogoliubov Theory  Momentum Space Formulation", 
             "title": "Basics"
         }
     ]
