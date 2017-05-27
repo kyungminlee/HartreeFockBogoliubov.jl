@@ -1,3 +1,0 @@
-# Momentum Space Formulation
-
-blah.
