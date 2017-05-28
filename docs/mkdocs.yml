@@ -27,5 +27,5 @@ pages:
     - Hartree-Fock-Bogoliubov Theory: basics/hartreefockbogoliubov.md
     - Momentum Space Formulation: basics/momentumspace.md
   - About: about.md
-  - Internals: internals.md
+  - Internals:
     - PeriodicSystem : internals/periodicsystem.md
