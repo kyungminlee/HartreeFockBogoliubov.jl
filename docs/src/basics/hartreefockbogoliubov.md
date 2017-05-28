@@ -12,5 +12,5 @@ This document contains basics of Hartree-Fock-Bogoliubov Theory.
 ```
 
 ```math
-  \Delta_{ij} = 1/2 \sum_{kl} V_{ijkl} t_{kl}
+  \Delta_{ij} = \frac{1}{2} \sum_{kl} V_{ijkl} t_{kl}
 ```

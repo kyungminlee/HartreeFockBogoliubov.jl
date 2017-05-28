@@ -1,5 +1,7 @@
 module HartreeFockBogoliubov
 
+include("PeriodicSystem.jl")
+
 export HartreeFockBogoliubovModel
 export addinteraction
 export MeanField
