@@ -28,4 +28,5 @@ pages:
     - Momentum Space Formulation: basics/momentumspace.md
   - About: about.md
   - Internals:
+    - Internals: internals.md
     - PeriodicSystem : internals/periodicsystem.md
