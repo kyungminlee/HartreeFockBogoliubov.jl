@@ -2,7 +2,7 @@
     "docs": [
         {
             "location": "/", 
-            "text": "HartreeFockBogoliubov.jl Documentation\n\n\n\n\nBasics\n\n\n\n\nHartree-Fock-Bogoliubov Theory\n\n\nMomentum Space Formulation\n\n\n\n\n\n\nInternals\n\n\n\n\nPeriodicSystem", 
+            "text": "HartreeFockBogoliubov.jl Documentation\n\n\n\n\nBasics\n\n\n\n\nHartree-Fock-Bogoliubov Theory\n\n\nMomentum Space Formulation\n\n\n\n\n\n\nInternals\n\n\n\n\nInternal Documentation\n\n\nContents\n\n\nIndex", 
             "title": "Home"
         }, 
         {
@@ -17,7 +17,7 @@
         }, 
         {
             "location": "/#internals", 
-            "text": "PeriodicSystem", 
+            "text": "Internal Documentation  Contents  Index", 
             "title": "Internals"
         }, 
         {
@@ -52,7 +52,7 @@
         }, 
         {
             "location": "/internals/", 
-            "text": "Internal Documentation\n\n\nThis page lists all the documented internals of the \nHartreeFockBogoliubov\n module and submodules.\n\n\n\n\nContents\n\n\n@content\nPages = [joinpath(\"internals\", f) for f in readdir(\"internals\")]\n\n\n\n\nIndex\n\n\nA list of all internal documentation sorted by module.", 
+            "text": "Internal Documentation\n\n\nThis page lists all the documented internals of the \nHartreeFockBogoliubov\n module and submodules.\n\n\n\n\nContents\n\n\n\n\nPeriodicSystem\n\n\n\n\n\n\nIndex\n\n\nA list of all internal documentation sorted by module.\n\n\n\n\nHartreeFockBogoliubov.PeriodicSystem.CarteCoord\n\n\nHartreeFockBogoliubov.PeriodicSystem.FractCoord\n\n\nHartreeFockBogoliubov.PeriodicSystem.UnitCell\n\n\nHartreeFockBogoliubov.PeriodicSystem.addorbital!\n\n\nHartreeFockBogoliubov.PeriodicSystem.carte_to_fract\n\n\nHartreeFockBogoliubov.PeriodicSystem.dimension\n\n\nHartreeFockBogoliubov.PeriodicSystem.fract_to_carte\n\n\nHartreeFockBogoliubov.PeriodicSystem.getorbital\n\n\nHartreeFockBogoliubov.PeriodicSystem.getorbital\n\n\nHartreeFockBogoliubov.PeriodicSystem.getorbitalcoord\n\n\nHartreeFockBogoliubov.PeriodicSystem.getorbitalcoord\n\n\nHartreeFockBogoliubov.PeriodicSystem.getorbitalindex\n\n\nHartreeFockBogoliubov.PeriodicSystem.getorbitalindexcoord\n\n\nHartreeFockBogoliubov.PeriodicSystem.getorbitalname\n\n\nHartreeFockBogoliubov.PeriodicSystem.hasorbital\n\n\nHartreeFockBogoliubov.PeriodicSystem.numorbital", 
             "title": "Internals"
         }, 
         {
@@ -62,22 +62,22 @@
         }, 
         {
             "location": "/internals/#contents", 
-            "text": "@content\nPages = [joinpath(\"internals\", f) for f in readdir(\"internals\")]", 
+            "text": "PeriodicSystem", 
             "title": "Contents"
         }, 
         {
             "location": "/internals/#index", 
-            "text": "A list of all internal documentation sorted by module.", 
+            "text": "A list of all internal documentation sorted by module.   HartreeFockBogoliubov.PeriodicSystem.CarteCoord  HartreeFockBogoliubov.PeriodicSystem.FractCoord  HartreeFockBogoliubov.PeriodicSystem.UnitCell  HartreeFockBogoliubov.PeriodicSystem.addorbital!  HartreeFockBogoliubov.PeriodicSystem.carte_to_fract  HartreeFockBogoliubov.PeriodicSystem.dimension  HartreeFockBogoliubov.PeriodicSystem.fract_to_carte  HartreeFockBogoliubov.PeriodicSystem.getorbital  HartreeFockBogoliubov.PeriodicSystem.getorbital  HartreeFockBogoliubov.PeriodicSystem.getorbitalcoord  HartreeFockBogoliubov.PeriodicSystem.getorbitalcoord  HartreeFockBogoliubov.PeriodicSystem.getorbitalindex  HartreeFockBogoliubov.PeriodicSystem.getorbitalindexcoord  HartreeFockBogoliubov.PeriodicSystem.getorbitalname  HartreeFockBogoliubov.PeriodicSystem.hasorbital  HartreeFockBogoliubov.PeriodicSystem.numorbital", 
             "title": "Index"
         }, 
         {
             "location": "/internals/periodicsystem/", 
-            "text": "PeriodicSystem", 
+            "text": "PeriodicSystem\n\n\n#\n\n\nHartreeFockBogoliubov.PeriodicSystem.CarteCoord\n \n \nType\n.\n\n\nCarteCoord\n\n\n\n\nCartesian coordinates\n\n\nsource\n\n\n#\n\n\nHartreeFockBogoliubov.PeriodicSystem.FractCoord\n \n \nType\n.\n\n\nFractCoord\n\n\n\n\nFractional coordinates\n\n\nsource\n\n\n#\n\n\nHartreeFockBogoliubov.PeriodicSystem.UnitCell\n \n \nType\n.\n\n\nUnitCell\n\n\n\n\nMembers\n\n\n\n\nlatticevectors ::Array{Float64, 2}\n: Lattice vectors\n\n\nreducedreciprocallatticevectors ::Array{Float64, 2}\n\n\nreciprocallatticevectors ::Array{Float64, 2}\n\n\norbitals ::Vector{Tuple{AbstractString, FractCoord}}\n\n\norbitalindices ::Dict{AbstractString, Int64}\n\n\n\n\nsource\n\n\n#\n\n\nHartreeFockBogoliubov.PeriodicSystem.dimension\n \n \nMethod\n.\n\n\ndimension\n\n\n\n\nDimension of the fractional coordinates\n\n\nArguments\n\n\n\n\nfc ::FractCoord\n: Fractional coordinates.\n\n\n\n\nsource\n\n\n#\n\n\nHartreeFockBogoliubov.PeriodicSystem.addorbital!\n \n \nMethod\n.\n\n\naddorbital!\n\n\n\n\nsource\n\n\n#\n\n\nHartreeFockBogoliubov.PeriodicSystem.carte_to_fract\n \n \nMethod\n.\n\n\ncarte_to_fract\n\n\n\n\nsource\n\n\n#\n\n\nHartreeFockBogoliubov.PeriodicSystem.fract_to_carte\n \n \nMethod\n.\n\n\nfract_to_carte\n\n\n\n\nsource\n\n\n#\n\n\nHartreeFockBogoliubov.PeriodicSystem.getorbital\n \n \nMethod\n.\n\n\ngetorbital\n\n\n\n\nsource\n\n\n#\n\n\nHartreeFockBogoliubov.PeriodicSystem.getorbital\n \n \nMethod\n.\n\n\ngetorbital\n\n\n\n\nsource\n\n\n#\n\n\nHartreeFockBogoliubov.PeriodicSystem.getorbitalcoord\n \n \nMethod\n.\n\n\ngetorbitalcoord\n\n\n\n\nsource\n\n\n#\n\n\nHartreeFockBogoliubov.PeriodicSystem.getorbitalcoord\n \n \nMethod\n.\n\n\ngetorbitalcoord\n\n\n\n\nsource\n\n\n#\n\n\nHartreeFockBogoliubov.PeriodicSystem.getorbitalindex\n \n \nMethod\n.\n\n\ngetorbitalindex\n\n\n\n\nsource\n\n\n#\n\n\nHartreeFockBogoliubov.PeriodicSystem.getorbitalindexcoord\n \n \nMethod\n.\n\n\ngetorbitalindexcoord\n\n\n\n\nsource\n\n\n#\n\n\nHartreeFockBogoliubov.PeriodicSystem.getorbitalname\n \n \nMethod\n.\n\n\ngetorbitalname\n\n\n\n\nsource\n\n\n#\n\n\nHartreeFockBogoliubov.PeriodicSystem.hasorbital\n \n \nMethod\n.\n\n\nhasorbital\n\n\n\n\nsource\n\n\n#\n\n\nHartreeFockBogoliubov.PeriodicSystem.numorbital\n \n \nMethod\n.\n\n\nnumorbital\n\n\n\n\nsource", 
             "title": "PeriodicSystem"
         }, 
         {
             "location": "/internals/periodicsystem/#periodicsystem", 
-            "text": "", 
+            "text": "#  HartreeFockBogoliubov.PeriodicSystem.CarteCoord     Type .  CarteCoord  Cartesian coordinates  source  #  HartreeFockBogoliubov.PeriodicSystem.FractCoord     Type .  FractCoord  Fractional coordinates  source  #  HartreeFockBogoliubov.PeriodicSystem.UnitCell     Type .  UnitCell  Members   latticevectors ::Array{Float64, 2} : Lattice vectors  reducedreciprocallatticevectors ::Array{Float64, 2}  reciprocallatticevectors ::Array{Float64, 2}  orbitals ::Vector{Tuple{AbstractString, FractCoord}}  orbitalindices ::Dict{AbstractString, Int64}   source  #  HartreeFockBogoliubov.PeriodicSystem.dimension     Method .  dimension  Dimension of the fractional coordinates  Arguments   fc ::FractCoord : Fractional coordinates.   source  #  HartreeFockBogoliubov.PeriodicSystem.addorbital!     Method .  addorbital!  source  #  HartreeFockBogoliubov.PeriodicSystem.carte_to_fract     Method .  carte_to_fract  source  #  HartreeFockBogoliubov.PeriodicSystem.fract_to_carte     Method .  fract_to_carte  source  #  HartreeFockBogoliubov.PeriodicSystem.getorbital     Method .  getorbital  source  #  HartreeFockBogoliubov.PeriodicSystem.getorbital     Method .  getorbital  source  #  HartreeFockBogoliubov.PeriodicSystem.getorbitalcoord     Method .  getorbitalcoord  source  #  HartreeFockBogoliubov.PeriodicSystem.getorbitalcoord     Method .  getorbitalcoord  source  #  HartreeFockBogoliubov.PeriodicSystem.getorbitalindex     Method .  getorbitalindex  source  #  HartreeFockBogoliubov.PeriodicSystem.getorbitalindexcoord     Method .  getorbitalindexcoord  source  #  HartreeFockBogoliubov.PeriodicSystem.getorbitalname     Method .  getorbitalname  source  #  HartreeFockBogoliubov.PeriodicSystem.hasorbital     Method .  hasorbital  source  #  HartreeFockBogoliubov.PeriodicSystem.numorbital     Method .  numorbital  source", 
             "title": "PeriodicSystem"
         }
     ]

@@ -135,6 +135,117 @@
               
                 <p><a id='PeriodicSystem-1'></a></p>
 <h1 id="periodicsystem">PeriodicSystem</h1>
+<p><a id='HartreeFockBogoliubov.PeriodicSystem.CarteCoord' href='#HartreeFockBogoliubov.PeriodicSystem.CarteCoord'>#</a>
+<strong><code>HartreeFockBogoliubov.PeriodicSystem.CarteCoord</code></strong> &mdash; <em>Type</em>.</p>
+<pre><code>CarteCoord
+</code></pre>
+
+<p>Cartesian coordinates</p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/tree/892caa39d8f67d2a1391f43a33017b36df37d92a/src/Lattice/coord.jl#L5-L9' class='documenter-source'>source</a><br></p>
+<p><a id='HartreeFockBogoliubov.PeriodicSystem.FractCoord' href='#HartreeFockBogoliubov.PeriodicSystem.FractCoord'>#</a>
+<strong><code>HartreeFockBogoliubov.PeriodicSystem.FractCoord</code></strong> &mdash; <em>Type</em>.</p>
+<pre><code>FractCoord
+</code></pre>
+
+<p>Fractional coordinates</p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/tree/892caa39d8f67d2a1391f43a33017b36df37d92a/src/Lattice/coord.jl#L13-L17' class='documenter-source'>source</a><br></p>
+<p><a id='HartreeFockBogoliubov.PeriodicSystem.UnitCell' href='#HartreeFockBogoliubov.PeriodicSystem.UnitCell'>#</a>
+<strong><code>HartreeFockBogoliubov.PeriodicSystem.UnitCell</code></strong> &mdash; <em>Type</em>.</p>
+<pre><code>UnitCell
+</code></pre>
+
+<p><strong>Members</strong></p>
+<ul>
+<li><code>latticevectors ::Array{Float64, 2}</code>: Lattice vectors</li>
+<li><code>reducedreciprocallatticevectors ::Array{Float64, 2}</code></li>
+<li><code>reciprocallatticevectors ::Array{Float64, 2}</code></li>
+<li><code>orbitals ::Vector{Tuple{AbstractString, FractCoord}}</code></li>
+<li><code>orbitalindices ::Dict{AbstractString, Int64}</code></li>
+</ul>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/tree/892caa39d8f67d2a1391f43a33017b36df37d92a/src/Lattice/unitcell.jl#L4-L13' class='documenter-source'>source</a><br></p>
+<p><a id='HartreeFockBogoliubov.PeriodicSystem.dimension-Tuple{HartreeFockBogoliubov.PeriodicSystem.FractCoord}' href='#HartreeFockBogoliubov.PeriodicSystem.dimension-Tuple{HartreeFockBogoliubov.PeriodicSystem.FractCoord}'>#</a>
+<strong><code>HartreeFockBogoliubov.PeriodicSystem.dimension</code></strong> &mdash; <em>Method</em>.</p>
+<pre><code>dimension
+</code></pre>
+
+<p>Dimension of the fractional coordinates</p>
+<p><strong>Arguments</strong></p>
+<ul>
+<li><code>fc ::FractCoord</code>: Fractional coordinates.</li>
+</ul>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/tree/892caa39d8f67d2a1391f43a33017b36df37d92a/src/Lattice/coord.jl#L36-L43' class='documenter-source'>source</a><br></p>
+<p><a id='HartreeFockBogoliubov.PeriodicSystem.addorbital!-Tuple{HartreeFockBogoliubov.PeriodicSystem.UnitCell,AbstractString,HartreeFockBogoliubov.PeriodicSystem.FractCoord}' href='#HartreeFockBogoliubov.PeriodicSystem.addorbital!-Tuple{HartreeFockBogoliubov.PeriodicSystem.UnitCell,AbstractString,HartreeFockBogoliubov.PeriodicSystem.FractCoord}'>#</a>
+<strong><code>HartreeFockBogoliubov.PeriodicSystem.addorbital!</code></strong> &mdash; <em>Method</em>.</p>
+<pre><code>addorbital!
+</code></pre>
+
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/tree/892caa39d8f67d2a1391f43a33017b36df37d92a/src/Lattice/unitcell.jl#L48-L50' class='documenter-source'>source</a><br></p>
+<p><a id='HartreeFockBogoliubov.PeriodicSystem.carte_to_fract-Tuple{Array{Float64,2},Array{Float64,1}}' href='#HartreeFockBogoliubov.PeriodicSystem.carte_to_fract-Tuple{Array{Float64,2},Array{Float64,1}}'>#</a>
+<strong><code>HartreeFockBogoliubov.PeriodicSystem.carte_to_fract</code></strong> &mdash; <em>Method</em>.</p>
+<pre><code>carte_to_fract
+</code></pre>
+
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/tree/892caa39d8f67d2a1391f43a33017b36df37d92a/src/Lattice/coord.jl#L87-L89' class='documenter-source'>source</a><br></p>
+<p><a id='HartreeFockBogoliubov.PeriodicSystem.fract_to_carte-Tuple{Array{Float64,2},HartreeFockBogoliubov.PeriodicSystem.FractCoord}' href='#HartreeFockBogoliubov.PeriodicSystem.fract_to_carte-Tuple{Array{Float64,2},HartreeFockBogoliubov.PeriodicSystem.FractCoord}'>#</a>
+<strong><code>HartreeFockBogoliubov.PeriodicSystem.fract_to_carte</code></strong> &mdash; <em>Method</em>.</p>
+<pre><code>fract_to_carte
+</code></pre>
+
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/tree/892caa39d8f67d2a1391f43a33017b36df37d92a/src/Lattice/coord.jl#L77-L79' class='documenter-source'>source</a><br></p>
+<p><a id='HartreeFockBogoliubov.PeriodicSystem.getorbital-Tuple{HartreeFockBogoliubov.PeriodicSystem.UnitCell,AbstractString}' href='#HartreeFockBogoliubov.PeriodicSystem.getorbital-Tuple{HartreeFockBogoliubov.PeriodicSystem.UnitCell,AbstractString}'>#</a>
+<strong><code>HartreeFockBogoliubov.PeriodicSystem.getorbital</code></strong> &mdash; <em>Method</em>.</p>
+<pre><code>getorbital
+</code></pre>
+
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/tree/892caa39d8f67d2a1391f43a33017b36df37d92a/src/Lattice/unitcell.jl#L66-L68' class='documenter-source'>source</a><br></p>
+<p><a id='HartreeFockBogoliubov.PeriodicSystem.getorbital-Tuple{HartreeFockBogoliubov.PeriodicSystem.UnitCell,Integer}' href='#HartreeFockBogoliubov.PeriodicSystem.getorbital-Tuple{HartreeFockBogoliubov.PeriodicSystem.UnitCell,Integer}'>#</a>
+<strong><code>HartreeFockBogoliubov.PeriodicSystem.getorbital</code></strong> &mdash; <em>Method</em>.</p>
+<pre><code>getorbital
+</code></pre>
+
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/tree/892caa39d8f67d2a1391f43a33017b36df37d92a/src/Lattice/unitcell.jl#L105-L107' class='documenter-source'>source</a><br></p>
+<p><a id='HartreeFockBogoliubov.PeriodicSystem.getorbitalcoord-Tuple{HartreeFockBogoliubov.PeriodicSystem.UnitCell,AbstractString}' href='#HartreeFockBogoliubov.PeriodicSystem.getorbitalcoord-Tuple{HartreeFockBogoliubov.PeriodicSystem.UnitCell,AbstractString}'>#</a>
+<strong><code>HartreeFockBogoliubov.PeriodicSystem.getorbitalcoord</code></strong> &mdash; <em>Method</em>.</p>
+<pre><code>getorbitalcoord
+</code></pre>
+
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/tree/892caa39d8f67d2a1391f43a33017b36df37d92a/src/Lattice/unitcell.jl#L80-L82' class='documenter-source'>source</a><br></p>
+<p><a id='HartreeFockBogoliubov.PeriodicSystem.getorbitalcoord-Tuple{HartreeFockBogoliubov.PeriodicSystem.UnitCell,Integer}' href='#HartreeFockBogoliubov.PeriodicSystem.getorbitalcoord-Tuple{HartreeFockBogoliubov.PeriodicSystem.UnitCell,Integer}'>#</a>
+<strong><code>HartreeFockBogoliubov.PeriodicSystem.getorbitalcoord</code></strong> &mdash; <em>Method</em>.</p>
+<pre><code>getorbitalcoord
+</code></pre>
+
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/tree/892caa39d8f67d2a1391f43a33017b36df37d92a/src/Lattice/unitcell.jl#L121-L123' class='documenter-source'>source</a><br></p>
+<p><a id='HartreeFockBogoliubov.PeriodicSystem.getorbitalindex-Tuple{HartreeFockBogoliubov.PeriodicSystem.UnitCell,AbstractString}' href='#HartreeFockBogoliubov.PeriodicSystem.getorbitalindex-Tuple{HartreeFockBogoliubov.PeriodicSystem.UnitCell,AbstractString}'>#</a>
+<strong><code>HartreeFockBogoliubov.PeriodicSystem.getorbitalindex</code></strong> &mdash; <em>Method</em>.</p>
+<pre><code>getorbitalindex
+</code></pre>
+
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/tree/892caa39d8f67d2a1391f43a33017b36df37d92a/src/Lattice/unitcell.jl#L73-L75' class='documenter-source'>source</a><br></p>
+<p><a id='HartreeFockBogoliubov.PeriodicSystem.getorbitalindexcoord-Tuple{HartreeFockBogoliubov.PeriodicSystem.UnitCell,AbstractString}' href='#HartreeFockBogoliubov.PeriodicSystem.getorbitalindexcoord-Tuple{HartreeFockBogoliubov.PeriodicSystem.UnitCell,AbstractString}'>#</a>
+<strong><code>HartreeFockBogoliubov.PeriodicSystem.getorbitalindexcoord</code></strong> &mdash; <em>Method</em>.</p>
+<pre><code>getorbitalindexcoord
+</code></pre>
+
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/tree/892caa39d8f67d2a1391f43a33017b36df37d92a/src/Lattice/unitcell.jl#L87-L89' class='documenter-source'>source</a><br></p>
+<p><a id='HartreeFockBogoliubov.PeriodicSystem.getorbitalname-Tuple{HartreeFockBogoliubov.PeriodicSystem.UnitCell,Integer}' href='#HartreeFockBogoliubov.PeriodicSystem.getorbitalname-Tuple{HartreeFockBogoliubov.PeriodicSystem.UnitCell,Integer}'>#</a>
+<strong><code>HartreeFockBogoliubov.PeriodicSystem.getorbitalname</code></strong> &mdash; <em>Method</em>.</p>
+<pre><code>getorbitalname
+</code></pre>
+
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/tree/892caa39d8f67d2a1391f43a33017b36df37d92a/src/Lattice/unitcell.jl#L113-L115' class='documenter-source'>source</a><br></p>
+<p><a id='HartreeFockBogoliubov.PeriodicSystem.hasorbital-Tuple{HartreeFockBogoliubov.PeriodicSystem.UnitCell,AbstractString}' href='#HartreeFockBogoliubov.PeriodicSystem.hasorbital-Tuple{HartreeFockBogoliubov.PeriodicSystem.UnitCell,AbstractString}'>#</a>
+<strong><code>HartreeFockBogoliubov.PeriodicSystem.hasorbital</code></strong> &mdash; <em>Method</em>.</p>
+<pre><code>hasorbital
+</code></pre>
+
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/tree/892caa39d8f67d2a1391f43a33017b36df37d92a/src/Lattice/unitcell.jl#L59-L61' class='documenter-source'>source</a><br></p>
+<p><a id='HartreeFockBogoliubov.PeriodicSystem.numorbital-Tuple{HartreeFockBogoliubov.PeriodicSystem.UnitCell}' href='#HartreeFockBogoliubov.PeriodicSystem.numorbital-Tuple{HartreeFockBogoliubov.PeriodicSystem.UnitCell}'>#</a>
+<strong><code>HartreeFockBogoliubov.PeriodicSystem.numorbital</code></strong> &mdash; <em>Method</em>.</p>
+<pre><code>numorbital
+</code></pre>
+
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/tree/892caa39d8f67d2a1391f43a33017b36df37d92a/src/Lattice/unitcell.jl#L97-L99' class='documenter-source'>source</a><br></p>
               
             </div>
           </div>
