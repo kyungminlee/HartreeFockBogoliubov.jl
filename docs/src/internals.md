@@ -4,7 +4,7 @@ This page lists all the documented internals of the `HartreeFockBogoliubov` modu
 
 ## Contents
 
-```@content
+```@contents
 Pages = [joinpath("internals", f) for f in readdir("internals")]
 ```
 

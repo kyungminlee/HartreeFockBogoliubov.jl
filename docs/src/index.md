@@ -12,6 +12,6 @@ Pages = [
 ## Internals
 ```@contents
 Pages = [
-  "internals/periodicsystem.md"
+  "internals.md"
 ]
 ```
