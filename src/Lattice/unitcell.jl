@@ -6,10 +6,10 @@ export UnitCell
 
   # Members
   * `latticevectors ::Array{Float64, 2}`: Lattice vectors
-  * `reducedreciprocallatticevectors ::Array{Float64, 2}`
-  * `reciprocallatticevectors ::Array{Float64, 2}`
-  * `orbitals ::Vector{Tuple{AbstractString, FractCoord}}`
-  * `orbitalindices ::Dict{AbstractString, Int64}`
+  * `reducedreciprocallatticevectors ::Array{Float64, 2}`: Reduced reciprocal lattice vectors (transpose of inverse of `latticevectors`)
+  * `reciprocallatticevectors ::Array{Float64, 2}`: Reciprocal lattice vectors
+  * `orbitals ::Vector{Tuple{AbstractString, FractCoord}}`: List of orbitals within unit cell
+  * `orbitalindices ::Dict{AbstractString, Int64}`: Indices of orbitals
 """
 type UnitCell
   latticevectors ::Array{Float64, 2}
@@ -19,6 +19,16 @@ type UnitCell
   orbitals ::Vector{Tuple{AbstractString, FractCoord}}
   orbitalindices ::Dict{AbstractString, Int64}
 
+  """
+      UnitCell
+
+    # Arguments
+    * `latticevectors ::Array{Float64, 2}`: Lattice vectors
+    * `orbitals::Vector{Tuple{AbstractString, FractCoord}}=[]`: List of orbitals
+
+    # Optional Arguments
+    * `epsilon=sqrt(eps(Float64))`: Epsilon
+  """
   function UnitCell(latticevectors ::Array{Float64, 2}, 
                     orbitals::Vector{Tuple{AbstractString, FractCoord}}=[];
                     epsilon=sqrt(eps(Float64)))
@@ -47,6 +57,11 @@ end
 
 """
     addorbital!
+
+  # Arguments
+  * `uc ::UnitCell`
+  * `orbitalname ::AbstractString`
+  * `orbitalcoord ::FractCoord`
 """
 function addorbital!(uc ::UnitCell, orbitalname ::AbstractString, orbitalcoord ::FractCoord)
   (ndim, ndim_) = size(uc.latticevectors)
@@ -58,6 +73,10 @@ end
 
 """
     hasorbital
+
+  # Arguments
+  * `uc ::UnitCell`
+  * `name ::AbstractString`
 """
 function hasorbital(uc ::UnitCell, name ::AbstractString)
   return haskey(uc.orbitals, name)
@@ -65,6 +84,10 @@ end
 
 """
     getorbital
+
+  # Arguments
+  * `uc ::UnitCell`
+  * `name ::AbstractString`
 """
 function getorbital(uc ::UnitCell, name ::AbstractString)
   return uc.orbitals[ uc.orbitalindices[name] ]
@@ -72,6 +95,10 @@ end
 
 """
     getorbitalindex
+
+  # Arguments
+  * `uc ::UnitCell`
+  * `name ::AbstractString`
 """
 function getorbitalindex(uc ::UnitCell, name ::AbstractString)
   return uc.orbitalindices[name]
@@ -79,6 +106,10 @@ end
 
 """
     getorbitalcoord
+
+  # Arguments
+  * `uc ::UnitCell`
+  * `name ::AbstractString`
 """
 function getorbitalcoord(uc ::UnitCell, name ::AbstractString)
   return getorbital(uc, name)[2]
@@ -86,6 +117,10 @@ end
 
 """
     getorbitalindexcoord
+
+  # Arguments
+  * `uc ::UnitCell`
+  * `name ::AbstractString`
 """
 function getorbitalindexcoord(uc ::UnitCell, name::AbstractString)
   idx = getorbitalindex(uc, name)
@@ -96,6 +131,9 @@ end
 
 """
     numorbital
+
+  # Arguments
+  * `uc ::UnitCell`
 """
 function numorbital(uc ::UnitCell)
   return length(uc.orbitals)
@@ -104,6 +142,10 @@ end
 
 """
     getorbital
+
+  # Arguments
+  * `uc ::UnitCell`
+  * `idx ::Integer`
 """
 function getorbital(uc ::UnitCell, idx::Integer)
   return uc.orbitals[idx]
@@ -112,6 +154,10 @@ end
 
 """
     getorbitalname
+
+  # Arguments
+  * `uc ::UnitCell`
+  * `idx ::Integer`
 """
 function getorbitalname(uc ::UnitCell, idx ::Integer)
   return uc.orbitals[idx][1]
@@ -120,6 +166,10 @@ end
 
 """
     getorbitalcoord
+
+  # Arguments
+  * `uc ::UnitCell`
+  * `idx ::Integer`
 """
 function getorbitalcoord(uc ::UnitCell, idx ::Integer)
   return uc.orbitals[idx][2]
