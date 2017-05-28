@@ -2,7 +2,7 @@
     "docs": [
         {
             "location": "/", 
-            "text": "HartreeFockBogoliubov.jl Documentation\n\n\n\n\nBasics\n\n\n\n\nHartree-Fock-Bogoliubov Theory\n\n\nMomentum Space Formulation\n\n\n\n\n\n\nInternals\n\n\n\n\nInternal Documentation\n\n\nContents\n\n\nIndex", 
+            "text": "HartreeFockBogoliubov.jl Documentation\n\n\n\n\nBasics\n\n\n\n\nHartree-Fock-Bogoliubov Theory\n\n\nMomentum Space Formulation\n\n\n\n\n\n\nInternals\n\n\n\n\nPeriodicSystem", 
             "title": "Home"
         }, 
         {
@@ -17,7 +17,7 @@
         }, 
         {
             "location": "/#internals", 
-            "text": "Internal Documentation  Contents  Index", 
+            "text": "PeriodicSystem", 
             "title": "Internals"
         }, 
         {
@@ -49,6 +49,26 @@
             "location": "/about/#about", 
             "text": "", 
             "title": "About"
+        }, 
+        {
+            "location": "/internals/", 
+            "text": "Internal Documentation\n\n\nThis page lists all the documented internals of the \nHartreeFockBogoliubov\n module and submodules.\n\n\n\n\nContents\n\n\n@content\nPages = [joinpath(\"internals\", f) for f in readdir(\"internals\")]\n\n\n\n\nIndex\n\n\nA list of all internal documentation sorted by module.", 
+            "title": "Internals"
+        }, 
+        {
+            "location": "/internals/#internal-documentation", 
+            "text": "This page lists all the documented internals of the  HartreeFockBogoliubov  module and submodules.", 
+            "title": "Internal Documentation"
+        }, 
+        {
+            "location": "/internals/#contents", 
+            "text": "@content\nPages = [joinpath(\"internals\", f) for f in readdir(\"internals\")]", 
+            "title": "Contents"
+        }, 
+        {
+            "location": "/internals/#index", 
+            "text": "A list of all internal documentation sorted by module.", 
+            "title": "Index"
         }, 
         {
             "location": "/internals/periodicsystem/", 
