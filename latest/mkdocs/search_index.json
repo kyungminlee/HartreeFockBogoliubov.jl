@@ -49,6 +49,16 @@
             "location": "/about/#about", 
             "text": "", 
             "title": "About"
+        }, 
+        {
+            "location": "/internals/periodicsystem/", 
+            "text": "PeriodicSystem", 
+            "title": "PeriodicSystem"
+        }, 
+        {
+            "location": "/internals/periodicsystem/#periodicsystem", 
+            "text": "", 
+            "title": "PeriodicSystem"
         }
     ]
 }
