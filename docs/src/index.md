@@ -8,3 +8,10 @@ Pages = [
   "basics/momentumspace.md"
 ]
 ```
+
+## Internals
+```@contents
+Pages = [
+  "internals.md"
+]
+```
