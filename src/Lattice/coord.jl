@@ -2,8 +2,19 @@ export CarteCoord
 export FractCoord
 export dimension
 
-typealias CarteCoord Array{Float64, 1}
+"""
+    CarteCoord
 
+  Cartesian coordinates
+"""
+typealias CarteCoord Vector{Float64}
+
+
+"""
+    FractCoord
+
+  Fractional coordinates
+"""
 type FractCoord
   whole ::Vector{Int64}
   fraction ::Vector{Float64}
@@ -22,7 +33,14 @@ type FractCoord
   end
 end
 
+"""
+    dimension
 
+  Dimension of the fractional coordinates
+
+  # Arguments
+  * `fc ::FractCoord`: Fractional coordinates.
+"""
 function dimension(fc ::FractCoord)
   d1 = length(fc.whole)
   d2 = length(fc.fraction)
@@ -55,4 +73,24 @@ function -(fc1 ::FractCoord, fc2 ::FractCoord)
 end
 
 
+
+"""
+    fract_to_carte
+"""
+function fract_to_carte(latticevectors ::Array{Float64, 2}, fc ::FractCoord)
+  mc = fc.whole + fc.fraction
+  cc = latticevectors * mc
+  return CarteCoord(cc)
+end
+
+
+"""
+    carte_to_fract
+"""
+function carte_to_fract(latticevectors ::Array{Float64, 2}, cc ::CarteCoord)
+  fc = inv(latticevectors) * cc
+  w = Int64[fld(x, 1) for x in fc]
+  f = Float64[mod(x, 1) for x in fc]
+  return FractCoord(w, f)
+end
 

@@ -1,6 +1,16 @@
 
 export UnitCell
 
+"""
+    UnitCell
+
+  # Members
+  * `latticevectors ::Array{Float64, 2}`: Lattice vectors
+  * `reducedreciprocallatticevectors ::Array{Float64, 2}`
+  * `reciprocallatticevectors ::Array{Float64, 2}`
+  * `orbitals ::Vector{Tuple{AbstractString, FractCoord}}`
+  * `orbitalindices ::Dict{AbstractString, Int64}`
+"""
 type UnitCell
   latticevectors ::Array{Float64, 2}
   reducedreciprocallatticevectors ::Array{Float64, 2}
@@ -35,6 +45,9 @@ type UnitCell
 end
 
 
+"""
+    addorbital!
+"""
 function addorbital!(uc ::UnitCell, orbitalname ::AbstractString, orbitalcoord ::FractCoord)
   (ndim, ndim_) = size(uc.latticevectors)
   @assert(uc.latticevectors[1] == dimension(orbitalcoord), "orbitalcoord has wrong dimension")
@@ -43,27 +56,37 @@ function addorbital!(uc ::UnitCell, orbitalname ::AbstractString, orbitalcoord :
   uc.orbitalindices[orbitalname] = length(uc.orbitalindices)
 end
 
-
+"""
+    hasorbital
+"""
 function hasorbital(uc ::UnitCell, name ::AbstractString)
   return haskey(uc.orbitals, name)
 end
 
-
+"""
+    getorbital
+"""
 function getorbital(uc ::UnitCell, name ::AbstractString)
   return uc.orbitals[ uc.orbitalindices[name] ]
 end
 
-
+"""
+    getorbitalindex
+"""
 function getorbitalindex(uc ::UnitCell, name ::AbstractString)
   return uc.orbitalindices[name]
 end
 
-
+"""
+    getorbitalcoord
+"""
 function getorbitalcoord(uc ::UnitCell, name ::AbstractString)
   return getorbital(uc, name)[2]
 end
 
-
+"""
+    getorbitalindexcoord
+"""
 function getorbitalindexcoord(uc ::UnitCell, name::AbstractString)
   idx = getorbitalindex(uc, name)
   coord = getorbitalcoord(uc, idx)
@@ -71,37 +94,35 @@ function getorbitalindexcoord(uc ::UnitCell, name::AbstractString)
 end
 
 
+"""
+    numorbital
+"""
 function numorbital(uc ::UnitCell)
   return length(uc.orbitals)
 end
 
 
+"""
+    getorbital
+"""
 function getorbital(uc ::UnitCell, idx::Integer)
   return uc.orbitals[idx]
 end
 
 
+"""
+    getorbitalname
+"""
 function getorbitalname(uc ::UnitCell, idx ::Integer)
   return uc.orbitals[idx][1]
 end
 
 
+"""
+    getorbitalcoord
+"""
 function getorbitalcoord(uc ::UnitCell, idx ::Integer)
   return uc.orbitals[idx][2]
 end
 
-
-function fract_to_carte(uc ::UnitCell, fc ::FractCoord)
-  mc = fc.whole + fc.fraction
-  cc = uc.latticevectors * mc
-  return CarteCoord(cc)
-end
-
-
-function carte_to_fract(uc ::UnitCell, cc ::CarteCoord)
-  fc = transpose(uc.reducedreciprocallatticevectors) * cc
-  w = Int64[fld(x, 1) for x in fc]
-  f = Float64[mod(x, 1) for x in fc]
-  return FractCoord(w, f)
-end
 
