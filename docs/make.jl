@@ -9,6 +9,10 @@ makedocs(
         "Basics" => Any[
             "basics/hartreefockbogoliubov.md",
             "basics/momentumspace.md"
+        ],
+        "Internals" => Any[
+          "internals.md",
+          "internals/periodicsystem.md"
         ]
     ]
 )
