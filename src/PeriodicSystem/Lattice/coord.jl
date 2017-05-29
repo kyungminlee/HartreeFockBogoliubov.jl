@@ -1,6 +1,7 @@
 export CarteCoord
 export FractCoord
 export dimension
+export fract2carte, carte2fract
 
 """
     CarteCoord
@@ -29,6 +30,11 @@ type FractCoord
     return new(w, f)
   end
 
+  function FractCoord(w ::Vector{Int64}, f ::Vector{Float64})
+    # TODO(kmlee) check
+    return new(w, f)
+  end
+
   function FractCoord(ndim ::Integer)
     @assert(ndim > 0, "ndim should be positive")
     w = zeros(Int64, ndim)
@@ -52,6 +58,7 @@ function dimension(fc ::FractCoord)
   return d1
 end
 
+import Base: +, -
 
 function +(fractcoord ::FractCoord, R ::Vector{Int64})
   return FractCoord(fractcoord.whole + R, fractcoord[2])
@@ -64,15 +71,15 @@ end
 
 
 function +(fc1 ::FractCoord, fc2 ::FractCoord)
-  R = [fld(x+y,1) for (x,y) in zip(fc1.fraction, fc2.fraction)]
-  r = [mod(x+y,1) for (x,y) in zip(fc1.fraction, fc2.fraction)]
+  R = Int64[fld(x+y,1) for (x,y) in zip(fc1.fraction, fc2.fraction)]
+  r = Float64[mod(x+y,1) for (x,y) in zip(fc1.fraction, fc2.fraction)]
   return FractCoord(fc1.whole + fc2.whole + R, r)
 end
 
 
 function -(fc1 ::FractCoord, fc2 ::FractCoord)
-  R = [fld(x-y,1) for (x,y) in zip(fc1.fraction, fc2.fraction)]
-  r = [mod(x-y,1) for (x,y) in zip(fc1.fraction, fc2.fraction)]
+  R = Int64[fld(x-y,1) for (x,y) in zip(fc1.fraction, fc2.fraction)]
+  r = Float64[mod(x-y,1) for (x,y) in zip(fc1.fraction, fc2.fraction)]
   return FractCoord(fc1.whole - fc2.whole + R, r)
 end
 

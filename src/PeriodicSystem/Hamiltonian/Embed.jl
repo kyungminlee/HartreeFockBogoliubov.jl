@@ -1,5 +1,18 @@
-module Realization
+"""
+Submodule `Embed`
 
+From `Spec` for Hamiltonian in periodic system, create an `Embed`
+
+
+"""
+module Embed
+
+#import HartreeFockBogoliubov.PeriodicSystem: CarteCoord, FractCoord, UnitCell
+using ..Lattice
+import ..Spec
+
+
+#import HartreeFockBogoliubov.PeriodicSystem
 #=
 type Term{S <: Number, N}
   amplitude ::S
@@ -8,6 +21,9 @@ type Term{S <: Number, N}
 end
 =#
 
+"""
+    HoppingDiagonal
+"""
 type HoppingDiagonal
   amplitude ::Real
   i ::Int64
@@ -18,10 +34,16 @@ type HoppingDiagonal
   end
 end
 
-type HoppingOffdiagonal{C <: Coord}
+
+"""
+    HoppingOffdiagonal
+"""
+type HoppingOffdiagonal
   amplitude ::Complex
-  i, j ::Int64
-  ri, rj ::FractCoord
+  i ::Int64
+  j ::Int64
+  ri ::FractCoord
+  rj ::FractCoord
   function HoppingOffdiagonal(uc ::UnitCell, hopspec ::Spec.HoppingOffdiagonal)
     (i, ri) = getorbitalindexcoord(uc, hopspec.i)
     (j, rj) = getorbitalindexcoord(uc, hopspec.j)
@@ -29,10 +51,14 @@ type HoppingOffdiagonal{C <: Coord}
   end
 end
 
-type InteractionDiagonal{C <: Coord}
+
+
+type InteractionDiagonal
   amplitude ::Complex
-  i, j ::Int64
-  ri, rj ::FractCoord
+  i ::Int64
+  j ::Int64
+  ri ::FractCoord
+  rj ::FractCoord
   function InteractionDiagonal(uc ::UnitCell, hopspec ::Spec.InteractionDiagonal)
     (i, ri) = getorbitalindexcoord(uc, hopspec.i)
     (j, rj) = getorbitalindexcoord(uc, hopspec.j)
@@ -40,10 +66,18 @@ type InteractionDiagonal{C <: Coord}
   end
 end
 
-type InteractionOffdiagonal{C <: Coord}
+
+
+type InteractionOffdiagonal
   amplitude ::Complex
-  i, j, k, l ::Int64
-  ri, rj, rk, rl ::FractCoord
+  i ::Int64
+  j ::Int64
+  k ::Int64
+  l ::Int64
+  ri ::FractCoord
+  rj ::FractCoord
+  rk ::FractCoord
+  rl ::FractCoord
   function InteractionOffdiagonal(uc ::UnitCell, hopspec ::Spec.InteractionOffdiagonal)
     (i, ri) = getorbitalindexcoord(uc, hopspec.i)
     (j, rj) = getorbitalindexcoord(uc, hopspec.j)
@@ -60,4 +94,17 @@ type InteractionOffdiagonal{C <: Coord}
 end
 
 
-end # Realization
+typealias Hopping Union{HoppingDiagonal, HoppingOffdiagonal}
+
+
+typealias Interaction Union{InteractionDiagonal, InteractionOffdiagonal}
+
+
+type Hamiltonian
+  unitcell ::UnitCell
+  hoppings ::Vector{Hopping}
+  interactions ::Vector{Interaction}
+end
+
+
+end # Embed
