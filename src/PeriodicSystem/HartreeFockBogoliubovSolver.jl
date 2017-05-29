@@ -125,6 +125,22 @@ end
 
 
 
+function collect(unitcell ::UnitCell, ρ_collect, t_collect, momentum, ρ, t)
+  ρ_value = Dict()
+  t_value = Dict()
+
+  for ((k, l, Rkl), collectfunc) in ρ_collect
+    ρ_value[(k, l, Rkl)] = collectfunc(momentum, ρ)
+  end
+
+  for ((k, l, Rkl), collectfunc) in t_collect
+    t_value[(k, l, Rkl)] = collectfunc(momentum, t)
+  end
+  return (ρ_value, t_value)
+end
+
+
+
 function makedeployer(hfbmodel ::HartreeFockBogoliubovModel)
   ρ_deploy = Dict{Tuple{Int64, Int64, Vector{Int64}}, Any}()
   for Gamma in hfbmodel.particle_hole_interaction
@@ -173,11 +189,19 @@ function makedeployer(hfbmodel ::HartreeFockBogoliubovModel)
 end
 
 
-function collect(ρ_collect, t_collect, momentum, ρ, t)
-end
+function deploy(unitcell ::UnitCell, ρ_deploy, t_deploy, momentum, ρ_value, ρ_value)
+  n = length(unitcell.orbitals)
+  Γ = zeros(Complex128, (n, n))
+  Δ = zeros(Complex128, (n, n))
 
+  for ((i,j,_), deployfunc) in ρ_deploy
+    Γ[i,j] += deployfunc(momentum, ρ_value)
+  end
 
-function deploy(ρ_deploy, t_deploy, momentum, ρ_value, t_value)
+  for ((i,j,_), deployfunc) in t_deploy
+    Δ[i,j] += deployfunc(momentum, t_value)
+  end
+
 end
 
 
