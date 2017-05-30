@@ -32,6 +32,8 @@ type FractCoord
 
   function FractCoord(w ::Vector{Int64}, f ::Vector{Float64})
     # TODO(kmlee) check
+    @assert length(w) == length(f)
+    @assert all(x -> 0 <= x < 1, f)
     return new(w, f)
   end
 
@@ -61,12 +63,12 @@ end
 import Base: +, -
 
 function +(fractcoord ::FractCoord, R ::Vector{Int64})
-  return FractCoord(fractcoord.whole + R, fractcoord[2])
+  return FractCoord(fractcoord.whole + R, fractcoord.fraction)
 end
 
 
 function -(fractcoord ::FractCoord, R ::Vector{Int64})
-  return FractCoord(fractcoord.whole - R, fractcoord[2])
+  return FractCoord(fractcoord.whole - R, fractcoord.fraction)
 end
 
 
@@ -83,6 +85,13 @@ function -(fc1 ::FractCoord, fc2 ::FractCoord)
   return FractCoord(fc1.whole - fc2.whole + R, r)
 end
 
+import Base.isapprox
+
+function isapprox(fc1 ::FractCoord, fc2 ::FractCoord;
+  rtol::Float64=sqrt(eps(Float64)) )
+  return (fc1.whole == fc2.whole) && 
+         isapprox(fc1.fraction, fc2.fraction; rtol=rtol)
+end
 
 
 """

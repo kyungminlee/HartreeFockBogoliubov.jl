@@ -1,7 +1,17 @@
 module HartreeFockBogoliubov
 
-export PeriodicSystem
+include("Lattice/Lattice.jl")
+using .Lattice
 
-include("PeriodicSystem/PeriodicSystem.jl")
+for symb in names(Lattice)
+  eval(Expr(:export, symb))
+end
+
+include("Hamiltonian/Spec.jl")
+include("Hamiltonian/Embed.jl")
+include("Hamiltonian/Generator.jl")
+
+include("HartreeFockBogoliubov/HartreeFockBogoliubov.jl")
+
 
 end
