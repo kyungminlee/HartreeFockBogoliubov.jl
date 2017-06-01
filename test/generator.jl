@@ -10,14 +10,14 @@
   hopembed_dia = Embed.HoppingDiagonal(uc, hopspec_dia)
   hopembed_off = Embed.HoppingOffdiagonal(uc, hopspec_off)
 
-  func = Generator.generate(uc, hopembed_dia)
+  func = Generator.generatefast(uc, hopembed_dia)
   out = zeros(Complex128, (2,2))
 
   @show out
   func([0.0, 0.0], out)
   @show out
 
-  func = Generator.generate(uc, hopembed_off)
+  func = Generator.generatefast(uc, hopembed_off)
   out = zeros(Complex128, (2,2))
   @show out
   func([0.0, 0.0], out)
@@ -44,26 +44,30 @@ end
     Spec.HoppingOffdiagonal( t1, "A", "A", [0], [1]),
     Spec.HoppingOffdiagonal( t2, "A", "A", [0], [2]),
   ]
+  func1 = Generator.generatefast(uc, hopspec)
 
   hopembed = Embed.Hopping[Embed.embed(uc, hop) for hop in hopspec]
-  func = Generator.generate(uc, hopembed)
+  func2 = Generator.generatefast(uc, hopembed)
 
   for kx in linspace(0.0, 2.0*pi, 16+1)
-    out = zeros(Complex128, (1,1))
-    func([kx], out)
-    ek = (t0 
+    out1 = zeros(Complex128, (1,1))
+    out2 = zeros(Complex128, (1,1))
+    func1([kx], out1)
+    func2([kx], out2)
+    ek = (t0
           + t1 * exp(1im * kx) + conj(t1) * exp(-1im * kx)
           + t2 * exp(2im * kx) + conj(t2) * exp(-2im * kx) )
     #@show out[1,1]
     #@show ek
-    @test isapprox(out[1,1], ek)
+    @test isapprox(out1[1,1], ek)
+    @test isapprox(out2[1,1], ek)
   end
 end
 
 #=
     Dispersion (2D, Graphene)
 =#
-@testset "disp_gra" begin
+@testset "graphene" begin
   a1 = [ sqrt(3.0) * 0.5, 0.5]
   a2 = [-sqrt(3.0) * 0.5, 0.5]
   a3 = [ 0.0, -1.0]
@@ -75,14 +79,16 @@ end
   addorbital!(uc, "B", carte2fract(uc, [0.0,-1.0]))
   #@show uc
 
-  hopspec = Spec.Hopping[]
+  hopspecs = Spec.Hopping[]
   t1 = 1.0 + 0.1im
   for r in [a1, a2, a3]
-    push!( hopspec, Spec.hoppingbycarte(uc, t1, "A", "B", [0.0, 0.0], r) )
+    push!( hopspecs, Spec.hoppingbycarte(uc, t1, "A", "B", [0.0, 0.0], r) )
   end
 
-  hopembed = Embed.Hopping[Embed.embed(uc, hop) for hop in hopspec]
-  func = Generator.generate(uc, hopembed)
+  func1 = Generator.generatefast(uc, hopspecs)
+
+  hopembed = Embed.Hopping[Embed.embed(uc, hop) for hop in hopspecs]
+  func2 = Generator.generatefast(uc, hopembed)
 
   for kx in linspace(4.0, 4.0, 8)
     for ky in linspace(-4.0, 4.0, 8)
@@ -94,10 +100,13 @@ end
         [  0  T1 ;  T1c  0 ]
       end
 
-      out = zeros(Complex128, (2, 2))
-      func(k, out)
+      out1 = zeros(Complex128, (2, 2))
+      out2 = zeros(Complex128, (2, 2))
+      func1(k, out1)
+      func2(k, out2)
 
-      @test isapprox(out, mat)
+      @test isapprox(out1, mat)
+      @test isapprox(out2, mat)
     end
   end
 end

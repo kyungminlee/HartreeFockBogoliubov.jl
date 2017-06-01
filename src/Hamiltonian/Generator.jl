@@ -5,19 +5,8 @@ using ..Lattice
 import ..Spec
 import ..Embed
 
-function generate(uc ::UnitCell, hops ::Vector{Embed.Hopping})
-  ndim = dimension(uc)
-  norb = numorbital(uc)
-  funcs = [generate(uc, hop) for hop in hops]
-  return (momentum ::Vector{Float64}, out::Array{Complex128, 2}) -> begin
-    for func in funcs
-      func(momentum, out)
-    end
-    return out
-  end
-end
 
-function generate(uc ::UnitCell, hop ::Embed.HoppingDiagonal)
+function generatefast(uc ::UnitCell, hop ::Embed.HoppingDiagonal)
   ndim = dimension(uc)
   norb = numorbital(uc)
   v = hop.amplitude
@@ -30,7 +19,8 @@ function generate(uc ::UnitCell, hop ::Embed.HoppingDiagonal)
   end
 end
 
-function generate(uc ::UnitCell, hop::Embed.HoppingOffdiagonal)
+
+function generatefast(uc ::UnitCell, hop::Embed.HoppingOffdiagonal)
   ndim = dimension(uc)
   norb = numorbital(uc)
   v = hop.amplitude
@@ -42,7 +32,6 @@ function generate(uc ::UnitCell, hop::Embed.HoppingOffdiagonal)
     @assert(size(momentum) == (ndim,))
     @assert(size(out) == (norb, norb))
     phase = exp(1im * dot(momentum, rji))
-    #@show i, j, phase
     out[i,j] += v * phase
     out[j,i] += conj(v * phase)
     return out
@@ -50,6 +39,35 @@ function generate(uc ::UnitCell, hop::Embed.HoppingOffdiagonal)
 end
 
 
+function generatefast(uc ::UnitCell, hops ::Vector{Embed.Hopping})
+  ndim = dimension(uc)
+  norb = numorbital(uc)
+  funcs = [generatefast(uc, hop) for hop in hops]
+  return (momentum ::Vector{Float64}, out::Array{Complex128, 2}) -> begin
+    for func in funcs
+      func(momentum, out)
+    end
+    return out
+  end
+end
+
+
+function generatefast(uc ::UnitCell, hopspec::Spec.HoppingDiagonal)
+  hopembed = Embed.embed(uc, hopspec)
+  return generatefast(uc, hopembed)
+end
+
+
+function generatefast(uc ::UnitCell, hopspec::Spec.HoppingOffdiagonal)
+  hopembed = Embed.embed(uc, hopspec)
+  return generatefast(uc, hopembed)
+end
+
+
+function generatefast(uc ::UnitCell, hopspecs ::Vector{Spec.Hopping})
+  hopembeds = Embed.Hopping[Embed.embed(uc, hopspec) for hopspec in hopspecs]
+  return generatefast(uc, hopembeds)
+end
 
 
 end
