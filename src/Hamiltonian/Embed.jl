@@ -23,7 +23,7 @@ end
 """
     HoppingDiagonal
 """
-type HoppingDiagonal
+immutable HoppingDiagonal
   amplitude ::Real
   i ::Int64
   ri ::FractCoord
@@ -38,7 +38,7 @@ end
 """
     HoppingOffdiagonal
 """
-type HoppingOffdiagonal
+immutable HoppingOffdiagonal
   amplitude ::Complex
   i ::Int64
   j ::Int64
@@ -60,7 +60,7 @@ function HoppingOffdiagonal(uc ::UnitCell, hopspec ::Spec.HoppingOffdiagonal)
   return HoppingOffdiagonal(v, i, j, ri + Ri, rj + Rj)
 end
 
-type InteractionDiagonal
+immutable InteractionDiagonal
   amplitude ::Complex
   i ::Int64
   j ::Int64
@@ -82,7 +82,7 @@ function InteractionDiagonal(uc ::UnitCell, hopspec ::Spec.InteractionDiagonal)
 end
 
 
-type InteractionOffdiagonal
+immutable InteractionOffdiagonal
   amplitude ::Complex
   i ::Int64
   j ::Int64

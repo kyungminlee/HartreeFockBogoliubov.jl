@@ -20,10 +20,10 @@ typealias CarteCoord Vector{Float64}
   * `whole ::Vector{Int64}`: Integer part of fractional coordinates
   * `fraction ::Vector{Float64}`: [0,1) part of fractional coordinates
 """
-type FractCoord
+immutable FractCoord
   whole ::Vector{Int64}
   fraction ::Vector{Float64}
-  
+
   function FractCoord(coord ::Vector{Float64})
     w = Int64[fld(x,1) for x in coord]
     f = Float64[mod(x,1) for x in coord]
@@ -89,7 +89,7 @@ import Base.isapprox
 
 function isapprox(fc1 ::FractCoord, fc2 ::FractCoord;
   rtol::Float64=sqrt(eps(Float64)) )
-  return (fc1.whole == fc2.whole) && 
+  return (fc1.whole == fc2.whole) &&
          isapprox(fc1.fraction, fc2.fraction; rtol=rtol)
 end
 
@@ -121,4 +121,3 @@ function carte2fract(latticevectors ::Array{Float64, 2}, cc ::CarteCoord)
   f = Float64[mod(x, 1) for x in fc]
   return FractCoord(w, f)
 end
-

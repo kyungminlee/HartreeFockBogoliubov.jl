@@ -9,14 +9,14 @@ type Term{S <: Number, N}
 end
 
 
-type HoppingDiagonal
+immutable HoppingDiagonal{T}
   amplitude ::Real
   i ::String
   Ri ::Vector{Int64}
 end
 
 
-type HoppingOffdiagonal
+immutable HoppingOffdiagonal{T}
   amplitude ::Number
   i ::String
   j ::String
@@ -32,7 +32,7 @@ Represents
   U c_{i}^{*} c_{j}^{*} c_{j} c_{i}
 ```
 """
-type InteractionDiagonal
+immutable InteractionDiagonal{T}
   amplitude ::Real
   i ::String
   j ::String
@@ -51,7 +51,7 @@ Represents
  + U^{*} c_{k}^{*} c_{l}^{*} c_{j} c_{i}
 ```
 """
-type InteractionOffdiagonal
+immutable InteractionOffdiagonal{T}
   amplitude ::Number
   i ::String
   j ::String

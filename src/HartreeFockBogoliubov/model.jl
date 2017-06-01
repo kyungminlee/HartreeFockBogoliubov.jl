@@ -2,7 +2,7 @@ export HartreeFockBogoliubovModel
 export addinteraction!
 
 
-type MeanField
+immutable MeanField
   target ::Tuple{Int64, Int64}
   source ::Tuple{Int64, Int64}
   amplitude ::Real
@@ -75,4 +75,3 @@ function addinteraction!(model::HartreeFockBogoliubovModel,
   append!(model.particle_hole_interactions, Γs)
   append!(model.particle_particle_interactions, Δs)
 end
-
