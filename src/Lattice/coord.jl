@@ -93,6 +93,12 @@ function isapprox(fc1 ::FractCoord, fc2 ::FractCoord;
          isapprox(fc1.fraction, fc2.fraction; rtol=rtol)
 end
 
+import Base.show
+function show(io::IO, fc::FractCoord)
+  print(io, "FractCoord(", fc.whole, " + ", fc.fraction,")")
+end
+
+
 
 """
     fract2carte

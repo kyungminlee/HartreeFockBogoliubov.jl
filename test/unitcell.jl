@@ -1,15 +1,15 @@
 @testset "UnitCell" begin
   latticevectors = [0.5 0.0; 0.0 1.0]
-  uc = UnitCell(latticevectors)
 
   @testset "Constructor" begin
+    uc = newunitcell(latticevectors)
     @test isapprox(uc.latticevectors, latticevectors)
     @test isapprox(uc.reducedreciprocallatticevectors, [2.0 0.0; 0.0 1.0])
     @test isapprox(uc.reciprocallatticevectors, [4*pi 0.0; 0.0 2*pi])
   end
 
-
   @testset "Methods" begin
+    uc = newunitcell(latticevectors)
     fc1 = FractCoord([0, 0], [0.5, 0.0])
     fc2 = FractCoord([0, 0], [0.0, 0.5])
     addorbital!(uc, "Ox", fc1)
@@ -33,5 +33,21 @@
     @test getorbitalname(uc, 2) == "Oy"
     @test getorbitalcoord(uc, 1) == fc1
     @test getorbitalcoord(uc, 2) == fc2
+  end
+
+  @testset "Type" begin
+    uc = newunitcell(latticevectors; OrbitalType=typeof((:up, "A")))
+    fc = Dict("Ox" => FractCoord([0, 0], [0.5, 0.0]),
+              "Oy" => FractCoord([0, 0], [0.0, 0.5]))
+    for orbital in ["Ox", "Oy"]
+      for spin in [:up, :dn]
+        addorbital!(uc, (spin, orbital), fc[orbital])
+      end
+    end
+    @test getorbitalname(uc, 1) == (:up, "Ox")
+    @test getorbitalname(uc, 2) == (:dn, "Ox")
+
+    @show uc
+
   end
 end

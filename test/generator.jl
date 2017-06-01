@@ -34,7 +34,7 @@ end
  Dispersion(1 Dimension, 1 Orbital)
 =#
 @testset "disp_1D1O" begin
-  uc = UnitCell([1.0])
+  uc = newunitcell(1.0)
   addorbital!(uc, "A", FractCoord([0], [0.0]))
   t0 = 100.0
   t1 = 10.0 + 0.1im
@@ -74,7 +74,7 @@ end
   b1 = a1 - a2
   b2 = a2 - a3
   b3 = a3 - a1
-  uc = UnitCell([b1 b3])
+  uc = newunitcell([b1 b3])
   addorbital!(uc, "A", carte2fract(uc, [0.0, 0.0]))
   addorbital!(uc, "B", carte2fract(uc, [0.0,-1.0]))
   #@show uc

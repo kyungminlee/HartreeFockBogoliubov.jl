@@ -1,6 +1,6 @@
 @testset "Spec" begin
 
-  uc = UnitCell([1.0 0.0; 0.0 1.0])
+  uc = newunitcell([1.0 0.0; 0.0 1.0])
   addorbital!(uc, "A", FractCoord([0,0], [0.5, 0.0]))
   addorbital!(uc, "B", FractCoord([0,0], [0.0, 0.5]))
 
@@ -12,7 +12,7 @@
 
   hopembed_dia = Embed.HoppingDiagonal(uc, hopspec_dia)
   hopembed_off = Embed.HoppingOffdiagonal(uc, hopspec_off)
-  
+
   #@show hopembed_dia
   #@show hopembed_off
 end

@@ -2,24 +2,18 @@ module Spec
 
 using ..Lattice
 
-type Term{S <: Number, N}
-  amplitude ::S
-  subscript ::NTuple{N, AbstractString}
-  latticedisplacement ::Vector{Int64}
-end
-
 
 immutable HoppingDiagonal{T}
   amplitude ::Real
-  i ::String
+  i ::T
   Ri ::Vector{Int64}
 end
 
 
 immutable HoppingOffdiagonal{T}
   amplitude ::Number
-  i ::String
-  j ::String
+  i ::T
+  j ::T
   Ri ::Vector{Int64}
   Rj ::Vector{Int64}
 end
@@ -34,8 +28,8 @@ Represents
 """
 immutable InteractionDiagonal{T}
   amplitude ::Real
-  i ::String
-  j ::String
+  i ::T
+  j ::T
   Ri ::Vector{Int64}
   Rj ::Vector{Int64}
 end
@@ -45,7 +39,7 @@ end
 """
 i < j, k < l, i < k or (i == k and j < l)
 
-Represents 
+Represents
 ```math
    U     c_{i}^{*} c_{j}^{*} c_{l} c_{k}
  + U^{*} c_{k}^{*} c_{l}^{*} c_{j} c_{i}
@@ -53,10 +47,10 @@ Represents
 """
 immutable InteractionOffdiagonal{T}
   amplitude ::Number
-  i ::String
-  j ::String
-  k ::String
-  l ::String
+  i ::T
+  j ::T
+  k ::T
+  l ::T
   Ri ::Vector{Int64}
   Rj ::Vector{Int64}
   Rk ::Vector{Int64}
@@ -64,17 +58,23 @@ immutable InteractionOffdiagonal{T}
 end
 
 
-function hoppingbycarte(uc ::UnitCell, amplitude ::Real, i ::AbstractString, ri ::CarteCoord)
-  Ri = whichunitcell(uc, i, ri)
+function hoppingbycarte{T}(uc ::UnitCell{T},
+                          amplitude ::Real,
+                          i ::T,
+                          ri ::CarteCoord;
+                          tol=sqrt(eps(Float64)))
+  Ri = whichunitcell(uc, i, ri; tol=tol)
   return HoppingDiagonal(amplitude, i, Ri)
 end
 
-function hoppingbycarte(uc ::UnitCell, amplitude ::Number,
-                        i ::AbstractString, j ::AbstractString, 
-                        ri ::CarteCoord, rj ::CarteCoord)
-  Ri = whichunitcell(uc, i, ri)
-  Rj = whichunitcell(uc, j, rj)
-  return HoppingOffdiagonal(amplitude, i, j, Ri, Rj)
+function hoppingbycarte{T}(uc ::UnitCell{T},
+                           amplitude ::Number,
+                           i ::T, j ::T,
+                           ri ::CarteCoord, rj ::CarteCoord;
+                           tol=sqrt(eps(Float64)))
+  Ri = whichunitcell(uc, i, ri; tol=tol)
+  Rj = whichunitcell(uc, j, rj; tol=tol)
+  return HoppingOffdiagonal{T}(amplitude, i, j, Ri, Rj)
 end
 
 
