@@ -15,6 +15,7 @@ export dimension,
 
 import Base.zeros
 
+
 """
     UnitCell{T}
 
@@ -79,6 +80,7 @@ function newunitcell(latticevectors ::Array{Float64, 2};
   return UnitCell{OrbitalType}(latticevectors, reduced_rlv, 2*pi*reduced_rlv, orbitals, orbitalindices)
 end
 
+
 """
     dimension
 
@@ -87,6 +89,7 @@ end
 function dimension(uc ::UnitCell)
   return size(uc.latticevectors)[1]
 end
+
 
 """
     numorbital
@@ -121,6 +124,7 @@ function addorbital!{T}(uc ::UnitCell{T}, orbitalname ::T, orbitalcoord ::FractC
   return index
 end
 
+
 """
     hasorbital{T}
 
@@ -133,6 +137,7 @@ end
 function hasorbital{T}(uc ::UnitCell{T}, name ::T)
   return haskey(uc.orbitalindices, name)
 end
+
 
 """
     getorbitalindex
@@ -147,6 +152,7 @@ function getorbitalindex{T}(uc ::UnitCell{T}, name ::T)
   return uc.orbitalindices[name]
 end
 
+
 """
     getorbital
 
@@ -160,6 +166,7 @@ function getorbital{T}(uc ::UnitCell{T}, name ::T)
   return uc.orbitals[ uc.orbitalindices[name] ]
 end
 
+
 """
     getorbitalcoord
 
@@ -170,6 +177,7 @@ end
 function getorbitalcoord{T}(uc ::UnitCell{T}, name ::T)
   return getorbital(uc, name)[2]
 end
+
 
 """
     getorbitalindexcoord
@@ -255,7 +263,6 @@ function carte2fract(unitcell ::UnitCell, cc ::CarteCoord; tol=sqrt(eps(Float64)
   end
   return FractCoord(w, f)
 end
-
 
 
 """

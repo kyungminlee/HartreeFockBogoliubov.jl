@@ -29,4 +29,3 @@ pages:
   - About: about.md
   - Internals:
     - Internals: internals.md
-    - PeriodicSystem : internals/periodicsystem.md

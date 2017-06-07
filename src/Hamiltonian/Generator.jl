@@ -5,7 +5,9 @@ using ..Lattice
 import ..Spec
 import ..Embed
 
-
+"""
+    generatefast
+"""
 function generatefast(uc ::UnitCell, hop ::Embed.HoppingDiagonal)
   ndim = dimension(uc)
   norb = numorbital(uc)
@@ -20,6 +22,9 @@ function generatefast(uc ::UnitCell, hop ::Embed.HoppingDiagonal)
 end
 
 
+"""
+    generatefast
+"""
 function generatefast(uc ::UnitCell, hop::Embed.HoppingOffdiagonal)
   ndim = dimension(uc)
   norb = numorbital(uc)
@@ -39,6 +44,9 @@ function generatefast(uc ::UnitCell, hop::Embed.HoppingOffdiagonal)
 end
 
 
+"""
+    generatefast
+"""
 function generatefast(uc ::UnitCell, hops ::Vector{Embed.Hopping})
   ndim = dimension(uc)
   norb = numorbital(uc)
@@ -52,29 +60,44 @@ function generatefast(uc ::UnitCell, hops ::Vector{Embed.Hopping})
 end
 
 
+"""
+    generatehoppingfast
+"""
 function generatehoppingfast(hamiltonian ::Embed.Hamiltonian)
   return generatefast(hamiltonian.unitcell, hamiltonian.hoppings)
 end
 
 
+"""
+    generatefast
+"""
 function generatefast(uc ::UnitCell, hopspec::Spec.HoppingDiagonal)
   hopembed = Embed.embed(uc, hopspec)
   return generatefast(uc, hopembed)
 end
 
 
+"""
+    generatefast
+"""
 function generatefast(uc ::UnitCell, hopspec::Spec.HoppingOffdiagonal)
   hopembed = Embed.embed(uc, hopspec)
   return generatefast(uc, hopembed)
 end
 
 
+"""
+    generatefast
+"""
 function generatefast(uc ::UnitCell, hopspecs ::Vector{Spec.Hopping})
   hopembeds = Embed.Hopping[Embed.embed(uc, hopspec) for hopspec in hopspecs]
   return generatefast(uc, hopembeds)
 end
 
 
+"""
+    generatefast
+"""
 function generatehoppingfast(hamiltonian ::Spec.Hamiltonian)
   return generatefast(hamiltonian.unitcell, hamiltonian.hoppings)
 end
