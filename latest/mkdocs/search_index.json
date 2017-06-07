@@ -72,12 +72,12 @@
         }, 
         {
             "location": "/internals/periodicsystem/", 
-            "text": "PeriodicSystem", 
+            "text": "PeriodicSystem\n\n\n@autodocs\nModules = [HartreeFockBogoliubov.PeriodicSystem]", 
             "title": "PeriodicSystem"
         }, 
         {
             "location": "/internals/periodicsystem/#periodicsystem", 
-            "text": "", 
+            "text": "@autodocs\nModules = [HartreeFockBogoliubov.PeriodicSystem]", 
             "title": "PeriodicSystem"
         }
     ]
