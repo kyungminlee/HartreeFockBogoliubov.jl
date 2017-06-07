@@ -13,6 +13,7 @@ export dimension,
        fract2carte,
        whichunitcell
 
+import Base.zeros
 
 """
     UnitCell{T}
@@ -262,4 +263,10 @@ function whichunitcell{T}(uc ::UnitCell{T}, name ::T, cc ::CarteCoord; tol=sqrt(
   @assert isapprox(fc1.fraction, fc2.fraction; rtol=tol)
   R = fc2.whole - fc1.whole
   return R
+end
+
+
+function zeros(uc::UnitCell)
+  norb = numorbital(uc)
+  Base.zeros(Complex128, (norb, norb))
 end
