@@ -243,10 +243,16 @@ end
   * `latticevectors ::Array{Float64, 2}`
   * `cc ::CarteCoord`
 """
-function carte2fract(unitcell ::UnitCell, cc ::CarteCoord)
+function carte2fract(unitcell ::UnitCell, cc ::CarteCoord; tol=sqrt(eps(Float64)))
   fc = inv(unitcell.latticevectors) * cc
-  w = Int64[fld(x, 1) for x in fc]
-  f = Float64[mod(x, 1) for x in fc]
+  w = Int64[fld(x, 1.0) for x in fc]
+  f = Float64[mod(x, 1.0) for x in fc]
+  for i in length(w)
+    if f[i] + tol >= 1.0
+      w[i] += 1
+      f[i] = 0.0
+    end
+  end
   return FractCoord(w, f)
 end
 
@@ -260,7 +266,8 @@ end
 function whichunitcell{T}(uc ::UnitCell{T}, name ::T, cc ::CarteCoord; tol=sqrt(eps(Float64)))
   fc1 = getorbitalcoord(uc, name)
   fc2 = carte2fract(uc, cc)
-  @assert isapprox(fc1.fraction, fc2.fraction; rtol=tol)
+  @assert(isapprox(fc1.fraction, fc2.fraction; rtol=tol),
+          "$(fc1.fraction) != $(fc2.fraction) [tol=$(tol)]")
   R = fc2.whole - fc1.whole
   return R
 end
