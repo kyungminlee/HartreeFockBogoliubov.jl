@@ -29,3 +29,4 @@ pages:
   - About: about.md
   - Internals:
     - Internals: internals.md
+    - More: internals/hartreefockbogoliubov.md
