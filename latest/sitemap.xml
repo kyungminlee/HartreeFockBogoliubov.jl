@@ -41,6 +41,12 @@
      <changefreq>daily</changefreq>
     </url>
         
+    <url>
+     <loc>/internals/hartreefockbogoliubov/</loc>
+     <lastmod>2017-06-07</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
     
 
 </urlset>
