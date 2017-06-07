@@ -9,14 +9,14 @@ using ..Lattice
 """
     HoppingDiagonal{T}
 
-  Represents
-  ```math
-    t c_{i}^{*} c_{i}
-  ```
+Represents
+```math
+  t c_{i}^{*} c_{i}
+```
   # Members
   * `amplitude ::Real`
   * `i ::T`
-  * `Ri ::Vector{Int64}``
+  * `Ri ::Vector{Int64}`
 """
 immutable HoppingDiagonal{T}
   amplitude ::Real
@@ -28,10 +28,10 @@ end
 """
     HoppingOffdiagonal{T}
 
-  Represents
-  ```math
-    t c_{i}^{*} c_{j} + t^* c_{j}^{*} c_{i}
-  ```
+Represents
+```math
+  t c_{i}^{*} c_{j} + t^* c_{j}^{*} c_{i}
+```
 
   # Members
   * `amplitude ::Number`
@@ -52,10 +52,10 @@ end
 """
     InteractionDiagonal{T}
 
-  Represents
-  ```math
+Represents
+```math
     U c_{i}^{*} c_{j}^{*} c_{j} c_{i}
-  ```
+```
 
   # Members
   * `amplitude ::Real`
@@ -78,11 +78,11 @@ end
 
     i < j, k < l, i < k or (i == k and j < l)
 
-  Represents
-  ```math
-     U     c_{i}^{*} c_{j}^{*} c_{l} c_{k}
-   + U^{*} c_{k}^{*} c_{l}^{*} c_{j} c_{i}
-  ```
+Represents
+```math
+   U     c_{i}^{*} c_{j}^{*} c_{l} c_{k}
+ + U^{*} c_{k}^{*} c_{l}^{*} c_{j} c_{i}
+```
 
   # Members
   * `amplitude ::Number`

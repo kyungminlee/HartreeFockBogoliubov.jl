@@ -46,7 +46,7 @@ end
   * `OrbitalType`: List of orbitals
 
   # Optional Arguments
-  * `tol=sqrt(eps(Float64))`: Epsilon
+  * `tol=sqrt(eps(Float64))`: Tolerance
 """
 function newunitcell(latticeconstant ::Float64;
                      OrbitalType::DataType=Any,
