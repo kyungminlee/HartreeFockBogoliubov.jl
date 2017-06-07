@@ -52,7 +52,7 @@
         }, 
         {
             "location": "/internals/", 
-            "text": "Internal Documentation\n\n\nThis page lists all the documented internals of the \nHartreeFockBogoliubov\n module and submodules.\n\n\n\n\nContents\n\n\n\n\nPeriodicSystem\n\n\n\n\n\n\nIndex\n\n\nA list of all internal documentation sorted by module.", 
+            "text": "Internal Documentation\n\n\nThis page lists all the documented internals of the \nHartreeFockBogoliubov\n module and submodules.\n\n\n\n\nContents\n\n\n\n\nHartreeFockBogoliubov\n\n\n\n\n\n\nIndex\n\n\nA list of all internal documentation sorted by module.", 
             "title": "Internals"
         }, 
         {
@@ -62,23 +62,13 @@
         }, 
         {
             "location": "/internals/#contents", 
-            "text": "PeriodicSystem", 
+            "text": "HartreeFockBogoliubov", 
             "title": "Contents"
         }, 
         {
             "location": "/internals/#index", 
             "text": "A list of all internal documentation sorted by module.", 
             "title": "Index"
-        }, 
-        {
-            "location": "/internals/periodicsystem/", 
-            "text": "PeriodicSystem\n\n\n@autodocs\nModules = [HartreeFockBogoliubov.PeriodicSystem]", 
-            "title": "PeriodicSystem"
-        }, 
-        {
-            "location": "/internals/periodicsystem/#periodicsystem", 
-            "text": "@autodocs\nModules = [HartreeFockBogoliubov.PeriodicSystem]", 
-            "title": "PeriodicSystem"
         }
     ]
 }
