@@ -157,5 +157,11 @@ type Hamiltonian
   interactions ::Vector{Interaction}
 end
 
+function Hamiltonian(spec ::Spec.Hamiltonian)
+  unitcell = spec.unitcell
+  hoppings = [embed(unitcell, hop) for hop in spec.hoppings]
+  interactions = [embed(unitcell, inter) for inter in spec.interactions]
+  Hamiltonian(unitcell, hoppings, interactions)
+end
 
 end # Embed

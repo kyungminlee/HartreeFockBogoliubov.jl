@@ -52,6 +52,11 @@ function generatefast(uc ::UnitCell, hops ::Vector{Embed.Hopping})
 end
 
 
+function generatehoppingfast(hamiltonian ::Embed.Hamiltonian)
+  return generatefast(hamiltonian.unitcell, hamiltonian.hoppings)
+end
+
+
 function generatefast(uc ::UnitCell, hopspec::Spec.HoppingDiagonal)
   hopembed = Embed.embed(uc, hopspec)
   return generatefast(uc, hopembed)
@@ -69,5 +74,9 @@ function generatefast(uc ::UnitCell, hopspecs ::Vector{Spec.Hopping})
   return generatefast(uc, hopembeds)
 end
 
+
+function generatehoppingfast(hamiltonian ::Spec.Hamiltonian)
+  return generatefast(hamiltonian.unitcell, hamiltonian.hoppings)
+end
 
 end
