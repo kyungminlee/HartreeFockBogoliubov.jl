@@ -1,4 +1,4 @@
-module HFB
+module HartreeFockBogoliubovModel
 
 using ..Lattice
 import ..Embed

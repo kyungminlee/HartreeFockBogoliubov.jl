@@ -7,7 +7,7 @@ type HartreeFockBogoliubovSolver
   t_deployers  ::Dict{Tuple{Int64, Int64, Vector{Int64}}, Any}
 end
 
-function HartreeFockBogoliubovSolver(model ::HartreeFockBogoliubovModel,
+function HartreeFockBogoliubovSolver(model ::Hamiltonian,
                                      unitcell::UnitCell)
   lv ::Array{Float64, 2} = unitcell.latticevectors
   ph = model.particle_hole_interactions
@@ -110,6 +110,3 @@ function deploy_dense(unitcell ::UnitCell,
     Δ[i,j] += deployfunc(momentum, t_value)
   end
 end
-
-
-

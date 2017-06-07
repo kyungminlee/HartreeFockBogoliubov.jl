@@ -11,7 +11,7 @@ include("Hamiltonian/Spec.jl")
 include("Hamiltonian/Embed.jl")
 include("Hamiltonian/Generator.jl")
 
-include("HartreeFockBogoliubov/HartreeFockBogoliubov.jl")
+include("HartreeFockBogoliubovModel/HartreeFockBogoliubovModel.jl")
 
 
 end

@@ -1,5 +1,4 @@
-export HartreeFockBogoliubovModel
-export addinteraction!
+#export addinteraction!
 
 
 immutable MeanField
@@ -11,18 +10,31 @@ immutable MeanField
 end
 
 
-type HartreeFockBogoliubovModel
-  hoppings ::Vector{Embed.Interaction}
-  particle_hole_interactions ::Vector{Embed.Interaction}
-  particle_particle_interactions ::Vector{Embed.Interaction}
+type Hamiltonian
+  unitcell ::UnitCell
+  hoppings ::Vector{Embed.Hopping}
+  particle_hole_interactions ::Vector{MeanField}
+  particle_particle_interactions ::Vector{MeanField}
 end
 
 
-function addinteraction!(model ::HartreeFockBogoliubovModel,
+function Hamiltonian(full_hamiltonian ::Embed.Hamiltonian)
+  unitcell = full_hamiltonian.unitcell
+  hoppings = full_hamiltonian.hoppings
+  model = Hamiltonian(unitcell, hoppings, [], [])
+  for interaction in full_hamiltonian.interactions
+    addinteraction!(model, interaction)
+  end
+  return model
+end
+
+
+function addinteraction!(model ::Hamiltonian,
                          embint ::Embed.InteractionDiagonal)
   V = embint.amplitude
   (i, j)  = (embint.i,  embint.j )
-  (ri,rj) = (embint.ri, embint.rj)
+  ri = fract2carte(model.unitcell, embint.ri)
+  rj = fract2carte(model.unitcell, embint.rj)
 
   Γ = [
     MeanField((i,i), (j,j),      V, ri - ri, rj - rj),
@@ -41,7 +53,7 @@ function addinteraction!(model ::HartreeFockBogoliubovModel,
 end
 
 
-function addinteraction!(model::HartreeFockBogoliubovModel,
+function addinteraction!(model::Hamiltonian,
                          embint ::Embed.InteractionOffdiagonal)
   error("Unimplemented")
   V = embint.amplitude
