@@ -142,13 +142,13 @@ end
   # Arguments
   * `unitcell ::UnitCell`
 """
-Hamiltonian(unitcell ::UnitCell) = new(unitcell, [], [])
+Hamiltonian(unitcell ::UnitCell) = Hamiltonian(unitcell, [], [])
 
 
 """
     hoppingbycarte{T}
 
-  # Members
+  # Arguments
   * `uc ::UnitCell{T}`
   * `amplitude ::Real`
   * `i ::T`
@@ -169,13 +169,13 @@ end
     hoppingbycarte{T}
 
   # Arguments
-    * `uc ::UnitCell{T}`
-    * `amplitude ::Number`
-    * `i ::T`
-    * `j ::T`
-    * `ri ::CarteCoord`
-    * `rj ::CarteCoord`
-    * `tol ::Real` : Optional. Defaults to `sqrt(eps(Float64))`
+  * `uc ::UnitCell{T}`
+  * `amplitude ::Number`
+  * `i ::T`
+  * `j ::T`
+  * `ri ::CarteCoord`
+  * `rj ::CarteCoord`
+  * `tol ::Real` : Optional. Defaults to `sqrt(eps(Float64))`
 """
 function hoppingbycarte{T}(uc ::UnitCell{T},
                            amplitude ::Number,

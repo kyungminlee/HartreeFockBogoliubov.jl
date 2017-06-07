@@ -3,10 +3,11 @@ export FractCoord
 export dimension
 export fract2carte, carte2fract
 
+
 """
     CarteCoord
 
-  Cartesian coordinates.
+  Cartesian coordinates. `Vector{Float64}`.
 """
 typealias CarteCoord Vector{Float64}
 
@@ -44,6 +45,7 @@ immutable FractCoord
     return new(w, f)
   end
 end
+
 
 """
     dimension
