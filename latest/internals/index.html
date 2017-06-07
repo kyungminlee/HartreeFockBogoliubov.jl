@@ -143,11 +143,80 @@
 <p><a id='Contents-1'></a></p>
 <h2 id="contents">Contents</h2>
 <ul>
-<li><a href="internals/hartreefockbogoliubov.md#HartreeFockBogoliubov-1">HartreeFockBogoliubov</a></li>
+<li><a href="internals/hartreefockbogoliubov.md#Lattice-1">Lattice</a></li>
+<li><a href="internals/hartreefockbogoliubov.md#Spec-1">Spec</a></li>
+<li><a href="internals/hartreefockbogoliubov.md#Embed-1">Embed</a></li>
+<li><a href="internals/hartreefockbogoliubov.md#Generator-1">Generator</a></li>
 </ul>
 <p><a id='Index-1'></a></p>
 <h2 id="index">Index</h2>
 <p>A list of all internal documentation sorted by module.</p>
+<ul>
+<li><a href="internals/hartreefockbogoliubov.md#HartreeFockBogoliubov.Embed"><code>HartreeFockBogoliubov.Embed</code></a></li>
+<li><a href="internals/hartreefockbogoliubov.md#HartreeFockBogoliubov.Spec"><code>HartreeFockBogoliubov.Spec</code></a></li>
+<li><a href="internals/hartreefockbogoliubov.md#HartreeFockBogoliubov.Embed.Hopping"><code>HartreeFockBogoliubov.Embed.Hopping</code></a></li>
+<li><a href="internals/hartreefockbogoliubov.md#HartreeFockBogoliubov.Embed.Interaction"><code>HartreeFockBogoliubov.Embed.Interaction</code></a></li>
+<li><a href="internals/hartreefockbogoliubov.md#HartreeFockBogoliubov.Spec.Hopping"><code>HartreeFockBogoliubov.Spec.Hopping</code></a></li>
+<li><a href="internals/hartreefockbogoliubov.md#HartreeFockBogoliubov.Spec.Interaction"><code>HartreeFockBogoliubov.Spec.Interaction</code></a></li>
+<li><a href="internals/hartreefockbogoliubov.md#HartreeFockBogoliubov.Embed.Hamiltonian-Tuple{HartreeFockBogoliubov.Spec.Hamiltonian}"><code>HartreeFockBogoliubov.Embed.Hamiltonian</code></a></li>
+<li><a href="internals/hartreefockbogoliubov.md#HartreeFockBogoliubov.Embed.Hamiltonian"><code>HartreeFockBogoliubov.Embed.Hamiltonian</code></a></li>
+<li><a href="internals/hartreefockbogoliubov.md#HartreeFockBogoliubov.Embed.HoppingDiagonal"><code>HartreeFockBogoliubov.Embed.HoppingDiagonal</code></a></li>
+<li><a href="internals/hartreefockbogoliubov.md#HartreeFockBogoliubov.Embed.HoppingDiagonal-Tuple{HartreeFockBogoliubov.Lattice.UnitCell,HartreeFockBogoliubov.Spec.HoppingDiagonal}"><code>HartreeFockBogoliubov.Embed.HoppingDiagonal</code></a></li>
+<li><a href="internals/hartreefockbogoliubov.md#HartreeFockBogoliubov.Embed.HoppingOffdiagonal"><code>HartreeFockBogoliubov.Embed.HoppingOffdiagonal</code></a></li>
+<li><a href="internals/hartreefockbogoliubov.md#HartreeFockBogoliubov.Embed.HoppingOffdiagonal-Tuple{HartreeFockBogoliubov.Lattice.UnitCell,HartreeFockBogoliubov.Spec.HoppingOffdiagonal}"><code>HartreeFockBogoliubov.Embed.HoppingOffdiagonal</code></a></li>
+<li><a href="internals/hartreefockbogoliubov.md#HartreeFockBogoliubov.Embed.InteractionDiagonal"><code>HartreeFockBogoliubov.Embed.InteractionDiagonal</code></a></li>
+<li><a href="internals/hartreefockbogoliubov.md#HartreeFockBogoliubov.Embed.InteractionDiagonal-Tuple{HartreeFockBogoliubov.Lattice.UnitCell,HartreeFockBogoliubov.Spec.InteractionDiagonal}"><code>HartreeFockBogoliubov.Embed.InteractionDiagonal</code></a></li>
+<li><a href="internals/hartreefockbogoliubov.md#HartreeFockBogoliubov.Embed.InteractionOffdiagonal"><code>HartreeFockBogoliubov.Embed.InteractionOffdiagonal</code></a></li>
+<li><a href="internals/hartreefockbogoliubov.md#HartreeFockBogoliubov.Embed.InteractionOffdiagonal-Tuple{HartreeFockBogoliubov.Lattice.UnitCell,HartreeFockBogoliubov.Spec.InteractionOffdiagonal}"><code>HartreeFockBogoliubov.Embed.InteractionOffdiagonal</code></a></li>
+<li><a href="internals/hartreefockbogoliubov.md#HartreeFockBogoliubov.Lattice.CarteCoord"><code>HartreeFockBogoliubov.Lattice.CarteCoord</code></a></li>
+<li><a href="internals/hartreefockbogoliubov.md#HartreeFockBogoliubov.Lattice.FractCoord"><code>HartreeFockBogoliubov.Lattice.FractCoord</code></a></li>
+<li><a href="internals/hartreefockbogoliubov.md#HartreeFockBogoliubov.Lattice.UnitCell"><code>HartreeFockBogoliubov.Lattice.UnitCell</code></a></li>
+<li><a href="internals/hartreefockbogoliubov.md#HartreeFockBogoliubov.Spec.Hamiltonian-Tuple{HartreeFockBogoliubov.Lattice.UnitCell}"><code>HartreeFockBogoliubov.Spec.Hamiltonian</code></a></li>
+<li><a href="internals/hartreefockbogoliubov.md#HartreeFockBogoliubov.Spec.Hamiltonian"><code>HartreeFockBogoliubov.Spec.Hamiltonian</code></a></li>
+<li><a href="internals/hartreefockbogoliubov.md#HartreeFockBogoliubov.Spec.HoppingDiagonal"><code>HartreeFockBogoliubov.Spec.HoppingDiagonal</code></a></li>
+<li><a href="internals/hartreefockbogoliubov.md#HartreeFockBogoliubov.Spec.HoppingOffdiagonal"><code>HartreeFockBogoliubov.Spec.HoppingOffdiagonal</code></a></li>
+<li><a href="internals/hartreefockbogoliubov.md#HartreeFockBogoliubov.Spec.InteractionDiagonal"><code>HartreeFockBogoliubov.Spec.InteractionDiagonal</code></a></li>
+<li><a href="internals/hartreefockbogoliubov.md#HartreeFockBogoliubov.Spec.InteractionOffdiagonal"><code>HartreeFockBogoliubov.Spec.InteractionOffdiagonal</code></a></li>
+<li><a href="internals/hartreefockbogoliubov.md#HartreeFockBogoliubov.Embed.embed-Tuple{HartreeFockBogoliubov.Lattice.UnitCell,HartreeFockBogoliubov.Spec.InteractionDiagonal}"><code>HartreeFockBogoliubov.Embed.embed</code></a></li>
+<li><a href="internals/hartreefockbogoliubov.md#HartreeFockBogoliubov.Embed.embed-Tuple{HartreeFockBogoliubov.Lattice.UnitCell,HartreeFockBogoliubov.Spec.HoppingDiagonal}"><code>HartreeFockBogoliubov.Embed.embed</code></a></li>
+<li><a href="internals/hartreefockbogoliubov.md#HartreeFockBogoliubov.Embed.embed-Tuple{HartreeFockBogoliubov.Lattice.UnitCell,HartreeFockBogoliubov.Spec.InteractionOffdiagonal}"><code>HartreeFockBogoliubov.Embed.embed</code></a></li>
+<li><a href="internals/hartreefockbogoliubov.md#HartreeFockBogoliubov.Embed.embed-Tuple{HartreeFockBogoliubov.Lattice.UnitCell,HartreeFockBogoliubov.Spec.HoppingOffdiagonal}"><code>HartreeFockBogoliubov.Embed.embed</code></a></li>
+<li><a href="internals/hartreefockbogoliubov.md#HartreeFockBogoliubov.Generator.generatefast-Tuple{HartreeFockBogoliubov.Lattice.UnitCell,HartreeFockBogoliubov.Embed.HoppingDiagonal}"><code>HartreeFockBogoliubov.Generator.generatefast</code></a></li>
+<li><a href="internals/hartreefockbogoliubov.md#HartreeFockBogoliubov.Generator.generatefast-Tuple{HartreeFockBogoliubov.Lattice.UnitCell,Array{Union{HartreeFockBogoliubov.Spec.HoppingDiagonal,HartreeFockBogoliubov.Spec.HoppingOffdiagonal},1}}"><code>HartreeFockBogoliubov.Generator.generatefast</code></a></li>
+<li><a href="internals/hartreefockbogoliubov.md#HartreeFockBogoliubov.Generator.generatefast-Tuple{HartreeFockBogoliubov.Lattice.UnitCell,HartreeFockBogoliubov.Embed.HoppingOffdiagonal}"><code>HartreeFockBogoliubov.Generator.generatefast</code></a></li>
+<li><a href="internals/hartreefockbogoliubov.md#HartreeFockBogoliubov.Generator.generatefast-Tuple{HartreeFockBogoliubov.Lattice.UnitCell,HartreeFockBogoliubov.Spec.HoppingDiagonal}"><code>HartreeFockBogoliubov.Generator.generatefast</code></a></li>
+<li><a href="internals/hartreefockbogoliubov.md#HartreeFockBogoliubov.Generator.generatefast-Tuple{HartreeFockBogoliubov.Lattice.UnitCell,Array{Union{HartreeFockBogoliubov.Embed.HoppingDiagonal,HartreeFockBogoliubov.Embed.HoppingOffdiagonal},1}}"><code>HartreeFockBogoliubov.Generator.generatefast</code></a></li>
+<li><a href="internals/hartreefockbogoliubov.md#HartreeFockBogoliubov.Generator.generatefast-Tuple{HartreeFockBogoliubov.Lattice.UnitCell,HartreeFockBogoliubov.Spec.HoppingOffdiagonal}"><code>HartreeFockBogoliubov.Generator.generatefast</code></a></li>
+<li><a href="internals/hartreefockbogoliubov.md#HartreeFockBogoliubov.Generator.generatehoppingfast-Tuple{HartreeFockBogoliubov.Embed.Hamiltonian}"><code>HartreeFockBogoliubov.Generator.generatehoppingfast</code></a></li>
+<li><a href="internals/hartreefockbogoliubov.md#HartreeFockBogoliubov.Generator.generatehoppingfast-Tuple{HartreeFockBogoliubov.Spec.Hamiltonian}"><code>HartreeFockBogoliubov.Generator.generatehoppingfast</code></a></li>
+<li><a href="internals/hartreefockbogoliubov.md#HartreeFockBogoliubov.Lattice.addorbital!-Tuple{HartreeFockBogoliubov.Lattice.UnitCell{T},T,HartreeFockBogoliubov.Lattice.FractCoord}"><code>HartreeFockBogoliubov.Lattice.addorbital!</code></a></li>
+<li><a href="internals/hartreefockbogoliubov.md#HartreeFockBogoliubov.Lattice.carte2fract-Tuple{HartreeFockBogoliubov.Lattice.UnitCell,Array{Float64,1}}"><code>HartreeFockBogoliubov.Lattice.carte2fract</code></a></li>
+<li><a href="internals/hartreefockbogoliubov.md#HartreeFockBogoliubov.Lattice.carte2fract-Tuple{Array{Float64,2},Array{Float64,1}}"><code>HartreeFockBogoliubov.Lattice.carte2fract</code></a></li>
+<li><a href="internals/hartreefockbogoliubov.md#HartreeFockBogoliubov.Lattice.dimension-Tuple{HartreeFockBogoliubov.Lattice.FractCoord}"><code>HartreeFockBogoliubov.Lattice.dimension</code></a></li>
+<li><a href="internals/hartreefockbogoliubov.md#HartreeFockBogoliubov.Lattice.dimension-Tuple{HartreeFockBogoliubov.Lattice.UnitCell}"><code>HartreeFockBogoliubov.Lattice.dimension</code></a></li>
+<li><a href="internals/hartreefockbogoliubov.md#HartreeFockBogoliubov.Lattice.fract2carte-Tuple{Array{Float64,2},HartreeFockBogoliubov.Lattice.FractCoord}"><code>HartreeFockBogoliubov.Lattice.fract2carte</code></a></li>
+<li><a href="internals/hartreefockbogoliubov.md#HartreeFockBogoliubov.Lattice.fract2carte-Tuple{HartreeFockBogoliubov.Lattice.UnitCell,HartreeFockBogoliubov.Lattice.FractCoord}"><code>HartreeFockBogoliubov.Lattice.fract2carte</code></a></li>
+<li><a href="internals/hartreefockbogoliubov.md#HartreeFockBogoliubov.Lattice.getorbital-Tuple{HartreeFockBogoliubov.Lattice.UnitCell{T},T}"><code>HartreeFockBogoliubov.Lattice.getorbital</code></a></li>
+<li><a href="internals/hartreefockbogoliubov.md#HartreeFockBogoliubov.Lattice.getorbital-Tuple{HartreeFockBogoliubov.Lattice.UnitCell,Integer}"><code>HartreeFockBogoliubov.Lattice.getorbital</code></a></li>
+<li><a href="internals/hartreefockbogoliubov.md#HartreeFockBogoliubov.Lattice.getorbitalcoord-Tuple{HartreeFockBogoliubov.Lattice.UnitCell{T},T}"><code>HartreeFockBogoliubov.Lattice.getorbitalcoord</code></a></li>
+<li><a href="internals/hartreefockbogoliubov.md#HartreeFockBogoliubov.Lattice.getorbitalcoord-Tuple{HartreeFockBogoliubov.Lattice.UnitCell,Integer}"><code>HartreeFockBogoliubov.Lattice.getorbitalcoord</code></a></li>
+<li><a href="internals/hartreefockbogoliubov.md#HartreeFockBogoliubov.Lattice.getorbitalindex-Tuple{HartreeFockBogoliubov.Lattice.UnitCell{T},T}"><code>HartreeFockBogoliubov.Lattice.getorbitalindex</code></a></li>
+<li><a href="internals/hartreefockbogoliubov.md#HartreeFockBogoliubov.Lattice.getorbitalindexcoord-Tuple{HartreeFockBogoliubov.Lattice.UnitCell{T},T}"><code>HartreeFockBogoliubov.Lattice.getorbitalindexcoord</code></a></li>
+<li><a href="internals/hartreefockbogoliubov.md#HartreeFockBogoliubov.Lattice.getorbitalname-Tuple{HartreeFockBogoliubov.Lattice.UnitCell,Integer}"><code>HartreeFockBogoliubov.Lattice.getorbitalname</code></a></li>
+<li><a href="internals/hartreefockbogoliubov.md#HartreeFockBogoliubov.Lattice.hasorbital-Tuple{HartreeFockBogoliubov.Lattice.UnitCell{T},T}"><code>HartreeFockBogoliubov.Lattice.hasorbital</code></a></li>
+<li><a href="internals/hartreefockbogoliubov.md#HartreeFockBogoliubov.Lattice.newunitcell-Tuple{Float64}"><code>HartreeFockBogoliubov.Lattice.newunitcell</code></a></li>
+<li><a href="internals/hartreefockbogoliubov.md#HartreeFockBogoliubov.Lattice.newunitcell-Tuple{Array{Float64,2}}"><code>HartreeFockBogoliubov.Lattice.newunitcell</code></a></li>
+<li><a href="internals/hartreefockbogoliubov.md#HartreeFockBogoliubov.Lattice.numorbital-Tuple{HartreeFockBogoliubov.Lattice.UnitCell}"><code>HartreeFockBogoliubov.Lattice.numorbital</code></a></li>
+<li><a href="internals/hartreefockbogoliubov.md#HartreeFockBogoliubov.Lattice.whichunitcell-Tuple{HartreeFockBogoliubov.Lattice.UnitCell{T},T,Array{Float64,1}}"><code>HartreeFockBogoliubov.Lattice.whichunitcell</code></a></li>
+<li><a href="internals/hartreefockbogoliubov.md#HartreeFockBogoliubov.Spec.addhopping!-Tuple{HartreeFockBogoliubov.Spec.Hamiltonian,HartreeFockBogoliubov.Spec.HoppingDiagonal}"><code>HartreeFockBogoliubov.Spec.addhopping!</code></a></li>
+<li><a href="internals/hartreefockbogoliubov.md#HartreeFockBogoliubov.Spec.addhopping!-Tuple{HartreeFockBogoliubov.Spec.Hamiltonian,HartreeFockBogoliubov.Spec.HoppingOffdiagonal}"><code>HartreeFockBogoliubov.Spec.addhopping!</code></a></li>
+<li><a href="internals/hartreefockbogoliubov.md#HartreeFockBogoliubov.Spec.addinteraction!-Tuple{HartreeFockBogoliubov.Spec.Hamiltonian,HartreeFockBogoliubov.Spec.InteractionDiagonal}"><code>HartreeFockBogoliubov.Spec.addinteraction!</code></a></li>
+<li><a href="internals/hartreefockbogoliubov.md#HartreeFockBogoliubov.Spec.addinteraction!-Tuple{HartreeFockBogoliubov.Spec.Hamiltonian,HartreeFockBogoliubov.Spec.InteractionOffdiagonal}"><code>HartreeFockBogoliubov.Spec.addinteraction!</code></a></li>
+<li><a href="internals/hartreefockbogoliubov.md#HartreeFockBogoliubov.Spec.hoppingbycarte-Tuple{HartreeFockBogoliubov.Lattice.UnitCell{T},Real,T,Array{Float64,1}}"><code>HartreeFockBogoliubov.Spec.hoppingbycarte</code></a></li>
+<li><a href="internals/hartreefockbogoliubov.md#HartreeFockBogoliubov.Spec.hoppingbycarte-Tuple{HartreeFockBogoliubov.Lattice.UnitCell{T},Number,T,T,Array{Float64,1},Array{Float64,1}}"><code>HartreeFockBogoliubov.Spec.hoppingbycarte</code></a></li>
+<li><a href="internals/hartreefockbogoliubov.md#HartreeFockBogoliubov.Spec.interactionbycarte-Tuple{HartreeFockBogoliubov.Lattice.UnitCell{T},Real,T,T,Array{Float64,1},Array{Float64,1}}"><code>HartreeFockBogoliubov.Spec.interactionbycarte</code></a></li>
+<li><a href="internals/hartreefockbogoliubov.md#HartreeFockBogoliubov.Spec.interactionbycarte-Tuple{HartreeFockBogoliubov.Lattice.UnitCell{T},Number,T,T,T,T,Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Float64,1}}"><code>HartreeFockBogoliubov.Spec.interactionbycarte</code></a></li>
+</ul>
               
             </div>
           </div>
