@@ -279,6 +279,15 @@ function whichunitcell{T}(uc ::UnitCell{T}, name ::T, cc ::CarteCoord; tol=sqrt(
   return R
 end
 
+function whichunitcell{T}(uc ::UnitCell{T}, name ::T, fc ::FractCoord; tol=sqrt(eps(Float64)))
+  fc1 = getorbitalcoord(uc, name)
+  fc2 = fc
+  @assert(isapprox(fc1.fraction, fc2.fraction; rtol=tol),
+          "$(fc1.fraction) != $(fc2.fraction) [tol=$(tol)]")
+  R = fc2.whole - fc1.whole
+  return R
+end
+
 
 function zeros(uc::UnitCell)
   norb = numorbital(uc)

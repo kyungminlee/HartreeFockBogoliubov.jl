@@ -9,7 +9,7 @@ export fract2carte, carte2fract
 
   Cartesian coordinates. `Vector{Float64}`.
 """
-typealias CarteCoord Vector{Float64}
+const CarteCoord = Vector{Float64}
 
 
 """
@@ -63,6 +63,12 @@ function dimension(fc ::FractCoord)
 end
 
 import Base: +, -
+
+
+function -(fc ::FractCoord)
+  return FractCoord(-(fc.whole + fc.fraction))
+end
+
 
 function +(fractcoord ::FractCoord, R ::Vector{Int64})
   return FractCoord(fractcoord.whole + R, fractcoord.fraction)
