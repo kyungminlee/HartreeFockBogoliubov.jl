@@ -52,11 +52,7 @@ function HoppingOffdiagonal(uc ::UnitCell, hopspec ::Spec.HoppingOffdiagonal)
   rj = fract2carte(uc, getorbitalcoord(uc, hopspec.j) + hopspec.Rj)
 
   v = hopspec.amplitude
-  if i > j
-    (i,j) = (j,i)
-    (ri, rj) = (rj, ri)
-    v = conj(v)
-  end
+  @assert(i <= j, "ordering of i and j should have been taken care of by Spec")
   return HoppingOffdiagonal(v, i, j, ri, rj)
 end
 
@@ -81,10 +77,7 @@ function InteractionDiagonal(uc ::UnitCell, hopspec ::Spec.InteractionDiagonal)
   ri = fract2carte(uc, getorbitalcoord(uc, hopspec.i) + hopspec.Ri)
   rj = fract2carte(uc, getorbitalcoord(uc, hopspec.j) + hopspec.Rj)
   v = hopspec.amplitude
-  if i > j
-    (i,j) = (j,i)
-    (ri, rj) = (rj, ri)
-  end
+  @assert(i <= j, "ordering of i and j should have been taken care of by Spec")
   return InteractionDiagonal(v, i, j, ri, rj)
 end
 
@@ -116,24 +109,7 @@ function InteractionOffdiagonal(uc ::UnitCell, hopspec ::Spec.InteractionOffdiag
   rk = fract2carte(uc, getorbitalcoord(uc, hopspec.k) + hopspec.Rk)
   rl = fract2carte(uc, getorbitalcoord(uc, hopspec.l) + hopspec.Rl)
   v = hopspec.amplitude
-  if i > j
-    (i, j) = (j, i)
-    (ri, rj) = (rj, ri)
-    v = -v
-  end
-
-  if k > l
-    (k, l) = (l, k)
-    (rk, rl) = (rl, rk)
-    v = -v
-  end
-
-  if i > k
-    (i, j, k, l) = (k, l, i, j)
-    (ri, rj, rk, rl) = (rk, rl, ri, rj)
-    v = conj(v)
-  end
-
+  @assert(i <= j && k <= l && i <= k)
   return InteractionOffdiagonal(v, i, j, k, l, ri, rj, rk, rl)
 end
 

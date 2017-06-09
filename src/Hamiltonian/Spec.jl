@@ -46,6 +46,15 @@ immutable HoppingOffdiagonal
   j ::Int64
   Ri ::Vector{Int64}
   Rj ::Vector{Int64}
+  function HoppingOffdiagonal(v::Number, i::Int64, j::Int64, Ri::Vector{Int64}, Rj::Vector{Int64})
+    @assert(length(Ri) == length(Rj))
+    if i > j
+      (i,j) = (j,i)
+      (Ri, Rj) = (Rj, Ri)
+      v = conj(v)
+    end
+    return new(v, i, j, Ri, Rj)
+  end
 end
 
 
@@ -70,6 +79,16 @@ immutable InteractionDiagonal
   j ::Int64
   Ri ::Vector{Int64}
   Rj ::Vector{Int64}
+  function InteractionDiagonal(v::Real, i::Int64, j::Int64, Ri::Vector{Int64}, Rj::Vector{Int64})
+    @assert(length(Ri) == length(Rj))
+    @assert(i != j)
+    if i > j
+      (i,j) = (j,i)
+      (Ri, Rj) = (Rj, Ri)
+      v = conj(v)
+    end
+    return new(v, i, j, Ri, Rj)
+  end
 end
 
 
@@ -105,6 +124,33 @@ immutable InteractionOffdiagonal
   Rj ::Vector{Int64}
   Rk ::Vector{Int64}
   Rl ::Vector{Int64}
+  function InteractionOffdiagonal(v::Number,
+                                  i::Int64, j::Int64,
+                                  k::Int64, l::Int64,
+                                  Ri::Vector{Int64}, Rj::Vector{Int64},
+                                  Rk::Vector{Int64}, Rl::Vector{Int64})
+    @assert(length(Ri) == length(Rj) == length(Rk) == length(Rl))
+    @assert(i != j)
+    @assert(k != l)
+    if i > j
+      (i, j) = (j, i)
+      (Ri, Rj) = (Rj, Ri)
+      v = -v
+    end
+
+    if k > l
+      (k, l) = (l, k)
+      (Rk, Rl) = (Rl, Rk)
+      v = -v
+    end
+
+    if i > k
+      (i, j, k, l) = (k, l, i, j)
+      (Ri, Rj, Rk, Rl) = (Rk, Rl, Ri, Rj)
+      v = conj(v)
+    end
+    return new(v, i, j, k, l, Ri, Rj, Rk, Rl)
+  end
 end
 
 
