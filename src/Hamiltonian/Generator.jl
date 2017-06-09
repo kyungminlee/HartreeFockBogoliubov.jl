@@ -13,7 +13,7 @@ function generatefast(uc ::UnitCell, hop ::Embed.HoppingDiagonal)
   norb = numorbital(uc)
   v = hop.amplitude
   i = hop.i
-  return (momentum ::Vector{Float64}, out::Array{Complex128, 2}) -> begin
+  return (momentum ::Vector{Float64}, out::AbstractArray{Complex128, 2}) -> begin
     @assert(size(momentum) == (ndim,))
     @assert(size(out) == (norb, norb))
     out[i,i] += v
@@ -31,12 +31,12 @@ function generatefast(uc ::UnitCell, hop::Embed.HoppingOffdiagonal)
   v = hop.amplitude
   (i, j) = (hop.i, hop.j)
   (ri, rj) = (hop.ri, hop.rj)
-  rji = fract2carte(uc, rj) - fract2carte(uc, ri)
+  rij = rj - ri
 
-  return (momentum ::Vector{Float64}, out::Array{Complex128, 2}) -> begin
+  return (momentum ::Vector{Float64}, out::AbstractArray{Complex128, 2}) -> begin
     @assert(size(momentum) == (ndim,))
     @assert(size(out) == (norb, norb))
-    phase = exp(1im * dot(momentum, rji))
+    phase = exp(1im * dot(momentum, rij))
     out[i,j] += v * phase
     out[j,i] += conj(v * phase)
     return out
@@ -51,7 +51,7 @@ function generatefast(uc ::UnitCell, hops ::Vector{Embed.Hopping})
   ndim = dimension(uc)
   norb = numorbital(uc)
   funcs = [generatefast(uc, hop) for hop in hops]
-  return (momentum ::Vector{Float64}, out::Array{Complex128, 2}) -> begin
+  return (momentum ::Vector{Float64}, out::AbstractArray{Complex128, 2}) -> begin
     for func in funcs
       func(momentum, out)
     end

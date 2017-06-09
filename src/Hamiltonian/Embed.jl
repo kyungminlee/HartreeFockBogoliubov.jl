@@ -17,7 +17,7 @@ import ..Spec
 immutable HoppingDiagonal
   amplitude ::Real
   i ::Int64
-  ri ::FractCoord
+  ri ::CarteCoord
 end
 
 
@@ -25,8 +25,9 @@ end
     HoppingDiagonal
 """
 function HoppingDiagonal(uc ::UnitCell, hopspec ::Spec.HoppingDiagonal)
-  (i, ri) = getorbitalindexcoord(uc, hopspec.i)
-  return HoppingDiagonal(hopspec.amplitude, i, ri + hopspec.Ri)
+  i = hopspec.i
+  ri = fract2carte(uc, getorbitalcoord(uc, hopspec.i) + hopspec.Ri)
+  return HoppingDiagonal(hopspec.amplitude, i, ri)
 end
 
 
@@ -37,8 +38,8 @@ immutable HoppingOffdiagonal
   amplitude ::Complex
   i ::Int64
   j ::Int64
-  ri ::FractCoord
-  rj ::FractCoord
+  ri ::CarteCoord
+  rj ::CarteCoord
 end
 
 
@@ -46,17 +47,17 @@ end
     HoppingOffdiagonal
 """
 function HoppingOffdiagonal(uc ::UnitCell, hopspec ::Spec.HoppingOffdiagonal)
-  (i, ri) = getorbitalindexcoord(uc, hopspec.i)
-  (j, rj) = getorbitalindexcoord(uc, hopspec.j)
-  (Ri, Rj) = (hopspec.Ri, hopspec.Rj)
+  (i, j) = (hopspec.i, hopspec.j)
+  ri = fract2carte(uc, getorbitalcoord(uc, hopspec.i) + hopspec.Ri)
+  rj = fract2carte(uc, getorbitalcoord(uc, hopspec.j) + hopspec.Rj)
+
   v = hopspec.amplitude
   if i > j
     (i,j) = (j,i)
     (ri, rj) = (rj, ri)
-    (Ri, Rj) = (Rj, Ri)
     v = conj(v)
   end
-  return HoppingOffdiagonal(v, i, j, ri + Ri, rj + Rj)
+  return HoppingOffdiagonal(v, i, j, ri, rj)
 end
 
 
@@ -67,8 +68,8 @@ immutable InteractionDiagonal
   amplitude ::Complex
   i ::Int64
   j ::Int64
-  ri ::FractCoord
-  rj ::FractCoord
+  ri ::CarteCoord
+  rj ::CarteCoord
 end
 
 
@@ -76,16 +77,15 @@ end
     InteractionDiagonal
 """
 function InteractionDiagonal(uc ::UnitCell, hopspec ::Spec.InteractionDiagonal)
-  (i, ri) = getorbitalindexcoord(uc, hopspec.i)
-  (j, rj) = getorbitalindexcoord(uc, hopspec.j)
-  (Ri, Rj) = (hopspec.Ri, hopspec.Rj)
+  (i, j) = (hopspec.i, hopspec.j)
+  ri = fract2carte(uc, getorbitalcoord(uc, hopspec.i) + hopspec.Ri)
+  rj = fract2carte(uc, getorbitalcoord(uc, hopspec.j) + hopspec.Rj)
   v = hopspec.amplitude
   if i > j
     (i,j) = (j,i)
     (ri, rj) = (rj, ri)
-    (Ri, Rj) = (Rj, Ri)
   end
-  return InteractionDiagonal(v, i, j, ri + Ri, rj + Rj)
+  return InteractionDiagonal(v, i, j, ri, rj)
 end
 
 
@@ -98,10 +98,10 @@ immutable InteractionOffdiagonal
   j ::Int64
   k ::Int64
   l ::Int64
-  ri ::FractCoord
-  rj ::FractCoord
-  rk ::FractCoord
-  rl ::FractCoord
+  ri ::CarteCoord
+  rj ::CarteCoord
+  rk ::CarteCoord
+  rl ::CarteCoord
 end
 
 
@@ -109,37 +109,32 @@ end
     InteractionOffdiagonal
 """
 function InteractionOffdiagonal(uc ::UnitCell, hopspec ::Spec.InteractionOffdiagonal)
-  (i, ri) = getorbitalindexcoord(uc, hopspec.i)
-  (j, rj) = getorbitalindexcoord(uc, hopspec.j)
-  (k, rk) = getorbitalindexcoord(uc, hopspec.k)
-  (l, rl) = getorbitalindexcoord(uc, hopspec.l)
-  (Ri, Rj) = (hopspec.Ri, hopspec.Rj)
-  (Rk, Rl) = (hopspec.Rk, hopspec.Rl)
+  (i, j) = (hopspec.i, hopspec.j)
+  (k, l) = (hopspec.k, hopspec.l)
+  ri = fract2carte(uc, getorbitalcoord(uc, hopspec.i) + hopspec.Ri)
+  rj = fract2carte(uc, getorbitalcoord(uc, hopspec.j) + hopspec.Rj)
+  rk = fract2carte(uc, getorbitalcoord(uc, hopspec.k) + hopspec.Rk)
+  rl = fract2carte(uc, getorbitalcoord(uc, hopspec.l) + hopspec.Rl)
   v = hopspec.amplitude
   if i > j
     (i, j) = (j, i)
     (ri, rj) = (rj, ri)
-    (Ri, Rj) = (Rj, Ri)
     v = -v
   end
 
   if k > l
     (k, l) = (l, k)
     (rk, rl) = (rl, rk)
-    (Rk, Rl) = (Rl, Rk)
     v = -v
   end
 
   if i > k
     (i, j, k, l) = (k, l, i, j)
     (ri, rj, rk, rl) = (rk, rl, ri, rj)
-    (Ri, Rj, Rk, Rl) = (Rk, Rl, Ri, Rj)
     v = conj(v)
   end
 
-  return InteractionOffdiagonal(v,
-             i, j, k, l,
-             ri + Ri, rj + Rj, rk + Rk, rl + Rl)
+  return InteractionOffdiagonal(v, i, j, k, l, ri, rj, rk, rl)
 end
 
 
@@ -178,13 +173,13 @@ end
 """
     Hopping
 """
-typealias Hopping Union{HoppingDiagonal, HoppingOffdiagonal}
+const Hopping = Union{HoppingDiagonal, HoppingOffdiagonal}
 
 
 """
     Interaction
 """
-typealias Interaction Union{InteractionDiagonal, InteractionOffdiagonal}
+const Interaction = Union{InteractionDiagonal, InteractionOffdiagonal}
 
 
 """

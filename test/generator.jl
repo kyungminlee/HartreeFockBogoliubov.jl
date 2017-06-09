@@ -39,15 +39,15 @@ end
   t0 = 100.0
   t1 = 10.0 + 0.1im
   t2 = 1.0 + 0.01im
-  hopspec = Spec.Hopping[
-    Spec.HoppingDiagonal( t0, "A", [0]),
-    Spec.HoppingOffdiagonal( t1, "A", "A", [0], [1]),
-    Spec.HoppingOffdiagonal( t2, "A", "A", [0], [2]),
-  ]
-  func1 = Generator.generatefast(uc, hopspec)
 
-  hopembed = Embed.Hopping[Embed.embed(uc, hop) for hop in hopspec]
-  func2 = Generator.generatefast(uc, hopembed)
+  hamspec = Spec.Hamiltonian(uc)
+  Spec.addhopping!(hamspec, Spec.hoppingbycarte(uc, t0, "A", [0.0]))
+  Spec.addhopping!(hamspec, Spec.hoppingbycarte(uc, t1, "A", "A", [0.0], [1.0]))
+  Spec.addhopping!(hamspec, Spec.hoppingbycarte(uc, t2, "A", "A", [0.0], [2.0]))
+
+  func1 = Generator.generatefast(uc, hamspec.hoppings)
+  hamembed = Embed.Hamiltonian(hamspec)
+  func2 = Generator.generatefast(uc, hamembed.hoppings)
 
   for kx in linspace(0.0, 2.0*pi, 16+1)
     out1 = zeros(Complex128, (1,1))
