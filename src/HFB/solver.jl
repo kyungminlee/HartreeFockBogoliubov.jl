@@ -60,6 +60,14 @@ function Solver(ham::HFBHamiltonian,
 
   collect_reg = Dict()
   deploy_reg = Dict()
+
+  # always collect density
+  for (i, orb) in enumerate(ham.unitcell.orbitals)
+    R = zeros(Int64, dimension(ham.unitcell))
+    r = zeros(Float64, dimension(ham.unitcell))
+    collect_reg[i, i, R] = (length(collect_reg)+1, (i, i, r))
+  end
+
   for hopmf in ham.particle_hole_interactions
     let
       (k,l,Rkl) = hopmf.source
