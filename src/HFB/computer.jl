@@ -62,9 +62,36 @@ function fermidirac{T <:Integer}(temperature ::T;
 end
 
 
+"""
+`CollectRow` is holds info on how to compute ρ or t.
+Its elements are:
+1. row orbital
+2. col orbital
+3. displacement r(col) - r(row)
+"""
 const CollectRow = Tuple{Int64, Int64, Vector{Float64}}
+
+
+"""
+`DeployRow` is holds info on how to compute Γ or Δ.
+Its elements are:
+1. row orbital
+2. col orbital
+3. displacement r(col) - r(row)
+4. list of sources, each of which is a tuple of
+  1. index of ρ or t from which to compute this Γ or Δ.
+  2. amplitude (coefficient to multiply to ρ or t)
+  3. boolean indicating whether
+     (1) conjugation is needed (for ρ/Γ) or
+     (2) minus sign is needed (for t/Δ).
+"""
 const DeployRow = Tuple{Int64, Int64, Vector{Float64}, Vector{Tuple{Int64, Complex128, Bool}}}
 
+
+"""
+`HFBConmputer` is a type holding the ρ, t and Γ, Δ of a Hartree-Fock-Bogoliubov
+Hamiltonian.
+"""
 type HFBComputer
   unitcell ::UnitCell
   hoppings ::Vector{Embed.Hopping}
