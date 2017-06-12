@@ -1,9 +1,51 @@
 
-function fermidirac(temperature ::Real; ttol=eps(Float64), etol=sqrt(eps(Float64)))
+
+"""
+    fermidirac
+
+Return the Fermi-Dirac distribution function for the given temperature.
+For energy whose absolute value is less than `etol`, return 0.5.
+"""
+function fermidirac{T <:AbstractFloat}(temperature ::T;
+                                       ttol::T=eps(T),
+                                       etol::T=sqrt(eps(T)))
   @assert(temperature >= 0)
+  @assert(ttol >= 0)
+  @assert(etol >= 0)
   if temperature < ttol
-    function(e)
-      if e < -etol
+    function(e ::T)
+      if e <= -etol
+        return T(1.0)
+      elseif e < etol
+        return T(0.5)
+      else
+        return T(0.0)
+      end
+    end
+  else
+    beta = 1.0 / temperature
+    function(e ::T)
+      return T(1.0 / (exp(beta * e) + 1.0))
+    end
+  end
+end
+
+
+"""
+    fermidirac
+
+Return the Fermi-Dirac distribution function for the given temperature.
+For energy whose absolute value is less than `etol`, return 0.5.
+"""
+function fermidirac{T <:Integer}(temperature ::T;
+                                 ttol::Float64=eps(Float64),
+                                 etol::Float64=sqrt(eps(Float64)))
+  @assert(temperature >= 0, "temperature should be non-negative")
+  @assert(ttol >= 0, "ttol should be non-negative")
+  @assert(etol >= 0, "etol should be non-negative")
+  if temperature == 0
+    function(e ::Float64)
+      if e <= -etol
         return 1.0
       elseif e < etol
         return 0.5
@@ -12,14 +54,13 @@ function fermidirac(temperature ::Real; ttol=eps(Float64), etol=sqrt(eps(Float64
       end
     end
   else
-    beta = 1.0 / temperature
-    function(e)
+    beta = 1.0 / Float64(temperature)
+    function(e ::Float64)
       return 1.0 / (exp(beta * e) + 1.0)
     end
   end
 end
 
-#--------------------------- DRAFT
 
 const CollectRow = Tuple{Int64, Int64, Vector{Float64}}
 const DeployRow = Tuple{Int64, Int64, Vector{Float64}, Vector{Tuple{Int64, Complex128, Bool}}}
