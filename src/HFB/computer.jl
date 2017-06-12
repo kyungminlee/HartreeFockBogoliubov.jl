@@ -67,7 +67,6 @@ const DeployRow = Tuple{Int64, Int64, Vector{Float64}, Vector{Tuple{Int64, Compl
 
 type HFBComputer
   unitcell ::UnitCell
-  #size ::Vector{Int64}
   hoppings ::Vector{Embed.Hopping}
   temperature ::Float64
   fermi ::Function
@@ -79,14 +78,13 @@ end
 
 
 function HFBComputer(ham::HFBHamiltonian,
-                #size ::AbstractVector{Int64},
-                temperature::Real;
-                ttol=eps(Float64),
-                etol=sqrt(eps(Float64)))
-  dim = dimension(ham.unitcell)
-  #@assert(length(size) == dim, "size should match dimension")
-  #@assert(all((x) -> x>0, size), "size should be all positive")
+                    temperature::Real;
+                    ttol=eps(Float64),
+                    etol=sqrt(eps(Float64)))
+  @assert(ttol >= 0.0, "ttol should be non-negative")
+  @assert(etol >= 0.0, "etol should be non-negative")
   @assert(temperature >= 0, "temperature should be non-negative")
+  dim = dimension(ham.unitcell)
 
   unitcell = ham.unitcell
   hoppings = [Embed.embed(unitcell, hop) for hop in ham.hoppings]
@@ -170,18 +168,17 @@ function HFBComputer(ham::HFBHamiltonian,
   Δ_registry = [val for (idx, val) in Δ_registry]
 
   return HFBComputer(unitcell,
-                #size,
-                hoppings,
-                temperature, fermi,
-                ρ_registry, t_registry,
-                Γ_registry, Δ_registry)
+                     hoppings,
+                     temperature, fermi,
+                     ρ_registry, t_registry,
+                     Γ_registry, Δ_registry)
 end
 
 
 """
 func : (idx, i, j, r) -> val
 """
-function makefields(funcρ ::Function, funct ::Function, computer ::HFBComputer)
+function makesourcefields(funcρ ::Function, funct ::Function, computer ::HFBComputer)
   ρs = zeros(Complex128, length(computer.ρ_registry))
   ts = zeros(Complex128, length(computer.t_registry))
 
@@ -200,14 +197,14 @@ function makefields(funcρ ::Function, funct ::Function, computer ::HFBComputer)
 end
 
 
-function makefields(computer ::HFBComputer)
+function makesourcefields(computer ::HFBComputer)
   ρs = zeros(Complex128, length(computer.ρ_registry))
   ts = zeros(Complex128, length(computer.t_registry))
   return (ρs, ts)
 end
 
 
-function computemeanfield(computer ::HFBComputer,
+function computetargetfields(computer ::HFBComputer,
                           ρs ::AbstractVector{Complex128},
                           ts ::AbstractVector{Complex128})
   Γs = zeros(Complex128, length(computer.Γ_registry))
@@ -231,8 +228,8 @@ function computemeanfield(computer ::HFBComputer,
 end
 
 
-
-
+"""
+"""
 function makehamiltonian(computer ::HFBComputer,
                          Γs ::AbstractVector{Complex128},
                          Δs ::AbstractVector{Complex128})
@@ -262,6 +259,14 @@ function makehamiltonian(computer ::HFBComputer,
   end
 end
 
+"""
+    makegreencollectors
+
+Returns a function which has the following signature
+```
+collector(k, eigenvalues, eigenvectors, ρout, tout)
+```
+"""
 function makegreencollectors(computer::HFBComputer)
   fermi = computer.fermi
   norb = numorbital(computer.unitcell)
@@ -295,9 +300,4 @@ function makegreencollectors(computer::HFBComputer)
       tout[idx] += tfunc(i, j) * exp(-1im * dot(k, r))
     end
   end
-end
-
-
-function dumpyaml(computer::HFBComputer)
-
 end
