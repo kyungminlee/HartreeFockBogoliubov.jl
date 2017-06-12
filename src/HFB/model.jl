@@ -1,72 +1,55 @@
 #export addinteraction!
 
-
-immutable DiagonalHoppingSubscript
-  i ::Int64
-end
-
-# i < j
-"""
-required i < j
-rij = rj - ri
-"""
-immutable OffdiagonalHoppingSubscript
-  i ::Int64
-  j ::Int64
-  Rij ::Vector{Int64}
-  star ::Bool
-end
-
-
-# i < j
-immutable OffdiagonalPairingSubscript
-  i ::Int64
-  j ::Int64
-  Rij ::Vector{Int64}
-  negative ::Bool
-end
-
-const HoppingSubscript = Union{DiagonalHoppingSubscript,
-                               OffdiagonalHoppingSubscript}
-
-const PairingSubscript = Union{OffdiagonalPairingSubscript}
-
-
-function hoppingsubscript(i ::Int64, j ::Int64, Rij ::Vector{Int64}, star::Bool=false)
-  if i == j && all((x) -> (x==0), Rij)
-    return DiagonalHoppingSubscript(i)
-  elseif i > j
-    return OffdiagonalHoppingSubscript(j, i, -Rij, !star)
-  else
-    return OffdiagonalHoppingSubscript(i, j, Rij, star)
-  end
-end
-
-
-function pairingsubscript(i ::Int64, j ::Int64, Rij ::Vector{Int64}, negative::Bool=false)
-  @assert(!(i == j && isapprox(rij, zeros(Float64, length(rij)))),
-          "pairing vanishes!")
-  if i == j && all((x) -> (x==0), Rij)
-    @assert false
-  elseif i > j
-    return OffdiagonalPairingSubscript(j, i, -Rij, !negative)
-  else
-    return OffdiagonalPairingSubscript(i, j, Rij, negative)
-  end
-end
-
-
 immutable HoppingMeanField
-  target ::HoppingSubscript
-  source ::HoppingSubscript
   amplitude ::Real
+  target ::Tuple{Int64, Int64, Vector{Int64}}
+  source ::Tuple{Int64, Int64, Vector{Int64}}
+  targetconj ::Bool
+  sourceconj ::Bool
+  function HoppingMeanField(amplitude ::Real,
+                            target::Tuple{Int64, Int64, Vector{Int64}},
+                            source::Tuple{Int64, Int64, Vector{Int64}})
+    (i, j, Rij) = target
+    (k, l, Rkl) = source
+    targetconj = false
+    sourceconj = false
+    if i > j
+      (i,j) = (j,i)
+      Rij = -Rij
+      targetconj = !targetconj
+    end
+    if k > l
+      (k,l) = (l,k)
+      Rkl = -Rkl
+      sourceconj = !sourceconj
+    end
+    new(amplitude, (i,j,Rij), (k,l,Rkl), targetconj, sourceconj)
+  end
 end
-
 
 immutable PairingMeanField
-  target ::PairingSubscript
-  source ::PairingSubscript
   amplitude ::Real
+  target ::Tuple{Int64, Int64, Vector{Int64}}
+  source ::Tuple{Int64, Int64, Vector{Int64}}
+  negate ::Bool
+  function PairingMeanField(amplitude ::Real,
+                            target::Tuple{Int64, Int64, Vector{Int64}},
+                            source::Tuple{Int64, Int64, Vector{Int64}})
+    (i, j, Rij) = target
+    (k, l, Rkl) = source
+    negate = false
+    if i > j
+      (i,j) = (j,i)
+      Rij = -Rij
+      negate = !negate
+    end
+    if k > l
+      (k,l) = (l,k)
+      Rkl = -Rkl
+      negate = !negate
+    end
+    new(amplitude, (i,j,Rij), (k,l,Rkl), negate)
+  end
 end
 
 type HFBHamiltonian
@@ -93,26 +76,19 @@ Add diagonal interaction
 """
 function addinteraction!(model ::HFBHamiltonian,
                          specint ::Spec.InteractionDiagonal)
-  V = specint.amplitude
+  v = specint.amplitude
   (i, j) = (specint.i,  specint.j )
   (Ri, Rj) = (specint.Ri, specint.Rj)
 
-  Γs = let
-    HS = hoppingsubscript
-    R0 = zeros(Ri)
-    [
-      HoppingMeanField(HS(i, i, Ri-Ri), HS(j, j, Rj-Rj), V),
-      HoppingMeanField(HS(j, j, Rj-Rj), HS(i, i, Ri-Ri), V),
-      HoppingMeanField(HS(j, i, Ri-Rj), HS(i, j, Rj-Ri), V),
-    ]
-  end
+  Γs = [
+    HoppingMeanField(v, (i, i, Ri-Ri), (j, j, Rj-Rj)),
+    HoppingMeanField(v, (j, j, Rj-Rj), (i, i, Ri-Ri)),
+    HoppingMeanField(v, (j, i, Ri-Rj), (i, j, Rj-Ri)),
+  ]
 
-  Δs = let
-    PS = pairingsubscript
-    [
-      PairingMeanField(PS(i, j, Rj-Ri), PS(i, j, Rj-Ri), V),
-    ]
-  end
+  Δs = [
+    PairingMeanField(v, (i, j, Rj-Ri), (i, j, Rj-Ri)),
+  ]
   append!(model.particle_hole_interactions, Γs)
   append!(model.particle_particle_interactions, Δs)
 end
