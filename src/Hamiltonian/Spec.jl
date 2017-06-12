@@ -79,9 +79,13 @@ immutable InteractionDiagonal
   j ::Int64
   Ri ::Vector{Int64}
   Rj ::Vector{Int64}
-  function InteractionDiagonal(v::Real, i::Int64, j::Int64, Ri::Vector{Int64}, Rj::Vector{Int64})
+  function InteractionDiagonal(v::Real,
+                               i::Int64,
+                               j::Int64,
+                               Ri::AbstractVector{Int64},
+                               Rj::AbstractVector{Int64})
     @assert(length(Ri) == length(Rj))
-    @assert(i != j)
+    @assert(!(i == j && Ri == Rj))
     if i > j
       (i,j) = (j,i)
       (Ri, Rj) = (Rj, Ri)
@@ -125,10 +129,14 @@ immutable InteractionOffdiagonal
   Rk ::Vector{Int64}
   Rl ::Vector{Int64}
   function InteractionOffdiagonal(v::Number,
-                                  i::Int64, j::Int64,
-                                  k::Int64, l::Int64,
-                                  Ri::Vector{Int64}, Rj::Vector{Int64},
-                                  Rk::Vector{Int64}, Rl::Vector{Int64})
+                                  i::Int64,
+                                  j::Int64,
+                                  k::Int64,
+                                  l::Int64,
+                                  Ri::AbstractVector{Int64},
+                                  Rj::AbstractVector{Int64},
+                                  Rk::AbstractVector{Int64},
+                                  Rl::AbstractVector{Int64})
     @assert(length(Ri) == length(Rj) == length(Rk) == length(Rl))
     @assert(i != j)
     @assert(k != l)

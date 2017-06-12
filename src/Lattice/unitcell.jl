@@ -11,7 +11,8 @@ export dimension,
        getorbitalname,
        carte2fract,
        fract2carte,
-       whichunitcell
+       whichunitcell,
+       momentumgrid
 
 import Base.zeros
 
@@ -66,7 +67,7 @@ end
   # Optional Arguments
   * `tol=sqrt(eps(Float64))`: Epsilon
 """
-function newunitcell(latticevectors ::Array{Float64, 2};
+function newunitcell(latticevectors ::AbstractArray{Float64, 2};
                      OrbitalType::DataType=Any,
                      tol=sqrt(eps(Float64)))
   (ndim, ndim_) = size(latticevectors)
@@ -251,7 +252,7 @@ end
   * `latticevectors ::Array{Float64, 2}`
   * `cc ::CarteCoord`
 """
-function carte2fract(unitcell ::UnitCell, cc ::CarteCoord; tol=sqrt(eps(Float64)))
+function carte2fract(unitcell ::UnitCell, cc ::CarteCoord; tol::Real=sqrt(eps(Float64)))
   fc = inv(unitcell.latticevectors) * cc
   w = Int64[fld(x, 1.0) for x in fc]
   f = Float64[mod(x, 1.0) for x in fc]
@@ -270,7 +271,7 @@ end
 
   Return which unit cell the specificied orbital/cartesian coordinates belongs to.
 """
-function whichunitcell{T}(uc ::UnitCell{T}, name ::T, cc ::CarteCoord; tol=sqrt(eps(Float64)))
+function whichunitcell{T}(uc ::UnitCell{T}, name ::T, cc ::CarteCoord; tol::Real=sqrt(eps(Float64)))
   fc1 = getorbitalcoord(uc, name)
   fc2 = carte2fract(uc, cc)
   @assert(isapprox(fc1.fraction, fc2.fraction; rtol=tol),
@@ -279,7 +280,7 @@ function whichunitcell{T}(uc ::UnitCell{T}, name ::T, cc ::CarteCoord; tol=sqrt(
   return R
 end
 
-function whichunitcell{T}(uc ::UnitCell{T}, name ::T, fc ::FractCoord; tol=sqrt(eps(Float64)))
+function whichunitcell{T}(uc ::UnitCell{T}, name ::T, fc ::FractCoord; tol::Real=sqrt(eps(Float64)))
   fc1 = getorbitalcoord(uc, name)
   fc2 = fc
   @assert(isapprox(fc1.fraction, fc2.fraction; rtol=tol),
@@ -292,4 +293,16 @@ end
 function zeros(uc::UnitCell)
   norb = numorbital(uc)
   Base.zeros(Complex128, (norb, norb))
+end
+
+
+function momentumgrid(uc::UnitCell, shape::Vector{Int64})
+  @assert(length(shape) == dimension(uc), "dimension mismatch")
+  @assert(all((x) -> x>0, shape), "shape should be positive")
+
+  ranges = [linspace(0,1,n+1)[1:end-1] for n in shape]
+
+  cubicgrid = map((x) -> [x...], Base.product(ranges...))
+  momentumgrid = map((x) -> transpose(uc.reciprocallatticevectors) * x, cubicgrid)
+  return momentumgrid
 end
