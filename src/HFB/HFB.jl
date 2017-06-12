@@ -6,6 +6,6 @@ import ..Spec
 import ..Generator
 
 include("model.jl")
-include("solver.jl")
+include("computer.jl")
 
 end

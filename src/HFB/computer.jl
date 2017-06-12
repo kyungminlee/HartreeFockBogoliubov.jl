@@ -24,7 +24,7 @@ end
 const CollectRow = Tuple{Int64, Int64, Vector{Float64}}
 const DeployRow = Tuple{Int64, Int64, Vector{Float64}, Vector{Tuple{Int64, Complex128, Bool}}}
 
-type Solver
+type HFBComputer
   unitcell ::UnitCell
   #size ::Vector{Int64}
   hoppings ::Vector{Embed.Hopping}
@@ -37,7 +37,7 @@ type Solver
 end
 
 
-function Solver(ham::HFBHamiltonian,
+function HFBComputer(ham::HFBHamiltonian,
                 #size ::AbstractVector{Int64},
                 temperature::Real;
                 ttol=eps(Float64),
@@ -128,7 +128,7 @@ function Solver(ham::HFBHamiltonian,
   t_registry = [val for (idx, val) in t_registry]
   Δ_registry = [val for (idx, val) in Δ_registry]
 
-  return Solver(unitcell,
+  return HFBComputer(unitcell,
                 #size,
                 hoppings,
                 temperature, fermi,
@@ -140,11 +140,11 @@ end
 """
 func : (idx, i, j, r) -> val
 """
-function makefields(funcρ ::Function, funct ::Function, solver ::Solver)
-  ρs = zeros(Complex128, length(solver.ρ_registry))
-  ts = zeros(Complex128, length(solver.t_registry))
+function makefields(funcρ ::Function, funct ::Function, computer ::HFBComputer)
+  ρs = zeros(Complex128, length(computer.ρ_registry))
+  ts = zeros(Complex128, length(computer.t_registry))
 
-  for (idx, (i, j, r)) in enumerate(solver.ρ_registry)
+  for (idx, (i, j, r)) in enumerate(computer.ρ_registry)
     v = funcρ(idx, i, j, r)
     if i==j && all((x)->x==0, r)
       ρs[idx] = real(v)
@@ -152,26 +152,26 @@ function makefields(funcρ ::Function, funct ::Function, solver ::Solver)
       ρs[idx] = v
     end
   end
-  for (idx, (i, j, r)) in enumerate(solver.t_registry)
+  for (idx, (i, j, r)) in enumerate(computer.t_registry)
     ts[idx] = funct(idx, i, j, r)
   end
   return (ρs, ts)
 end
 
 
-function makefields(solver ::Solver)
-  ρs = zeros(Complex128, length(solver.ρ_registry))
-  ts = zeros(Complex128, length(solver.t_registry))
+function makefields(computer ::HFBComputer)
+  ρs = zeros(Complex128, length(computer.ρ_registry))
+  ts = zeros(Complex128, length(computer.t_registry))
   return (ρs, ts)
 end
 
 
-function computemeanfield(solver ::Solver,
+function computemeanfield(computer ::HFBComputer,
                           ρs ::AbstractVector{Complex128},
                           ts ::AbstractVector{Complex128})
-  Γs = zeros(Complex128, length(solver.Γ_registry))
-  Δs = zeros(Complex128, length(solver.Δ_registry))
-  for (tgtidx, (i, j, r, srcs)) in enumerate(solver.Γ_registry)
+  Γs = zeros(Complex128, length(computer.Γ_registry))
+  Δs = zeros(Complex128, length(computer.Δ_registry))
+  for (tgtidx, (i, j, r, srcs)) in enumerate(computer.Γ_registry)
     value = 0.0 + 0.00im
     for (srcidx, amplitude, star) in srcs
       value += amplitude * (star ? conj(ρs[srcidx]) : ρs[srcidx])
@@ -179,7 +179,7 @@ function computemeanfield(solver ::Solver,
     Γs[tgtidx] = value
   end
 
-  for (tgtidx, (i, j, r, srcs)) in enumerate(solver.Δ_registry)
+  for (tgtidx, (i, j, r, srcs)) in enumerate(computer.Δ_registry)
     value = 0.0 + 0.00im
     for (srcidx, amplitude, neg) in srcs
       value += amplitude * (neg ? -ts[srcidx] : ts[srcidx])
@@ -192,11 +192,11 @@ end
 
 
 
-function makehamiltonian(solver ::Solver,
+function makehamiltonian(computer ::HFBComputer,
                          Γs ::AbstractVector{Complex128},
                          Δs ::AbstractVector{Complex128})
-  norb = numorbital(solver.unitcell)
-  hk = Generator.generatefast(solver.unitcell, solver.hoppings)
+  norb = numorbital(computer.unitcell)
+  hk = Generator.generatefast(computer.unitcell, computer.hoppings)
   function(k ::AbstractVector{Float64})
     out = zeros(Complex128, (norb, 2, norb, 2))
     # 1/3. non-interacting kinetic part
@@ -204,7 +204,7 @@ function makehamiltonian(solver ::Solver,
     hk(-k, view(out, :,2,:,2))
     # 2/3. Gamma
     for (idx, Γ) in enumerate(Γs)
-      (i, j, r, s) = solver.Γ_registry[idx]
+      (i, j, r, s) = computer.Γ_registry[idx]
       out[i,1,j,1] += Γ * exp(1im * dot( k, r))
       out[i,2,j,2] += Γ * exp(1im * dot(-k, r))
     end
@@ -213,7 +213,7 @@ function makehamiltonian(solver ::Solver,
 
     # 3/3. Delta
     for (idx, Δ) in enumerate(Δs)
-      (i, j, r, s) = solver.Δ_registry[idx]
+      (i, j, r, s) = computer.Δ_registry[idx]
       out[i,1,j,2] += Δ * exp(1im * dot( k, r))
       out[j,2,i,1] += conj(Δ) * exp(-1im * dot(k, r))
     end
@@ -221,11 +221,11 @@ function makehamiltonian(solver ::Solver,
   end
 end
 
-function makegreencollectors(solver::Solver)
-  fermi = solver.fermi
-  norb = numorbital(solver.unitcell)
-  ρ_registry = solver.ρ_registry
-  t_registry = solver.t_registry
+function makegreencollectors(computer::HFBComputer)
+  fermi = computer.fermi
+  norb = numorbital(computer.unitcell)
+  ρ_registry = computer.ρ_registry
+  t_registry = computer.t_registry
 
   function(k::AbstractVector{Float64},
            eigenvalues ::AbstractVector{Float64},
@@ -257,6 +257,6 @@ function makegreencollectors(solver::Solver)
 end
 
 
-function dumpyaml(solver::Solver)
+function dumpyaml(computer::HFBComputer)
 
 end
