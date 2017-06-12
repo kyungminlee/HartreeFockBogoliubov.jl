@@ -312,10 +312,12 @@ end
   * `hamiltonian ::Hamiltonian`
   * `hopping ::HoppingDiagonal`
 """
-function addhopping!{T}(hamiltonian ::Hamiltonian{T}, hopping ::HoppingDiagonal)
+function addhopping!{T}(hamiltonian ::Hamiltonian{T}, hopping ::HoppingDiagonal; tol=eps(Float64))
   @assert(1 <= hopping.i <= numorbital(hamiltonian.unitcell),
           "orbital $(hopping.i) not defined in unit cell")
-  push!(hamiltonian.hoppings, hopping)
+  #if abs(hopping.amplitude) > tol
+    push!(hamiltonian.hoppings, hopping)
+  #end
 end
 
 
@@ -326,12 +328,14 @@ end
   * `hamiltonian ::Hamiltonian`
   * `hopping ::HoppingOffdiagonal`
 """
-function addhopping!{T}(hamiltonian ::Hamiltonian{T}, hopping ::HoppingOffdiagonal)
+function addhopping!{T}(hamiltonian ::Hamiltonian{T}, hopping ::HoppingOffdiagonal; tol=eps(Float64))
   @assert(1 <= hopping.j <= numorbital(hamiltonian.unitcell),
           "orbital $(hopping.i) not defined in unit cell")
   @assert(1 <= hopping.j <= numorbital(hamiltonian.unitcell),
           "orbital $(hopping.j) not defined in unit cell")
-  push!(hamiltonian.hoppings, hopping)
+  #if abs(hopping.amplitude) > tol
+    push!(hamiltonian.hoppings, hopping)
+  #end
 end
 
 
@@ -342,12 +346,14 @@ end
   * `hamiltonian ::Hamiltonian`
   * `interaction ::InteractionDiagonal`
 """
-function addinteraction!{T}(hamiltonian ::Hamiltonian{T}, interaction ::InteractionDiagonal)
+function addinteraction!{T}(hamiltonian ::Hamiltonian{T}, interaction ::InteractionDiagonal; tol=eps(Float64))
   @assert(1 <= interaction.i <= numorbital(hamiltonian.unitcell),
           "orbital $(interaction.i) not defined in unit cell")
   @assert(1 <= interaction.j <= numorbital(hamiltonian.unitcell),
           "orbital $(interaction.j) not defined in unit cell")
-  push!(hamiltonian.interactions, interaction)
+  #if abs(interaction.amplitude) > tol
+    push!(hamiltonian.interactions, interaction)
+  #end
 end
 
 
@@ -358,7 +364,7 @@ end
   * `hamiltonian ::Hamiltonian`
   * `interaction ::InteractionOffdiagonal`
 """
-function addinteraction!{T}(hamiltonian ::Hamiltonian{T}, interaction::InteractionOffdiagonal)
+function addinteraction!{T}(hamiltonian ::Hamiltonian{T}, interaction::InteractionOffdiagonal; tol=eps(Float64))
   @assert(1 <= interaction.i <= numorbital(hamiltonian.unitcell),
           "orbital $(interaction.i) not defined in unit cell")
   @assert(1 <= interaction.j <= numorbital(hamiltonian.unitcell),
@@ -367,7 +373,9 @@ function addinteraction!{T}(hamiltonian ::Hamiltonian{T}, interaction::Interacti
           "orbital $(interaction.k) not defined in unit cell")
   @assert(1 <= interaction.l <= numorbital(hamiltonian.unitcell),
           "orbital $(interaction.l) not defined in unit cell")
-  push!(hamiltonian.interactions, interaction)
+  #if abs(interaction.amplitude) > tol
+    push!(hamiltonian.interactions, interaction)
+  #end
 end
 
 
