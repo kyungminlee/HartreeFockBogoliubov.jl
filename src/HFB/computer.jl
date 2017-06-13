@@ -182,7 +182,16 @@ function HFBComputer{T}(ham::HFBHamiltonian{T},
     (k,l,Rkl) = hopmf.source
     srcidx = collect_reg[k,l,Rkl][1]
     star = hopmf.targetconj
-    push!( deploy_reg[i,j,Rij][2][4], (srcidx, v, star) )
+    if abs(v) > eps(Float64)
+      push!( deploy_reg[i,j,Rij][2][4], (srcidx, v, star) )
+    end
+  end
+
+  let indices = [idx for (key, (idx, val)) in collect_reg]
+    @assert(length(unique(indices)) == length(indices))
+  end
+  let indices = [idx for (key, (idx, val)) in deploy_reg]
+    @assert(length(unique(indices)) == length(indices))
   end
 
   ρ_registry = sort([(idx, val) for (key, (idx, val)) in collect_reg], by=(x) -> x[1])
@@ -218,18 +227,28 @@ function HFBComputer{T}(ham::HFBHamiltonian{T},
     (k,l,Rkl) = hopmf.source
     srcidx = collect_reg[(k,l,Rkl)][1]
     neg = hopmf.negate
-    push!( deploy_reg[i,j,Rij][2][4], (srcidx, v, neg) )
+    if abs(v) > eps(Float64)
+      push!( deploy_reg[i,j,Rij][2][4], (srcidx, v, neg) )
+    end
   end
+
+  let indices = [idx for (key, (idx, val)) in collect_reg]
+    @assert(length(unique(indices)) == length(indices))
+  end
+  let indices = [idx for (key, (idx, val)) in deploy_reg]
+    @assert(length(unique(indices)) == length(indices))
+  end
+
   t_registry = sort([(idx, val) for (key, (idx, val)) in collect_reg], by=(x) -> x[1])
   Δ_registry = sort([(idx, val) for (key, (idx, val)) in deploy_reg], by=(x) -> x[1])
   t_registry = [val for (idx, val) in t_registry]
   Δ_registry = [val for (idx, val) in Δ_registry]
 
-  return HFBComputer(unitcell,
-                     hoppings,
-                     temperature, fermi,
-                     ρ_registry, t_registry,
-                     Γ_registry, Δ_registry)
+  return HFBComputer{T}(unitcell,
+                        hoppings,
+                        temperature, fermi,
+                        ρ_registry, t_registry,
+                        Γ_registry, Δ_registry)
 end
 
 
