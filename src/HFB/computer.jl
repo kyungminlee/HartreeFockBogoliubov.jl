@@ -265,6 +265,12 @@ type HFBHint{T}
   t ::Dict{Tuple{T, T, Vector{Int64}}, Complex128}
 end
 
+import Base: copy
+
+copy(x::HFBSolution) = HFBSolution(copy(x.ρ), copy(x.t), copy(x.Γ), copy(x.Δ))
+copy{T}(x::HFBHint{T}) = HFBHint{T}(copy(x.ρ), copy(x.t))
+
+
 
 """
 func : (idx, i, j, r) -> val
