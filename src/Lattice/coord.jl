@@ -25,17 +25,26 @@ immutable FractCoord
   whole ::Vector{Int64}
   fraction ::Vector{Float64}
 
-  function FractCoord(coord ::AbstractVector{Float64})
-    w = Int64[fld(x,1) for x in coord]
-    f = Float64[mod(x,1) for x in coord]
-    return new(w, f)
-  end
-
-  function FractCoord(w ::AbstractVector{Int64}, f ::AbstractVector{Float64})
-    # TODO(kmlee) check
+  function FractCoord(w ::AbstractVector{Int64}, f ::AbstractVector{Float64}; tol=sqrt(eps(Float64)))
     @assert length(w) == length(f)
     @assert all(x -> 0 <= x < 1, f)
-    return new(w, f)
+    neww = copy(w)
+    newf = copy(f)
+    for (idx, (wval, fval)) in enumerate(zip(neww, newf))
+      if fval <= tol
+        newf[idx] = 0.0
+      elseif fval + tol >= 1.0
+        newf[idx] = 0.0
+        neww[idx] += 1
+      end
+    end
+    return new(neww, newf)
+  end
+
+  function FractCoord(coord ::AbstractVector{Float64}; tol=sqrt(eps(Float64)))
+    w = Int64[fld(x,1) for x in coord]
+    f = Float64[mod(x,1) for x in coord]
+    return FractCoord(w, f; tol=tol)
   end
 
   function FractCoord(ndim ::Integer)
@@ -107,7 +116,6 @@ function show(io::IO, fc::FractCoord)
 end
 
 
-
 """
     fract2carte
 
@@ -129,9 +137,9 @@ end
   * `latticevectors ::Array{Float64, 2}`
   * `cc ::CarteCoord`
 """
-function carte2fract(latticevectors ::AbstractArray{Float64, 2}, cc ::CarteCoord)
+function carte2fract(latticevectors ::AbstractArray{Float64, 2}, cc ::CarteCoord; tol=sqrt(eps(Float64)))
   fc = inv(latticevectors) * cc
   w = Int64[fld(x, 1) for x in fc]
   f = Float64[mod(x, 1) for x in fc]
-  return FractCoord(w, f)
+  return FractCoord(w, f; tol=tol)
 end
