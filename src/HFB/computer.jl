@@ -252,6 +252,20 @@ function HFBComputer{T}(ham::HFBHamiltonian{T},
 end
 
 
+type HFBSolution
+  ρ ::Vector{Complex128}
+  t ::Vector{Complex128}
+  Γ ::Vector{Complex128}
+  Δ ::Vector{Complex128}
+end
+
+
+type HFBHint{T}
+  ρ ::Dict{Tuple{T, T, Vector{Int64}}, Complex128}
+  t ::Dict{Tuple{T, T, Vector{Int64}}, Complex128}
+end
+
+
 """
 func : (idx, i, j, r) -> val
 """
@@ -336,6 +350,7 @@ function makehamiltonian(computer ::HFBComputer,
   end
 end
 
+
 """
     makegreencollectors
 
@@ -377,4 +392,88 @@ function makegreencollectors(computer::HFBComputer)
       tout[idx] += tfunc(i, j) * exp(-1im * dot(k, r))
     end
   end
+end
+
+
+function newhfbsolution{T}(computer::HFBComputer{T})
+  ρ, t = HFB.makesourcefields(computer)
+  Γ, Δ = HFB.computetargetfields(computer, ρ, t)
+  return HFBSolution(ρ, t, Γ, Δ)
+end
+
+
+"""
+    Check if hint contains ρ
+"""
+function newhfbsolution{T}(computer::HFBComputer{T}, hint::HFBHint{T})
+  ρ, t = HFB.makesourcefields(computer)
+  unitcell = computer.unitcell
+
+  for (ρidx, (i, j, r)) in enumerate(computer.ρ_registry)
+    iname, icoord = getorbital(unitcell, i)
+    jname, jcoord = getorbital(unitcell, j)
+    Ri = whichunitcell(unitcell, iname, fract2carte(unitcell, icoord))
+    Rj = whichunitcell(unitcell, jname, fract2carte(unitcell, icoord) + r)
+    R = Rj - Ri
+    if haskey(hint.ρ, (iname, jname, R))
+      ρ[ρidx] = hint.ρ[iname, jname, R]
+    elseif haskey(hint.ρ, (jname, iname, -R))
+      ρ[ρidx] = conj(hint.ρ[jname, iname, -R])
+    end
+  end
+
+  for (tidx, (i, j, r)) in enumerate(computer.t_registry)
+    iname, icoord = getorbital(unitcell, i)
+    jname, jcoord = getorbital(unitcell, j)
+    Ri = whichunitcell(unitcell, iname, fract2carte(unitcell, icoord))
+    Rj = whichunitcell(unitcell, jname, fract2carte(unitcell, icoord) + r)
+    R = Rj - Ri
+    if haskey(hint.t, (iname, jname, R))
+      t[tidx] = hint.t[iname, jname, R]
+    elseif haskey(hint.t, (jname, iname, -R))
+      t[tidx] = conj(hint.t[jname, iname, -R])
+    end
+  end
+
+  Γ, Δ = HFB.computetargetfields(computer, ρ, t)
+  return HFBSolution(ρ, t, Γ, Δ)
+end
+
+
+function newhfbhint{T}(computer::HFBComputer{T}, sol::HFBSolution)
+  ρ = Dict{Tuple{T, T, Vector{Int64}}, Complex128}()
+  t = Dict{Tuple{T, T, Vector{Int64}}, Complex128}()
+  uc = computer.unitcell
+
+  for (ρidx, (i, j, rij)) in enumerate(computer.ρ_registry)
+    iname, icoord = getorbital(uc, i)
+    jname, jcoord = getorbital(uc, j)
+    Ri = whichunitcell(uc, iname, fract2carte(uc, icoord))
+    Rj = whichunitcell(uc, jname, fract2carte(uc, icoord) + rij)
+    @assert(!haskey(ρ, (iname, jname, Rj-Ri)))
+    ρ[iname,jname,Rj-Ri] = sol.ρ[ρidx]
+  end
+
+  for (tidx, (i, j, rij)) in enumerate(computer.t_registry)
+    iname, icoord = getorbital(uc, i)
+    jname, jcoord = getorbital(uc, j)
+    Ri = whichunitcell(uc, iname, fract2carte(uc, icoord))
+    Rj = whichunitcell(uc, jname, fract2carte(uc, icoord) + rij)
+    @assert(!haskey(t, (iname, jname, Rj-Ri)))
+    t[iname,jname,Rj-Ri] = sol.t[tidx]
+  end
+
+  return HFBHint{T}(ρ, t)
+end
+
+
+function fixhfbsolution{T}(computer::HFBComputer{T}, sol ::HFBSolution)
+  sol.Γ[:], sol.Δ[:] = HFB.computetargetfields(computer, sol.ρ, sol.t)
+end
+
+
+function randomize!{T}(computer::HFBComputer{T}, sol ::HFBSolution, amplitude::Number=1.0)
+  sol.ρ[:] = (rand(Float64, length(sol.ρ)) .* 2 .- 1) * amplitude
+  sol.t[:] = (rand(Complex128, length(sol.t)) .* 2 .- 1) * amplitude
+  sol.Γ[:], sol.Δ[:] = HFB.computetargetfields(computer, sol.ρ, sol.t)
 end
