@@ -1,5 +1,9 @@
 #export addinteraction!
 
+export HFBHamiltonian
+export addinteraction!
+
+
 immutable HoppingMeanField
   amplitude ::Real
   target ::Tuple{Int64, Int64, Vector{Int64}}
@@ -52,18 +56,18 @@ immutable PairingMeanField
   end
 end
 
-type HFBHamiltonian
-  unitcell ::UnitCell
+type HFBHamiltonian{T}
+  unitcell ::UnitCell{T}
   hoppings ::Vector{Spec.Hopping}
   particle_hole_interactions ::Vector{HoppingMeanField}
   particle_particle_interactions ::Vector{PairingMeanField}
 end
 
 
-function HFBHamiltonian(full_hamiltonian ::Spec.Hamiltonian)
+function HFBHamiltonian{T}(full_hamiltonian ::Spec.Hamiltonian{T})
   unitcell = full_hamiltonian.unitcell
   hoppings = full_hamiltonian.hoppings
-  model = HFBHamiltonian(unitcell, hoppings, [], [])
+  model = HFBHamiltonian{T}(unitcell, hoppings, [], [])
   for interaction in full_hamiltonian.interactions
     addinteraction!(model, interaction)
   end
@@ -74,8 +78,8 @@ end
 """
 Add diagonal interaction
 """
-function addinteraction!(model ::HFBHamiltonian,
-                         specint ::Spec.InteractionDiagonal)
+function addinteraction!{T}(model ::HFBHamiltonian{T},
+                            specint ::Spec.InteractionDiagonal)
   v = specint.amplitude
   (i, j) = (specint.i,  specint.j )
   (Ri, Rj) = (specint.Ri, specint.Rj)

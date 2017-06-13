@@ -1,9 +1,16 @@
 export fermidirac
 export HFBComputer
+export HFBSolution
+export HFBHint
 export makesourcefields,
        computetargetfields,
        makehamiltonian,
-       makegreencollectors
+       makegreencollectors,
+       newhfbhint,
+       newhfbsolution,
+       randomize!,
+       getnextsolution,
+       fixhfbsolution
 
 
 """
@@ -98,8 +105,8 @@ const DeployRow = Tuple{Int64, Int64, Vector{Float64}, Vector{Tuple{Int64, Compl
 `HFBConmputer` is a type holding the ρ, t and Γ, Δ of a Hartree-Fock-Bogoliubov
 Hamiltonian.
 """
-type HFBComputer
-  unitcell ::UnitCell
+type HFBComputer{T}
+  unitcell ::UnitCell{T}
   hoppings ::Vector{Embed.Hopping}
   temperature ::Float64
   fermi ::Function
@@ -110,10 +117,10 @@ type HFBComputer
 end
 
 
-function HFBComputer(ham::HFBHamiltonian,
-                    temperature::Real;
-                    ttol=eps(Float64),
-                    etol=sqrt(eps(Float64)))
+function HFBComputer{T}(ham::HFBHamiltonian{T},
+                        temperature::Real;
+                        ttol=eps(Float64),
+                        etol=sqrt(eps(Float64)))
   @assert(ttol >= 0.0, "ttol should be non-negative")
   @assert(etol >= 0.0, "etol should be non-negative")
   @assert(temperature >= 0, "temperature should be non-negative")
@@ -238,8 +245,8 @@ end
 
 
 function computetargetfields(computer ::HFBComputer,
-                          ρs ::AbstractVector{Complex128},
-                          ts ::AbstractVector{Complex128})
+                             ρs ::AbstractVector{Complex128},
+                             ts ::AbstractVector{Complex128})
   Γs = zeros(Complex128, length(computer.Γ_registry))
   Δs = zeros(Complex128, length(computer.Δ_registry))
   for (tgtidx, (i, j, r, srcs)) in enumerate(computer.Γ_registry)

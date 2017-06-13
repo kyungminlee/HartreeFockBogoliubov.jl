@@ -117,7 +117,7 @@ end
 """
     embed
 """
-function embed(uc ::UnitCell, hopspec ::Spec.HoppingDiagonal)
+function embed{T}(uc ::UnitCell{T}, hopspec ::Spec.HoppingDiagonal)
   return HoppingDiagonal(uc, hopspec)
 end
 
@@ -125,7 +125,7 @@ end
 """
     embed
 """
-function embed(uc ::UnitCell, hopspec ::Spec.HoppingOffdiagonal)
+function embed{T}(uc ::UnitCell{T}, hopspec ::Spec.HoppingOffdiagonal)
   return HoppingOffdiagonal(uc, hopspec)
 end
 
@@ -133,7 +133,7 @@ end
 """
     embed
 """
-function embed(uc ::UnitCell, hopspec ::Spec.InteractionDiagonal)
+function embed{T}(uc ::UnitCell{T}, hopspec ::Spec.InteractionDiagonal)
   return InteractionDiagonal(uc, hopspec)
 end
 
@@ -141,7 +141,7 @@ end
 """
     embed
 """
-function embed(uc ::UnitCell, hopspec ::Spec.InteractionOffdiagonal)
+function embed{T}(uc ::UnitCell{T}, hopspec ::Spec.InteractionOffdiagonal)
   return InteractionOffdiagonal(uc, hopspec)
 end
 
@@ -161,8 +161,8 @@ const Interaction = Union{InteractionDiagonal, InteractionOffdiagonal}
 """
     Hamiltonian
 """
-type Hamiltonian
-  unitcell ::UnitCell
+type Hamiltonian{T}
+  unitcell ::UnitCell{T}
   hoppings ::Vector{Hopping}
   interactions ::Vector{Interaction}
 end
@@ -171,7 +171,7 @@ end
 """
     Hamiltonian
 """
-function Hamiltonian(spec ::Spec.Hamiltonian)
+function Hamiltonian{T}(spec ::Spec.Hamiltonian{T})
   unitcell = spec.unitcell
   hoppings = [embed(unitcell, hop) for hop in spec.hoppings]
   interactions = [embed(unitcell, inter) for inter in spec.interactions]
