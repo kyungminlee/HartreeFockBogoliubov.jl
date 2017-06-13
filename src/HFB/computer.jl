@@ -141,24 +141,38 @@ function HFBComputer{T}(ham::HFBHamiltonian{T},
   deploy_reg = Dict()
 
   # always collect density
-  for (i, orb) in enumerate(ham.unitcell.orbitals)
+  let
     R = zeros(Int64, dimension(ham.unitcell))
     r = zeros(Float64, dimension(ham.unitcell))
-    collect_reg[i, i, R] = (length(collect_reg)+1, (i, i, r))
+    for (i, orb) in enumerate(ham.unitcell.orbitals)
+      collect_reg[i, i, R] = (length(collect_reg)+1, (i, i, r))
+    end
+  end
+
+  let
+    R = zeros(Int64, dimension(ham.unitcell))
+    r = zeros(Float64, dimension(ham.unitcell))
+    for (i, orb) in enumerate(ham.unitcell.orbitals)
+      deploy_reg[i, i, R] = (length(deploy_reg)+1, (i, i, r, []))
+    end
   end
 
   for hopmf in ham.particle_hole_interactions
     let
       (k,l,Rkl) = hopmf.source
       rkl = getdistance(k, l, Rkl)
-      collect_reg[k,l,Rkl] = (length(collect_reg)+1, (k, l, rkl))
+      if !haskey(collect_reg, (k,l, Rkl))
+        collect_reg[k,l,Rkl] = (length(collect_reg)+1, (k, l, rkl))
+      end
     end
 
     let
       v = hopmf.amplitude
       (i,j,Rij) = hopmf.target
       rij = getdistance(i, j, Rij)
-      deploy_reg[i,j,Rij] = (length(deploy_reg)+1, (i, j, rij, []))
+      if !haskey(deploy_reg, (i,j, Rij))
+        deploy_reg[i,j,Rij] = (length(deploy_reg)+1, (i, j, rij, []))
+      end
     end
   end
 
@@ -183,14 +197,18 @@ function HFBComputer{T}(ham::HFBHamiltonian{T},
     let
       (k,l,Rkl) = hopmf.source
       rkl = getdistance(k, l, Rkl)
-      collect_reg[k,l,Rkl] = (length(collect_reg)+1, (k, l, rkl))
+      if !haskey(collect_reg, (k,l,Rkl))
+        collect_reg[k,l,Rkl] = (length(collect_reg)+1, (k, l, rkl))
+      end
     end
 
     let
       v = hopmf.amplitude
       (i,j,Rij) = hopmf.target
       rij = getdistance(i, j, Rij)
-      deploy_reg[i,j,Rij] = (length(deploy_reg)+1, (i, j, rij, []))
+      if !haskey(deploy_reg, (i,j,Rij))
+        deploy_reg[i,j,Rij] = (length(deploy_reg)+1, (i, j, rij, []))
+      end
     end
   end
 
