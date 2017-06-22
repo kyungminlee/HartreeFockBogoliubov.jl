@@ -1,3 +1,3 @@
-@testset "HartreeFockBogoliubovModel" begin
-  model = HartreeFockBogoliubovModel(hoppings)
+@testset "HFB" begin
+  model = HFB(hoppings)
 end
