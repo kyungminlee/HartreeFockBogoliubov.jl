@@ -259,7 +259,6 @@ type HFBSolution
   Δ ::Vector{Complex128}
 end
 
-
 type HFBHint{T}
   ρ ::Dict{Tuple{T, T, Vector{Int64}}, Complex128}
   t ::Dict{Tuple{T, T, Vector{Int64}}, Complex128}
@@ -269,6 +268,15 @@ import Base: copy
 
 copy(x::HFBSolution) = HFBSolution(copy(x.ρ), copy(x.t), copy(x.Γ), copy(x.Δ))
 copy{T}(x::HFBHint{T}) = HFBHint{T}(copy(x.ρ), copy(x.t))
+
+import Base: -
+
+function -(sol1::HFBSolution, sol2::HFBSolution)
+  HFBSolution(sol1.ρ - sol2.ρ, sol1.t - sol2.t,
+              sol1.Γ - sol2.Γ, sol1.Δ - sol2.Δ)
+end
+
+
 
 
 
