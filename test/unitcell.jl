@@ -47,7 +47,19 @@
     @test getorbitalname(uc, 1) == (:up, "Ox")
     @test getorbitalname(uc, 2) == (:dn, "Ox")
 
-    @show uc
+    #@show uc
 
+  end
+
+  @testset "kspace" begin
+    uc = newunitcell([1.0 0.0; 0.5 sqrt(3.0)*0.5]; OrbitalType=Symbol)
+    kg = momentumgrid(uc, [3,4])
+    @show uc.reciprocallatticevectors
+    using PyPlot
+    @show kg
+    for k in kg
+      plot(k[1], k[2], "o")
+    end
+    show()
   end
 end
