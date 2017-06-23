@@ -14,4 +14,6 @@ include("Hamiltonian/Generator.jl")
 include("HFB/HFB.jl")
 
 
+include("dumper.jl")
+
 end
