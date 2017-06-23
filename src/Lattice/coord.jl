@@ -21,7 +21,7 @@ const CarteCoord = Vector{Float64}
   * `whole ::Vector{Int64}`: Integer part of fractional coordinates
   * `fraction ::Vector{Float64}`: [0,1) part of fractional coordinates
 """
-immutable FractCoord
+struct FractCoord
   whole ::Vector{Int64}
   fraction ::Vector{Float64}
 

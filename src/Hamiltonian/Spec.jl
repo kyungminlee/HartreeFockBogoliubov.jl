@@ -18,10 +18,13 @@ Represents
   * `i ::T`
   * `Ri ::Vector{Int64}`
 """
-immutable HoppingDiagonal
-  amplitude ::Real
+struct HoppingDiagonal{R<:Real}
+  amplitude ::R
   i ::Int64
   Ri ::Vector{Int64}
+  function HoppingDiagonal{R}(v::R, i::Int64, Ri::AbstractVector{Int64}) where {R<:Real}
+    return new{R}(v, i, Ri)
+  end
 end
 
 
@@ -40,20 +43,23 @@ Represents
   * `Ri ::Vector{Int64}`
   * `Rj ::Vector{Int64}`
 """
-immutable HoppingOffdiagonal
-  amplitude ::Number
+struct HoppingOffdiagonal{C<:Number}
+  amplitude ::C
   i ::Int64
   j ::Int64
   Ri ::Vector{Int64}
   Rj ::Vector{Int64}
-  function HoppingOffdiagonal(v::Number, i::Int64, j::Int64, Ri::Vector{Int64}, Rj::Vector{Int64})
+  function HoppingOffdiagonal{C}(v::C,
+                                 i::Int64, j::Int64,
+                                 Ri::AbstractVector{Int64},
+                                 Rj::AbstractVector{Int64}) where {C<:Number}
     @assert(length(Ri) == length(Rj))
     if i > j
       (i,j) = (j,i)
       (Ri, Rj) = (Rj, Ri)
       v = conj(v)
     end
-    return new(v, i, j, Ri, Rj)
+    return new{C}(v, i, j, Ri, Rj)
   end
 end
 
@@ -73,17 +79,17 @@ Represents
   * `Ri ::Vector{Int64}`
   * `Rj ::Vector{Int64}`
 """
-immutable InteractionDiagonal
-  amplitude ::Real
+struct InteractionDiagonal{R<:Real}
+  amplitude ::R
   i ::Int64
   j ::Int64
   Ri ::Vector{Int64}
   Rj ::Vector{Int64}
-  function InteractionDiagonal(v::Real,
-                               i::Int64,
-                               j::Int64,
-                               Ri::AbstractVector{Int64},
-                               Rj::AbstractVector{Int64})
+  function InteractionDiagonal{R}(v::R,
+                                  i::Int64,
+                                  j::Int64,
+                                  Ri::AbstractVector{Int64},
+                                  Rj::AbstractVector{Int64}) where {R<:Real}
     @assert(length(Ri) == length(Rj))
     @assert(!(i == j && Ri == Rj))
     if i > j
@@ -91,7 +97,7 @@ immutable InteractionDiagonal
       (Ri, Rj) = (Rj, Ri)
       v = conj(v)
     end
-    return new(v, i, j, Ri, Rj)
+    return new{R}(v, i, j, Ri, Rj)
   end
 end
 
@@ -118,8 +124,8 @@ Represents
   * `Rk ::Vector{Int64}`
   * `Rl ::Vector{Int64}`
 """
-immutable InteractionOffdiagonal
-  amplitude ::Number
+struct InteractionOffdiagonal{C<:Number}
+  amplitude ::C
   i ::Int64
   j ::Int64
   k ::Int64
@@ -128,15 +134,15 @@ immutable InteractionOffdiagonal
   Rj ::Vector{Int64}
   Rk ::Vector{Int64}
   Rl ::Vector{Int64}
-  function InteractionOffdiagonal(v::Number,
-                                  i::Int64,
-                                  j::Int64,
-                                  k::Int64,
-                                  l::Int64,
-                                  Ri::AbstractVector{Int64},
-                                  Rj::AbstractVector{Int64},
-                                  Rk::AbstractVector{Int64},
-                                  Rl::AbstractVector{Int64})
+  function InteractionOffdiagonal{C}(v::C,
+                                     i::Int64,
+                                     j::Int64,
+                                     k::Int64,
+                                     l::Int64,
+                                     Ri::AbstractVector{Int64},
+                                     Rj::AbstractVector{Int64},
+                                     Rk::AbstractVector{Int64},
+                                     Rl::AbstractVector{Int64}) where {C<:Number}
     @assert(length(Ri) == length(Rj) == length(Rk) == length(Rl))
     @assert(i != j)
     @assert(k != l)
@@ -157,7 +163,7 @@ immutable InteractionOffdiagonal
       (Ri, Rj, Rk, Rl) = (Rk, Rl, Ri, Rj)
       v = conj(v)
     end
-    return new(v, i, j, k, l, Ri, Rj, Rk, Rl)
+    return new{C}(v, i, j, k, l, Ri, Rj, Rk, Rl)
   end
 end
 
@@ -182,8 +188,8 @@ const Interaction = Union{InteractionDiagonal, InteractionOffdiagonal}
   * `hoppings ::Vector{Hopping}`
   * `interactions ::Vector{Interaction}`
 """
-type Hamiltonian{T}
-  unitcell ::UnitCell{T}
+mutable struct Hamiltonian{O}
+  unitcell ::UnitCell{O}
   hoppings ::Vector{Hopping}
   interactions ::Vector{Interaction}
 end
@@ -196,7 +202,7 @@ end
   # Arguments
   * `unitcell ::UnitCell`
 """
-Hamiltonian{T}(unitcell ::UnitCell{T}) = Hamiltonian{T}(unitcell, [], [])
+Hamiltonian(unitcell ::UnitCell{O}) where {O} = Hamiltonian{O}(unitcell, [], [])
 
 
 """
@@ -209,14 +215,14 @@ Hamiltonian{T}(unitcell ::UnitCell{T}) = Hamiltonian{T}(unitcell, [], [])
   * `ri ::CarteCoord`
   * `tol ::Real` : Optional. Defaults to `sqrt(eps(Float64))`
 """
-function hoppingbycarte{T}(uc ::UnitCell{T},
-                           amplitude ::Real,
-                           i ::T,
-                           ri ::CarteCoord;
-                           tol::Real=sqrt(eps(Float64)))
+function hoppingbycarte(uc ::UnitCell{O},
+                        amplitude ::R,
+                        i ::O,
+                        ri ::CarteCoord;
+                        tol::Real=sqrt(eps(Float64))) where {O, R<:Real}
   idx = getorbitalindex(uc, i)
   Ri = whichunitcell(uc, i, ri; tol=tol)
-  return HoppingDiagonal(amplitude, idx, Ri)
+  return HoppingDiagonal{R}(amplitude, idx, Ri)
 end
 
 
@@ -232,16 +238,16 @@ end
   * `rj ::CarteCoord`
   * `tol ::Real` : Optional. Defaults to `sqrt(eps(Float64))`
 """
-function hoppingbycarte{T}(uc ::UnitCell{T},
-                           amplitude ::Number,
-                           i ::T, j ::T,
-                           ri ::CarteCoord, rj ::CarteCoord;
-                           tol::Real=sqrt(eps(Float64)))
+function hoppingbycarte(uc ::UnitCell{O},
+                        amplitude ::C,
+                        i ::O, j ::O,
+                        ri ::CarteCoord, rj ::CarteCoord;
+                        tol::Real=sqrt(eps(Float64))) where {O, C<:Number}
   idx = getorbitalindex(uc, i)
   jdx = getorbitalindex(uc, j)
   Ri = whichunitcell(uc, i, ri; tol=tol)
   Rj = whichunitcell(uc, j, rj; tol=tol)
-  return HoppingOffdiagonal(amplitude, idx, jdx, Ri, Rj)
+  return HoppingOffdiagonal{C}(amplitude, idx, jdx, Ri, Rj)
 end
 
 
@@ -257,16 +263,16 @@ end
     * `rj ::CarteCoord`
     * `tol ::Real` : Optional. Defaults to `sqrt(eps(Float64))`
 """
-function interactionbycarte{T}(uc ::UnitCell{T},
-                               amplitude ::Real,
-                               i ::T, j ::T,
-                               ri ::CarteCoord, rj ::CarteCoord;
-                               tol::Real=sqrt(eps(Float64)))
+function interactionbycarte(uc ::UnitCell{O},
+                            amplitude ::R,
+                            i ::O, j ::O,
+                            ri ::CarteCoord, rj ::CarteCoord;
+                            tol::Real=sqrt(eps(Float64))) where {O, R<:Real}
   idx = getorbitalindex(uc, i)
   jdx = getorbitalindex(uc, j)
   Ri = whichunitcell(uc, i, ri; tol=tol)
   Rj = whichunitcell(uc, j, rj; tol=tol)
-  return InteractionDiagonal(amplitude, idx, jdx, Ri, Rj)
+  return InteractionDiagonal{R}(amplitude, idx, jdx, Ri, Rj)
 end
 
 
@@ -286,13 +292,13 @@ end
     * `rl ::CarteCoord`
     * `tol ::Real` : Optional. Defaults to `sqrt(eps(Float64))`
 """
-function interactionbycarte{T}(uc ::UnitCell{T},
-                              amplitude ::Number,
-                              i ::T, j ::T,
-                              k ::T, l ::T,
-                              ri ::CarteCoord, rj ::CarteCoord,
-                              rk ::CarteCoord, rl ::CarteCoord;
-                              tol=sqrt(eps(Float64)))
+function interactionbycarte(uc ::UnitCell{O},
+                            amplitude ::C,
+                            i ::O, j ::O,
+                            k ::O, l ::O,
+                            ri ::CarteCoord, rj ::CarteCoord,
+                            rk ::CarteCoord, rl ::CarteCoord;
+                            tol=sqrt(eps(Float64))) where {O, C<:Number}
   idx = getorbitalindex(uc, i)
   jdx = getorbitalindex(uc, j)
   kdx = getorbitalindex(uc, k)
@@ -301,7 +307,7 @@ function interactionbycarte{T}(uc ::UnitCell{T},
   Rj = whichunitcell(uc, j, rj; tol=tol)
   Rk = whichunitcell(uc, k, rk; tol=tol)
   Rl = whichunitcell(uc, l, rl; tol=tol)
-  return InteractionOffdiagonal{T}(amplitude, i, j, k, l, Ri, Rj, Rk, Rl)
+  return InteractionOffdiagonal{C}(amplitude, idx, jdx, kdx, ldx, Ri, Rj, Rk, Rl)
 end
 
 
@@ -312,7 +318,9 @@ end
   * `hamiltonian ::Hamiltonian`
   * `hopping ::HoppingDiagonal`
 """
-function addhopping!{T}(hamiltonian ::Hamiltonian{T}, hopping ::HoppingDiagonal; tol=eps(Float64))
+function addhopping!(hamiltonian ::Hamiltonian{O},
+                     hopping ::HoppingDiagonal{R};
+                     tol=eps(Float64)) where {O, R<:Real}
   @assert(1 <= hopping.i <= numorbital(hamiltonian.unitcell),
           "orbital $(hopping.i) not defined in unit cell")
   if abs(hopping.amplitude) > tol
@@ -328,7 +336,9 @@ end
   * `hamiltonian ::Hamiltonian`
   * `hopping ::HoppingOffdiagonal`
 """
-function addhopping!{T}(hamiltonian ::Hamiltonian{T}, hopping ::HoppingOffdiagonal; tol=eps(Float64))
+function addhopping!(hamiltonian ::Hamiltonian{O},
+                     hopping ::HoppingOffdiagonal{C};
+                     tol=eps(Float64)) where {O, C<:Number}
   @assert(1 <= hopping.j <= numorbital(hamiltonian.unitcell),
           "orbital $(hopping.i) not defined in unit cell")
   @assert(1 <= hopping.j <= numorbital(hamiltonian.unitcell),
@@ -346,7 +356,9 @@ end
   * `hamiltonian ::Hamiltonian`
   * `interaction ::InteractionDiagonal`
 """
-function addinteraction!{T}(hamiltonian ::Hamiltonian{T}, interaction ::InteractionDiagonal; tol=eps(Float64))
+function addinteraction!(hamiltonian ::Hamiltonian{O},
+                         interaction ::InteractionDiagonal{R};
+                         tol=eps(Float64)) where {O, R<:Real}
   @assert(1 <= interaction.i <= numorbital(hamiltonian.unitcell),
           "orbital $(interaction.i) not defined in unit cell")
   @assert(1 <= interaction.j <= numorbital(hamiltonian.unitcell),
@@ -364,7 +376,9 @@ end
   * `hamiltonian ::Hamiltonian`
   * `interaction ::InteractionOffdiagonal`
 """
-function addinteraction!{T}(hamiltonian ::Hamiltonian{T}, interaction::InteractionOffdiagonal; tol=eps(Float64))
+function addinteraction!(hamiltonian ::Hamiltonian{O},
+                         interaction::InteractionOffdiagonal{C};
+                         tol=eps(Float64)) where {O, C<:Number}
   @assert(1 <= interaction.i <= numorbital(hamiltonian.unitcell),
           "orbital $(interaction.i) not defined in unit cell")
   @assert(1 <= interaction.j <= numorbital(hamiltonian.unitcell),
@@ -377,6 +391,5 @@ function addinteraction!{T}(hamiltonian ::Hamiltonian{T}, interaction::Interacti
     push!(hamiltonian.interactions, interaction)
   end
 end
-
 
 end # Spec

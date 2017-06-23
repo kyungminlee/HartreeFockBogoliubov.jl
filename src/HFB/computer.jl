@@ -9,7 +9,6 @@ export makesourcefields,
        newhfbhint,
        newhfbsolution,
        randomize!,
-       getnextsolution,
        fixhfbsolution
 
 
@@ -19,9 +18,9 @@ export makesourcefields,
 Return the Fermi-Dirac distribution function for the given temperature.
 For energy whose absolute value is less than `etol`, return 0.5.
 """
-function fermidirac{T <:AbstractFloat}(temperature ::T;
-                                       ttol::T=eps(T),
-                                       etol::T=sqrt(eps(T)))
+function fermidirac(temperature ::T;
+                    ttol::T=eps(T),
+                    etol::T=sqrt(eps(T))) where {T <:AbstractFloat}
   @assert(temperature >= 0)
   @assert(ttol >= 0)
   @assert(etol >= 0)
@@ -50,9 +49,9 @@ end
 Return the Fermi-Dirac distribution function for the given temperature.
 For energy whose absolute value is less than `etol`, return 0.5.
 """
-function fermidirac{T <:Integer}(temperature ::T;
-                                 ttol::Float64=eps(Float64),
-                                 etol::Float64=sqrt(eps(Float64)))
+function fermidirac(temperature ::T;
+                    ttol::Float64=eps(Float64),
+                    etol::Float64=sqrt(eps(Float64))) where {T <:Integer}
   @assert(temperature >= 0, "temperature should be non-negative")
   @assert(ttol >= 0, "ttol should be non-negative")
   @assert(etol >= 0, "etol should be non-negative")
@@ -105,10 +104,11 @@ const DeployRow = Tuple{Int64, Int64, Vector{Float64}, Vector{Tuple{Int64, Compl
 `HFBConmputer` is a type holding the ρ, t and Γ, Δ of a Hartree-Fock-Bogoliubov
 Hamiltonian.
 """
-type HFBComputer{T}
-  unitcell ::UnitCell{T}
+mutable struct HFBComputer{O}
+  unitcell ::UnitCell{O}
   hoppings ::Vector{Embed.Hopping}
   temperature ::Float64
+  
   fermi ::Function
   ρ_registry ::Vector{CollectRow}
   t_registry ::Vector{CollectRow}
@@ -252,14 +252,14 @@ function HFBComputer{T}(ham::HFBHamiltonian{T},
 end
 
 
-type HFBSolution
+mutable struct HFBSolution
   ρ ::Vector{Complex128}
   t ::Vector{Complex128}
   Γ ::Vector{Complex128}
   Δ ::Vector{Complex128}
 end
 
-type HFBHint{T}
+mutable struct HFBHint{T}
   ρ ::Dict{Tuple{T, T, Vector{Int64}}, Complex128}
   t ::Dict{Tuple{T, T, Vector{Int64}}, Complex128}
 end
@@ -277,13 +277,12 @@ function -(sol1::HFBSolution, sol2::HFBSolution)
 end
 
 
-
-
-
 """
 func : (idx, i, j, r) -> val
 """
-function makesourcefields(funcρ ::Function, funct ::Function, computer ::HFBComputer)
+function makesourcefields(funcρ ::Function,
+                          funct ::Function,
+                          computer ::HFBComputer{O}) where {O}
   ρs = zeros(Complex128, length(computer.ρ_registry))
   ts = zeros(Complex128, length(computer.t_registry))
 
@@ -302,16 +301,16 @@ function makesourcefields(funcρ ::Function, funct ::Function, computer ::HFBCom
 end
 
 
-function makesourcefields(computer ::HFBComputer)
+function makesourcefields(computer ::HFBComputer{O}) where {O}
   ρs = zeros(Complex128, length(computer.ρ_registry))
   ts = zeros(Complex128, length(computer.t_registry))
   return (ρs, ts)
 end
 
 
-function computetargetfields(computer ::HFBComputer,
+function computetargetfields(computer ::HFBComputer{O},
                              ρs ::AbstractVector{Complex128},
-                             ts ::AbstractVector{Complex128})
+                             ts ::AbstractVector{Complex128}) where {O}
   Γs = zeros(Complex128, length(computer.Γ_registry))
   Δs = zeros(Complex128, length(computer.Δ_registry))
   for (tgtidx, (i, j, r, srcs)) in enumerate(computer.Γ_registry)
@@ -373,7 +372,7 @@ Returns a function which has the following signature
 collector(k, eigenvalues, eigenvectors, ρout, tout)
 ```
 """
-function makegreencollectors(computer::HFBComputer)
+function makegreencollectors(computer::HFBComputer{O}) where {O}
   fermi = computer.fermi
   norb = numorbital(computer.unitcell)
   ρ_registry = computer.ρ_registry
@@ -409,7 +408,7 @@ function makegreencollectors(computer::HFBComputer)
 end
 
 
-function newhfbsolution{T}(computer::HFBComputer{T})
+function newhfbsolution(computer::HFBComputer{O}) where {O}
   ρ, t = HFB.makesourcefields(computer)
   Γ, Δ = HFB.computetargetfields(computer, ρ, t)
   return HFBSolution(ρ, t, Γ, Δ)
@@ -419,7 +418,7 @@ end
 """
     Check if hint contains ρ
 """
-function newhfbsolution{T}(computer::HFBComputer{T}, hint::HFBHint{T})
+function newhfbsolution(computer::HFBComputer{O}, hint::HFBHint{O}) where {O}
   ρ, t = HFB.makesourcefields(computer)
   unitcell = computer.unitcell
 
@@ -454,9 +453,9 @@ function newhfbsolution{T}(computer::HFBComputer{T}, hint::HFBHint{T})
 end
 
 
-function newhfbhint{T}(computer::HFBComputer{T}, sol::HFBSolution)
-  ρ = Dict{Tuple{T, T, Vector{Int64}}, Complex128}()
-  t = Dict{Tuple{T, T, Vector{Int64}}, Complex128}()
+function newhfbhint(computer::HFBComputer{O}, sol::HFBSolution) where {O}
+  ρ = Dict{Tuple{O, O, Vector{Int64}}, Complex128}()
+  t = Dict{Tuple{O, O, Vector{Int64}}, Complex128}()
   uc = computer.unitcell
 
   for (ρidx, (i, j, rij)) in enumerate(computer.ρ_registry)
@@ -477,16 +476,19 @@ function newhfbhint{T}(computer::HFBComputer{T}, sol::HFBSolution)
     t[iname,jname,Rj-Ri] = sol.t[tidx]
   end
 
-  return HFBHint{T}(ρ, t)
+  return HFBHint{O}(ρ, t)
 end
 
 
-function fixhfbsolution{T}(computer::HFBComputer{T}, sol ::HFBSolution)
+function fixhfbsolution(computer::HFBComputer{O},
+                        sol ::HFBSolution) where {O}
   sol.Γ[:], sol.Δ[:] = HFB.computetargetfields(computer, sol.ρ, sol.t)
 end
 
 
-function randomize!{T}(computer::HFBComputer{T}, sol ::HFBSolution, amplitude::Number=1.0)
+function randomize!(computer::HFBComputer{O},
+                    sol ::HFBSolution,
+                    amplitude::C=1.0) where {O,C<:Number}
   sol.ρ[:] = (rand(Float64, length(sol.ρ)) .* 2 .- 1) * amplitude
   sol.t[:] = (rand(Complex128, length(sol.t)) .* 2 .- 1) * amplitude
   sol.Γ[:], sol.Δ[:] = HFB.computetargetfields(computer, sol.ρ, sol.t)

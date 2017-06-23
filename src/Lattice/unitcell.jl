@@ -27,13 +27,21 @@ import Base.zeros
   * `orbitals ::Vector{Tuple{T, FractCoord}}`: List of orbitals within unit cell
   * `orbitalindices ::Dict{T, Int64}`: Indices of orbitals
 """
-type UnitCell{T}
+mutable struct UnitCell{O}
   latticevectors ::Array{Float64, 2}
+  orbitals ::Vector{Tuple{O, FractCoord}}
+
   reducedreciprocallatticevectors ::Array{Float64, 2}
   reciprocallatticevectors ::Array{Float64, 2}
-
-  orbitals ::Vector{Tuple{T, FractCoord}}
-  orbitalindices ::Dict{T, Int64}
+  orbitalindices ::Dict{O, Int64}
+  function UnitCell{O}(latticevectors ::Array{<:Real, 2},
+                       orbitals ::AbstractVector{Tuple{O, FractCoord}},
+                       reducedreciprocallatticevectors ::AbstractArray{<:Real, 2},
+                       reciprocallatticevectors ::AbstractArray{<:Real, 2},
+                       orbitalindices ::Dict{O, Int64}) where {O}
+    @assert(! (O <: Integer), "OrbitalType should not be integer to avoid confusion")
+    new{O}(latticevectors, orbitals, reducedreciprocallatticevectors, reciprocallatticevectors, orbitalindices)
+  end
 end
 
 
@@ -78,7 +86,8 @@ function newunitcell(latticevectors ::AbstractArray{Float64, 2};
   reduced_rlv = transpose(inv(latticevectors))
   orbitals = Tuple{OrbitalType, FractCoord}[]
   orbitalindices = Dict{OrbitalType, Int64}()
-  return UnitCell{OrbitalType}(latticevectors, reduced_rlv, 2*pi*reduced_rlv, orbitals, orbitalindices)
+  return UnitCell{OrbitalType}(latticevectors, orbitals,
+                               reduced_rlv, 2*pi*reduced_rlv, orbitalindices)
 end
 
 
@@ -87,7 +96,7 @@ end
 
   Spatial dimension of the unit cell.
 """
-function dimension(uc ::UnitCell)
+function dimension(uc ::UnitCell{O}) where {O}
   return size(uc.latticevectors)[1]
 end
 
@@ -100,7 +109,7 @@ end
   # Arguments
   * `uc ::UnitCell`
 """
-function numorbital(uc ::UnitCell)
+function numorbital(uc ::UnitCell{O}) where {O}
   return length(uc.orbitals)
 end
 
@@ -115,7 +124,8 @@ end
   * `orbitalname ::{T}`
   * `orbitalcoord ::FractCoord`
 """
-function addorbital!{T}(uc ::UnitCell{T}, orbitalname ::T, orbitalcoord ::FractCoord)
+function addorbital!(uc ::UnitCell{O},
+                     orbitalname ::O, orbitalcoord ::FractCoord) where {O}
   (ndim, ndim_) = size(uc.latticevectors)
   @assert(dimension(orbitalcoord) == ndim, "orbitalcoord has wrong dimension")
   @assert(!haskey(uc.orbitalindices, orbitalname), "duplicate orbital name")
@@ -132,10 +142,10 @@ end
   Test whether the unit cell contains the orbital of given name.
 
   # Arguments
-  * `uc ::UnitCell{T}`
-  * `name ::T`
+  * `uc ::UnitCell{O}`
+  * `name ::O`
 """
-function hasorbital{T}(uc ::UnitCell{T}, name ::T)
+function hasorbital(uc ::UnitCell{O}, name ::O) where {O}
   return haskey(uc.orbitalindices, name)
 end
 
@@ -146,10 +156,10 @@ end
   Get index of the given orbital.
 
   # Arguments
-  * `uc ::UnitCell{T}`
-  * `name ::T`
+  * `uc ::UnitCell{O}`
+  * `name ::O`
 """
-function getorbitalindex{T}(uc ::UnitCell{T}, name ::T)
+function getorbitalindex(uc ::UnitCell{O}, name ::O) where {O}
   return uc.orbitalindices[name]
 end
 
@@ -160,10 +170,10 @@ end
   Get the orbital with the given name.
 
   # Arguments
-  * `uc ::UnitCell{T}`
-  * `name ::T`
+  * `uc ::UnitCell{O}`
+  * `name ::O`
 """
-function getorbital{T}(uc ::UnitCell{T}, name ::T)
+function getorbital(uc ::UnitCell{O}, name ::O) where {O}
   return uc.orbitals[ uc.orbitalindices[name] ]
 end
 
@@ -172,10 +182,10 @@ end
     getorbitalcoord
 
   # Arguments
-  * `uc ::UnitCell{T}`
-  * `name ::T`
+  * `uc ::UnitCell{O}`
+  * `name ::O`
 """
-function getorbitalcoord{T}(uc ::UnitCell{T}, name ::T)
+function getorbitalcoord(uc ::UnitCell{O}, name ::O) where {O}
   return getorbital(uc, name)[2]
 end
 
@@ -187,7 +197,7 @@ end
   * `uc ::UnitCell{T}`
   * `name ::T`
 """
-function getorbitalindexcoord{T}(uc ::UnitCell{T}, name::T)
+function getorbitalindexcoord(uc ::UnitCell{T}, name::T) where {T}
   idx = getorbitalindex(uc, name)
   coord = getorbitalcoord(uc, idx)
   return (idx, coord)
@@ -271,7 +281,8 @@ end
 
   Return which unit cell the specificied orbital/cartesian coordinates belongs to.
 """
-function whichunitcell{T}(uc ::UnitCell{T}, name ::T, cc ::CarteCoord; tol::Real=sqrt(eps(Float64)))
+function whichunitcell(uc ::UnitCell{T}, name ::T, cc ::CarteCoord;
+                       tol::Real=sqrt(eps(Float64))) where {T}
   fc1 = getorbitalcoord(uc, name)
   fc2 = carte2fract(uc, cc)
   @assert(isapprox(fc1.fraction, fc2.fraction; rtol=tol),
@@ -280,7 +291,8 @@ function whichunitcell{T}(uc ::UnitCell{T}, name ::T, cc ::CarteCoord; tol::Real
   return R
 end
 
-function whichunitcell{T}(uc ::UnitCell{T}, name ::T, fc ::FractCoord; tol::Real=sqrt(eps(Float64)))
+function whichunitcell(uc ::UnitCell{T}, name ::T, fc ::FractCoord;
+                       tol::Real=sqrt(eps(Float64))) where {T}
   fc1 = getorbitalcoord(uc, name)
   fc2 = fc
   @assert(isapprox(fc1.fraction, fc2.fraction; rtol=tol),
@@ -296,7 +308,7 @@ function zeros(uc::UnitCell)
 end
 
 
-function momentumgrid(uc::UnitCell, shape::Vector{Int64})
+function momentumgrid(uc::UnitCell, shape::AbstractVector{Int64})
   @assert(length(shape) == dimension(uc), "dimension mismatch")
   @assert(all((x) -> x>0, shape), "shape should be positive")
 
@@ -306,3 +318,4 @@ function momentumgrid(uc::UnitCell, shape::Vector{Int64})
   momentumgrid = map((x) -> transpose(uc.reciprocallatticevectors) * x, cubicgrid)
   return momentumgrid
 end
+
