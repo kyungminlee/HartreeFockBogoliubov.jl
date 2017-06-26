@@ -10,6 +10,20 @@ struct HoppingMeanField{R<:Real}
   source ::Tuple{Int64, Int64, Vector{Int64}}
   targetconj ::Bool
   sourceconj ::Bool
+
+  function HoppingMeanField(amplitude ::R,
+                            target::Tuple{Int64, Int64, Vector{Int64}},
+                            source::Tuple{Int64, Int64, Vector{Int64}},
+                            targetconj ::Bool,
+                            sourceconj ::Bool
+                            ) where {R<:Real}
+    (i, j, Rij) = target
+    (k, l, Rkl) = source
+    @assert(i <= j)
+    @assert(k <= l)
+    new{R}(amplitude, target, source, targetconj, sourceconj)
+  end
+
   function HoppingMeanField(amplitude ::R,
                             target::Tuple{Int64, Int64, Vector{Int64}},
                             source::Tuple{Int64, Int64, Vector{Int64}}) where {R<:Real}
@@ -31,11 +45,25 @@ struct HoppingMeanField{R<:Real}
   end
 end
 
+
 struct PairingMeanField{R<:Real}
   amplitude ::R
   target ::Tuple{Int64, Int64, Vector{Int64}}
   source ::Tuple{Int64, Int64, Vector{Int64}}
   negate ::Bool
+
+  function PairingMeanField(amplitude ::R,
+                            target::Tuple{Int64, Int64, Vector{Int64}},
+                            source::Tuple{Int64, Int64, Vector{Int64}},
+                            negate ::Bool
+                            ) where {R<:Real}
+    (i, j, Rij) = target
+    (k, l, Rkl) = source
+    @assert(i <= j)
+    @assert(k <= l)
+    new{R}(amplitude, target, source, negate)
+  end
+
   function PairingMeanField(amplitude ::R,
                             target::Tuple{Int64, Int64, Vector{Int64}},
                             source::Tuple{Int64, Int64, Vector{Int64}}) where {R<:Real}
@@ -56,12 +84,22 @@ struct PairingMeanField{R<:Real}
   end
 end
 
+
 mutable struct HFBHamiltonian{O}
   unitcell ::UnitCell{O}
   hoppings ::Vector{Spec.Hopping}
   particle_hole_interactions ::Vector{HoppingMeanField}
   particle_particle_interactions ::Vector{PairingMeanField}
 end
+
+function HFBHamiltonian(
+  unitcell ::UnitCell{O},
+  hoppings ::Vector{Spec.Hopping},
+  particle_hole_interactions ::Vector{HoppingMeanField},
+  particle_particle_interactions ::Vector{PairingMeanField}) where {O}
+  HFBHamiltonian{O}(unitcell, hoppings, particle_hole_interactions, particle_particle_interactions)
+end
+
 
 
 function HFBHamiltonian(full_hamiltonian ::Spec.Hamiltonian{O}) where {O}
@@ -85,12 +123,13 @@ function addinteraction!(model ::HFBHamiltonian{O},
   (Ri, Rj) = (specint.Ri, specint.Rj)
 
   Γs = [
-    HoppingMeanField(v, (i, i, Ri-Ri), (j, j, Rj-Rj)),
-    HoppingMeanField(v, (j, j, Rj-Rj), (i, i, Ri-Ri)),
-    HoppingMeanField(v, (j, i, Ri-Rj), (i, j, Rj-Ri)),
+    HoppingMeanField( v, (i, i, Ri-Ri), (j, j, Rj-Rj)),
+    HoppingMeanField( v, (j, j, Rj-Rj), (i, i, Ri-Ri)),
+    HoppingMeanField(-v, (j, i, Ri-Rj), (i, j, Rj-Ri)),
+    HoppingMeanField(-v, (i, j, Rj-Ri), (j, i, Ri-Rj)),
   ]
   Δs = [
-    PairingMeanField(v, (i, j, Rj-Ri), (i, j, Rj-Ri)),
+    PairingMeanField( v, (i, j, Rj-Ri), (i, j, Rj-Ri)),
   ]
   append!(model.particle_hole_interactions, Γs)
   append!(model.particle_particle_interactions, Δs)
