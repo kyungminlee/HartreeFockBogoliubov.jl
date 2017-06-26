@@ -30,6 +30,8 @@ This document contains basics of Hartree-Fock-Bogoliubov Theory.
   V c_{1}^{\dagger} c_{2}^{\dagger} c_{2} c_{1}
 ```
 
+Inline Equation: ``V_{1212} =  V``
+
 | Interaction       | Γ                              | Δ                                       |
 |:----------------- |:------------------------------ |:--------------------------------------- |
 | ``V_{1212} =  V`` | ``\Gamma_{11} =  V \rho_{22}`` | ``\Delta_{12} =  \frac{1}{2} V t_{12}`` |
@@ -39,9 +41,9 @@ This document contains basics of Hartree-Fock-Bogoliubov Theory.
 
 ```math
 \begin{aligned}
-\Gamma_{11} =  V \rho_{22} \\
-\Gamma_{12} = -V \rho_{12} \\
-\Gamma_{22} =  V \rho_{11}
+\Gamma_{11} &=  V \rho_{22} \\
+\Gamma_{12} &= -V \rho_{12} \\
+\Gamma_{22} &=  V \rho_{11}
 \end{aligned}
 ```
 
@@ -72,10 +74,10 @@ This document contains basics of Hartree-Fock-Bogoliubov Theory.
 
 ```math
 \begin{aligned}
-\Gamma_{13} =  V  \rho_{24}^* \\
-\Gamma_{14} = -V  \rho_{23}^* \\
-\Gamma_{23} = -V  \rho_{14}^* \\
-\Gamma_{24} =  V  \rho_{13}^*
+\Gamma_{13} &=  V  \rho_{24}^* \\
+\Gamma_{14} &= -V  \rho_{23}^* \\
+\Gamma_{23} &= -V  \rho_{14}^* \\
+\Gamma_{24} &=  V  \rho_{13}^*
 \end{aligned}
 ```
 ```math
