@@ -8,7 +8,7 @@ This document contains basics of Hartree-Fock-Bogoliubov Theory.
 ```
 
 ```math
-  \Gamma_{ij} = \sum_{kl} V_{ikjl} \rho_{kl}
+  \Gamma_{ij} = \sum_{kl} V_{ikjl} \rho_{lk}
 ```
 
 ```math
