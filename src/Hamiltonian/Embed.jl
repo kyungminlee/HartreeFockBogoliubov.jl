@@ -174,6 +174,15 @@ mutable struct Hamiltonian{O}
   interactions ::Vector{Interaction}
 end
 
+"""
+    Hamiltonian
+"""
+function Hamiltonian(unitcell ::UnitCell{O},
+                     hoppings ::AbstractVector{Hopping},
+                     interactions ::AbstractVector{Interaction}) where {O}
+  return Hamiltonian{O}(unitcell, hoppings, interactions)
+end
+
 
 """
     Hamiltonian
@@ -184,5 +193,16 @@ function Hamiltonian(spec ::Spec.Hamiltonian{O}) where {O}
   interactions = [embed(unitcell, inter) for inter in spec.interactions]
   Hamiltonian{O}(unitcell, hoppings, interactions)
 end
+
+"""
+    Hamiltonian
+"""
+function embed(spec ::Spec.Hamiltonian{O}) where {O}
+  unitcell = spec.unitcell
+  hoppings = [embed(unitcell, hop) for hop in spec.hoppings]
+  interactions = [embed(unitcell, inter) for inter in spec.interactions]
+  Hamiltonian{O}(unitcell, hoppings, interactions)
+end
+
 
 end # Embed
