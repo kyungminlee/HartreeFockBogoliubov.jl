@@ -91,6 +91,13 @@ function newunitcell(latticevectors ::AbstractArray{Float64, 2};
 end
 
 
+function newunitcell(latticevectors::AbstractVector{A1};
+                     OrbitalType::DataType=Any,
+                     tol=sqrt(eps(Float64))) where {A1<:AbstractVector}
+  lv = hcat(latticevectors...)
+  return newunitcell(lv; OrbitalType=OrbitalType, tol=tol)
+end
+
 """
     dimension
 
@@ -318,4 +325,3 @@ function momentumgrid(uc::UnitCell, shape::AbstractVector{Int64})
   momentumgrid = map((x) -> transpose(uc.reciprocallatticevectors) * x, cubicgrid)
   return momentumgrid
 end
-
