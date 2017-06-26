@@ -22,9 +22,13 @@ struct HoppingDiagonal{R<:Real}
   amplitude ::R
   i ::Int64
   Ri ::Vector{Int64}
-  function HoppingDiagonal{R}(v::R, i::Int64, Ri::AbstractVector{Int64}) where {R<:Real}
+  function HoppingDiagonal{R}(v::R, i::Integer, Ri::AbstractVector{Int64}) where {R<:Real}
     return new{R}(v, i, Ri)
   end
+end
+
+function HoppingDiagonal(v::R, i::Integer, Ri::AbstractVector{Int64}) where {R<:Real}
+  return HoppingDiagonal{R}(v, i, Ri)
 end
 
 
@@ -50,7 +54,7 @@ struct HoppingOffdiagonal{C<:Number}
   Ri ::Vector{Int64}
   Rj ::Vector{Int64}
   function HoppingOffdiagonal{C}(v::C,
-                                 i::Int64, j::Int64,
+                                 i::Integer, j::Integer,
                                  Ri::AbstractVector{Int64},
                                  Rj::AbstractVector{Int64}) where {C<:Number}
     @assert(length(Ri) == length(Rj))
@@ -61,6 +65,14 @@ struct HoppingOffdiagonal{C<:Number}
     end
     return new{C}(v, i, j, Ri, Rj)
   end
+end
+
+
+function HoppingOffdiagonal(v::C,
+                            i::Integer, j::Integer,
+                            Ri::AbstractVector{Int64},
+                            Rj::AbstractVector{Int64}) where {C<:Number}
+  return HoppingOffdiagonal{C}(v, i, j, Ri, Rj)
 end
 
 
@@ -86,8 +98,8 @@ struct InteractionDiagonal{R<:Real}
   Ri ::Vector{Int64}
   Rj ::Vector{Int64}
   function InteractionDiagonal{R}(v::R,
-                                  i::Int64,
-                                  j::Int64,
+                                  i::Integer,
+                                  j::Integer,
                                   Ri::AbstractVector{Int64},
                                   Rj::AbstractVector{Int64}) where {R<:Real}
     @assert(length(Ri) == length(Rj))
@@ -99,6 +111,15 @@ struct InteractionDiagonal{R<:Real}
     end
     return new{R}(v, i, j, Ri, Rj)
   end
+end
+
+
+function InteractionDiagonal(v::R,
+                             i::Integer,
+                             j::Integer,
+                             Ri::AbstractVector{Int64},
+                             Rj::AbstractVector{Int64}) where {R<:Real}
+  return InteractionDiagonal{R}(v, i, j, Ri, Rj)
 end
 
 
@@ -135,10 +156,10 @@ struct InteractionOffdiagonal{C<:Number}
   Rk ::Vector{Int64}
   Rl ::Vector{Int64}
   function InteractionOffdiagonal{C}(v::C,
-                                     i::Int64,
-                                     j::Int64,
-                                     k::Int64,
-                                     l::Int64,
+                                     i::Integer,
+                                     j::Integer,
+                                     k::Integer,
+                                     l::Integer,
                                      Ri::AbstractVector{Int64},
                                      Rj::AbstractVector{Int64},
                                      Rk::AbstractVector{Int64},
@@ -167,6 +188,18 @@ struct InteractionOffdiagonal{C<:Number}
   end
 end
 
+function InteractionOffdiagonal(v::C,
+                                i::Integer,
+                                j::Integer,
+                                k::Integer,
+                                l::Integer,
+                                Ri::AbstractVector{Int64},
+                                Rj::AbstractVector{Int64},
+                                Rk::AbstractVector{Int64},
+                                Rl::AbstractVector{Int64}) where {C<:Number}
+  return InteractionOffdiagonal{C}(v, i, j, k, l, Ri, Rj, Rk, Rl)
+end
+
 
 """
     Hopping
@@ -193,6 +226,7 @@ mutable struct Hamiltonian{O}
   hoppings ::Vector{Hopping}
   interactions ::Vector{Interaction}
 end
+
 
 """
     Hamiltonian
