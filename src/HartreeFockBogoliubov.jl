@@ -15,5 +15,6 @@ include("HFB/HFB.jl")
 
 
 include("dumper.jl")
+include("dictify.jl")
 
 end
