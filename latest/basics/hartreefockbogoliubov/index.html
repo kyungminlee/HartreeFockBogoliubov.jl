@@ -150,17 +150,11 @@
 </p>
 <p>
 <script type="math/tex; mode=display">
-  \Gamma_{ij} = \sum_{kl} V_{ikjl} \rho_{lk}
-</script>
-</p>
-<p>
-<script type="math/tex; mode=display">
-  \Gamma_{ik} = \sum_{kl} V_{ijkl} \rho_{lj}
-</script>
-</p>
-<p>
-<script type="math/tex; mode=display">
-  \Delta_{ij} = \frac{1}{2} \sum_{kl} V_{ijkl} t_{kl}
+\begin{aligned}
+  \Gamma_{ij} &= \sum_{kl} V_{ikjl} \rho_{lk} \\
+  \Gamma_{ik} &= \sum_{kl} V_{ijkl} \rho_{lj} \\
+  \Delta_{ij} &= \frac{1}{2} \sum_{kl} V_{ijkl} t_{kl}
+\end{aligned}
 </script>
 </p>
 <p><a id='Hartree-Fock-Bogoliubov-Decomposition-1'></a></p>
@@ -183,24 +177,24 @@
 </thead>
 <tbody>
 <tr>
-<td 1212="1212" align="left">$V_</td>
-<td 11="11" align="left">$\Gamma_</td>
-<td 12="12" align="left">$\Delta_</td>
+<td align="left">V(1212) =  V</td>
+<td align="left">Γ(11) =  V ρ(22)</td>
+<td align="left">Δ(12) =  ½ V t(12)</td>
 </tr>
 <tr>
-<td 1221="1221" align="left">$V_</td>
-<td 12="12" align="left">$\Gamma_</td>
-<td 12="12" align="left">$\Delta_</td>
+<td align="left">V(1221) = -V</td>
+<td align="left">Γ(12) = -V ρ(12)</td>
+<td align="left">Δ(12) = -½ V t(21)</td>
 </tr>
 <tr>
-<td 2112="2112" align="left">$V_</td>
-<td 21="21" align="left">$\Gamma_</td>
-<td 21="21" align="left">$\Delta_</td>
+<td align="left">V(2112) = -V</td>
+<td align="left">Γ(21) = -V ρ(21)</td>
+<td align="left">Δ(21) = -½ V t(12)</td>
 </tr>
 <tr>
-<td 2121="2121" align="left">$V_</td>
-<td 22="22" align="left">$\Gamma_</td>
-<td 21="21" align="left">$\Delta_</td>
+<td align="left">V(2121) =  V</td>
+<td align="left">Γ(22) =  V ρ(11)</td>
+<td align="left">Δ(21) =  ½ V t(21)</td>
 </tr>
 </tbody>
 </table>
@@ -237,24 +231,24 @@
 </thead>
 <tbody>
 <tr>
-<td 1234="1234" align="left">$V_</td>
-<td 13="13" align="left">$\Gamma</td>
-<td 12="12" align="left">$\Delta_</td>
+<td align="left">V(1234) =  V</td>
+<td align="left">Γ(13) =  V ρ(42)</td>
+<td align="left">Δ(12) =  ½ V t(34)</td>
 </tr>
 <tr>
-<td 1243="1243" align="left">$V_</td>
-<td 14="14" align="left">$\Gamma</td>
-<td 12="12" align="left">$\Delta_</td>
+<td align="left">V(1243) = -V</td>
+<td align="left">Γ(14) = -V ρ(32)</td>
+<td align="left">Δ(12) = -½ V t(43)</td>
 </tr>
 <tr>
-<td 2134="2134" align="left">$V_</td>
-<td 23="23" align="left">$\Gamma</td>
-<td 21="21" align="left">$\Delta_</td>
+<td align="left">V(2134) = -V</td>
+<td align="left">Γ(23) = -V ρ(41)</td>
+<td align="left">Δ(21) = -½ V t(34)</td>
 </tr>
 <tr>
-<td 2143="2143" align="left">$V_</td>
-<td 24="24" align="left">$\Gamma</td>
-<td 21="21" align="left">$\Delta_</td>
+<td align="left">V(2143) =  V</td>
+<td align="left">Γ(24) =  V ρ(31)</td>
+<td align="left">Δ(21) =  ½ V t(43)</td>
 </tr>
 <tr>
 <td align="left">:–––––––––-</td>
@@ -262,24 +256,24 @@
 <td align="left">:–––––––––––––––––––-</td>
 </tr>
 <tr>
-<td 3412="3412" align="left">$V_</td>
-<td 31="31" align="left">$\Gamma</td>
-<td 34="34" align="left">$\Delta_</td>
+<td align="left">V(3412) =  V*</td>
+<td align="left">Γ(31) =  V ρ(24)</td>
+<td align="left">Δ(34) =  ½ V t(12)</td>
 </tr>
 <tr>
-<td 3421="3421" align="left">$V_</td>
-<td 32="32" align="left">$\Gamma</td>
-<td 34="34" align="left">$\Delta_</td>
+<td align="left">V(3421) = -V*</td>
+<td align="left">Γ(32) = -V ρ(14)</td>
+<td align="left">Δ(34) = -½ V t(21)</td>
 </tr>
 <tr>
-<td 4312="4312" align="left">$V_</td>
-<td 41="41" align="left">$\Gamma</td>
-<td 43="43" align="left">$\Delta_</td>
+<td align="left">V(4312) = -V*</td>
+<td align="left">Γ(41) = -V ρ(23)</td>
+<td align="left">Δ(43) = -½ V t(12)</td>
 </tr>
 <tr>
-<td 4321="4321" align="left">$V_</td>
-<td 42="42" align="left">$\Gamma</td>
-<td 43="43" align="left">$\Delta_</td>
+<td align="left">V(4321) =  V*</td>
+<td align="left">Γ(42) =  V ρ(13)</td>
+<td align="left">Δ(43) =  ½ V t(21)</td>
 </tr>
 </tbody>
 </table>
