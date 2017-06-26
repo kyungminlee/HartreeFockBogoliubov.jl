@@ -27,7 +27,7 @@ function mydump(io::IO, arr::AbstractVector{T}) where T
     end
     mydump(io, arr[i])
     first = false
-  end    
+  end
   print(io, "]")
 end
 
@@ -57,7 +57,7 @@ function mydump(io::IO, x::UnitCell{T}) where T
         "Orbitals" => [
           Dict("Index" => idx, "Name" => name, "Coord" => )
         ]
-        
+
         )
   =#
 
@@ -72,9 +72,9 @@ function mydump(io::IO, x::UnitCell{T}) where T
   for (idx, (name, coord)) in enumerate(uc.orbitals)
     FMT(  "    - Index: $idx")
     FMT(  "      Name: ", name)
-    FMT(  "      Coord: { whole: ", coord.whole, 
+    FMT(  "      Coord: { whole: ", coord.whole,
                           ", fraction: ", coord.fraction, " }")
-  end  
+  end
 end
 
 
@@ -96,7 +96,7 @@ function dumpall(io::IO, uc::UnitCell{T}) where T
   for (idx, (name, coord)) in enumerate(uc.orbitals)
     FMT(  "    - Index: $idx")
     FMT(  "      Name: ", name)
-    FMT(  "      Coord: { whole: ", coord.whole, 
+    FMT(  "      Coord: { whole: ", coord.whole,
                           ", fraction: ", coord.fraction, " }")
   end
 end
@@ -135,7 +135,7 @@ function dumpall(io::IO, solver::HFB.HFBSolver{T}) where T
     end
   end
   FMT(    "  Delta:")
-  for (idx, (i, j, r, srcs)) in enumerate(solver.hfbcomputer.Γ_registry)
+  for (idx, (i, j, r, srcs)) in enumerate(solver.hfbcomputer.Δ_registry)
     FMT(  "    - Index: $idx")
     FMT(  "      Row: $i")
     FMT(  "      Col: $j")
@@ -155,7 +155,7 @@ function dumpall(io::IO, solver::HFB.HFBSolver{T}) where T
 end
 
 function dumpall(io::IO,
-                 hamspec ::Spec.Hamiltonian{T}, 
+                 hamspec ::Spec.Hamiltonian{T},
                  solver ::HFB.HFBSolver{T},
                  currentsolution ::HFB.HFBSolution,
                  previoussolution ::HFB.HFBSolution) where T

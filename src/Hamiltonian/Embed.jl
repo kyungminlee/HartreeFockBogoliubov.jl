@@ -20,7 +20,6 @@ struct HoppingDiagonal{R<:Real}
   ri ::CarteCoord
 end
 
-
 """
     HoppingDiagonal
 """
