@@ -64,6 +64,12 @@
             
     <li class="toctree-l3"><a href="#hartree-fock-bogoliubov-theory">Hartree-Fock-Bogoliubov Theory</a></li>
     
+        <ul>
+        
+            <li><a class="toctree-l4" href="#hartree-fock-bogoliubov-decomposition">Hartree-Fock-Bogoliubov Decomposition</a></li>
+        
+        </ul>
+    
 
     </ul>
                 </li>
@@ -144,7 +150,12 @@
 </p>
 <p>
 <script type="math/tex; mode=display">
-  \Gamma_{ij} = \sum_{kl} V_{ikjl} \rho_{kl}
+  \Gamma_{ij} = \sum_{kl} V_{ikjl} \rho_{lk}
+</script>
+</p>
+<p>
+<script type="math/tex; mode=display">
+  \Gamma_{ik} = \sum_{kl} V_{ijkl} \rho_{lj}
 </script>
 </p>
 <p>
@@ -152,6 +163,113 @@
   \Delta_{ij} = \frac{1}{2} \sum_{kl} V_{ijkl} t_{kl}
 </script>
 </p>
+<p><a id='Hartree-Fock-Bogoliubov-Decomposition-1'></a></p>
+<h2 id="hartree-fock-bogoliubov-decomposition">Hartree-Fock-Bogoliubov Decomposition</h2>
+<p><a id='Diagonal-Interaction-1'></a></p>
+<h3 id="diagonal-interaction">Diagonal Interaction</h3>
+<p>
+<script type="math/tex; mode=display">
+  V c_{1}^{\dagger} c_{2}^{\dagger} c_{2} c_{1}
+</script>
+</p>
+<table>
+<thead>
+<tr>
+<th align="center">Interaction</th>
+<th align="center">Γ</th>
+<th align="center">Δ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">V(1212) =  V</td>
+<td align="center">Γ(11) =  V ρ(22)</td>
+<td align="center">Δ(12) =  ½ V t(12)</td>
+</tr>
+<tr>
+<td align="center">V(1221) = -V</td>
+<td align="center">Γ(12) = -V ρ(12)</td>
+<td align="center">Δ(12) = -½ V t(21)</td>
+</tr>
+<tr>
+<td align="center">V(2112) = -V</td>
+<td align="center">Γ(21) = -V ρ(21)</td>
+<td align="center">Δ(21) = -½ V t(12)</td>
+</tr>
+<tr>
+<td align="center">V(2121) =  V</td>
+<td align="center">Γ(22) =  V ρ(11)</td>
+<td align="center">Δ(21) =  ½ V t(21)</td>
+</tr>
+</tbody>
+</table>
+<p>Γ(11) =  V ρ(22) Γ(12) = -V ρ(12) Γ(22) =  V ρ(11)</p>
+<p>Δ(12) =  V t(12)</p>
+<p><a id='Offdiagonal-Interaction-1'></a></p>
+<h3 id="offdiagonal-interaction">Offdiagonal Interaction</h3>
+<p>
+<script type="math/tex; mode=display">
+  V c_{1}^{\dagger} c_{2}^{\dagger} c_{4} c_{3}
+</script>
+</p>
+<table>
+<thead>
+<tr>
+<th align="center">Interaction</th>
+<th align="center">Γ</th>
+<th align="center">Δ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">V(1234) =  V</td>
+<td align="center">Γ(13) =  V ρ(42)</td>
+<td align="center">Δ(12) =  ½ V t(34)</td>
+</tr>
+<tr>
+<td align="center">V(1243) = -V</td>
+<td align="center">Γ(14) = -V ρ(32)</td>
+<td align="center">Δ(12) = -½ V t(43)</td>
+</tr>
+<tr>
+<td align="center">V(2134) = -V</td>
+<td align="center">Γ(23) = -V ρ(41)</td>
+<td align="center">Δ(21) = -½ V t(34)</td>
+</tr>
+<tr>
+<td align="center">V(2143) =  V</td>
+<td align="center">Γ(24) =  V ρ(31)</td>
+<td align="center">Δ(21) =  ½ V t(43)</td>
+</tr>
+<tr>
+<td align="center">:––––––:</td>
+<td align="center">:–––––––-:</td>
+<td align="center">:–––––––––-:</td>
+</tr>
+<tr>
+<td align="center">V(3412) =  V*</td>
+<td align="center">Γ(31) =  V ρ(24)</td>
+<td align="center">Δ(34) =  ½ V t(12)</td>
+</tr>
+<tr>
+<td align="center">V(3421) = -V*</td>
+<td align="center">Γ(32) = -V ρ(14)</td>
+<td align="center">Δ(34) = -½ V t(21)</td>
+</tr>
+<tr>
+<td align="center">V(4312) = -V*</td>
+<td align="center">Γ(41) = -V ρ(23)</td>
+<td align="center">Δ(43) = -½ V t(12)</td>
+</tr>
+<tr>
+<td align="center">V(4321) =  V*</td>
+<td align="center">Γ(42) =  V ρ(13)</td>
+<td align="center">Δ(43) =  ½ V t(21)</td>
+</tr>
+</tbody>
+</table>
+<p>Γ(13) =  V  ρ(24)<em> Γ(14) = -V  ρ(23)</em> Γ(23) = -V  ρ(14)<em> Γ(24) =  V  t(13)</em></p>
+<p>Δ(12) =  V  t(34) Δ(34) =  V* t(12)</p>
               
             </div>
           </div>
