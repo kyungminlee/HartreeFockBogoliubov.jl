@@ -22,12 +22,9 @@
     @test dimension(fractcoord) == 2
   end
 
-  #=
   @testset "failures" begin
-    must fail:
-      FractCoord([-1, 1], [1.0, 2.0])
+    @test_throws AssertionError FractCoord([-1, 1], [1.0, 2.0])
   end
-  =#
 
   @testset "isapprox" begin
     fractcoord1 = FractCoord([-2, 1], [0.8, 0.5])
@@ -61,9 +58,9 @@
     fractcoord = FractCoord(rawfractcoord)
     cartecoord = fract2carte(latticevectors, fractcoord)
     newfractcoord = carte2fract(latticevectors, cartecoord)
-    @test isapprox(fractcoord, correctfractcoord) 
-    @test isapprox(cartecoord, correctcartecoord) 
-    @test isapprox(newfractcoord, correctfractcoord) 
+    @test isapprox(fractcoord, correctfractcoord)
+    @test isapprox(cartecoord, correctcartecoord)
+    @test isapprox(newfractcoord, correctfractcoord)
   end
 
   #=
