@@ -25,10 +25,10 @@ end
 
 """
 """
-function HFBSolver{T}(hamiltonian::Spec.Hamiltonian{T},
-                      size ::Vector{Int64},
-                      temperature ::Float64;
-                      tol::Float64=eps(Float64))
+function HFBSolver(hamiltonian::Spec.Hamiltonian{T},
+                   size ::Vector{Int64},
+                   temperature ::Float64;
+                   tol::Float64=eps(Float64)) where {T}
   dim = dimension(hamiltonian.unitcell)
   @assert(length(size) == dim, "dimension and size do not match: size=$(size)")
   @assert(all((x) -> x > 0, size), "size should be positive: size=$(size)")
@@ -60,6 +60,7 @@ function getnextsolution(solver ::HFBSolver{T}, sol ::HFBSolution) where {T}
   return newsol
 end
 
+#=
 using PyCall
 
 @pyimport scipy.linalg as spl
@@ -77,7 +78,7 @@ function getnextsolutionpython(solver ::HFBSolver{T}, sol ::HFBSolution) where {
   newsol.Γ[:], newsol.Δ[:] = HFB.computetargetfields(solver.hfbcomputer, newsol.ρ, newsol.t)
   return newsol
 end
-
+=#
 
 function getnextsolutionthreaded(solver ::HFBSolver{O},
                                  sol ::HFBSolution) where {O}
