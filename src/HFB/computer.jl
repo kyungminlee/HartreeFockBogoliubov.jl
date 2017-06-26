@@ -108,7 +108,7 @@ mutable struct HFBComputer{O}
   unitcell ::UnitCell{O}
   hoppings ::Vector{Embed.Hopping}
   temperature ::Float64
-  
+
   fermi ::Function
   ρ_registry ::Vector{CollectRow}
   t_registry ::Vector{CollectRow}
@@ -116,11 +116,17 @@ mutable struct HFBComputer{O}
   Δ_registry ::Vector{DeployRow}
 end
 
+function HFBComputer(unitcell::UnitCell{O},
+                     hoppings::AbstractVector{Embed.Hopping},
+                     temperature::Real) where {O}
+ fermi = fermidirac(temperature)
+ return HFBComputer{O}(unitcell, hoppings, temperature, fermi, [], [], [], [])
+end
 
-function HFBComputer{T}(ham::HFBHamiltonian{T},
-                        temperature::Real;
-                        ttol=eps(Float64),
-                        etol=sqrt(eps(Float64)))
+function HFBComputer(ham::HFBHamiltonian{T},
+                     temperature::Real;
+                     ttol=eps(Float64),
+                     etol=sqrt(eps(Float64))) where {T}
   @assert(ttol >= 0.0, "ttol should be non-negative")
   @assert(etol >= 0.0, "etol should be non-negative")
   @assert(temperature >= 0, "temperature should be non-negative")
