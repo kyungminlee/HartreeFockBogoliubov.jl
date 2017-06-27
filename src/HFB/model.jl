@@ -1,9 +1,9 @@
-#export addinteraction!
-
 export HFBHamiltonian
 export addinteraction!
 
 
+"""
+"""
 struct HoppingMeanField{R<:Real}
   amplitude ::R
   target ::Tuple{Int64, Int64, Vector{Int64}}
@@ -47,6 +47,8 @@ struct HoppingMeanField{R<:Real}
 end
 
 
+"""
+"""
 struct PairingMeanField{R<:Real}
   amplitude ::R
   target ::Tuple{Int64, Int64, Vector{Int64}}
@@ -89,6 +91,8 @@ struct PairingMeanField{R<:Real}
 end
 
 
+"""
+"""
 mutable struct HFBHamiltonian{O}
   unitcell ::UnitCell{O}
   hoppings ::Vector{Hopping}
@@ -97,6 +101,8 @@ mutable struct HFBHamiltonian{O}
 end
 
 
+"""
+"""
 function HFBHamiltonian(
         unitcell ::UnitCell{O},
         hoppings ::AbstractVector{Hopping},
@@ -110,6 +116,8 @@ function HFBHamiltonian(
 end
 
 
+"""
+"""
 function HFBHamiltonian(full_hamiltonian ::FullHamiltonian{O}) where {O}
   unitcell = full_hamiltonian.unitcell
   hoppings = full_hamiltonian.hoppings
@@ -137,6 +145,32 @@ function addinteraction!(model ::HFBHamiltonian{O},
   ]
   Δs = [
     PairingMeanField( v, (i, j, Rj-Ri), (i, j, Rj-Ri)),
+  ]
+  append!(model.particle_hole_interactions, Γs)
+  append!(model.particle_particle_interactions, Δs)
+end
+
+
+"""
+Add diagonal interaction
+"""
+function addinteraction!(model ::HFBHamiltonian{O},
+                         specint ::InteractionOffdiagonal{C}) where {O,C<:Number}
+  v = specint.amplitude
+  (i, j) = (specint.i,  specint.j)
+  (k, l) = (specint.k,  specint.l)
+  (Ri, Rj) = (specint.Ri, specint.Rj)
+  (Rk, Rl) = (specint.Rk, specint.Rl)
+
+  Γs = [
+    HoppingMeanField( v, (i, k, Rk-Ri), (l, j, Rj-Rl)),
+    HoppingMeanField(-v, (i, l, Rl-Ri), (k, j, Rj-Rk)),
+    HoppingMeanField(-v, (j, k, Rk-Rj), (l, i, Ri-Rl)),
+    HoppingMeanField( v, (j, l, Rl-Rj), (k, i, Ri-Rk)),
+  ]
+  Δs = [
+    PairingMeanField( v, (i, j, Rj-Ri), (k, l, Rl-Rk)),
+    PairingMeanField( conj(v), (k, l, Rl-Rk), (i, j, Rj-Ri)),
   ]
   append!(model.particle_hole_interactions, Γs)
   append!(model.particle_particle_interactions, Δs)

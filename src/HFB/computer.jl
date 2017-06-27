@@ -14,27 +14,29 @@ export makesourcefields,
 """
 `CollectRow` is holds info on how to compute ρ or t.
 Its elements are:
-1. row orbital
-2. col orbital
-3. displacement r(col) - r(row)
+1. Is diagonal? (only for rho)
+2. row orbital
+3. col orbital
+4. displacement r(col) - r(row)
 """
-const CollectRow = Tuple{Int64, Int64, Vector{Float64}}
+const CollectRow = Tuple{Bool, Int64, Int64, Vector{Float64}}
 
 
 """
 `DeployRow` is holds info on how to compute Γ or Δ.
 Its elements are:
-1. row orbital
-2. col orbital
-3. displacement r(col) - r(row)
-4. list of sources, each of which is a tuple of
+1. Is diagonal
+2. row orbital
+3. col orbital
+4. displacement r(col) - r(row)
+5. list of sources, each of which is a tuple of
   1. index of ρ or t from which to compute this Γ or Δ.
   2. amplitude (coefficient to multiply to ρ or t)
   3. boolean indicating whether
      (1) conjugation is needed (for ρ/Γ) or
      (2) minus sign is needed (for t/Δ).
 """
-const DeployRow = Tuple{Int64, Int64, Vector{Float64}, Vector{Tuple{Int64, Complex128, Bool}}}
+const DeployRow = Tuple{Bool, Int64, Int64, Vector{Float64}, Vector{Tuple{Int64, Complex128, Bool}}}
 
 
 """
@@ -88,7 +90,7 @@ function HFBComputer(ham::HFBHamiltonian{T},
     R = zeros(Int64, dimension(ham.unitcell))
     r = zeros(Float64, dimension(ham.unitcell))
     for (i, orb) in enumerate(ham.unitcell.orbitals)
-      collect_reg[i, i, R] = (length(collect_reg)+1, (i, i, r))
+      collect_reg[i, i, R] = (length(collect_reg)+1, (true, i, i, r))
     end
   end
 
@@ -96,7 +98,7 @@ function HFBComputer(ham::HFBHamiltonian{T},
     R = zeros(Int64, dimension(ham.unitcell))
     r = zeros(Float64, dimension(ham.unitcell))
     for (i, orb) in enumerate(ham.unitcell.orbitals)
-      deploy_reg[i, i, R] = (length(deploy_reg)+1, (i, i, r, []))
+      deploy_reg[i, i, R] = (length(deploy_reg)+1, (true, i, i, r, []))
     end
   end
 
@@ -105,7 +107,8 @@ function HFBComputer(ham::HFBHamiltonian{T},
       (k,l,Rkl) = hopmf.source
       rkl = getdistance(k, l, Rkl)
       if !haskey(collect_reg, (k,l, Rkl))
-        collect_reg[k,l,Rkl] = (length(collect_reg)+1, (k, l, rkl))
+        isdiag = (k == l) && iszero(Rkl)
+        collect_reg[k,l,Rkl] = (length(collect_reg)+1, (isdiag, k, l, rkl))
       end
     end
 
@@ -114,7 +117,8 @@ function HFBComputer(ham::HFBHamiltonian{T},
       (i,j,Rij) = hopmf.target
       rij = getdistance(i, j, Rij)
       if !haskey(deploy_reg, (i,j, Rij))
-        deploy_reg[i,j,Rij] = (length(deploy_reg)+1, (i, j, rij, []))
+        isdiag = (i == j) && iszero(Rij)
+        deploy_reg[i,j,Rij] = (length(deploy_reg)+1, (isdiag, i, j, rij, []))
       end
     end
   end
@@ -149,8 +153,9 @@ function HFBComputer(ham::HFBHamiltonian{T},
     let
       (k,l,Rkl) = hopmf.source
       rkl = getdistance(k, l, Rkl)
+      @assert( !(k==l && iszero(Rkl)) )
       if !haskey(collect_reg, (k,l,Rkl))
-        collect_reg[k,l,Rkl] = (length(collect_reg)+1, (k, l, rkl))
+        collect_reg[k,l,Rkl] = (length(collect_reg)+1, (false, k, l, rkl))
       end
     end
 
@@ -158,8 +163,9 @@ function HFBComputer(ham::HFBHamiltonian{T},
       v = hopmf.amplitude
       (i,j,Rij) = hopmf.target
       rij = getdistance(i, j, Rij)
+      @assert( !(i==j && iszero(Rij)) )
       if !haskey(deploy_reg, (i,j,Rij))
-        deploy_reg[i,j,Rij] = (length(deploy_reg)+1, (i, j, rij, []))
+        deploy_reg[i,j,Rij] = (length(deploy_reg)+1, (false, i, j, rij, []))
       end
     end
   end
@@ -229,9 +235,10 @@ function makesourcefields(funcρ ::Function,
   ρs = zeros(Complex128, length(computer.ρ_registry))
   ts = zeros(Complex128, length(computer.t_registry))
 
-  for (idx, (i, j, r)) in enumerate(computer.ρ_registry)
+  for (idx, (isdiag, i, j, r)) in enumerate(computer.ρ_registry)
     v = funcρ(idx, i, j, r)
-    if i==j && all((x)->x==0, r)
+    #if i==j && all((x)->x==0, r)
+    if isdiag
       ρs[idx] = real(v)
     else
       ρs[idx] = v
@@ -256,7 +263,7 @@ function computetargetfields(computer ::HFBComputer{O},
                              ts ::AbstractVector{Complex128}) where {O}
   Γs = zeros(Complex128, length(computer.Γ_registry))
   Δs = zeros(Complex128, length(computer.Δ_registry))
-  for (tgtidx, (i, j, r, srcs)) in enumerate(computer.Γ_registry)
+  for (tgtidx, (_, i, j, r, srcs)) in enumerate(computer.Γ_registry)
     value = 0.0 + 0.00im
     for (srcidx, amplitude, star) in srcs
       value += amplitude * (star ? conj(ρs[srcidx]) : ρs[srcidx])
@@ -264,7 +271,7 @@ function computetargetfields(computer ::HFBComputer{O},
     Γs[tgtidx] = value
   end
 
-  for (tgtidx, (i, j, r, srcs)) in enumerate(computer.Δ_registry)
+  for (tgtidx, (_, i, j, r, srcs)) in enumerate(computer.Δ_registry)
     value = 0.0 + 0.00im
     for (srcidx, amplitude, neg) in srcs
       value += amplitude * (neg ? -ts[srcidx] : ts[srcidx])
@@ -290,24 +297,38 @@ function makehamiltonian(computer ::HFBComputer,
     hk(-k, view(out, :,2,:,2))
     # 2/3. Gamma
     for (idx, Γ) in enumerate(Γs)
-      (i, j, r, s) = computer.Γ_registry[idx]
+      (isdiag, i, j, r, _) = computer.Γ_registry[idx]
       #out[i,1,j,1] += Γ * cis(dot( k, r))
       #out[i,2,j,2] += Γ * cis(dot(-k, r))
-      phase = cis(dot( k, r))
-      out[i,1,j,1] += Γ * phase
-      out[i,2,j,2] += Γ * conj(phase)
+      if isdiag
+        @assert(i==j && all(x -> isapprox(x, 0.0), r))
+        @assert(isapprox(imag(Γ), 0.0))
+        out[i,1,j,1] += real(Γ)
+        out[i,2,j,2] += real(Γ)
+      else
+        @assert(!(i==j && all(x -> isapprox(x, 0.0), r)))
+        phase = cis(dot( k, r))
+        out[i,1,j,1] += Γ * phase
+        out[i,2,j,2] += Γ * conj(phase)
+        out[j,1,i,1] += conj(Γ * phase)
+        out[j,2,i,2] += conj(Γ) * phase
+      end
     end
 
     out[:,2,:,2] = -transpose(out[:,2,:,2])
 
     # 3/3. Delta
     for (idx, Δ) in enumerate(Δs)
-      (i, j, r, s) = computer.Δ_registry[idx]
+      (isdiag, i, j, r, _) = computer.Δ_registry[idx]
       #out[i,1,j,2] += Δ * cis(dot( k, r))
       #out[j,2,i,1] += conj(Δ) * cis(-dot(k, r))
+      @assert( !isdiag )
+      @assert( !(i==j && all(x -> isapprox(x, 0.0), r)) )
       val = Δ * cis(dot( k, r))
       out[i,1,j,2] += val
+      out[j,1,i,2] -= val
       out[j,2,i,1] += conj(val)
+      out[i,2,j,1] -= conj(val)
     end
     return reshape(out, (norb*2, norb*2))
   end
@@ -344,10 +365,18 @@ function makegreencollectors(computer::HFBComputer{O}) where {O}
     ρfunc(i ::Int, j ::Int) = sum(f .* u[i, :] .* conj(u[j, :]))
     tfunc(i ::Int, j ::Int) = sum(f .* u[i, :] .* conj(v[j, :]))
 
-    for (idx, (i, j, r)) in enumerate(ρ_registry)
-      ρout[idx] += ρfunc(i, j) * cis(-dot(k, r))
+    for (idx, (isdiag, i, j, r)) in enumerate(ρ_registry)
+      if isdiag
+        @assert((i==j && all(x -> isapprox(x, 0.0), r)))
+        ρout[idx] += real( ρfunc(i, i) )
+      else
+        @assert(!(i==j && all(x -> isapprox(x, 0.0), r)))
+        ρout[idx] += ρfunc(i, j) * cis(-dot(k, r))
+      end
     end
-    for (idx, (i, j, r)) in enumerate(t_registry)
+    for (idx, (isdiag, i, j, r)) in enumerate(t_registry)
+      @assert(!isdiag)
+      @assert(!(i==j && all(x -> isapprox(x, 0.0), r)))
       tout[idx] += tfunc(i, j) * cis(-dot(k, r))
     end
   end
@@ -404,7 +433,7 @@ function newhfbhint(computer::HFBComputer{O}, sol::HFBSolution) where {O}
   t = Dict{Tuple{O, O, Vector{Int64}}, Complex128}()
   uc = computer.unitcell
 
-  for (ρidx, (i, j, rij)) in enumerate(computer.ρ_registry)
+  for (ρidx, (_, i, j, rij)) in enumerate(computer.ρ_registry)
     iname, icoord = getorbital(uc, i)
     jname, jcoord = getorbital(uc, j)
     Ri = whichunitcell(uc, iname, fract2carte(uc, icoord))
@@ -413,7 +442,7 @@ function newhfbhint(computer::HFBComputer{O}, sol::HFBSolution) where {O}
     ρ[iname,jname,Rj-Ri] = sol.ρ[ρidx]
   end
 
-  for (tidx, (i, j, rij)) in enumerate(computer.t_registry)
+  for (tidx, (_, i, j, rij)) in enumerate(computer.t_registry)
     iname, icoord = getorbital(uc, i)
     jname, jcoord = getorbital(uc, j)
     Ri = whichunitcell(uc, iname, fract2carte(uc, icoord))

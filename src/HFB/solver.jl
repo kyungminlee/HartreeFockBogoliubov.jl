@@ -45,7 +45,8 @@ function HFBSolver(hamiltonian::FullHamiltonian{T},
 end
 
 
-
+"""
+"""
 function getnextsolution(solver ::HFBSolver{T}, sol ::HFBSolution) where {T}
   newsol = newhfbsolution(solver.hfbcomputer)
   ham = makehamiltonian(solver.hfbcomputer, sol.Γ, sol.Δ)
@@ -60,26 +61,9 @@ function getnextsolution(solver ::HFBSolver{T}, sol ::HFBSolution) where {T}
   return newsol
 end
 
-#=
-using PyCall
 
-@pyimport scipy.linalg as spl
-
-function getnextsolutionpython(solver ::HFBSolver{T}, sol ::HFBSolution) where {T}
-  newsol = newhfbsolution(solver.hfbcomputer)
-  ham = makehamiltonian(solver.hfbcomputer, sol.Γ, sol.Δ)
-  for momentum in solver.momentumgrid
-    hk = ham(momentum)
-    (eivals, eivecs) = spl.eigh(hk)
-    solver.greencollectors(momentum, eivals, eivecs, newsol.ρ, newsol.t)
-  end
-  newsol.ρ /= length(solver.momentumgrid)
-  newsol.t /= length(solver.momentumgrid)
-  newsol.Γ[:], newsol.Δ[:] = HFB.computetargetfields(solver.hfbcomputer, newsol.ρ, newsol.t)
-  return newsol
-end
-=#
-
+"""
+"""
 function getnextsolutionthreaded(solver ::HFBSolver{O},
                                  sol ::HFBSolution) where {O}
   newsol = newhfbsolution(solver.hfbcomputer)
@@ -130,7 +114,7 @@ function loop(solver ::HFBSolver{T},
               sol::HFBSolution,
               run::Integer;
               update::Function=simpleupdate,
-              precondition::Function=((x::HFBSolution) -> x),
+              precondition::Function=identity,
               progressbar::Bool=false
               ) where {T}
   sol = copy(sol)
