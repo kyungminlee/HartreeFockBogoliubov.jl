@@ -161,18 +161,19 @@
 <h2 id="hartree-fock-bogoliubov-decomposition">Hartree-Fock-Bogoliubov Decomposition</h2>
 <p><a id='Diagonal-Interaction-1'></a></p>
 <h3 id="diagonal-interaction">Diagonal Interaction</h3>
+<p>Let us first consider the <em>diagonal</em> interaction of the form</p>
 <p>
 <script type="math/tex; mode=display">
-  V c_{1}^{\dagger} c_{2}^{\dagger} c_{2} c_{1}
+  V c_{1}^{\dagger} c_{2}^{\dagger} c_{2} c_{1} ,
 </script>
 </p>
-<p>Inline Equation: $V_{1212} =  V$</p>
+<p>which is the Hermitian conjugate of itself. Following Goodman [?], this interaction decomposes into the following mean fields in the particle-hole and particle-particle channels:</p>
 <table>
 <thead>
 <tr>
 <th align="left">Interaction</th>
-<th align="left">Γ</th>
-<th align="left">Δ</th>
+<th align="left">PH Channel</th>
+<th align="left">PP Channel</th>
 </tr>
 </thead>
 <tbody>
@@ -198,6 +199,7 @@
 </tr>
 </tbody>
 </table>
+<p>Here, the equal sign '=' does not indicate equality. Rather, it refers to the contribution of the right hand side to the mean field on the left hand side. Some of the mean fields are redundant, as required by the Hermiticity of the Hamiltonian. Overall, we end up with</p>
 <p>
 <script type="math/tex; mode=display">
 \begin{aligned}
@@ -207,6 +209,7 @@
 \end{aligned}
 </script>
 </p>
+<p>in the particle-hole channel, and </p>
 <p>
 <script type="math/tex; mode=display">
 \begin{aligned}
@@ -214,19 +217,28 @@
 \end{aligned}
 </script>
 </p>
+<p>in the particle-particle channel.</p>
 <p><a id='Offdiagonal-Interaction-1'></a></p>
 <h3 id="offdiagonal-interaction">Offdiagonal Interaction</h3>
+<p>Now let us consider the <em>offdiagonal</em> interaction term of the form</p>
 <p>
 <script type="math/tex; mode=display">
-  V c_{1}^{\dagger} c_{2}^{\dagger} c_{4} c_{3}
+  V c_{1}^{\dagger} c_{2}^{\dagger} c_{4} c_{3}.
 </script>
 </p>
+<p>Given this term in the interaction, it is implied that its Hermitian conjugate</p>
+<p>
+<script type="math/tex; mode=display">
+  V^{*} c_{3}^{\dagger} c_{4}^{\dagger} c_{2} c_{1}.
+</script>
+</p>
+<p>is also included in the Hamiltonian. The two terms (the explicit term and its Hermitian conjugate) decomposes into</p>
 <table>
 <thead>
 <tr>
 <th align="left">Interaction</th>
-<th align="left">Γ</th>
-<th align="left">Δ</th>
+<th align="left">PH Channel</th>
+<th align="left">PP-Channel</th>
 </tr>
 </thead>
 <tbody>
@@ -251,9 +263,9 @@
 <td align="left">Δ(21) =  ½ V t(43)</td>
 </tr>
 <tr>
-<td align="left">:–––––––––-</td>
-<td align="left">:––––––––––––––-</td>
-<td align="left">:–––––––––––––––––––-</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
 </tr>
 <tr>
 <td align="left">V(3412) =  V*</td>
@@ -277,6 +289,7 @@
 </tr>
 </tbody>
 </table>
+<p>As we have mentioned above for the diagonal interaction terms, this table contains redundant mean fields. Overwall. we have</p>
 <p>
 <script type="math/tex; mode=display">
 \begin{aligned}
@@ -287,6 +300,7 @@
 \end{aligned}
 </script>
 </p>
+<p>in the particle-hole channel and</p>
 <p>
 <script type="math/tex; mode=display">
 \begin{aligned}
@@ -295,6 +309,7 @@
 \end{aligned}
 </script>
 </p>
+<p>in the particle-particle channel.</p>
               
             </div>
           </div>
