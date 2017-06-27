@@ -14,7 +14,7 @@ include("Hamiltonian/Generator.jl")
 include("HFB/HFB.jl")
 
 
-include("dumper.jl")
-include("dictify.jl")
+include("IO/dumper.jl")
+include("IO/dictify.jl")
 
 end
