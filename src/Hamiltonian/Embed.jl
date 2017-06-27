@@ -132,7 +132,7 @@ function embed(uc::UnitCell{O},
   rl = fract2carte(uc, getorbitalcoord(uc, hopspec.l) + hopspec.Rl)
   v = hopspec.amplitude
   @assert(i <= j && k <= l && i <= k)
-  return InteractionOffdiagonal{C}(v, i, j, k, l, ri, rj, rk, rl)
+  return EmbedInteractionOffdiagonal{C}(v, i, j, k, l, ri, rj, rk, rl)
 end
 
 
