@@ -156,7 +156,7 @@ function dumpall(io::IO, solver::HFB.HFBSolver{T}) where T
 end
 
 function dumpall(io::IO,
-                 hamspec ::Spec.SpecHamiltonian{T},
+                 hamspec ::Spec.FullHamiltonian{T},
                  solver ::HFB.HFBSolver{T},
                  currentsolution ::HFB.HFBSolution,
                  previoussolution ::HFB.HFBSolution) where T

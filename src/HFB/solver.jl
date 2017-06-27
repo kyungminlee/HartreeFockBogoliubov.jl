@@ -11,7 +11,7 @@ using ProgressMeter
 """
 mutable struct HFBSolver{T}
   # Originals
-  hamiltonian ::SpecHamiltonian{T}
+  hamiltonian ::FullHamiltonian{T}
   size ::Vector{Int64}
   temperature ::Float64
 
@@ -25,9 +25,9 @@ end
 
 """
 """
-function HFBSolver(hamiltonian::SpecHamiltonian{T},
-                   size ::Vector{Int64},
-                   temperature ::Float64;
+function HFBSolver(hamiltonian::FullHamiltonian{T},
+                   size ::AbstractVector{<:Integer},
+                   temperature ::AbstractFloat;
                    tol::Float64=eps(Float64)) where {T}
   dim = dimension(hamiltonian.unitcell)
   @assert(length(size) == dim, "dimension and size do not match: size=$(size)")

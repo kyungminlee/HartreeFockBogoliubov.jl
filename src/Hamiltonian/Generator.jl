@@ -8,7 +8,7 @@ using ..Spec
 """
     generatefast
 """
-function generatefast(uc ::UnitCell{O}, hop::SpecHoppingDiagonal) where {O}
+function generatefast(uc ::UnitCell{O}, hop::HoppingDiagonal) where {O}
   ndim = dimension(uc)
   norb = numorbital(uc)
   v = hop.amplitude
@@ -26,7 +26,7 @@ end
 """
     generatefast
 """
-function generatefast(uc ::UnitCell{O}, hop::SpecHoppingOffdiagonal) where {O}
+function generatefast(uc ::UnitCell{O}, hop::HoppingOffdiagonal) where {O}
   ndim = dimension(uc)
   norb = numorbital(uc)
   v = hop.amplitude
@@ -50,7 +50,7 @@ end
     generatefast
 """
 function generatefast(uc ::UnitCell{O},
-                      hops ::AbstractVector{SpecHopping}) where {O}
+                      hops ::AbstractVector{Hopping}) where {O}
   ndim = dimension(uc)
   norb = numorbital(uc)
   funcs = [generatefast(uc, hop) for hop in hops]
@@ -67,7 +67,7 @@ end
 """
     generatefast
 """
-function generatehoppingfast(hamiltonian ::SpecHamiltonian{O}) where {O}
+function generatehoppingfast(hamiltonian ::FullHamiltonian{O}) where {O}
   return generatefast(hamiltonian.unitcell, hamiltonian.hoppings)
 end
 

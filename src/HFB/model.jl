@@ -12,8 +12,8 @@ struct HoppingMeanField{R<:Real}
 
   function HoppingMeanField{R}(
           amplitude ::R,
-          target::Tuple{Int64, Int64, Vector{Int64}},
-          source::Tuple{Int64, Int64, Vector{Int64}},
+          target::Tuple{<:Integer, <:Integer, <:AbstractVector{<:Integer}},
+          source::Tuple{<:Integer, <:Integer, <:AbstractVector{<:Integer}},
           star ::Bool
         ) where {R<:Real}
     (i, j, Rij) = target
@@ -25,8 +25,8 @@ struct HoppingMeanField{R<:Real}
 
   function HoppingMeanField(
           amplitude ::C,
-          target::Tuple{Int64, Int64, Vector{Int64}},
-          source::Tuple{Int64, Int64, Vector{Int64}}
+          target::Tuple{<:Integer, <:Integer, <:AbstractVector{<:Integer}},
+          source::Tuple{<:Integer, <:Integer, <:AbstractVector{<:Integer}}
         ) where {C<:Number}
     (i, j, Rij) = target
     (k, l, Rkl) = source
@@ -53,11 +53,12 @@ struct PairingMeanField{R<:Real}
   source ::Tuple{Int64, Int64, Vector{Int64}}
   negate ::Bool
 
-  function PairingMeanField{R}(amplitude ::R,
-                               target::Tuple{Int64, Int64, Vector{Int64}},
-                               source::Tuple{Int64, Int64, Vector{Int64}},
-                               negate ::Bool
-                               ) where {R<:Real}
+  function PairingMeanField{R}(
+          amplitude ::R,
+          target::Tuple{<:Integer, <:Integer, <:AbstractVector{<:Integer}},
+          source::Tuple{<:Integer, <:Integer, <:AbstractVector{<:Integer}},
+          negate ::Bool
+        ) where {R<:Real}
     (i, j, Rij) = target
     (k, l, Rkl) = source
     @assert(i <= j)
@@ -67,8 +68,8 @@ struct PairingMeanField{R<:Real}
 
   function PairingMeanField{R}(
           amplitude ::R,
-          target::Tuple{Int64, Int64, Vector{Int64}},
-          source::Tuple{Int64, Int64, Vector{Int64}}
+          target::Tuple{<:Integer, <:Integer, <:AbstractVector{<:Integer}},
+          source::Tuple{<:Integer, <:Integer, <:AbstractVector{<:Integer}}
         ) where {R<:Real}
     (i, j, Rij) = target
     (k, l, Rkl) = source
@@ -90,7 +91,7 @@ end
 
 mutable struct HFBHamiltonian{O}
   unitcell ::UnitCell{O}
-  hoppings ::Vector{SpecHopping}
+  hoppings ::Vector{Hopping}
   particle_hole_interactions ::Vector{HoppingMeanField}
   particle_particle_interactions ::Vector{PairingMeanField}
 end
@@ -98,7 +99,7 @@ end
 
 function HFBHamiltonian(
         unitcell ::UnitCell{O},
-        hoppings ::AbstractVector{SpecHopping},
+        hoppings ::AbstractVector{Hopping},
         particle_hole_interactions ::AbstractVector{HoppingMeanField},
         particle_particle_interactions ::AbstractVector{PairingMeanField}
       ) where {O}
@@ -109,7 +110,7 @@ function HFBHamiltonian(
 end
 
 
-function HFBHamiltonian(full_hamiltonian ::SpecHamiltonian{O}) where {O}
+function HFBHamiltonian(full_hamiltonian ::FullHamiltonian{O}) where {O}
   unitcell = full_hamiltonian.unitcell
   hoppings = full_hamiltonian.hoppings
   model = HFBHamiltonian{O}(unitcell, hoppings, [], [])
@@ -124,7 +125,7 @@ end
 Add diagonal interaction
 """
 function addinteraction!(model ::HFBHamiltonian{O},
-                         specint ::SpecInteractionDiagonal{R}) where {O,R<:Real}
+                         specint ::InteractionDiagonal{R}) where {O,R<:Real}
   v = specint.amplitude
   (i, j) = (specint.i,  specint.j )
   (Ri, Rj) = (specint.Ri, specint.Rj)

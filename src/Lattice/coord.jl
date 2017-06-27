@@ -25,7 +25,9 @@ struct FractCoord
   whole ::Vector{Int64}
   fraction ::Vector{Float64}
 
-  function FractCoord(w ::AbstractVector{Int64}, f ::AbstractVector{Float64}; tol=sqrt(eps(Float64)))
+  function FractCoord(w ::AbstractVector{<:Integer},
+                      f ::AbstractVector{<:AbstractFloat};
+                      tol::Real=sqrt(eps(Float64)))
     @assert length(w) == length(f)
     @assert all(x -> 0 <= x < 1, f)
     neww = copy(w)
@@ -41,7 +43,8 @@ struct FractCoord
     return new(neww, newf)
   end
 
-  function FractCoord(coord ::AbstractVector{Float64}; tol=sqrt(eps(Float64)))
+  function FractCoord(coord ::AbstractVector{<:AbstractFloat};
+                      tol::Real=sqrt(eps(Float64)))
     w = Int64[fld(x,1) for x in coord]
     f = Float64[mod(x,1) for x in coord]
     return FractCoord(w, f; tol=tol)
@@ -79,12 +82,12 @@ function -(fc ::FractCoord)
 end
 
 
-function +(fractcoord ::FractCoord, R ::Vector{Int64})
+function +(fractcoord ::FractCoord, R ::AbstractVector{<:Integer})
   return FractCoord(fractcoord.whole + R, fractcoord.fraction)
 end
 
 
-function -(fractcoord ::FractCoord, R ::Vector{Int64})
+function -(fractcoord ::FractCoord, R ::AbstractVector{<:Integer})
   return FractCoord(fractcoord.whole - R, fractcoord.fraction)
 end
 
@@ -123,7 +126,8 @@ end
   * `latticevectors ::Array{Float64, 2}`
   * `fc ::FractCoord`
 """
-function fract2carte(latticevectors ::AbstractArray{Float64, 2}, fc ::FractCoord)
+function fract2carte(latticevectors ::AbstractArray{<:AbstractFloat, 2},
+                     fc ::FractCoord)
   mc = fc.whole + fc.fraction
   cc = latticevectors * mc
   return CarteCoord(cc)
@@ -137,7 +141,9 @@ end
   * `latticevectors ::Array{Float64, 2}`
   * `cc ::CarteCoord`
 """
-function carte2fract(latticevectors ::AbstractArray{Float64, 2}, cc ::CarteCoord; tol=sqrt(eps(Float64)))
+function carte2fract(latticevectors ::AbstractArray{<:AbstractFloat, 2},
+                     cc ::CarteCoord;
+                     tol=sqrt(eps(Float64)))
   fc = inv(latticevectors) * cc
   w = Int64[fld(x, 1) for x in fc]
   f = Float64[mod(x, 1) for x in fc]

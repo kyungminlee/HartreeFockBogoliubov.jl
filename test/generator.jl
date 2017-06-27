@@ -42,7 +42,7 @@ end
   t1 = 10.0 + 0.1im
   t2 = 1.0 + 0.01im
 
-  hamspec = SpecHamiltonian(uc)
+  hamspec = FullHamiltonian(uc)
   addhopping!(hamspec, hoppingbycarte(uc, t0, "A", [0.0]))
   addhopping!(hamspec, hoppingbycarte(uc, t1, "A", "A", [0.0], [1.0]))
   addhopping!(hamspec, hoppingbycarte(uc, t2, "A", "A", [0.0], [2.0]))
@@ -77,7 +77,7 @@ end
   addorbital!(uc, "B", carte2fract(uc, [0.0,-1.0]))
   #@show uc
 
-  hopspecs = Spec.SpecHopping[]
+  hopspecs = Spec.Hopping[]
   t1 = 1.0 + 0.1im
   for r in [a1, a2, a3]
     push!( hopspecs, Spec.hoppingbycarte(uc, t1, "A", "B", [0.0, 0.0], r) )
