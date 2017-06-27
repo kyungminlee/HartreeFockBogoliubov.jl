@@ -1,6 +1,6 @@
 # Hartree-Fock-Bogoliubov Theory
 
-This document contains basics of Hartree-Fock-Bogoliubov Theory.
+This document contains basics of Hartree-Fock-Bogoliubov Theory. We will follow [Goodman][Goodman80].
 
 ```math
   H =  \sum_{ij} T_{ij} c_{i}^{\dagger} c_{j}
@@ -24,7 +24,7 @@ Let us first consider the *diagonal* interaction of the form
 ```math
   V c_{1}^{\dagger} c_{2}^{\dagger} c_{2} c_{1} ,
 ```
-which is the Hermitian conjugate of itself. Following Goodman [?], this interaction decomposes into the following mean fields in the particle-hole and particle-particle channels:
+which is the Hermitian conjugate of itself. Following [Goodman][Goodman80], this interaction decomposes into the following mean fields in the particle-hole and particle-particle channels:
 
 | Interaction  | PH Channel       | PP Channel         |
 |:------------ |:---------------- |:------------------ |
@@ -89,3 +89,8 @@ in the particle-hole channel and
 \end{aligned}
 ```
 in the particle-particle channel.
+
+
+
+
+[Goodman80]: http://escholarship.org/uc/item/3xm630cr "Alan Goodman, Finite-Temperature Hartree-Fock-Bogoliubov Theory, LBNL Paper LBL-11151 (1980)"
