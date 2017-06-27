@@ -48,21 +48,17 @@ end
   addhopping!(hamspec, hoppingbycarte(uc, t2, "A", "A", [0.0], [2.0]))
 
   func1 = Generator.generatefast(uc, hamspec.hoppings)
-  hamembed = embed(hamspec)
-  func2 = Generator.generatefast(uc, hamembed.hoppings)
 
   for kx in linspace(0.0, 2.0*pi, 16+1)
     out1 = zeros(Complex128, (1,1))
     out2 = zeros(Complex128, (1,1))
     func1([kx], out1)
-    func2([kx], out2)
     ek = (t0
           + t1 * exp(1im * kx) + conj(t1) * exp(-1im * kx)
           + t2 * exp(2im * kx) + conj(t2) * exp(-2im * kx) )
     #@show out[1,1]
     #@show ek
     @test isapprox(out1[1,1], ek)
-    @test isapprox(out2[1,1], ek)
   end
 end
 
@@ -89,9 +85,6 @@ end
 
   func1 = Generator.generatefast(uc, hopspecs)
 
-  hopembed = Embed.EmbedHopping[Embed.embed(uc, hop) for hop in hopspecs]
-  func2 = Generator.generatefast(uc, hopembed)
-
   for kx in linspace(4.0, 4.0, 8)
     for ky in linspace(-4.0, 4.0, 8)
       k = [kx, ky]
@@ -103,12 +96,9 @@ end
       end
 
       out1 = zeros(Complex128, (2, 2))
-      out2 = zeros(Complex128, (2, 2))
       func1(k, out1)
-      func2(k, out2)
 
       @test isapprox(out1, mat)
-      @test isapprox(out2, mat)
     end
   end
 end

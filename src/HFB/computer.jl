@@ -106,7 +106,7 @@ Hamiltonian.
 """
 mutable struct HFBComputer{O}
   unitcell ::UnitCell{O}
-  hoppings ::Vector{Embed.EmbedHopping}
+  hoppings ::Vector{Spec.SpecHopping}
   temperature ::Float64
 
   fermi ::Function
@@ -117,7 +117,7 @@ mutable struct HFBComputer{O}
 end
 
 function HFBComputer(unitcell::UnitCell{O},
-                     hoppings::AbstractVector{Embed.EmbedHopping},
+                     hoppings::AbstractVector{Spec.SpecHopping},
                      temperature::Real) where {O}
  fermi = fermidirac(temperature)
  return HFBComputer{O}(unitcell, hoppings, temperature, fermi, [], [], [], [])
@@ -133,7 +133,7 @@ function HFBComputer(ham::HFBHamiltonian{T},
   dim = dimension(ham.unitcell)
 
   unitcell = ham.unitcell
-  hoppings = [Embed.embed(unitcell, hop) for hop in ham.hoppings]
+  hoppings = ham.hoppings
   fermi = fermidirac(temperature)
 
   function getdistance(i ::Int64, j ::Int64, Rij::AbstractVector{Int64})
@@ -187,7 +187,7 @@ function HFBComputer(ham::HFBHamiltonian{T},
     (i,j,Rij) = hopmf.target
     (k,l,Rkl) = hopmf.source
     srcidx = collect_reg[k,l,Rkl][1]
-    star = hopmf.targetconj
+    star = hopmf.star
     if abs(v) > eps(Float64)
       push!( deploy_reg[i,j,Rij][2][4], (srcidx, v, star) )
     end

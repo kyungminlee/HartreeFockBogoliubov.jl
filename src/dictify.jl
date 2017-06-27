@@ -4,7 +4,6 @@ using DataStructures
 
 using ..Lattice
 import ..Spec
-import ..Embed
 import ..HFB
 
 export dictify, objectify
@@ -81,63 +80,13 @@ function dictify(hamspec::Spec.SpecHamiltonian{O}) where {O}
   )
 end
 
-function dictify(hopdiag::Embed.EmbedHoppingDiagonal{R}) where {R}
-  OrderedDict("type" => "EmbedHoppingDiagonal",
-              "amplitude" => hopdiag.amplitude,
-              "i" => hopdiag.i,
-              "ri" => hopdiag.ri)
-end
-
-function dictify(hopoff::Embed.EmbedHoppingOffdiagonal{C}) where {C}
-  OrderedDict("type" => "EmbedHoppingOffdiagonal",
-              "amplitude" => hopoff.amplitude,
-              "i" => hopoff.i,
-              "j" => hopoff.j,
-              "ri" => hopoff.ri,
-              "rj" => hopoff.rj,
-              )
-end
-
-function dictify(intdiag ::Embed.EmbedInteractionDiagonal{R}) where {R}
-  OrderedDict("type" => "EmbedInteractionDiagonal",
-              "amplitude" => intdiag.amplitude,
-              "i" => intdiag.i,
-              "j" => intdiag.j,
-              "ri" => intdiag.ri,
-              "rj" => intdiag.rj,
-              )
-end
-
-function dictify(intoff ::Embed.EmbedInteractionOffdiagonal{C}) where {C}
-  OrderedDict("type" => "EmbedInteractionOffdiagonal",
-              "amplitude" => intoff.amplitude,
-              "i" => intoff.i,
-              "j" => intoff.j,
-              "k" => intoff.k,
-              "l" => intoff.l,
-              "ri" => intoff.ri,
-              "rj" => intoff.rj,
-              "rk" => intoff.rk,
-              "rl" => intoff.rl,
-              )
-end
-
-function dictify(hamembed::Embed.EmbedHamiltonian{O}) where {O}
-  OrderedDict("type" => "EmbedHamiltonian",
-              "unitcell" => dictify(hamembed.unitcell),
-              "hoppings" => dictify(hamembed.hoppings),
-              "interactions" => dictify(hamembed.interactions)
-  )
-end
-
 function dictify(hop::HFB.HoppingMeanField{R}) where {R}
   OrderedDict(
     "type" => "HoppingMeanField",
     "amplitude" => hop.amplitude,
     "target" => dictify(hop.target),
     "source" => dictify(hop.source),
-    "targetconj" => hop.targetconj,
-    "sourceconj" => hop.sourceconj,
+    "star" => hop.star,
   )
 end
 
@@ -232,7 +181,7 @@ const DICTHANDLER = Dict(
     amplitude = objectify(d["amplitude"])
     i = objectify(d["i"])
     Ri = objectify(d["Ri"])
-    return Spec.HoppingDiagonal(amplitude, i, Ri)
+    return Spec.SpecHoppingDiagonal(amplitude, i, Ri)
   end,
   "SpecHoppingOffdiagonal" =>  d -> begin
     amplitude = objectify(d["amplitude"])
@@ -240,7 +189,7 @@ const DICTHANDLER = Dict(
     j = objectify(d["j"])
     Ri = objectify(d["Ri"])
     Rj = objectify(d["Rj"])
-    return Spec.HoppingOffdiagonal(amplitude, i, j, Ri, Rj)
+    return Spec.SpecHoppingOffdiagonal(amplitude, i, j, Ri, Rj)
   end,
   "SpecInteractionDiagonal" => d -> begin
   amplitude = objectify(d["amplitude"])
@@ -248,7 +197,7 @@ const DICTHANDLER = Dict(
   j = objectify(d["j"])
   Ri = objectify(d["Ri"])
   Rj = objectify(d["Rj"])
-    return Spec.InteractionDiagonal(amplitude, i, j, Ri, Rj)
+    return Spec.SpecInteractionDiagonal(amplitude, i, j, Ri, Rj)
   end,
   "SpecInteractionOffdiagonal" => d-> begin
     amplitude = objectify(d["amplitude"])
@@ -260,7 +209,7 @@ const DICTHANDLER = Dict(
     Rj = objectify(d["Rj"])
     Rk = objectify(d["Rk"])
     Rl = objectify(d["Rl"])
-    Spec.InteractionOffdiagonal(amplitude,
+    Spec.SpecInteractionOffdiagonal(amplitude,
                                 i, j, k, l,
                                 Ri, Rj, Rk, Rl)
   end,
@@ -268,7 +217,7 @@ const DICTHANDLER = Dict(
     unitcell = objectify(d["unitcell"])
     hoppings = objectify(d["hoppings"])
     interactions = objectify(d["interactions"])
-    hamspec = Spec.Hamiltonian(unitcell)
+    hamspec = Spec.SpecHamiltonian(unitcell)
     for hop in hoppings
       Spec.addhopping!(hamspec, hop)
     end
@@ -277,58 +226,12 @@ const DICTHANDLER = Dict(
     end
     return hamspec
   end,
-
-  "EmbedHoppingDiagonal" => d -> begin
-    amplitude = objectify(d["amplitude"])
-    i = objectify(d["i"])
-    ri = objectify(d["ri"])
-    Embed.HoppingDiagonal(amplitude, i, ri)
-  end,
-  "EmbedHoppingOffdiagonal" =>  d -> begin
-    amplitude = objectify(d["amplitude"])
-    i = objectify(d["i"])
-    j = objectify(d["j"])
-    ri = objectify(d["ri"])
-    rj = objectify(d["rj"])
-    Embed.HoppingOffdiagonal(amplitude, i, j, ri, rj)
-  end,
-  "EmbedInteractionDiagonal" => d -> begin
-    amplitude = objectify(d["amplitude"])
-    i = objectify(d["i"])
-    j = objectify(d["j"])
-    ri = objectify(d["ri"])
-    rj = objectify(d["rj"])
-    Embed.InteractionDiagonal(amplitude, i, j, ri, rj)
-  end,
-  "EmbedInteractionOffdiagonal" => d-> begin
-    amplitude = objectify(d["amplitude"])
-    i = objectify(d["i"])
-    j = objectify(d["j"])
-    k = objectify(d["k"])
-    l = objectify(d["l"])
-    ri = objectify(d["ri"])
-    rj = objectify(d["rj"])
-    rk = objectify(d["rk"])
-    rl = objectify(d["rl"])
-    Embed.InteractionOffdiagonal(amplitude,
-                                 i, j, k, l,
-                                 ri, rj, rk, rl)
-  end,
-  "EmbedHamiltonian" => d -> begin
-    unitcell = objectify(d["unitcell"])
-    hoppings = Embed.Hopping[objectify(d["hoppings"])...]
-    interactions = Embed.Interaction[objectify(d["interactions"])...]
-    hamembed = Embed.Hamiltonian(unitcell, hoppings, interactions)
-    return hamembed
-  end,
-
   "HoppingMeanField" => d -> begin
     amplitude = d["amplitude"]
     target = objectify( d["target"] )
     source = objectify( d["source"] )
-    targetconj = d["targetconj"]
-    sourceconj = d["sourceconj"]
-    return HFB.HoppingMeanField(amplitude, target, source, targetconj, sourceconj)
+    star = d["star"]
+    return HFB.HoppingMeanField(amplitude, target, source, star)
   end,
 
   "PairingMeanField" => d -> begin
@@ -341,7 +244,7 @@ const DICTHANDLER = Dict(
 
   "HFBHamiltonian" => d -> begin
     unitcell = objectify(d["unitcell"])
-    hoppings = Embed.Hopping[objectify(d["hoppings"])...]
+    hoppings = Spec.SpecHopping[objectify(d["hoppings"])...]
     particle_hole_interactions = HFB.HoppingMeanField[objectify(d["particle_hole_interactions"])...]
     particle_particle_interactions = HFB.PairingMeanField[objectify(d["particle_particle_interactions"])...]
     return HFB.HFBHamiltonian(unitcell,
@@ -352,7 +255,7 @@ const DICTHANDLER = Dict(
 
   "HFBComputer" => d -> begin
     unitcell = objectify(d["unitcell"])
-    hoppings = Embed.Hopping[objectify(d["hoppings"])...]
+    hoppings = Spec.SpecHopping[objectify(d["hoppings"])...]
     temperature = d["temperature"]
     ρ_registry = objectify(d["rho_registry"])
     t_registry = objectify(d["t_registry"])
@@ -382,14 +285,5 @@ function objectify(dict ::OrderedDict)
     return dict
   end
 end
-
-  #=
-  dictify(obj::Number) = obj
-  dictify(obj::AbstractString) = obj
-  dictify(obj::AbstractArray) = [dictify(x) for x in obj]
-  dictify(obj::Dict) = Dict(dictify(k) => dictify(v) for (k, v) in obj)
-  dictify(obj::Symbol) = Dict("type" => "Symbol", "value" => string(obj))
-  =#
-
 
 end # module Objectify
