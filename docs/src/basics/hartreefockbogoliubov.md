@@ -84,8 +84,8 @@ As we have mentioned above for the diagonal interaction terms, this table contai
 in the particle-hole channel and
 ```math
 \begin{aligned}
-\Delta_{12} =  V   t_{34} \\
-\Delta_{34} =  V^* t_{12}
+\Delta_{12} &=  V   t_{34} \\
+\Delta_{34} &=  V^* t_{12}
 \end{aligned}
 ```
 in the particle-particle channel.
