@@ -34,13 +34,17 @@ mutable struct UnitCell{O}
   reducedreciprocallatticevectors ::Array{Float64, 2}
   reciprocallatticevectors ::Array{Float64, 2}
   orbitalindices ::Dict{O, Int64}
-  function UnitCell{O}(latticevectors ::Array{<:Real, 2},
+  function UnitCell{O}(latticevectors ::AbstractArray{<:Real, 2},
                        orbitals ::AbstractVector{Tuple{O, FractCoord}},
                        reducedreciprocallatticevectors ::AbstractArray{<:Real, 2},
                        reciprocallatticevectors ::AbstractArray{<:Real, 2},
-                       orbitalindices ::Dict{O, Int64}) where {O}
+                       orbitalindices ::Dict{O, Int}) where {O}
     @assert(! (O <: Integer), "OrbitalType should not be integer to avoid confusion")
-    new{O}(latticevectors, orbitals, reducedreciprocallatticevectors, reciprocallatticevectors, orbitalindices)
+    new{O}(latticevectors,
+           orbitals,
+           reducedreciprocallatticevectors,
+           reciprocallatticevectors,
+           orbitalindices)
   end
 end
 
@@ -57,7 +61,7 @@ end
   # Optional Arguments
   * `tol=sqrt(eps(Float64))`: Tolerance
 """
-function newunitcell(latticeconstant ::Float64;
+function newunitcell(latticeconstant ::AbstractFloat;
                      OrbitalType::DataType=Any,
                      tol=sqrt(eps(Float64)))
   return newunitcell(reshape([latticeconstant], (1,1));
@@ -75,7 +79,7 @@ end
   # Optional Arguments
   * `tol=sqrt(eps(Float64))`: Epsilon
 """
-function newunitcell(latticevectors ::AbstractArray{Float64, 2};
+function newunitcell(latticevectors ::AbstractArray{<:AbstractFloat, 2};
                      OrbitalType::DataType=Any,
                      tol=sqrt(eps(Float64)))
   (ndim, ndim_) = size(latticevectors)
@@ -91,9 +95,9 @@ function newunitcell(latticevectors ::AbstractArray{Float64, 2};
 end
 
 
-function newunitcell(latticevectors::AbstractVector{A1};
+function newunitcell(latticevectors::AbstractVector{<:AbstractVector};
                      OrbitalType::DataType=Any,
-                     tol=sqrt(eps(Float64))) where {A1<:AbstractVector}
+                     tol=sqrt(eps(Float64)))
   lv = hcat(latticevectors...)
   return newunitcell(lv; OrbitalType=OrbitalType, tol=tol)
 end
@@ -204,7 +208,7 @@ end
   * `uc ::UnitCell{T}`
   * `name ::T`
 """
-function getorbitalindexcoord(uc ::UnitCell{T}, name::T) where {T}
+function getorbitalindexcoord(uc ::UnitCell{O}, name::O) where {O}
   idx = getorbitalindex(uc, name)
   coord = getorbitalcoord(uc, idx)
   return (idx, coord)
@@ -269,8 +273,11 @@ end
   * `latticevectors ::Array{Float64, 2}`
   * `cc ::CarteCoord`
 """
-function carte2fract(unitcell ::UnitCell, cc ::CarteCoord; tol::Real=sqrt(eps(Float64)))
-  fc = inv(unitcell.latticevectors) * cc
+function carte2fract(unitcell ::UnitCell,
+                     cc ::CarteCoord;
+                     tol::Real=sqrt(eps(Float64)))
+  #fc = inv(unitcell.latticevectors) * cc
+  fc = transpose(unitcell.reducedreciprocallatticevectors) * cc
   w = Int64[fld(x, 1.0) for x in fc]
   f = Float64[mod(x, 1.0) for x in fc]
   for i in length(w)
@@ -288,8 +295,8 @@ end
 
   Return which unit cell the specificied orbital/cartesian coordinates belongs to.
 """
-function whichunitcell(uc ::UnitCell{T}, name ::T, cc ::CarteCoord;
-                       tol::Real=sqrt(eps(Float64))) where {T}
+function whichunitcell(uc ::UnitCell{O}, name ::O, cc ::CarteCoord;
+                       tol::Real=sqrt(eps(Float64))) where {O}
   fc1 = getorbitalcoord(uc, name)
   fc2 = carte2fract(uc, cc)
   @assert(isapprox(fc1.fraction, fc2.fraction; rtol=tol),
@@ -298,8 +305,9 @@ function whichunitcell(uc ::UnitCell{T}, name ::T, cc ::CarteCoord;
   return R
 end
 
-function whichunitcell(uc ::UnitCell{T}, name ::T, fc ::FractCoord;
-                       tol::Real=sqrt(eps(Float64))) where {T}
+
+function whichunitcell(uc ::UnitCell{O}, name ::O, fc ::FractCoord;
+                       tol::Real=sqrt(eps(Float64))) where {O}
   fc1 = getorbitalcoord(uc, name)
   fc2 = fc
   @assert(isapprox(fc1.fraction, fc2.fraction; rtol=tol),
@@ -309,13 +317,13 @@ function whichunitcell(uc ::UnitCell{T}, name ::T, fc ::FractCoord;
 end
 
 
-function zeros(uc::UnitCell)
+function zeros(uc::UnitCell; dtype::DataType=Complex128)
   norb = numorbital(uc)
-  Base.zeros(Complex128, (norb, norb))
+  Base.zeros(dtype, (norb, norb))
 end
 
 
-function momentumgrid(uc::UnitCell, shape::AbstractVector{Int64})
+function momentumgrid(uc::UnitCell, shape::AbstractVector{<:Integer})
   @assert(length(shape) == dimension(uc), "dimension mismatch")
   @assert(all((x) -> x>0, shape), "shape should be positive")
 

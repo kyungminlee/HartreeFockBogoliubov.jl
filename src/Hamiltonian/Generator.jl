@@ -3,37 +3,36 @@ module Generator
 using ..Lattice
 
 using ..Spec
-using ..Embed
+
 
 """
     generatefast
 """
-function generatefast(uc ::UnitCell{O},
-                      hop ::EmbedHoppingDiagonal{R}) where {O, R<:Real}
+function generatefast(uc ::UnitCell{O}, hop::HoppingDiagonal) where {O}
   ndim = dimension(uc)
   norb = numorbital(uc)
   v = hop.amplitude
   i = hop.i
 
   function(momentum ::AbstractVector{Float64}, out::AbstractArray{Complex128, 2})
-      @assert(size(momentum) == (ndim,))
-      @assert(size(out) == (norb, norb))
-      out[i,i] += v
-      return out
-    end
+    @assert(size(momentum) == (ndim,))
+    @assert(size(out) == (norb, norb))
+    out[i,i] += v
+    return out
+  end
 end
 
 
 """
     generatefast
 """
-function generatefast(uc ::UnitCell{O},
-                      hop::EmbedHoppingOffdiagonal{C}) where {O, C<:Number}
+function generatefast(uc ::UnitCell{O}, hop::HoppingOffdiagonal) where {O}
   ndim = dimension(uc)
   norb = numorbital(uc)
   v = hop.amplitude
   (i, j) = (hop.i, hop.j)
-  (ri, rj) = (hop.ri, hop.rj)
+  ri = fract2carte(uc, getorbitalcoord(uc, hop.i) + hop.Ri)
+  rj = fract2carte(uc, getorbitalcoord(uc, hop.j) + hop.Rj)
   rij = rj - ri
 
   function(momentum ::AbstractVector{Float64}, out::AbstractArray{Complex128, 2})
@@ -51,7 +50,7 @@ end
     generatefast
 """
 function generatefast(uc ::UnitCell{O},
-                      hops ::AbstractVector{EmbedHopping}) where {O}
+                      hops ::AbstractVector{Hopping}) where {O}
   ndim = dimension(uc)
   norb = numorbital(uc)
   funcs = [generatefast(uc, hop) for hop in hops]
@@ -66,45 +65,9 @@ end
 
 
 """
-    generatehoppingfast
-"""
-function generatehoppingfast(hamiltonian ::EmbedHamiltonian{O}) where {O}
-  return generatefast(hamiltonian.unitcell, hamiltonian.hoppings)
-end
-
-
-"""
     generatefast
 """
-function generatefast(uc ::UnitCell{O}, hopspec::SpecHoppingDiagonal) where {O}
-  hopembed = Embed.embed(uc, hopspec)
-  return generatefast(uc, hopembed)
-end
-
-
-"""
-    generatefast
-"""
-function generatefast(uc ::UnitCell{O}, hopspec::SpecHoppingOffdiagonal) where {O}
-  hopembed = Embed.embed(uc, hopspec)
-  return generatefast(uc, hopembed)
-end
-
-
-"""
-    generatefast
-"""
-function generatefast(uc ::UnitCell{O},
-                      hopspecs ::AbstractVector{SpecHopping}) where {O}
-  hopembeds = Embed.EmbedHopping[Embed.embed(uc, hopspec) for hopspec in hopspecs]
-  return generatefast(uc, hopembeds)
-end
-
-
-"""
-    generatefast
-"""
-function generatehoppingfast(hamiltonian ::SpecHamiltonian{O}) where {O}
+function generatehoppingfast(hamiltonian ::FullHamiltonian{O}) where {O}
   return generatefast(hamiltonian.unitcell, hamiltonian.hoppings)
 end
 

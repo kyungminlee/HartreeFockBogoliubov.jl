@@ -4,8 +4,8 @@
   addorbital!(uc, "A", FractCoord([0,0], [0.5, 0.0]))
   addorbital!(uc, "B", FractCoord([0,0], [0.0, 0.5]))
 
-  #hopspec_dia = SpecHoppingDiagonal(1.0, "A", [0, 0])
-  #hopspec_off = SpecHoppingOffdiagonal(1.0, "A", "B", [0, 0], [0, 0])
+  #hopspec_dia = HoppingDiagonal(1.0, "A", [0, 0])
+  #hopspec_off = HoppingOffdiagonal(1.0, "A", "B", [0, 0], [0, 0])
 
   #@show hopspec_dia
   #@show hopspec_off

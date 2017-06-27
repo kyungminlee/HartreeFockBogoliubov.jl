@@ -1,4 +1,3 @@
-export fermidirac
 export HFBComputer
 export HFBSolution
 export HFBHint
@@ -10,68 +9,6 @@ export makesourcefields,
        newhfbsolution,
        randomize!,
        fixhfbsolution
-
-
-"""
-    fermidirac
-
-Return the Fermi-Dirac distribution function for the given temperature.
-For energy whose absolute value is less than `etol`, return 0.5.
-"""
-function fermidirac(temperature ::T;
-                    ttol::T=eps(T),
-                    etol::T=sqrt(eps(T))) where {T <:AbstractFloat}
-  @assert(temperature >= 0)
-  @assert(ttol >= 0)
-  @assert(etol >= 0)
-  if temperature < ttol
-    function(e ::T)
-      if e <= -etol
-        return T(1.0)
-      elseif e < etol
-        return T(0.5)
-      else
-        return T(0.0)
-      end
-    end
-  else
-    beta = 1.0 / temperature
-    function(e ::T)
-      return T(1.0 / (exp(beta * e) + 1.0))
-    end
-  end
-end
-
-
-"""
-    fermidirac
-
-Return the Fermi-Dirac distribution function for the given temperature.
-For energy whose absolute value is less than `etol`, return 0.5.
-"""
-function fermidirac(temperature ::T;
-                    ttol::Float64=eps(Float64),
-                    etol::Float64=sqrt(eps(Float64))) where {T <:Integer}
-  @assert(temperature >= 0, "temperature should be non-negative")
-  @assert(ttol >= 0, "ttol should be non-negative")
-  @assert(etol >= 0, "etol should be non-negative")
-  if temperature == 0
-    function(e ::Float64)
-      if e <= -etol
-        return 1.0
-      elseif e < etol
-        return 0.5
-      else
-        return 0.0
-      end
-    end
-  else
-    beta = 1.0 / Float64(temperature)
-    function(e ::Float64)
-      return 1.0 / (exp(beta * e) + 1.0)
-    end
-  end
-end
 
 
 """
@@ -106,7 +43,7 @@ Hamiltonian.
 """
 mutable struct HFBComputer{O}
   unitcell ::UnitCell{O}
-  hoppings ::Vector{Embed.EmbedHopping}
+  hoppings ::Vector{Spec.Hopping}
   temperature ::Float64
 
   fermi ::Function
@@ -117,7 +54,7 @@ mutable struct HFBComputer{O}
 end
 
 function HFBComputer(unitcell::UnitCell{O},
-                     hoppings::AbstractVector{Embed.EmbedHopping},
+                     hoppings::AbstractVector{Spec.Hopping},
                      temperature::Real) where {O}
  fermi = fermidirac(temperature)
  return HFBComputer{O}(unitcell, hoppings, temperature, fermi, [], [], [], [])
@@ -133,10 +70,10 @@ function HFBComputer(ham::HFBHamiltonian{T},
   dim = dimension(ham.unitcell)
 
   unitcell = ham.unitcell
-  hoppings = [Embed.embed(unitcell, hop) for hop in ham.hoppings]
+  hoppings = ham.hoppings
   fermi = fermidirac(temperature)
 
-  function getdistance(i ::Int64, j ::Int64, Rij::AbstractVector{Int64})
+  function getdistance(i ::Integer, j ::Integer, Rij::AbstractVector{<:Integer})
     ri, rj = getorbitalcoord(unitcell, i), getorbitalcoord(unitcell, j)
     rj = rj + Rij
     ri, rj = fract2carte(unitcell, ri), fract2carte(unitcell, rj)
@@ -187,7 +124,7 @@ function HFBComputer(ham::HFBHamiltonian{T},
     (i,j,Rij) = hopmf.target
     (k,l,Rkl) = hopmf.source
     srcidx = collect_reg[k,l,Rkl][1]
-    star = hopmf.targetconj
+    star = hopmf.star
     if abs(v) > eps(Float64)
       push!( deploy_reg[i,j,Rij][2][4], (srcidx, v, star) )
     end
@@ -397,10 +334,10 @@ function makegreencollectors(computer::HFBComputer{O}) where {O}
     u = ψ[:, 1, :]
     v = ψ[:, 2, :]
 
-    function ρfunc(i ::Int64, j ::Int64)
+    function ρfunc(i ::Integer, j ::Integer)
       sum(f .* u[i, :] .* conj(u[j, :]))
     end
-    function tfunc(i ::Int64, j ::Int64)
+    function tfunc(i ::Integer, j ::Integer)
       sum(f .* u[i, :] .* conj(v[j, :]))
     end
 

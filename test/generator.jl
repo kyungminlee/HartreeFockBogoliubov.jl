@@ -42,27 +42,23 @@ end
   t1 = 10.0 + 0.1im
   t2 = 1.0 + 0.01im
 
-  hamspec = SpecHamiltonian(uc)
+  hamspec = FullHamiltonian(uc)
   addhopping!(hamspec, hoppingbycarte(uc, t0, "A", [0.0]))
   addhopping!(hamspec, hoppingbycarte(uc, t1, "A", "A", [0.0], [1.0]))
   addhopping!(hamspec, hoppingbycarte(uc, t2, "A", "A", [0.0], [2.0]))
 
   func1 = Generator.generatefast(uc, hamspec.hoppings)
-  hamembed = embed(hamspec)
-  func2 = Generator.generatefast(uc, hamembed.hoppings)
 
   for kx in linspace(0.0, 2.0*pi, 16+1)
     out1 = zeros(Complex128, (1,1))
     out2 = zeros(Complex128, (1,1))
     func1([kx], out1)
-    func2([kx], out2)
     ek = (t0
           + t1 * exp(1im * kx) + conj(t1) * exp(-1im * kx)
           + t2 * exp(2im * kx) + conj(t2) * exp(-2im * kx) )
     #@show out[1,1]
     #@show ek
     @test isapprox(out1[1,1], ek)
-    @test isapprox(out2[1,1], ek)
   end
 end
 
@@ -81,16 +77,13 @@ end
   addorbital!(uc, "B", carte2fract(uc, [0.0,-1.0]))
   #@show uc
 
-  hopspecs = Spec.SpecHopping[]
+  hopspecs = Spec.Hopping[]
   t1 = 1.0 + 0.1im
   for r in [a1, a2, a3]
     push!( hopspecs, Spec.hoppingbycarte(uc, t1, "A", "B", [0.0, 0.0], r) )
   end
 
   func1 = Generator.generatefast(uc, hopspecs)
-
-  hopembed = Embed.EmbedHopping[Embed.embed(uc, hop) for hop in hopspecs]
-  func2 = Generator.generatefast(uc, hopembed)
 
   for kx in linspace(4.0, 4.0, 8)
     for ky in linspace(-4.0, 4.0, 8)
@@ -103,12 +96,9 @@ end
       end
 
       out1 = zeros(Complex128, (2, 2))
-      out2 = zeros(Complex128, (2, 2))
       func1(k, out1)
-      func2(k, out2)
 
       @test isapprox(out1, mat)
-      @test isapprox(out2, mat)
     end
   end
 end

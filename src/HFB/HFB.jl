@@ -1,7 +1,7 @@
 module HFB
 
 using ..Lattice
-using ..Embed
+#using ..Embed
 using ..Spec
 using ..Generator
 
