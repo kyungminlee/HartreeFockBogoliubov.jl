@@ -172,7 +172,7 @@ function totalfreeenergy(solver ::HFBSolver{T}, sol::HFBSolution) where T
 
     for (idx, Γ) in enumerate(sol.Γ)
       (i, j, r, s) = solver.hfbcomputer.Γ_registry[idx]
-      Tmat[i, j] += 0.5 * Γ * exp(1im * dot( k, r))
+      Tmat[i, j] += 0.5 * Γ * cis(dot( k, r))
     end
 
     energyT = 0.0

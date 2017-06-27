@@ -282,6 +282,7 @@ function makehamiltonian(computer ::HFBComputer,
                          Δs ::AbstractVector{Complex128})
   norb = numorbital(computer.unitcell)
   hk = Generator.generatefast(computer.unitcell, computer.hoppings)
+
   function(k ::AbstractVector{Float64})
     out = zeros(Complex128, (norb, 2, norb, 2))
     # 1/3. non-interacting kinetic part
@@ -290,8 +291,11 @@ function makehamiltonian(computer ::HFBComputer,
     # 2/3. Gamma
     for (idx, Γ) in enumerate(Γs)
       (i, j, r, s) = computer.Γ_registry[idx]
-      out[i,1,j,1] += Γ * exp(1im * dot( k, r))
-      out[i,2,j,2] += Γ * exp(1im * dot(-k, r))
+      #out[i,1,j,1] += Γ * cis(dot( k, r))
+      #out[i,2,j,2] += Γ * cis(dot(-k, r))
+      phase = cis(dot( k, r))
+      out[i,1,j,1] += Γ * phase
+      out[i,2,j,2] += Γ * conj(phase)
     end
 
     out[:,2,:,2] = -transpose(out[:,2,:,2])
@@ -299,8 +303,11 @@ function makehamiltonian(computer ::HFBComputer,
     # 3/3. Delta
     for (idx, Δ) in enumerate(Δs)
       (i, j, r, s) = computer.Δ_registry[idx]
-      out[i,1,j,2] += Δ * exp(1im * dot( k, r))
-      out[j,2,i,1] += conj(Δ) * exp(-1im * dot(k, r))
+      #out[i,1,j,2] += Δ * cis(dot( k, r))
+      #out[j,2,i,1] += conj(Δ) * cis(-dot(k, r))
+      val = Δ * cis(dot( k, r))
+      out[i,1,j,2] += val
+      out[j,2,i,1] += conj(val)
     end
     return reshape(out, (norb*2, norb*2))
   end
@@ -334,18 +341,14 @@ function makegreencollectors(computer::HFBComputer{O}) where {O}
     u = ψ[:, 1, :]
     v = ψ[:, 2, :]
 
-    function ρfunc(i ::Integer, j ::Integer)
-      sum(f .* u[i, :] .* conj(u[j, :]))
-    end
-    function tfunc(i ::Integer, j ::Integer)
-      sum(f .* u[i, :] .* conj(v[j, :]))
-    end
+    ρfunc(i ::Int, j ::Int) = sum(f .* u[i, :] .* conj(u[j, :]))
+    tfunc(i ::Int, j ::Int) = sum(f .* u[i, :] .* conj(v[j, :]))
 
     for (idx, (i, j, r)) in enumerate(ρ_registry)
-      ρout[idx] += ρfunc(i, j) * exp(-1im * dot(k, r))
+      ρout[idx] += ρfunc(i, j) * cis(-dot(k, r))
     end
     for (idx, (i, j, r)) in enumerate(t_registry)
-      tout[idx] += tfunc(i, j) * exp(-1im * dot(k, r))
+      tout[idx] += tfunc(i, j) * cis(-dot(k, r))
     end
   end
 end

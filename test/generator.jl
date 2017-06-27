@@ -54,8 +54,8 @@ end
     out2 = zeros(Complex128, (1,1))
     func1([kx], out1)
     ek = (t0
-          + t1 * exp(1im * kx) + conj(t1) * exp(-1im * kx)
-          + t2 * exp(2im * kx) + conj(t2) * exp(-2im * kx) )
+          + t1 * cis(kx) + conj(t1) * cis(-kx)
+          + t2 * cis(2*kx) + conj(t2) * cis(-2*kx) )
     #@show out[1,1]
     #@show ek
     @test isapprox(out1[1,1], ek)
@@ -89,7 +89,7 @@ end
     for ky in linspace(-4.0, 4.0, 8)
       k = [kx, ky]
       mat = begin
-        phase = (exp(1im * dot(k, a1)) + exp(1im * dot(k, a2)) + exp(1im * dot(k, a3)) )
+        phase = (cis(dot(k, a1)) + cis(dot(k, a2)) + cis(dot(k, a3)) )
         T1 = t1 * phase
         T1c = conj(T1)
         [  0  T1 ;  T1c  0 ]

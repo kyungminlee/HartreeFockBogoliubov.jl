@@ -38,7 +38,7 @@ function generatefast(uc ::UnitCell{O}, hop::HoppingOffdiagonal) where {O}
   function(momentum ::AbstractVector{Float64}, out::AbstractArray{Complex128, 2})
     @assert(size(momentum) == (ndim,))
     @assert(size(out) == (norb, norb))
-    phase = exp(1im * dot(momentum, rij))
+    phase = cis(dot(momentum, rij))
     out[i,j] += v * phase
     out[j,i] += conj(v * phase)
     return out
