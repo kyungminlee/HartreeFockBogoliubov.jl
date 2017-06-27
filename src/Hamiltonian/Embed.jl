@@ -8,33 +8,52 @@ From `Spec` for Hamiltonian in periodic system, create an `Embed`
 module Embed
 
 using ..Lattice
-import ..Spec
+using ..Spec
+
+export EmbedHoppingDiagonal,
+       EmbedHoppingOffdiagonal,
+       EmbedInteractionDiagonal,
+       EmbedInteractionOffdiagonal
+export EmbedHopping, EmbedInteraction
+export EmbedHamiltonian
+export embed
 
 
 """
     HoppingDiagonal
+
+```math
+  t c_{i}^{*} c_{i}
+```
+
+  # Members
+  * `amplitude::R`
+  * `i::Int64`: index of orbital i
+  * `ri::CarteCoord`: real-space coordinates of orbital i.
 """
-struct HoppingDiagonal{R<:Real}
+struct EmbedHoppingDiagonal{R<:Real}
   amplitude ::R
   i ::Int64
   ri ::CarteCoord
 end
 
+#=
 """
     HoppingDiagonal
 """
-function HoppingDiagonal(uc ::UnitCell{O},
-                         hopspec ::Spec.HoppingDiagonal{R}) where {O, R<:Real}
+function EmbedHoppingDiagonal(uc ::UnitCell{O},
+                              hopspec ::SpecHoppingDiagonal{R}) where {O, R<:Real}
   i = hopspec.i
   ri = fract2carte(uc, getorbitalcoord(uc, hopspec.i) + hopspec.Ri)
   return HoppingDiagonal{R}(hopspec.amplitude, i, ri)
 end
+=#
 
 
 """
     HoppingOffdiagonal
 """
-struct HoppingOffdiagonal{C<:Number}
+struct EmbedHoppingOffdiagonal{C<:Number}
   amplitude ::C
   i ::Int64
   j ::Int64
@@ -42,26 +61,26 @@ struct HoppingOffdiagonal{C<:Number}
   rj ::CarteCoord
 end
 
-
+#=
 """
     HoppingOffdiagonal
 """
-function HoppingOffdiagonal(uc ::UnitCell{O},
-                            hopspec ::Spec.HoppingOffdiagonal{C}) where {O, C<:Number}
+function EmbedHoppingOffdiagonal(uc ::UnitCell{O},
+                                 hopspec ::SpecHoppingOffdiagonal{C}) where {O, C<:Number}
   (i, j) = (hopspec.i, hopspec.j)
   ri = fract2carte(uc, getorbitalcoord(uc, hopspec.i) + hopspec.Ri)
   rj = fract2carte(uc, getorbitalcoord(uc, hopspec.j) + hopspec.Rj)
 
   v = hopspec.amplitude
   @assert(i <= j, "ordering of i and j should have been taken care of by Spec")
-  return HoppingOffdiagonal{C}(v, i, j, ri, rj)
+  return EmbedHoppingOffdiagonal{C}(v, i, j, ri, rj)
 end
-
+=#
 
 """
     InteractionDiagonal
 """
-struct InteractionDiagonal{R<:Real}
+struct EmbedInteractionDiagonal{R<:Real}
   amplitude ::R
   i ::Int64
   j ::Int64
@@ -69,25 +88,25 @@ struct InteractionDiagonal{R<:Real}
   rj ::CarteCoord
 end
 
-
+#=
 """
     InteractionDiagonal
 """
-function InteractionDiagonal(uc::UnitCell,
-                             hopspec::Spec.InteractionDiagonal{R}) where {R<:Real}
+function EmbedInteractionDiagonal(uc::UnitCell,
+                                  hopspec::SpecInteractionDiagonal{R}) where {R<:Real}
   (i, j) = (hopspec.i, hopspec.j)
   ri = fract2carte(uc, getorbitalcoord(uc, hopspec.i) + hopspec.Ri)
   rj = fract2carte(uc, getorbitalcoord(uc, hopspec.j) + hopspec.Rj)
   v = hopspec.amplitude
   @assert(i <= j, "ordering of i and j should have been taken care of by Spec")
-  return InteractionDiagonal{R}(v, i, j, ri, rj)
+  return EmbedInteractionDiagonal{R}(v, i, j, ri, rj)
 end
-
+=#
 
 """
     InteractionOffdiagonal
 """
-struct InteractionOffdiagonal{C<:Number}
+struct EmbedInteractionOffdiagonal{C<:Number}
   amplitude ::C
   i ::Int64
   j ::Int64
@@ -99,12 +118,70 @@ struct InteractionOffdiagonal{C<:Number}
   rl ::CarteCoord
 end
 
-
+#=
 """
     InteractionOffdiagonal
 """
-function InteractionOffdiagonal(uc::UnitCell{O},
-                                hopspec::Spec.InteractionOffdiagonal{C}) where {O, C<:Number}
+function EmbedInteractionOffdiagonal(
+        uc::UnitCell{O},
+        hopspec::SpecInteractionOffdiagonal{C}) where {O, C<:Number}
+  (i, j) = (hopspec.i, hopspec.j)
+  (k, l) = (hopspec.k, hopspec.l)
+  ri = fract2carte(uc, getorbitalcoord(uc, hopspec.i) + hopspec.Ri)
+  rj = fract2carte(uc, getorbitalcoord(uc, hopspec.j) + hopspec.Rj)
+  rk = fract2carte(uc, getorbitalcoord(uc, hopspec.k) + hopspec.Rk)
+  rl = fract2carte(uc, getorbitalcoord(uc, hopspec.l) + hopspec.Rl)
+  v = hopspec.amplitude
+  @assert(i <= j && k <= l && i <= k)
+  return InteractionOffdiagonal{C}(v, i, j, k, l, ri, rj, rk, rl)
+end
+=#
+
+"""
+    embed
+"""
+function embed(uc ::UnitCell{O},
+               hopspec ::SpecHoppingDiagonal{R}) where {O, R<:Real}
+  i = hopspec.i
+  ri = fract2carte(uc, getorbitalcoord(uc, hopspec.i) + hopspec.Ri)
+  return EmbedHoppingDiagonal{R}(hopspec.amplitude, i, ri)
+end
+
+
+"""
+    embed
+"""
+function embed(uc ::UnitCell{O},
+               hopspec ::SpecHoppingOffdiagonal{C}) where {O, C<:Number}
+  (i, j) = (hopspec.i, hopspec.j)
+  ri = fract2carte(uc, getorbitalcoord(uc, hopspec.i) + hopspec.Ri)
+  rj = fract2carte(uc, getorbitalcoord(uc, hopspec.j) + hopspec.Rj)
+
+  v = hopspec.amplitude
+  @assert(i <= j, "ordering of i and j should have been taken care of by Spec")
+  return EmbedHoppingOffdiagonal{C}(v, i, j, ri, rj)
+end
+
+
+"""
+    embed
+"""
+function embed(uc::UnitCell{O},
+               hopspec::SpecInteractionDiagonal{R}) where {O, R<:Real}
+  (i, j) = (hopspec.i, hopspec.j)
+  ri = fract2carte(uc, getorbitalcoord(uc, hopspec.i) + hopspec.Ri)
+  rj = fract2carte(uc, getorbitalcoord(uc, hopspec.j) + hopspec.Rj)
+  v = hopspec.amplitude
+  @assert(i <= j, "ordering of i and j should have been taken care of by Spec")
+  return EmbedInteractionDiagonal{R}(v, i, j, ri, rj)
+end
+
+
+"""
+    embed
+"""
+function embed(uc::UnitCell{O},
+               hopspec::SpecInteractionOffdiagonal{C}) where {O, C<:Number}
   (i, j) = (hopspec.i, hopspec.j)
   (k, l) = (hopspec.k, hopspec.l)
   ri = fract2carte(uc, getorbitalcoord(uc, hopspec.i) + hopspec.Ri)
@@ -118,90 +195,57 @@ end
 
 
 """
-    embed
-"""
-function embed(uc ::UnitCell{O},
-               hopspec ::Spec.HoppingDiagonal{R}) where {O, R<:Real}
-  return HoppingDiagonal(uc, hopspec)
-end
-
-
-"""
-    embed
-"""
-function embed(uc ::UnitCell{O},
-               hopspec ::Spec.HoppingOffdiagonal{C}) where {O, C<:Number}
-  return HoppingOffdiagonal(uc, hopspec)
-end
-
-
-"""
-    embed
-"""
-function embed(uc::UnitCell{O},
-               hopspec::Spec.InteractionDiagonal{R}) where {O, R<:Real}
-  return InteractionDiagonal(uc, hopspec)
-end
-
-
-"""
-    embed
-"""
-function embed(uc::UnitCell{O},
-               hopspec::Spec.InteractionOffdiagonal{C}) where {O, C<:Number}
-  return InteractionOffdiagonal(uc, hopspec)
-end
-
-
-"""
     Hopping
 """
-const Hopping = Union{HoppingDiagonal, HoppingOffdiagonal}
+const EmbedHopping = Union{EmbedHoppingDiagonal, EmbedHoppingOffdiagonal}
 
 
 """
     Interaction
 """
-const Interaction = Union{InteractionDiagonal, InteractionOffdiagonal}
+const EmbedInteraction = Union{EmbedInteractionDiagonal, EmbedInteractionOffdiagonal}
 
 
 """
     Hamiltonian
 """
-mutable struct Hamiltonian{O}
+mutable struct EmbedHamiltonian{O}
   unitcell ::UnitCell{O}
-  hoppings ::Vector{Hopping}
-  interactions ::Vector{Interaction}
+  hoppings ::Vector{EmbedHopping}
+  interactions ::Vector{EmbedInteraction}
 end
 
 """
     Hamiltonian
 """
-function Hamiltonian(unitcell ::UnitCell{O},
-                     hoppings ::AbstractVector{Hopping},
-                     interactions ::AbstractVector{Interaction}) where {O}
-  return Hamiltonian{O}(unitcell, hoppings, interactions)
+function EmbedHamiltonian(unitcell ::UnitCell{O},
+                          hoppings ::AbstractVector{EmbedHopping},
+                          interactions ::AbstractVector{EmbedInteraction}) where {O}
+  return EmbedHamiltonian{O}(unitcell, hoppings, interactions)
 end
 
 
+#=
 """
     Hamiltonian
 """
-function Hamiltonian(spec ::Spec.Hamiltonian{O}) where {O}
+function EmbedHamiltonian(spec ::SpecHamiltonian{O}) where {O}
   unitcell = spec.unitcell
   hoppings = [embed(unitcell, hop) for hop in spec.hoppings]
   interactions = [embed(unitcell, inter) for inter in spec.interactions]
-  Hamiltonian{O}(unitcell, hoppings, interactions)
+  EmbedHamiltonian{O}(unitcell, hoppings, interactions)
 end
+=#
+
 
 """
     Hamiltonian
 """
-function embed(spec ::Spec.Hamiltonian{O}) where {O}
+function embed(spec ::SpecHamiltonian{O}) where {O}
   unitcell = spec.unitcell
   hoppings = [embed(unitcell, hop) for hop in spec.hoppings]
   interactions = [embed(unitcell, inter) for inter in spec.interactions]
-  Hamiltonian{O}(unitcell, hoppings, interactions)
+  EmbedHamiltonian{O}(unitcell, hoppings, interactions)
 end
 
 

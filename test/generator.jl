@@ -7,8 +7,8 @@
   hopspec_dia = Spec.HoppingDiagonal(1.0, "A", [0, 0])
   hopspec_off = Spec.HoppingOffdiagonal(1.0 + 0.3im, "A", "B", [0, 0], [0, 0])
 
-  hopembed_dia = Embed.HoppingDiagonal(uc, hopspec_dia)
-  hopembed_off = Embed.HoppingOffdiagonal(uc, hopspec_off)
+  hopembed_dia = Embed.EmbedHoppingDiagonal(uc, hopspec_dia)
+  hopembed_off = Embed.EmbedHoppingOffdiagonal(uc, hopspec_off)
 
   func = Generator.generatefast(uc, hopembed_dia)
   out = zeros(Complex128, (2,2))
@@ -33,6 +33,8 @@ end
 #=
  Dispersion(1 Dimension, 1 Orbital)
 =#
+
+
 @testset "disp_1D1O" begin
   uc = newunitcell(1.0)
   addorbital!(uc, "A", FractCoord([0], [0.0]))
@@ -40,13 +42,13 @@ end
   t1 = 10.0 + 0.1im
   t2 = 1.0 + 0.01im
 
-  hamspec = Spec.Hamiltonian(uc)
-  Spec.addhopping!(hamspec, Spec.hoppingbycarte(uc, t0, "A", [0.0]))
-  Spec.addhopping!(hamspec, Spec.hoppingbycarte(uc, t1, "A", "A", [0.0], [1.0]))
-  Spec.addhopping!(hamspec, Spec.hoppingbycarte(uc, t2, "A", "A", [0.0], [2.0]))
+  hamspec = SpecHamiltonian(uc)
+  addhopping!(hamspec, hoppingbycarte(uc, t0, "A", [0.0]))
+  addhopping!(hamspec, hoppingbycarte(uc, t1, "A", "A", [0.0], [1.0]))
+  addhopping!(hamspec, hoppingbycarte(uc, t2, "A", "A", [0.0], [2.0]))
 
   func1 = Generator.generatefast(uc, hamspec.hoppings)
-  hamembed = Embed.Hamiltonian(hamspec)
+  hamembed = embed(hamspec)
   func2 = Generator.generatefast(uc, hamembed.hoppings)
 
   for kx in linspace(0.0, 2.0*pi, 16+1)
@@ -79,7 +81,7 @@ end
   addorbital!(uc, "B", carte2fract(uc, [0.0,-1.0]))
   #@show uc
 
-  hopspecs = Spec.Hopping[]
+  hopspecs = Spec.SpecHopping[]
   t1 = 1.0 + 0.1im
   for r in [a1, a2, a3]
     push!( hopspecs, Spec.hoppingbycarte(uc, t1, "A", "B", [0.0, 0.0], r) )
@@ -87,7 +89,7 @@ end
 
   func1 = Generator.generatefast(uc, hopspecs)
 
-  hopembed = Embed.Hopping[Embed.embed(uc, hop) for hop in hopspecs]
+  hopembed = Embed.EmbedHopping[Embed.embed(uc, hop) for hop in hopspecs]
   func2 = Generator.generatefast(uc, hopembed)
 
   for kx in linspace(4.0, 4.0, 8)
@@ -128,7 +130,7 @@ end
     #Spec.HoppingOffdiagonal(1.0 + 0.3im, "A", "B", [0,-1], [0, 0]),
     Spec.HoppingOffdiagonal(1.0 + 0.4im, "A", "B", [0, 0], [-1,0]),
   ]
-  hopembed = Embed.Hopping[Embed.embedhopping(uc, hop) for hop in hopspec]
+  hopembed = Embed.EmbedHopping[Embed.embed(uc, hop) for hop in hopspec]
 
   func = Generator.generate(uc, hopembed)
   out = zeros(Complex128, (2,2))

@@ -1,9 +1,9 @@
 module HFB
 
 using ..Lattice
-import ..Embed
-import ..Spec
-import ..Generator
+using ..Embed
+using ..Spec
+using ..Generator
 
 include("model.jl")
 include("computer.jl")

@@ -106,7 +106,7 @@ Hamiltonian.
 """
 mutable struct HFBComputer{O}
   unitcell ::UnitCell{O}
-  hoppings ::Vector{Embed.Hopping}
+  hoppings ::Vector{Embed.EmbedHopping}
   temperature ::Float64
 
   fermi ::Function
@@ -117,7 +117,7 @@ mutable struct HFBComputer{O}
 end
 
 function HFBComputer(unitcell::UnitCell{O},
-                     hoppings::AbstractVector{Embed.Hopping},
+                     hoppings::AbstractVector{Embed.EmbedHopping},
                      temperature::Real) where {O}
  fermi = fermidirac(temperature)
  return HFBComputer{O}(unitcell, hoppings, temperature, fermi, [], [], [], [])

@@ -11,7 +11,7 @@ using ProgressMeter
 """
 mutable struct HFBSolver{T}
   # Originals
-  hamiltonian ::Spec.Hamiltonian{T}
+  hamiltonian ::SpecHamiltonian{T}
   size ::Vector{Int64}
   temperature ::Float64
 
@@ -25,7 +25,7 @@ end
 
 """
 """
-function HFBSolver(hamiltonian::Spec.Hamiltonian{T},
+function HFBSolver(hamiltonian::SpecHamiltonian{T},
                    size ::Vector{Int64},
                    temperature ::Float64;
                    tol::Float64=eps(Float64)) where {T}

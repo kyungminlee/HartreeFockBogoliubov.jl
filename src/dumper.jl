@@ -1,6 +1,7 @@
 export dumpall
 export mydump
 
+
 function mydump(io::IO, x::Integer)
   @printf(io, "%d", x)
 end
@@ -155,7 +156,7 @@ function dumpall(io::IO, solver::HFB.HFBSolver{T}) where T
 end
 
 function dumpall(io::IO,
-                 hamspec ::Spec.Hamiltonian{T},
+                 hamspec ::Spec.SpecHamiltonian{T},
                  solver ::HFB.HFBSolver{T},
                  currentsolution ::HFB.HFBSolution,
                  previoussolution ::HFB.HFBSolution) where T

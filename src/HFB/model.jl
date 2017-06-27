@@ -87,14 +87,14 @@ end
 
 mutable struct HFBHamiltonian{O}
   unitcell ::UnitCell{O}
-  hoppings ::Vector{Spec.Hopping}
+  hoppings ::Vector{SpecHopping}
   particle_hole_interactions ::Vector{HoppingMeanField}
   particle_particle_interactions ::Vector{PairingMeanField}
 end
 
 function HFBHamiltonian(
   unitcell ::UnitCell{O},
-  hoppings ::Vector{Spec.Hopping},
+  hoppings ::Vector{SpecHopping},
   particle_hole_interactions ::Vector{HoppingMeanField},
   particle_particle_interactions ::Vector{PairingMeanField}) where {O}
   HFBHamiltonian{O}(unitcell, hoppings, particle_hole_interactions, particle_particle_interactions)
@@ -102,7 +102,7 @@ end
 
 
 
-function HFBHamiltonian(full_hamiltonian ::Spec.Hamiltonian{O}) where {O}
+function HFBHamiltonian(full_hamiltonian ::SpecHamiltonian{O}) where {O}
   unitcell = full_hamiltonian.unitcell
   hoppings = full_hamiltonian.hoppings
   model = HFBHamiltonian{O}(unitcell, hoppings, [], [])
@@ -117,7 +117,7 @@ end
 Add diagonal interaction
 """
 function addinteraction!(model ::HFBHamiltonian{O},
-                         specint ::Spec.InteractionDiagonal{R}) where {O,R<:Real}
+                         specint ::SpecInteractionDiagonal{R}) where {O,R<:Real}
   v = specint.amplitude
   (i, j) = (specint.i,  specint.j )
   (Ri, Rj) = (specint.Ri, specint.Rj)

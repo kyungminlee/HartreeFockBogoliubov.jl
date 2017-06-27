@@ -32,14 +32,14 @@ function dictify(uc::UnitCell{O}) where {O}
               "orbitals" => dictify(uc.orbitals))
 end
 
-function dictify(hopdiag::Spec.HoppingDiagonal{R}) where {R}
+function dictify(hopdiag::Spec.SpecHoppingDiagonal{R}) where {R}
   OrderedDict("type" => "SpecHoppingDiagonal",
               "amplitude" => hopdiag.amplitude,
               "i" => hopdiag.i,
               "Ri" => hopdiag.Ri)
 end
 
-function dictify(hopoff::Spec.HoppingOffdiagonal{C}) where {C}
+function dictify(hopoff::Spec.SpecHoppingOffdiagonal{C}) where {C}
   OrderedDict("type" => "SpecHoppingOffdiagonal",
               "amplitude" => hopoff.amplitude,
               "i" => hopoff.i,
@@ -49,7 +49,7 @@ function dictify(hopoff::Spec.HoppingOffdiagonal{C}) where {C}
               )
 end
 
-function dictify(intdiag ::Spec.InteractionDiagonal{R}) where {R}
+function dictify(intdiag ::Spec.SpecInteractionDiagonal{R}) where {R}
   OrderedDict("type" => "SpecInteractionDiagonal",
               "amplitude" => intdiag.amplitude,
               "i" => intdiag.i,
@@ -59,7 +59,7 @@ function dictify(intdiag ::Spec.InteractionDiagonal{R}) where {R}
               )
 end
 
-function dictify(intoff ::Spec.InteractionOffdiagonal{C}) where {C}
+function dictify(intoff ::Spec.SpecInteractionOffdiagonal{C}) where {C}
   OrderedDict("type" => "SpecInteractionOffdiagonal",
               "amplitude" => intoff.amplitude,
               "i" => intoff.i,
@@ -73,7 +73,7 @@ function dictify(intoff ::Spec.InteractionOffdiagonal{C}) where {C}
               )
 end
 
-function dictify(hamspec::Spec.Hamiltonian{O}) where {O}
+function dictify(hamspec::Spec.SpecHamiltonian{O}) where {O}
   OrderedDict("type" => "SpecHamiltonian",
               "unitcell" => dictify(hamspec.unitcell),
               "hoppings" => dictify(hamspec.hoppings),
@@ -81,14 +81,14 @@ function dictify(hamspec::Spec.Hamiltonian{O}) where {O}
   )
 end
 
-function dictify(hopdiag::Embed.HoppingDiagonal{R}) where {R}
+function dictify(hopdiag::Embed.EmbedHoppingDiagonal{R}) where {R}
   OrderedDict("type" => "EmbedHoppingDiagonal",
               "amplitude" => hopdiag.amplitude,
               "i" => hopdiag.i,
               "ri" => hopdiag.ri)
 end
 
-function dictify(hopoff::Embed.HoppingOffdiagonal{C}) where {C}
+function dictify(hopoff::Embed.EmbedHoppingOffdiagonal{C}) where {C}
   OrderedDict("type" => "EmbedHoppingOffdiagonal",
               "amplitude" => hopoff.amplitude,
               "i" => hopoff.i,
@@ -98,7 +98,7 @@ function dictify(hopoff::Embed.HoppingOffdiagonal{C}) where {C}
               )
 end
 
-function dictify(intdiag ::Embed.InteractionDiagonal{R}) where {R}
+function dictify(intdiag ::Embed.EmbedInteractionDiagonal{R}) where {R}
   OrderedDict("type" => "EmbedInteractionDiagonal",
               "amplitude" => intdiag.amplitude,
               "i" => intdiag.i,
@@ -108,7 +108,7 @@ function dictify(intdiag ::Embed.InteractionDiagonal{R}) where {R}
               )
 end
 
-function dictify(intoff ::Embed.InteractionOffdiagonal{C}) where {C}
+function dictify(intoff ::Embed.EmbedInteractionOffdiagonal{C}) where {C}
   OrderedDict("type" => "EmbedInteractionOffdiagonal",
               "amplitude" => intoff.amplitude,
               "i" => intoff.i,
@@ -122,7 +122,7 @@ function dictify(intoff ::Embed.InteractionOffdiagonal{C}) where {C}
               )
 end
 
-function dictify(hamembed::Embed.Hamiltonian{O}) where {O}
+function dictify(hamembed::Embed.EmbedHamiltonian{O}) where {O}
   OrderedDict("type" => "EmbedHamiltonian",
               "unitcell" => dictify(hamembed.unitcell),
               "hoppings" => dictify(hamembed.hoppings),
