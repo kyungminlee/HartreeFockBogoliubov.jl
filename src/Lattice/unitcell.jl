@@ -276,7 +276,8 @@ end
 function carte2fract(unitcell ::UnitCell,
                      cc ::CarteCoord;
                      tol::Real=sqrt(eps(Float64)))
-  fc = inv(unitcell.latticevectors) * cc
+  #fc = inv(unitcell.latticevectors) * cc
+  fc = transpose(unitcell.reducedreciprocallatticevectors) * cc
   w = Int64[fld(x, 1.0) for x in fc]
   f = Float64[mod(x, 1.0) for x in fc]
   for i in length(w)
@@ -316,9 +317,9 @@ function whichunitcell(uc ::UnitCell{O}, name ::O, fc ::FractCoord;
 end
 
 
-function zeros(uc::UnitCell)
+function zeros(uc::UnitCell; dtype::DataType=Complex128)
   norb = numorbital(uc)
-  Base.zeros(Complex128, (norb, norb))
+  Base.zeros(dtype, (norb, norb))
 end
 
 
