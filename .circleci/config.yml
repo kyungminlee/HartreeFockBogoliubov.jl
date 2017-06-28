@@ -8,7 +8,7 @@ jobs:
       - checkout
       - run:
         name: greeting
-        command 'julia --version'
+        command: 'julia --version'
       - store_artifacts:
         path: test-greeting.xml
         prefix: tests
