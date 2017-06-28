@@ -9,6 +9,7 @@ script:
   - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
   - julia -e 'Pkg.add("ProgressMeter")'
   - julia -e 'Pkg.add("DataStructures")'
+  - julia -e 'Pkg.add("YAML")'
   - julia -e 'Pkg.clone(pwd())'
   - julia -e 'Pkg.add("HartreeFockBogoliubov")'
 
