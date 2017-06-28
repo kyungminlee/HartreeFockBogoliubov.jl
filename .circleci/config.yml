@@ -10,12 +10,21 @@ jobs:
           name: greeting
           command: 'julia --version'
       - run:
+          name: whereami
+          command: |
+            pwd
+            ls
+      - run:
           name: preinstall
           command: |
             julia -e 'Pkg.add("ProgressMeter")'
             julia -e 'Pkg.add("DataStructures")'
             julia -e 'Pkg.clone(pwd())'
             julia -e 'Pkg.add("HartreeFockBogoliubov")' 
+      - run:
+          name: test
+          command: |
+            julia -e 'Pkg.test("HartreeFockBogoliubov")'
       - store_artifacts:
           path: test-greeting.xml
           prefix: tests
