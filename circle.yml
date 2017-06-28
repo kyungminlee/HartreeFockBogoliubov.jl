@@ -1,13 +1,14 @@
 version: 2.0
 jobs:
   build:
+    working_directory: ~/hfbtest
     docker:
       - image: julia:0.6.0
     steps:
       - checkout
       - run:
         name: greeting
-        command 'echo "Hello World"'
+        command 'julia --version'
       - store_artifacts:
         path: test-greeting.xml
         prefix: tests
