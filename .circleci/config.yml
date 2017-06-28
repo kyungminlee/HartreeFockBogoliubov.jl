@@ -1,7 +1,7 @@
 version: 2
 jobs:
   build:
-    working_directory: ~/hfbtest
+    working_directory: ~/HartreeFockBogoliubov.jl
     docker:
       - image: julia:0.6.0
     steps:
@@ -10,16 +10,12 @@ jobs:
           name: greeting
           command: 'julia --version'
       - run:
-          name: whereami
-          command: |
-            pwd
-            ls
-      - run:
           name: preinstall
           command: |
             julia -e 'Pkg.add("ProgressMeter")'
             julia -e 'Pkg.add("DataStructures")'
             julia -e 'Pkg.clone(pwd())'
+            julia -e 'Pkg.add("HartreeFockBogoliubov")'
       - run:
           name: test
           command: |
