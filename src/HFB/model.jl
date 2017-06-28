@@ -4,23 +4,23 @@ export addinteraction!
 
 """
 """
-struct HoppingMeanField{R<:Real}
-  amplitude ::R
+struct HoppingMeanField{C<:Number}
+  amplitude ::C
   target ::Tuple{Int64, Int64, Vector{Int64}}
   source ::Tuple{Int64, Int64, Vector{Int64}}
   star ::Bool
 
-  function HoppingMeanField{R}(
-          amplitude ::R,
+  function HoppingMeanField{C}(
+          amplitude ::C,
           target::Tuple{<:Integer, <:Integer, <:AbstractVector{<:Integer}},
           source::Tuple{<:Integer, <:Integer, <:AbstractVector{<:Integer}},
           star ::Bool
-        ) where {R<:Real}
+        ) where {C<:Number}
     (i, j, Rij) = target
     (k, l, Rkl) = source
     @assert(i <= j)
     @assert(k <= l)
-    new{R}(amplitude, target, source, star)
+    new{C}(amplitude, target, source, star)
   end
 
   function HoppingMeanField(
@@ -42,54 +42,56 @@ struct HoppingMeanField{R<:Real}
       Rkl = -Rkl
       star = !star
     end
-    new{R}(amplitude, (i,j,Rij), (k,l,Rkl), star)
+    new{C}(amplitude, (i,j,Rij), (k,l,Rkl), star)
   end
 end
 
 
 """
 """
-struct PairingMeanField{R<:Real}
-  amplitude ::R
+struct PairingMeanField{C<:Number}
+  amplitude ::C
   target ::Tuple{Int64, Int64, Vector{Int64}}
   source ::Tuple{Int64, Int64, Vector{Int64}}
   negate ::Bool
 
-  function PairingMeanField{R}(
-          amplitude ::R,
+  function PairingMeanField{C}(
+          amplitude ::C,
           target::Tuple{<:Integer, <:Integer, <:AbstractVector{<:Integer}},
           source::Tuple{<:Integer, <:Integer, <:AbstractVector{<:Integer}},
           negate ::Bool
-        ) where {R<:Real}
+        ) where {C<:Number}
     (i, j, Rij) = target
     (k, l, Rkl) = source
     @assert(i <= j)
     @assert(k <= l)
-    new{R}(amplitude, target, source, negate)
+    new{C}(amplitude, target, source, negate)
   end
 
-  function PairingMeanField{R}(
-          amplitude ::R,
+  function PairingMeanField(
+          amplitude ::C,
           target::Tuple{<:Integer, <:Integer, <:AbstractVector{<:Integer}},
           source::Tuple{<:Integer, <:Integer, <:AbstractVector{<:Integer}}
-        ) where {R<:Real}
+        ) where {C<:Number}
     (i, j, Rij) = target
     (k, l, Rkl) = source
     negate = false
     if i > j
       (i,j) = (j,i)
       Rij = -Rij
-      negate = !negate
+      amplitude = -amplitude
+      #TODO HERE!!! flip amplitude or not flip amplitude
+      #negate = !negate
     end
     if k > l
       (k,l) = (l,k)
       Rkl = -Rkl
-      negate = !negate
+      amplitude = -amplitude
+      #negate = !negate
     end
-    new{R}(amplitude, (i,j,Rij), (k,l,Rkl), negate)
+    new{C}(amplitude, (i,j,Rij), (k,l,Rkl), negate)
   end
 end
-
 
 """
 """

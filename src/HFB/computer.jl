@@ -10,6 +10,7 @@ export makesourcefields,
        randomize!,
        fixhfbsolution
 
+using HartreeFockBogoliubov
 
 """
 `CollectRow` is holds info on how to compute ρ or t.
@@ -130,7 +131,7 @@ function HFBComputer(ham::HFBHamiltonian{T},
     srcidx = collect_reg[k,l,Rkl][1]
     star = hopmf.star
     if abs(v) > eps(Float64)
-      push!( deploy_reg[i,j,Rij][2][4], (srcidx, v, star) )
+      push!( deploy_reg[i,j,Rij][2][5], (srcidx, v, star) )
     end
   end
 
@@ -177,7 +178,7 @@ function HFBComputer(ham::HFBHamiltonian{T},
     srcidx = collect_reg[(k,l,Rkl)][1]
     neg = hopmf.negate
     if abs(v) > eps(Float64)
-      push!( deploy_reg[i,j,Rij][2][4], (srcidx, v, neg) )
+      push!( deploy_reg[i,j,Rij][2][5], (srcidx, v, neg) )
     end
   end
 

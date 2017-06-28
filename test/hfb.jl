@@ -8,7 +8,7 @@
   addorbital!(unitcell, :UP, FractCoord([0, 0], [0.0, 0.0]))
   addorbital!(unitcell, :DN, FractCoord([0, 0], [0.0, 0.0]))
 
-  spec_hamiltonian = Spec.Hamiltonian(unitcell)
+  spec_hamiltonian = Spec.FullHamiltonian(unitcell)
   Spec.addhopping!(spec_hamiltonian,
                    Spec.hoppingbycarte(unitcell, 0.1, :UP, [0.0, 0.0]))
   Spec.addhopping!(spec_hamiltonian,
@@ -136,8 +136,8 @@ end
   addorbital!(unitcell, :UP, FractCoord([0,0], [0.0, 0.0]))
   addorbital!(unitcell, :DN, FractCoord([0,0], [0.0, 0.0]))
 
-  for U in [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 2.0, 3.0, 4.0, 5.0]
-    hamspec = Spec.Hamiltonian(unitcell)
+  for U in [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 2.0, 3.0, 4.0, 5.0]
+    hamspec = Spec.FullHamiltonian(unitcell)
     μ = 0.0
     #U = 5.0
     for sp in [:UP, :DN]
@@ -148,13 +148,13 @@ end
 
     Spec.addinteraction!(hamspec, Spec.interactionbycarte(unitcell, U, :UP, :DN, [0.0, 0.0], [0.0, 0.0]))
     hamhfb = HFB.HFBHamiltonian(hamspec)
-    computer = HFB.HFBComputer(hamhfb, [16, 16], 0.1)
+    computer = HFB.HFBComputer(hamhfb, 0.1)
     greencollectors = HFB.makegreencollectors(computer)
 
     ρs, ts = HFB.makesourcefields((x...) -> rand(Float64), (x...) -> rand(Float64), computer)
     ρn, tn = HFB.makesourcefields(computer)
 
-    #@show computer.ρ_registry
+    @show computer.ρ_registry
     let
       ρ0 = 0.5 * (ρs[1] + ρs[2])
       ρz = 0.5 * (ρs[1] - ρs[2])
