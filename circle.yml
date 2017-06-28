@@ -3,4 +3,11 @@ jobs:
   build:
     docker:
       - image: julia:0.6.0
-      
+    steps:
+      - checkout
+      - run:
+        name: greeting
+        command 'echo "Hello World"'
+      - store_artifacts:
+        path: test-greeting.xml
+        prefix: tests
