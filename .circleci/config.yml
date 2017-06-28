@@ -10,6 +10,6 @@ jobs:
           name: greeting
           command: 'julia --version'
       - store_artifacts:
-        path: test-greeting.xml
-        prefix: tests
+          path: test-greeting.xml
+          prefix: tests
 
