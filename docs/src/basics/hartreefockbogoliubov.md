@@ -15,6 +15,14 @@ This document contains basics of Hartree-Fock-Bogoliubov Theory. We will follow 
 \end{aligned}
 ```
 
+```math
+\begin{aligned}
+  \rho_{ij} &= \langle c_{j}^{\dagger} c_{i} \rangle
+             = \sum_{n} f(\epsilon_{n}) u_{in} u_{jn}^{*} \\
+  t_{ij}    &= \langle c_{j} c_{i} \rangle
+             = \sum_{n} f(\epsilon_{n}) u_{in} v_{jn}^{*}
+\end{aligned}
+```
 
 
 ## Hartree-Fock-Bogoliubov Decomposition
