@@ -10,6 +10,10 @@ export makesourcefields,
        randomize!,
        fixhfbsolution
 
+export makehoppingmatrix,
+       makeGammamatrix,
+       makeDeltamatrix
+
 using HartreeFockBogoliubov
 
 """
@@ -282,6 +286,60 @@ function computetargetfields(computer ::HFBComputer{O},
   return (Γs, Δs)
 end
 
+function makehoppingmatrix(computer::HFBComputer)
+  norb = numorbital(computer.unitcell)
+  hk = Generator.generatefast(computer.unitcell, computer.hoppings)
+  function(k ::AbstractVector{Float64})
+    out = zeros(Complex128, (norb, norb))
+    hk( k, out )
+    return out
+  end
+end
+
+
+function makeGammamatrix(computer::HFBComputer,
+                         Γs ::AbstractVector{Complex128})
+  norb = numorbital(computer.unitcell)
+  function(k ::AbstractVector{Float64})
+    out = zeros(Complex128, (norb, norb))
+    for (idx, Γ) in enumerate(Γs)
+      (isdiag, i, j, r, _) = computer.Γ_registry[idx]
+      if isdiag
+        @assert(i==j && all(x -> isapprox(x, 0.0), r))
+        @assert(isapprox(imag(Γ), 0.0))
+        out[i,j] += real(Γ)
+      else
+        @assert(!(i==j && all(x -> isapprox(x, 0.0), r)))
+        phase = cis(dot( k, r))
+        out[i,j] += Γ * phase
+        out[j,i] += conj(Γ * phase)
+      end
+    end
+    return out
+  end
+end
+
+
+function makeDeltamatrix(computer::HFBComputer,
+                         Δs ::AbstractVector{Complex128})
+  norb = numorbital(computer.unitcell)
+  function(k ::AbstractVector{Float64})
+    out = zeros(Complex128, (norb, norb))
+    # 3/3. Delta
+    for (idx, Δ) in enumerate(Δs)
+      (isdiag, i, j, r, _) = computer.Δ_registry[idx]
+      @assert( !isdiag )
+      @assert( !(i==j && all(x -> isapprox(x, 0.0), r)) )
+      val = Δ * cis(dot( k, r))
+      out[i,j] += val
+      out[j,i] -= val
+    end
+    return out
+  end
+end
+
+
+
 
 """
 """
@@ -463,9 +521,8 @@ end
 
 
 function randomize!(computer::HFBComputer{O},
-                    sol ::HFBSolution,
-                    amplitude::C=1.0) where {O,C<:Number}
-  sol.ρ[:] = (rand(Float64, length(sol.ρ)) .* 2 .- 1) * amplitude
-  sol.t[:] = (rand(Complex128, length(sol.t)) .* 2 .- 1) * amplitude
+                    sol ::HFBSolution) where {O}
+  sol.ρ[:] = (rand(Float64, length(sol.ρ)))
+  sol.t[:] = (rand(Complex128, length(sol.t)))
   sol.Γ[:], sol.Δ[:] = HFB.computetargetfields(computer, sol.ρ, sol.t)
 end

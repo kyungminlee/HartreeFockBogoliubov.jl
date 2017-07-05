@@ -7,5 +7,6 @@ using ..Generator
 include("model.jl")
 include("computer.jl")
 include("solver.jl")
+include("freeenergy.jl")
 
 end
