@@ -134,6 +134,19 @@ function dictify(solver::HFB.HFBSolver{O}) where {O}
 end
 
 
+function dictify(solution::HFB.HFBSolution)
+  OrderedDict(
+    "type" => "HFBSolution",
+    "rho" => dictify(solution.ρ),
+    "t" => dictify(solution.t),
+    "Gamma" => dictify(solution.Γ),
+    "Delta" => dictify(solution.Δ),
+  )
+end
+
+
+
+
 
 
 
