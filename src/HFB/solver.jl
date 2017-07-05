@@ -27,7 +27,7 @@ end
 """
 function HFBSolver(hamiltonian::FullHamiltonian{T},
                    size ::AbstractVector{<:Integer},
-                   temperature ::AbstractFloat;
+                   temperature ::Real;
                    tol::Float64=eps(Float64)) where {T}
   dim = dimension(hamiltonian.unitcell)
   @assert(length(size) == dim, "dimension and size do not match: size=$(size)")
