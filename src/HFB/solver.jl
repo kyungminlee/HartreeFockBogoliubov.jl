@@ -9,16 +9,16 @@ using ProgressMeter
 
 """
 """
-mutable struct HFBSolver{T}
+mutable struct HFBSolver{O}
   # Originals
-  hamiltonian ::FullHamiltonian{T}
+  hamiltonian ::FullHamiltonian{O}
   size ::Vector{Int64}
   temperature ::Float64
 
   # Derivatives
   momentumgrid ::Array{Vector{Float64}}
-  hfbhamiltonian ::HFBHamiltonian{T}
-  hfbcomputer ::HFBComputer{T}
+  hfbhamiltonian ::HFBHamiltonian{O}
+  hfbcomputer ::HFBComputer{O}
   greencollectors ::Function
 end
 

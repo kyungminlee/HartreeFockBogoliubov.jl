@@ -14,16 +14,17 @@ export Hopping, Interaction
 export FullHamiltonian
 export hoppingbycarte, interactionbycarte
 export addhopping!, addinteraction!
+export islocal, localize
 
 """
-    HoppingDiagonal{T}
+    HoppingDiagonal{R<:Real}
 
 Represents
 ```math
   t c_{i}^{*} c_{i}
 ```
   # Members
-  * `amplitude ::Real`
+  * `amplitude ::R`
   * `i ::Int64`: name of orbital
   * `Ri ::Vector{Int64}`: which unit cell? (indexed by a1, and a2)
 """
@@ -38,6 +39,9 @@ struct HoppingDiagonal{R<:Real}
   end
 end
 
+"""
+
+"""
 function HoppingDiagonal(v::R,
                          i::Integer,
                          Ri::AbstractVector{<:Integer}) where {R<:Real}
@@ -46,7 +50,7 @@ end
 
 
 """
-    HoppingOffdiagonal{T}
+    HoppingOffdiagonal{C<:Number}
 
 Represents
 ```math
@@ -54,7 +58,7 @@ Represents
 ```
 
   # Members
-  * `amplitude ::Number`
+  * `amplitude :: C`
   * `i ::T`
   * `j ::T`
   * `Ri ::Vector{Int64}`
@@ -92,7 +96,7 @@ end
 
 
 """
-    InteractionDiagonal{T}
+    InteractionDiagonal{R<:Real}
 
 Represents
 ```math
@@ -100,7 +104,7 @@ Represents
 ```
 
   # Members
-  * `amplitude ::Real`
+  * `amplitude ::R`
   * `i ::T`
   * `j ::T`
   * `Ri ::Vector{Int64}`
@@ -139,7 +143,7 @@ end
 
 
 """
-    InteractionOffdiagonal{T}
+    InteractionOffdiagonal{C<:Number}
 
     i < j, k < l, i < k or (i == k and j < l)
 
@@ -152,7 +156,7 @@ Represents
 Only keep the first term (and require i < j, k < l, i <= k)
 
   # Members
-  * `amplitude ::Number`
+  * `amplitude ::C`
   * `i ::T`
   * `j ::T`
   * `k ::T`
@@ -359,6 +363,57 @@ function interactionbycarte(uc ::UnitCell{O},
   Rk = whichunitcell(uc, k, rk; tol=tol)
   Rl = whichunitcell(uc, l, rl; tol=tol)
   return InteractionOffdiagonal{C}(amplitude, idx, jdx, kdx, ldx, Ri, Rj, Rk, Rl)
+end
+
+
+
+function islocal(hopping::HoppingDiagonal{R}) where {R <: Real}
+  return iszero(hopping.Ri)
+end
+
+function islocal(hopping::HoppingOffdiagonal{C}) where {C <: Number}
+  return iszero(hopping.Ri)
+end
+
+function islocal(interaction::InteractionDiagonal{R}) where {R <: Real}
+  return iszero(hopping.Ri)
+end
+
+function islocal(interaction::InteractionOffdiagonal{C}) where {C <: Number}
+  return iszero(hopping.Ri)
+end
+
+
+function localize(hopping::HoppingDiagonal{R}) where {R <: Real}
+  return HoppingDiagonal{R}(hopping.amplitude, hopping.i, zeros(hopping.Ri))
+end
+
+function localize(hopping::HoppingOffdiagonal{C}) where {C <: Number}
+  return HoppingOffdiagonal{C}(hopping.amplitude,
+                               hopping.i,
+                               hopping.j,
+                               zeros(hopping.Ri),
+                               hopping.Rj - hopping.Ri)
+end
+
+function localize(interaction::InteractionDiagonal{R}) where {R <: Real}
+  return InteractionDiagonal{R}(interaction.amplitude,
+                                interaction.i,
+                                interaction.j,
+                                zeros(interaction.Ri),
+                                interaction.Rj - interaction.Ri)
+end
+
+function localize(interaction::InteractionOffdiagonal{C}) where {C <: Number}
+  return InteractionOffdiagonal{C}(interaction.amplitude,
+                                   interaction.i,
+                                   interaction.j,
+                                   interaction.k,
+                                   interaction.l,
+                                   zeros(interaction.Ri),
+                                   interaction.Rj - interaction.Ri,
+                                   interaction.Rk - interaction.Ri,
+                                   interaction.Rl - interaction.Ri)
 end
 
 

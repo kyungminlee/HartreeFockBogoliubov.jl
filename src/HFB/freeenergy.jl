@@ -1,6 +1,7 @@
 #export hfbfreeenergy
 export hfbgrantpotential
 
+
 raw"""
 
 Compute Ω = E - T S
@@ -33,7 +34,7 @@ function hfbfreeenergy(solver::HFBSolver{O},
     T = computeT(k)
     Γ = computeΓ(k)
     Δ = computeΔ(k)
-    
+
     (eigenvalues, eigenvectors) = eig(Hermitian(H))
     f = [fermi(e) for e in eigenvalues]
     ψ = reshape(eigenvectors, (norb, 2, norb*2))
@@ -42,7 +43,7 @@ function hfbfreeenergy(solver::HFBSolver{O},
 
     ρ(i::Int, j::Int) = sum(f .* u[i, :] .* conj(u[j, :]))
     t(i::Int, j::Int) = sum(f .* u[i, :] .* conj(v[j, :]))
-    
+
     for i=1:norb, j=1:norb
       E_T += real( T[i,j] * ρ(j,i) )
       E_Γ += real( Γ[i,j] * ρ(j,i) )
@@ -61,16 +62,33 @@ end
 export hfbfreeenergy
 
 
+function hoppingenergy(hopping::Spec.HoppingDiagonal{R},
+                       ρ::Function) where {R<:Real}
+  v = hopping.amplitude
+  i = hopping.i
+  return v * real( ρ(i,i) )
+end
+
+function hoppingenergy(hopping::Spec.HoppingOffdiagonal{C},
+                       ρ::Function) where {C<:Number}
+
+end
+
+
+
+
+# Faulty
 function interactionenergy(interaction::Spec.InteractionDiagonal{R},
                            ρ::Function,
                            t::Function)where {R<:Real}
   v = interaction.amplitude
   i = interaction.i
   j = interaction.j
-  val = v * ( real(ρ(i,i)) * real(ρ(j,j)) + abs2(t(i,j)))
+  val = v * ( real(ρ(i,i)) * real(ρ(j,j)) - abs2(ρ(i,j)) + abs2(t(i,j)))
 end
 
 
+# OK?
 function interactionenergy(solver::HFBSolver{O},
                            solution::HFBSolution) where {O}
   E = 0.0
@@ -89,9 +107,9 @@ function interactionenergy(solver::HFBSolver{O},
     E_Γ = real( ρ0 * E_Γ )
     E += E_Γ
   end
-
   return E
 end
+
 
 function hfbgrandpotential(solver::HFBSolver{O},
                            solution::HFBSolution) where {O}
@@ -111,7 +129,7 @@ function hfbgrandpotential(solver::HFBSolver{O},
     T = computeT(k)
     #Γ = computeΓ(k)
     #Δ = computeΔ(k)
-    
+
     (eigenvalues, eigenvectors) = eig(Hermitian(H))
     f = [fermi(e) for e in eigenvalues]
     ψ = reshape(eigenvectors, (norb, 2, norb*2))
@@ -135,4 +153,3 @@ function hfbgrandpotential(solver::HFBSolver{O},
   Ω = F / length(solver.momentumgrid)
   return (E,S,Ω)
 end
-

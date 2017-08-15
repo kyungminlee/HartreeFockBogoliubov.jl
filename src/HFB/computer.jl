@@ -60,6 +60,9 @@ mutable struct HFBComputer{O}
   Δ_registry ::Vector{DeployRow}
 end
 
+
+"""
+"""
 function HFBComputer(unitcell::UnitCell{O},
                      hoppings::AbstractVector{Spec.Hopping},
                      temperature::Real) where {O}
@@ -67,67 +70,47 @@ function HFBComputer(unitcell::UnitCell{O},
  return HFBComputer{O}(unitcell, hoppings, temperature, fermi, [], [], [], [])
 end
 
-function HFBComputer(ham::HFBHamiltonian{T},
-                     temperature::Real;
-                     ttol=eps(Float64),
-                     etol=sqrt(eps(Float64))) where {T}
-  @assert(ttol >= 0.0, "ttol should be non-negative")
-  @assert(etol >= 0.0, "etol should be non-negative")
-  @assert(temperature >= 0, "temperature should be non-negative")
-  dim = dimension(ham.unitcell)
 
-  unitcell = ham.unitcell
-  hoppings = ham.hoppings
-  fermi = fermidirac(temperature)
-
+"""
+"""
+function makeparticleholeregistry(ham::HFBHamiltonian{T}) where {T}
   function getdistance(i ::Integer, j ::Integer, Rij::AbstractVector{<:Integer})
-    ri, rj = getorbitalcoord(unitcell, i), getorbitalcoord(unitcell, j)
+    ri, rj = getorbitalcoord(ham.unitcell, i), getorbitalcoord(ham.unitcell, j)
     rj = rj + Rij
-    ri, rj = fract2carte(unitcell, ri), fract2carte(unitcell, rj)
+    ri, rj = fract2carte(ham.unitcell, ri), fract2carte(ham.unitcell, rj)
     return rj - ri
   end
 
   collect_reg = Dict()
   deploy_reg = Dict()
 
-  # always collect density
   let
     R = zeros(Int64, dimension(ham.unitcell))
     r = zeros(Float64, dimension(ham.unitcell))
     for (i, orb) in enumerate(ham.unitcell.orbitals)
-      collect_reg[i, i, R] = (length(collect_reg)+1, (true, i, i, r))
+      collect_reg[i, i, zeros(R)] = (length(collect_reg)+1, (true, i, i, zeros(r)))
     end
-  end
-
-  let
-    R = zeros(Int64, dimension(ham.unitcell))
-    r = zeros(Float64, dimension(ham.unitcell))
     for (i, orb) in enumerate(ham.unitcell.orbitals)
-      deploy_reg[i, i, R] = (length(deploy_reg)+1, (true, i, i, r, []))
+      deploy_reg[i, i, zeros(R)] = (length(deploy_reg)+1, (true, i, i, zeros(r), []))
     end
   end
 
   for hopmf in ham.particle_hole_interactions
-    let
-      (k,l,Rkl) = hopmf.source
-      rkl = getdistance(k, l, Rkl)
-      if !haskey(collect_reg, (k,l, Rkl))
-        isdiag = (k == l) && iszero(Rkl)
-        collect_reg[k,l,Rkl] = (length(collect_reg)+1, (isdiag, k, l, rkl))
-      end
+    (i,j,Rij) = hopmf.target
+    (k,l,Rkl) = hopmf.source
+    rij = getdistance(i, j, Rij)
+    rkl = getdistance(k, l, Rkl)
+    if !haskey(deploy_reg, (i,j, Rij))
+      isdiag = (i == j) && iszero(Rij)
+      deploy_reg[i,j,Rij] = (length(deploy_reg)+1, (isdiag, i, j, rij, []))
     end
-
-    let
-      v = hopmf.amplitude
-      (i,j,Rij) = hopmf.target
-      rij = getdistance(i, j, Rij)
-      if !haskey(deploy_reg, (i,j, Rij))
-        isdiag = (i == j) && iszero(Rij)
-        deploy_reg[i,j,Rij] = (length(deploy_reg)+1, (isdiag, i, j, rij, []))
-      end
+    if !haskey(collect_reg, (k,l, Rkl))
+      isdiag = (k == l) && iszero(Rkl)
+      collect_reg[k,l,Rkl] = (length(collect_reg)+1, (isdiag, k, l, rkl))
     end
   end
 
+  # Add sources to targets
   for hopmf in ham.particle_hole_interactions
     v = hopmf.amplitude
     (i,j,Rij) = hopmf.target
@@ -147,31 +130,40 @@ function HFBComputer(ham::HFBHamiltonian{T},
   end
 
   ρ_registry = sort([(idx, val) for (key, (idx, val)) in collect_reg], by=(x) -> x[1])
-  Γ_registry = sort([(idx, val) for (key, (idx, val)) in deploy_reg], by=(x) -> x[1])
+  Γ_registry = sort([(idx, val) for (key, (idx, val)) in deploy_reg ], by=(x) -> x[1])
   ρ_registry = [val for (idx, val) in ρ_registry]
   Γ_registry = [val for (idx, val) in Γ_registry]
+
+  return (ρ_registry, Γ_registry)
+end
+
+
+"""
+"""
+function makeparticleparticleregistry(ham::HFBHamiltonian{T}) where {T}
+  function getdistance(i ::Integer, j ::Integer, Rij::AbstractVector{<:Integer})
+    ri, rj = getorbitalcoord(ham.unitcell, i), getorbitalcoord(ham.unitcell, j)
+    rj = rj + Rij
+    ri, rj = fract2carte(ham.unitcell, ri), fract2carte(ham.unitcell, rj)
+    return rj - ri
+  end
 
   collect_reg = Dict()
   deploy_reg = Dict()
 
   for hopmf in ham.particle_particle_interactions
-    let
-      (k,l,Rkl) = hopmf.source
-      rkl = getdistance(k, l, Rkl)
-      @assert( !(k==l && iszero(Rkl)) )
-      if !haskey(collect_reg, (k,l,Rkl))
-        collect_reg[k,l,Rkl] = (length(collect_reg)+1, (false, k, l, rkl))
-      end
+    #v = hopmf.amplitude
+    (i,j,Rij) = hopmf.target
+    (k,l,Rkl) = hopmf.source
+    rij = getdistance(i, j, Rij)
+    rkl = getdistance(k, l, Rkl)
+    @assert( !(i==j && iszero(Rij)) )
+    @assert( !(k==l && iszero(Rkl)) )
+    if !haskey(collect_reg, (k,l,Rkl))
+      collect_reg[k,l,Rkl] = (length(collect_reg)+1, (false, k, l, rkl))
     end
-
-    let
-      v = hopmf.amplitude
-      (i,j,Rij) = hopmf.target
-      rij = getdistance(i, j, Rij)
-      @assert( !(i==j && iszero(Rij)) )
-      if !haskey(deploy_reg, (i,j,Rij))
-        deploy_reg[i,j,Rij] = (length(deploy_reg)+1, (false, i, j, rij, []))
-      end
+    if !haskey(deploy_reg, (i,j,Rij))
+      deploy_reg[i,j,Rij] = (length(deploy_reg)+1, (false, i, j, rij, []))
     end
   end
 
@@ -179,7 +171,7 @@ function HFBComputer(ham::HFBHamiltonian{T},
     v = hopmf.amplitude
     (i,j,Rij) = hopmf.target
     (k,l,Rkl) = hopmf.source
-    srcidx = collect_reg[(k,l,Rkl)][1]
+    srcidx = collect_reg[k,l,Rkl][1]
     neg = hopmf.negate
     if abs(v) > eps(Float64)
       push!( deploy_reg[i,j,Rij][2][5], (srcidx, v, neg) )
@@ -197,6 +189,25 @@ function HFBComputer(ham::HFBHamiltonian{T},
   Δ_registry = sort([(idx, val) for (key, (idx, val)) in deploy_reg], by=(x) -> x[1])
   t_registry = [val for (idx, val) in t_registry]
   Δ_registry = [val for (idx, val) in Δ_registry]
+  return (t_registry, Δ_registry)
+end
+
+
+function HFBComputer(ham::HFBHamiltonian{T},
+                     temperature::Real;
+                     ttol=eps(Float64),
+                     etol=sqrt(eps(Float64))) where {T}
+  @assert(ttol >= 0.0, "ttol should be non-negative")
+  @assert(etol >= 0.0, "etol should be non-negative")
+  @assert(temperature >= 0, "temperature should be non-negative")
+  dim = dimension(ham.unitcell)
+
+  unitcell = ham.unitcell
+  hoppings = ham.hoppings
+  fermi = fermidirac(temperature)
+
+  (ρ_registry, Γ_registry) = makeparticleholeregistry(ham)
+  (t_registry, Δ_registry) = makeparticleparticleregistry(ham)
 
   return HFBComputer{T}(unitcell,
                         hoppings,

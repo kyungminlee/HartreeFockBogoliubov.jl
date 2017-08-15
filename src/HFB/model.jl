@@ -22,28 +22,29 @@ struct HoppingMeanField{C<:Number}
     @assert(k <= l)
     new{C}(amplitude, target, source, star)
   end
+end
 
-  function HoppingMeanField(
-          amplitude ::C,
-          target::Tuple{<:Integer, <:Integer, <:AbstractVector{<:Integer}},
-          source::Tuple{<:Integer, <:Integer, <:AbstractVector{<:Integer}}
-        ) where {C<:Number}
-    (i, j, Rij) = target
-    (k, l, Rkl) = source
-    star = false
-    if i > j
-      (i,j) = (j,i)
-      Rij = -Rij
-      amplitude = conj(amplitude)
-      star = !star
-    end
-    if k > l
-      (k,l) = (l,k)
-      Rkl = -Rkl
-      star = !star
-    end
-    new{C}(amplitude, (i,j,Rij), (k,l,Rkl), star)
+
+function HoppingMeanField(
+        amplitude ::C,
+        target::Tuple{<:Integer, <:Integer, <:AbstractVector{<:Integer}},
+        source::Tuple{<:Integer, <:Integer, <:AbstractVector{<:Integer}}
+      ) where {C<:Number}
+  (i, j, Rij) = target
+  (k, l, Rkl) = source
+  star = false
+  if i > j
+    (i,j) = (j,i)
+    Rij = -Rij
+    amplitude = conj(amplitude)
+    star = !star
   end
+  if k > l
+    (k,l) = (l,k)
+    Rkl = -Rkl
+    star = !star
+  end
+  HoppingMeanField{C}(amplitude, (i,j,Rij), (k,l,Rkl), star)
 end
 
 
@@ -67,31 +68,33 @@ struct PairingMeanField{C<:Number}
     @assert(k <= l)
     new{C}(amplitude, target, source, negate)
   end
-
-  function PairingMeanField(
-          amplitude ::C,
-          target::Tuple{<:Integer, <:Integer, <:AbstractVector{<:Integer}},
-          source::Tuple{<:Integer, <:Integer, <:AbstractVector{<:Integer}}
-        ) where {C<:Number}
-    (i, j, Rij) = target
-    (k, l, Rkl) = source
-    negate = false
-    if i > j
-      (i,j) = (j,i)
-      Rij = -Rij
-      amplitude = -amplitude
-      #TODO HERE!!! flip amplitude or not flip amplitude
-      #negate = !negate
-    end
-    if k > l
-      (k,l) = (l,k)
-      Rkl = -Rkl
-      amplitude = -amplitude
-      #negate = !negate
-    end
-    new{C}(amplitude, (i,j,Rij), (k,l,Rkl), negate)
-  end
 end
+
+
+function PairingMeanField(
+        amplitude ::C,
+        target::Tuple{<:Integer, <:Integer, <:AbstractVector{<:Integer}},
+        source::Tuple{<:Integer, <:Integer, <:AbstractVector{<:Integer}}
+      ) where {C<:Number}
+  (i, j, Rij) = target
+  (k, l, Rkl) = source
+  negate = false
+  if i > j
+    (i,j) = (j,i)
+    Rij = -Rij
+    amplitude = -amplitude
+    #TODO HERE!!! flip amplitude or not flip amplitude
+    #negate = !negate
+  end
+  if k > l
+    (k,l) = (l,k)
+    Rkl = -Rkl
+    amplitude = -amplitude
+    #negate = !negate
+  end
+  PairingMeanField{C}(amplitude, (i,j,Rij), (k,l,Rkl), negate)
+end
+
 
 """
 """
@@ -110,7 +113,7 @@ function HFBHamiltonian(
         hoppings ::AbstractVector{Hopping},
         particle_hole_interactions ::AbstractVector{HoppingMeanField},
         particle_particle_interactions ::AbstractVector{PairingMeanField}
-      ) where {O}
+        ) where {O}
   return HFBHamiltonian{O}(unitcell,
                            hoppings,
                            particle_hole_interactions,
@@ -120,11 +123,11 @@ end
 
 """
 """
-function HFBHamiltonian(full_hamiltonian ::FullHamiltonian{O}) where {O}
-  unitcell = full_hamiltonian.unitcell
-  hoppings = full_hamiltonian.hoppings
+function HFBHamiltonian(fullhamiltonian ::FullHamiltonian{O}) where {O}
+  unitcell = fullhamiltonian.unitcell
+  hoppings = fullhamiltonian.hoppings
   model = HFBHamiltonian{O}(unitcell, hoppings, [], [])
-  for interaction in full_hamiltonian.interactions
+  for interaction in fullhamiltonian.interactions
     addinteraction!(model, interaction)
   end
   return model
@@ -137,7 +140,7 @@ Add diagonal interaction
 function addinteraction!(model ::HFBHamiltonian{O},
                          specint ::InteractionDiagonal{R}) where {O,R<:Real}
   v = specint.amplitude
-  (i, j) = (specint.i,  specint.j )
+  (i, j) = (specint.i, specint.j)
   (Ri, Rj) = (specint.Ri, specint.Rj)
 
   Γs = [
@@ -159,8 +162,8 @@ Add diagonal interaction
 function addinteraction!(model ::HFBHamiltonian{O},
                          specint ::InteractionOffdiagonal{C}) where {O,C<:Number}
   v = specint.amplitude
-  (i, j) = (specint.i,  specint.j)
-  (k, l) = (specint.k,  specint.l)
+  (i, j) = (specint.i, specint.j)
+  (k, l) = (specint.k, specint.l)
   (Ri, Rj) = (specint.Ri, specint.Rj)
   (Rk, Rl) = (specint.Rk, specint.Rl)
 
