@@ -74,17 +74,9 @@ function linearizedpairingkernel(
   ##@show hfbcomputer.t_registry
   kernel_pp = zeros(Complex128, (num_pairing, num_pairing))
   for (ibond3, (_, i3, j3, rij3, _)) in enumerate(hfbcomputer.Δ_registry)
-    ##@show ibond3
-    #ri3 = fract2carte(unitcell, getorbitalcoord(unitcell, i3))
-    #rj3 = ri3 + rij3
     for (ibond1, (_, i1, j1, rij1, srcs)) in enumerate(hfbcomputer.Δ_registry)
-      ##@show ibond1
-      #ri1 = fract2carte(unitcell, getorbitalcoord(unitcell, i1))
-      #rj1 = ri1 + rij1
       for (srcidx, v, neg) in srcs
         (_, i2, j2, rij2) = hfbcomputer.t_registry[srcidx]
-        #ri2 = fract2carte(unitcell, getorbitalcoord(unitcell, i2))
-        #rj2 = ri2 + rij2
 
         kernel_element = zero(Complex128)
         for (ik, momentum) in enumerate(momentumgrid)
@@ -97,17 +89,12 @@ function linearizedpairingkernel(
             lindhard = lindhards[n, m, ik]
 
             kernel_element += lindhard * (
-              ψ1[i2] * ψ2[j2] * conj(ψ1[i3] * ψ2[j3]) * phase1
-               -
-              ψ1[i2] * ψ2[j2] * conj(ψ1[j3] * ψ2[i3]) * phase2
-            )
+                ψ1[i2] * ψ2[j2] * conj(ψ1[i3] * ψ2[j3]) * phase1
+              - ψ1[i2] * ψ2[j2] * conj(ψ1[j3] * ψ2[i3]) * phase2 )
           end
         end
         kernel_element /= length(momentumgrid)
         kernel_pp[ibond1, ibond3] += v * (neg ? -1 : 1) * kernel_element
-        #@show ibond1, ibond3
-        #@show kernel_element
-        #@show v, neg
       end
     end
   end
