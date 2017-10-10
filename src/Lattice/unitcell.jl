@@ -331,6 +331,7 @@ function momentumgrid(uc::UnitCell, shape::AbstractVector{<:Integer})
   ranges = [linspace(0,1,n+1)[1:end-1] for n in shape]
 
   cubicgrid = map((x) -> [x...], Base.product(ranges...))
-  momentumgrid = map((x) -> transpose(uc.reciprocallatticevectors) * x, cubicgrid)
+  #momentumgrid = map((x) -> transpose(uc.reciprocallatticevectors) * x, cubicgrid)
+  momentumgrid = map((x) -> uc.reciprocallatticevectors * x, cubicgrid)
   return momentumgrid
 end
