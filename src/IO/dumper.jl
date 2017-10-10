@@ -7,7 +7,8 @@ function mydump(io::IO, x::Integer)
 end
 
 function mydump(io::IO, x::AbstractFloat)
-  @printf(io, "%a", x)
+  #@printf(io, "%a", x)
+  @printf(io, "%.18e", x)
 end
 
 function mydump(io::IO, x::Complex{T}) where T <:Real
