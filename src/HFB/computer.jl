@@ -8,7 +8,8 @@ export makesourcefields,
        newhfbhint,
        newhfbsolution,
        randomize!,
-       fixhfbsolution
+       fixhfbsolution,
+       iscompatible
 
 export makehoppingmatrix,
        makeGammamatrix,
@@ -228,6 +229,14 @@ mutable struct HFBHint{T}
   ρ ::Dict{Tuple{T, T, Vector{Int64}}, Complex128}
   t ::Dict{Tuple{T, T, Vector{Int64}}, Complex128}
 end
+
+function iscompatible(s1 ::HFBSolution, s2::HFBSolution)
+  return (length(s1.ρ) == length(s2.ρ) &&
+          length(s1.t) == length(s2.t) &&
+          length(s1.Γ) == length(s2.Γ) &&
+          length(s1.Δ) == length(s2.Δ))
+end
+
 
 import Base: copy
 
