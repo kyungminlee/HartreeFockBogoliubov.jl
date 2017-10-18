@@ -350,9 +350,9 @@ function makeDeltamatrix(computer::HFBComputer,
       (isdiag, i, j, r, _) = computer.Δ_registry[idx]
       @assert( !isdiag )
       @assert( !(i==j && all(x -> isapprox(x, 0.0), r)) )
-      val = Δ * cis(dot( k, r))
-      out[i,j] += val
-      out[j,i] -= val
+      phase = cis(dot(k, r))
+      out[i,j] += Δ * phase
+      out[j,i] -= Δ * conj(phase)
     end
     return out
   end
@@ -403,11 +403,18 @@ function makehamiltonian(computer ::HFBComputer,
       #out[j,2,i,1] += conj(Δ) * cis(-dot(k, r))
       @assert( !isdiag )
       @assert( !(i==j && all(x -> isapprox(x, 0.0), r)) )
-      val = Δ * cis(dot( k, r))
-      out[i,1,j,2] += val
-      out[j,1,i,2] -= val
-      out[j,2,i,1] += conj(val)
-      out[i,2,j,1] -= conj(val)
+      phase = cis(dot(k, r))
+      #val = Δ * cis(dot( k, r))
+      #out[i,1,j,2] += val
+      #out[j,1,i,2] -= val
+      #out[j,2,i,1] += conj(val)
+      #out[i,2,j,1] -= conj(val)
+      val1 = Δ * phase
+      val2 = Δ * conj(phase)
+      out[i,1,j,2] += val1
+      out[j,1,i,2] -= val2
+      out[j,2,i,1] += conj(val1)
+      out[i,2,j,1] -= conj(val2)
     end
     return reshape(out, (norb*2, norb*2))
   end
