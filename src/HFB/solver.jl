@@ -2,6 +2,7 @@ export HFBSolver
 export getnextsolution,
        getnextsolutionpython,
        loop,
+       looppython,
        simpleupdate
 
 using ProgressMeter
@@ -69,7 +70,6 @@ function getnextsolutionpython(solver ::HFBSolver{T}, sol ::HFBSolution) where {
   ham = makehamiltonian(solver.hfbcomputer, sol.Γ, sol.Δ)
   for momentum in solver.momentumgrid
     hk = ham(momentum)
-    #(eivals, eivecs) = eig(Hermitian(hk))
     (eivals, eivecs) = npl.eigh(hk)
     solver.greencollectors(momentum, eivals, eivecs, newsol.ρ, newsol.t)
   end
@@ -146,6 +146,30 @@ function loop(solver ::HFBSolver{T},
     for i in 1:run
       precondition(sol)
       newsol = getnextsolution(solver, sol)
+      update(sol, newsol)
+    end
+  end
+  sol
+end
+
+function looppython(solver ::HFBSolver{T},
+              sol::HFBSolution,
+              run::Integer;
+              update::Function=simpleupdate,
+              precondition::Function=identity,
+              progressbar::Bool=false
+              ) where {T}
+  sol = copy(sol)
+  if progressbar
+    @showprogress for i in 1:run
+      precondition(sol)
+      newsol = getnextsolutionpython(solver, sol)
+      update(sol, newsol)
+    end
+  else
+    for i in 1:run
+      precondition(sol)
+      newsol = getnextsolutionpython(solver, sol)
       update(sol, newsol)
     end
   end
