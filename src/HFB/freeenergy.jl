@@ -1,5 +1,5 @@
 #export hfbfreeenergy
-export hfbgrantpotential
+export hfbgrandpotential
 
 
 raw"""
