@@ -5,7 +5,8 @@ export getnextsolution,
        simpleupdate
 
 using ProgressMeter
-
+using PyCall
+@pyimport numpy.linalg as npl
 
 """
 """
@@ -53,6 +54,23 @@ function getnextsolution(solver ::HFBSolver{T}, sol ::HFBSolution) where {T}
   for momentum in solver.momentumgrid
     hk = ham(momentum)
     (eivals, eivecs) = eig(Hermitian(hk))
+    solver.greencollectors(momentum, eivals, eivecs, newsol.ρ, newsol.t)
+  end
+  newsol.ρ /= length(solver.momentumgrid)
+  newsol.t /= length(solver.momentumgrid)
+  newsol.Γ[:], newsol.Δ[:] = HFB.computetargetfields(solver.hfbcomputer, newsol.ρ, newsol.t)
+  return newsol
+end
+
+"""
+"""
+function getnextsolutionpython(solver ::HFBSolver{T}, sol ::HFBSolution) where {T}
+  newsol = newhfbsolution(solver.hfbcomputer)
+  ham = makehamiltonian(solver.hfbcomputer, sol.Γ, sol.Δ)
+  for momentum in solver.momentumgrid
+    hk = ham(momentum)
+    #(eivals, eivecs) = eig(Hermitian(hk))
+    (eivals, eivecs) = npl.eigh(hk)
     solver.greencollectors(momentum, eivals, eivecs, newsol.ρ, newsol.t)
   end
   newsol.ρ /= length(solver.momentumgrid)

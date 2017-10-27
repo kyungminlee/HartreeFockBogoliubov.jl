@@ -5,3 +5,5 @@ ArgParse
 YAML
 JSON
 ProgressMeter
+Conda
+PyCall
