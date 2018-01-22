@@ -8,5 +8,6 @@
 
 ## Documentation
 
-[**LATEST**](http://kyungminlee.org/HartreeFockBogoliubov.jl/stable/)
+[**STABLE**](http://kyungminlee.org/HartreeFockBogoliubov.jl/stable/)
+
 [**LATEST**](http://kyungminlee.org/HartreeFockBogoliubov.jl/latest/)
