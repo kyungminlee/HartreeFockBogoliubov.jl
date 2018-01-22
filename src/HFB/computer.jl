@@ -217,7 +217,6 @@ function HFBComputer(ham::HFBHamiltonian{T},
                         Γ_registry, Δ_registry)
 end
 
-
 mutable struct HFBSolution
   ρ ::Vector{Complex128}
   t ::Vector{Complex128}
@@ -243,11 +242,44 @@ import Base: copy
 copy(x::HFBSolution) = HFBSolution(copy(x.ρ), copy(x.t), copy(x.Γ), copy(x.Δ))
 copy{T}(x::HFBHint{T}) = HFBHint{T}(copy(x.ρ), copy(x.t))
 
-import Base: -
+import Base: +, -, *, /, \
+
+function +(sol1::HFBSolution)
+  HFBSolution(sol1.ρ, sol1.t, sol1.Γ, sol1.Δ)
+end
+
+function -(sol1::HFBSolution)
+  HFBSolution(-sol1.ρ, -sol1.t, -sol1.Γ, -sol1.Δ)
+end
+
+function +(sol1::HFBSolution, sol2::HFBSolution)
+  HFBSolution(sol1.ρ + sol2.ρ, sol1.t + sol2.t,
+              sol1.Γ + sol2.Γ, sol1.Δ + sol2.Δ)
+end
 
 function -(sol1::HFBSolution, sol2::HFBSolution)
   HFBSolution(sol1.ρ - sol2.ρ, sol1.t - sol2.t,
               sol1.Γ - sol2.Γ, sol1.Δ - sol2.Δ)
+end
+
+function *(sol1::HFBSolution, value :: T) where {T <: Number}
+  HFBSolution(sol1.ρ * value, sol1.t * value,
+              sol1.Γ * value, sol1.Δ * value)
+end
+
+function *(value :: T, sol1::HFBSolution) where {T <: Number}
+  HFBSolution(value * sol1.ρ, value * sol1.t,
+              value * sol1.Γ, value * sol1.Δ)
+end
+
+function /(sol1::HFBSolution, value :: T) where {T <: Number}
+  HFBSolution(sol1.ρ / value, sol1.t / value,
+              sol1.Γ / value, sol1.Δ / value)
+end
+
+function \(value :: T, sol1::HFBSolution) where {T <: Number}
+  HFBSolution(value \ sol1.ρ, value \ sol1.t,
+              value \ sol1.Γ, value \ sol1.Δ)
 end
 
 
@@ -276,13 +308,18 @@ function makesourcefields(funcρ ::Function,
 end
 
 
+"""
+func : (idx, i, j, r) -> 0
+"""
 function makesourcefields(computer ::HFBComputer{O}) where {O}
   ρs = zeros(Complex128, length(computer.ρ_registry))
   ts = zeros(Complex128, length(computer.t_registry))
   return (ρs, ts)
 end
 
-
+"""
+Compute Γ and Δ from ρ and t.
+"""
 function computetargetfields(computer ::HFBComputer{O},
                              ρs ::AbstractVector{Complex128},
                              ts ::AbstractVector{Complex128}) where {O}
@@ -306,6 +343,9 @@ function computetargetfields(computer ::HFBComputer{O},
   return (Γs, Δs)
 end
 
+"""
+Return a generator of hopping matrix (which is a function of momentum)
+"""
 function makehoppingmatrix(computer::HFBComputer)
   norb = numorbital(computer.unitcell)
   hk = Generator.generatefast(computer.unitcell, computer.hoppings)
@@ -316,7 +356,9 @@ function makehoppingmatrix(computer::HFBComputer)
   end
 end
 
-
+"""
+Return a generator of Γ matrix (which is a function of momentum)
+"""
 function makeGammamatrix(computer::HFBComputer,
                          Γs ::AbstractVector{Complex128})
   norb = numorbital(computer.unitcell)
@@ -340,6 +382,9 @@ function makeGammamatrix(computer::HFBComputer,
 end
 
 
+"""
+Return a generator of Δ matrix (which is a function of momentum)
+"""
 function makeDeltamatrix(computer::HFBComputer,
                          Δs ::AbstractVector{Complex128})
   norb = numorbital(computer.unitcell)
@@ -357,8 +402,6 @@ function makeDeltamatrix(computer::HFBComputer,
     return out
   end
 end
-
-
 
 
 """
@@ -469,6 +512,9 @@ function makegreencollectors(computer::HFBComputer{O}) where {O}
 end
 
 
+"""
+  Return a zero solution
+"""
 function newhfbsolution(computer::HFBComputer{O}) where {O}
   ρ, t = HFB.makesourcefields(computer)
   Γ, Δ = HFB.computetargetfields(computer, ρ, t)
@@ -540,13 +586,17 @@ function newhfbhint(computer::HFBComputer{O}, sol::HFBSolution) where {O}
   return HFBHint{O}(ρ, t)
 end
 
-
+"""
+    Recompute Γ and Δ from ρ and t in a `HFBSolution`
+"""
 function fixhfbsolution(computer::HFBComputer{O},
                         sol ::HFBSolution) where {O}
   sol.Γ[:], sol.Δ[:] = HFB.computetargetfields(computer, sol.ρ, sol.t)
 end
 
-
+"""
+    Randomize a solution
+"""
 function randomize!(computer::HFBComputer{O},
                     sol ::HFBSolution) where {O}
   sol.ρ[:] = (rand(Float64, length(sol.ρ)))
