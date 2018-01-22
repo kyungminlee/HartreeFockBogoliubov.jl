@@ -157,7 +157,7 @@ end
 
 
 """
-Add diagonal interaction
+Add offdiagonal interaction
 """
 function addinteraction!(model ::HFBHamiltonian{O},
                          specint ::InteractionOffdiagonal{C}) where {O,C<:Number}
