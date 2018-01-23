@@ -7,12 +7,13 @@ notifications:
   email: false
 script:
   - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
-  - julia -e 'Pkg.add("ProgressMeter")'
   - julia -e 'Pkg.add("DataStructures")'
   - julia -e 'Pkg.add("YAML")'
+  - julia -e 'Pkg.add("ProgressMeter")'
+  - julia -e 'Pkg.add("Conda")'
+  - julia -e 'using Conda; Conda.add("numpy")'
   - julia -e 'Pkg.clone(pwd())'
   - julia -e 'Pkg.add("HartreeFockBogoliubov")'
-  - julia -e 'Pkg.add("Conda"); using Conda; Conda.add("numpy")'
 
 after_success:
   - julia -e 'Pkg.add("Documenter")'
