@@ -12,6 +12,7 @@ script:
   - julia -e 'Pkg.add("YAML")'
   - julia -e 'Pkg.clone(pwd())'
   - julia -e 'Pkg.add("HartreeFockBogoliubov")'
+  - julia -e 'Pkg.add("Conda"); using Conda; Conda.add("numpy")'
 
 after_success:
   - julia -e 'Pkg.add("Documenter")'
