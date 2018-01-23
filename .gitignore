@@ -1,2 +1,7 @@
 docs/build/
 docs/site/
+\.ipynb_checkpoints/
+lab/
+test/
+example/
+testapp/
