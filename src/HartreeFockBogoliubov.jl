@@ -13,8 +13,9 @@ include("Hamiltonian/Generator.jl")
 
 include("HFB/HFB.jl")
 
-include("LinearizedGap/LinearizedGap.jl")
+include("Topology/Topology.jl")
 
+include("LinearizedGap/LinearizedGap.jl")
 
 include("IO/dumper.jl")
 include("IO/dictify.jl")
