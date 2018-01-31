@@ -1,8 +1,47 @@
 import DataStructures: OrderedDict
 
+function iscanonicaltimereversalinvariant(
+    unitcell::UnitCell,
+    timereversalmatrix::AbstractMatrix{<:Number},
+    hoppings::AbstractVector{Hopping};
+    tol::Real = sqrt(eps(Float64)),
+    momentumgridsize
+    )
+
+    # 1. Check whether the orbitals are Kramer-paired.
+    # 2. Check whether the location of all orbitals are at the origin (for periodicity of the Hamiltonian in momentum space)
+    # 3. Check whether the the hoppings can be Kramer-paired
+
+    # 4. Construct Hamiltonian as function of momentum
+    # 5. Check whether the H(0) and H(G) are the same
+    # 6. Check whether H(k) = U ⋅ H(-k) ⋅ U⁻¹
+    error("unimplemented")
+end
+
 """
 generate k-space grid
 (which has (2 n1, 2 n2) points TOTAL in the Brillouin zone)
+
+# Example
+
+When n1 = 4, n2 = 3, this function returns an `OrderedDict` that represents the following structure
+
+```
+i2|
+  |
+5 | -i -i -i -i -i -i -i -i
+4 | -i -i -i -i -i -i -i -i
+3 | 0h +h +h +h 0h -h -h -h
+2 | +i +i +i +i +i +i +i +i
+1 | +i +i +i +i +i +i +i +i
+0 | 0z +z +z +z 0z -z -z -z
+--+----------------------------
+  |  0  1  2  3  4  5  6  7  i1
+```
+
+where 0z, +z, -z are represented respectively by `:TRIZERO`, `:POSZERO`, and `:NEGZERO`,
+and   0h, +h, -h by `:TRIHALF`, `:POSHALF`, and `:NEGHALF`,
+and   +i, -i by `:POSINT`, `:NEGINT`.
 """
 function timereversalindexgrid(n1 ::Integer, n2 ::Integer)
     pointtypes = OrderedDict{Vector{Int64}, Tuple{Symbol, Vector{Int64}}}()
@@ -85,8 +124,8 @@ Compute Z2 index of time-reversal-invariant Hamiltonian.
 # Optional Arguments
 * `tol ::Real = sqrt(eps(Float64))`
 
-# Return
-
+# Returns
+The Z2 index
 """
 function z2index(uc::UnitCell{O},
     hops::AbstractVector{Hopping},
@@ -117,21 +156,21 @@ function z2index(uc::UnitCell{O},
 
     # check time reversal
     @assert(all(isapprox.(timereversal + timereversal.', 0.0; rtol=rtol, atol=atol)),
-    "timereversalmatrix need to be antisymmetric")
+            "timereversalmatrix need to be antisymmetric")
     @assert(isapprox(timereversal*timereversal', eye(norb); rtol=rtol, atol=atol),
-    "timereversalmatrix need to be unitary")
+            "timereversalmatrix need to be unitary")
 
     @assert(let
-        hk0 = zeros(Complex128, norb, norb)
-        hk1 = zeros(Complex128, norb, norb)
-        hk2 = zeros(Complex128, norb, norb)
+            hk0 = zeros(Complex128, norb, norb)
+            hk1 = zeros(Complex128, norb, norb)
+            hk2 = zeros(Complex128, norb, norb)
 
-        hkgen([0.0, 0.0], hk0)
-        hkgen(squareuc.reciprocallatticevectors[:,1], hk1)
-        hkgen(squareuc.reciprocallatticevectors[:,2], hk2)
-        all(isapprox(hk0, hk1)) && all(isapprox(hk0, hk2))
-    end,
-    "Hamiltonian at reciprocal lattice vectors should be the same as at 0.")
+            hkgen([0.0, 0.0], hk0)
+            hkgen(squareuc.reciprocallatticevectors[:,1], hk1)
+            hkgen(squareuc.reciprocallatticevectors[:,2], hk2)
+            all(isapprox(hk0, hk1)) && all(isapprox(hk0, hk2))
+        end,
+        "Hamiltonian at reciprocal lattice vectors should be the same as at 0.")
 
     hk = zeros(Complex128, norb, norb)
     for (idx, (t, idx2)) in igrid
