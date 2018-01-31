@@ -9,6 +9,11 @@ import ..HFB
 
 export linearizedpairingkernel
 
+""" linearizedpairingkernel
+
+Compute the kernel Γ of the linearized gap equation in the pairing channel
+which is written as Δ = Γ⋅Δ
+"""
 function linearizedpairingkernel(
             solver::HFB.HFBSolver{O};
             tolerance::Float64 = sqrt(eps(Float64))

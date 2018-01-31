@@ -5,7 +5,7 @@ export fract2carte, carte2fract
 
 
 """
-CarteCoord
+    CarteCoord
 
 Cartesian coordinates. `Vector{Float64}`.
 """
@@ -13,7 +13,7 @@ const CarteCoord = Vector{Float64}
 
 
 """
-FractCoord
+    FractCoord
 
 Fractional coordinates.
 
@@ -60,7 +60,7 @@ end
 
 
 """
-dimension
+    dimension
 
 Dimension of the fractional coordinates
 
@@ -120,7 +120,7 @@ end
 
 
 """
-fract2carte
+    fract2carte
 
 # Arguments
 * `latticevectors ::Array{Float64, 2}`
@@ -135,7 +135,7 @@ end
 
 
 """
-carte2fract
+    carte2fract
 
 # Arguments
 * `latticevectors ::Array{Float64, 2}`

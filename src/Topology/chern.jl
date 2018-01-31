@@ -1,19 +1,25 @@
 
 using ..Generator
 
+"""
+    chernnumber
+
+Compute chern number of the band structure defined by the hoppings and the selected bands.
+
+"""
 function chernnumber(uc::UnitCell{O},
-                     hops::AbstractVector{Hopping},
+                     hoppings::AbstractVector{Hopping},
                      n1 ::Integer,
                      n2 ::Integer,
                      selectband::AbstractVector{<:Integer};
                      tol::Real=sqrt(eps(Float64))) where {O}
     squareuc = squarify(uc)
-    hkgen = Generator.generatefast(squareuc, hops)
+    hkgen = Generator.generatefast(squareuc, hoppings)
+    norb = numorbital(squareuc)
 
     kgrid = momentumgrid(squareuc, [n1, n2])
     nk = length(kgrid)
     nsel = length(selectband)
-    norb = numorbital(squareuc)
 
     eigenvaluegrid = zeros(Float64, (nk, nsel))
     eigenvectorgrid = zeros(Complex128, (nk, norb, nsel))

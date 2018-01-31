@@ -1,3 +1,6 @@
+"""
+Generator submodule
+"""
 module Generator
 
 using ..Lattice

@@ -135,10 +135,12 @@ end
 
 
 """
+    addinteraction!
+
 Add diagonal interaction
 """
 function addinteraction!(model ::HFBHamiltonian{O},
-    specint ::InteractionDiagonal{R}) where {O,R<:Real}
+                         specint ::InteractionDiagonal{R}) where {O,R<:Real}
     v = specint.amplitude
     (i, j) = (specint.i, specint.j)
     (Ri, Rj) = (specint.Ri, specint.Rj)

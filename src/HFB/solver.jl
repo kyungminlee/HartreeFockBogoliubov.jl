@@ -127,7 +127,21 @@ function simpleupdate(sol::HFBSolution, newsol ::HFBSolution)
     sol
 end
 
+"""
+    loop
 
+Perform selfconsistency loop a number of times with the given precondition and given update functions.
+
+# Arguments
+* `solver ::HFBSolver{T}`
+* `sol::HFBSolution`
+* `run::Integer`
+
+# Optional Arguments
+* `update::Function=simpleupdate`
+* `precondition::Function=identity`
+* `progressbar::Bool=false`
+"""
 function loop(solver ::HFBSolver{T},
               sol::HFBSolution,
               run::Integer;
@@ -152,6 +166,23 @@ function loop(solver ::HFBSolver{T},
     sol
 end
 
+
+"""
+    loop
+
+Perform selfconsistency loop a number of times with the given precondition and given update functions
+using Python's `numpy.linalg.eigh` (which hopefully is using MKL library).
+
+# Arguments
+* `solver ::HFBSolver{T}`
+* `sol::HFBSolution`
+* `run::Integer`
+
+# Optional Arguments
+* `update::Function=simpleupdate`
+* `precondition::Function=identity`
+* `progressbar::Bool=false`
+"""
 function looppython(solver ::HFBSolver{T},
                     sol::HFBSolution,
                     run::Integer;

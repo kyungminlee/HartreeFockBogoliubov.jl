@@ -20,12 +20,12 @@ import Base.zeros
 """
     UnitCell{T}
 
-  # Members
-  * `latticevectors ::Array{Float64, 2}`: Lattice vectors
-  * `reducedreciprocallatticevectors ::Array{Float64, 2}`: Reduced reciprocal lattice vectors (transpose of inverse of `latticevectors`)
-  * `reciprocallatticevectors ::Array{Float64, 2}`: Reciprocal lattice vectors
-  * `orbitals ::Vector{Tuple{T, FractCoord}}`: List of orbitals within unit cell
-  * `orbitalindices ::Dict{T, Int64}`: Indices of orbitals
+# Members
+* `latticevectors ::Array{Float64, 2}`: Lattice vectors
+* `reducedreciprocallatticevectors ::Array{Float64, 2}`: Reduced reciprocal lattice vectors (transpose of inverse of `latticevectors`)
+* `reciprocallatticevectors ::Array{Float64, 2}`: Reciprocal lattice vectors
+* `orbitals ::Vector{Tuple{T, FractCoord}}`: List of orbitals within unit cell
+* `orbitalindices ::Dict{T, Int64}`: Indices of orbitals
 """
 mutable struct UnitCell{O}
     latticevectors ::Array{Float64, 2}
@@ -54,12 +54,12 @@ end
 
 Construct a one-dimensional lattice.
 
-  # Arguments
-  * `latticeconstant ::Float64`: Lattice constant
-  * `OrbitalType`: List of orbitals
+# Arguments
+* `latticeconstant ::Float64`: Lattice constant
+* `OrbitalType`: List of orbitals
 
-  # Optional Arguments
-  * `tol=sqrt(eps(Float64))`: Tolerance
+# Optional Arguments
+* `tol=sqrt(eps(Float64))`: Tolerance
 """
 function newunitcell(latticeconstant ::AbstractFloat;
                      OrbitalType::DataType=Any,
@@ -72,12 +72,12 @@ end
 """
     UnitCell
 
-  # Arguments
-  * `latticevectors ::Array{Float64, 2}`: Lattice vectors
-  * `OrbitalType::DataType`
+# Arguments
+* `latticevectors ::Array{Float64, 2}`: Lattice vectors
+* `OrbitalType::DataType`
 
-  # Optional Arguments
-  * `tol=sqrt(eps(Float64))`: Epsilon
+# Optional Arguments
+* `tol=sqrt(eps(Float64))`: Epsilon
 """
 function newunitcell(latticevectors ::AbstractArray{<:AbstractFloat, 2};
                      OrbitalType::DataType=Any,
@@ -118,8 +118,8 @@ end
 
 Number of orbitals of the unit cell.
 
-  # Arguments
-  * `uc ::UnitCell`
+# Arguments
+* `uc ::UnitCell`
 """
 function numorbital(uc ::UnitCell{O}) where {O}
     return length(uc.orbitals)
@@ -131,10 +131,10 @@ end
 
 Add an orbital to the unit cell.
 
-  # Arguments
-  * `uc ::UnitCell{T}`
-  * `orbitalname ::{T}`
-  * `orbitalcoord ::FractCoord`
+# Arguments
+* `uc ::UnitCell{T}`
+* `orbitalname ::{T}`
+* `orbitalcoord ::FractCoord`
 """
 function addorbital!(uc ::UnitCell{O},
                      orbitalname ::O,
@@ -154,9 +154,9 @@ end
 
 Test whether the unit cell contains the orbital of given name.
 
-  # Arguments
-  * `uc ::UnitCell{O}`
-  * `name ::O`
+# Arguments
+* `uc ::UnitCell{O}`
+* `name ::O`
 """
 function hasorbital(uc ::UnitCell{O}, name ::O) where {O}
     return haskey(uc.orbitalindices, name)
@@ -168,9 +168,9 @@ end
 
 Get index of the given orbital.
 
-  # Arguments
-  * `uc ::UnitCell{O}`
-  * `name ::O`
+# Arguments
+* `uc ::UnitCell{O}`
+* `name ::O`
 """
 function getorbitalindex(uc ::UnitCell{O}, name ::O) where {O}
     return uc.orbitalindices[name]
@@ -178,7 +178,7 @@ end
 
 
 """
-getorbital
+    getorbital
 
 Get the orbital with the given name.
 
@@ -192,7 +192,7 @@ end
 
 
 """
-getorbitalcoord
+    getorbitalcoord
 
 # Arguments
 * `uc ::UnitCell{O}`
@@ -204,7 +204,7 @@ end
 
 
 """
-getorbitalindexcoord
+    getorbitalindexcoord
 
 # Arguments
 * `uc ::UnitCell{T}`
@@ -218,7 +218,7 @@ end
 
 
 """
-getorbital
+    getorbital
 
 # Arguments
 * `uc ::UnitCell{T}`
@@ -230,7 +230,7 @@ end
 
 
 """
-getorbitalname
+    getorbitalname
 
 # Arguments
 * `uc ::UnitCell`
@@ -242,7 +242,7 @@ end
 
 
 """
-getorbitalcoord
+    getorbitalcoord
 
 # Arguments
 * `uc ::UnitCell`
@@ -255,7 +255,7 @@ end
 
 
 """
-fract2carte
+    fract2carte
 
 # Arguments
 * `latticevectors ::Array{Float64, 2}`
@@ -269,7 +269,7 @@ end
 
 
 """
-carte2fract
+    carte2fract
 
 # Arguments
 * `latticevectors ::Array{Float64, 2}`
@@ -293,7 +293,7 @@ end
 
 
 """
-whichunitcell
+    whichunitcell
 
 Return which unit cell the specificied orbital/cartesian coordinates belongs to.
 """
@@ -302,7 +302,7 @@ function whichunitcell(uc ::UnitCell{O}, name ::O, cc ::CarteCoord;
     fc1 = getorbitalcoord(uc, name)
     fc2 = carte2fract(uc, cc)
     @assert(isapprox(fc1.fraction, fc2.fraction; rtol=tol),
-    "$(fc1.fraction) != $(fc2.fraction) [tol=$(tol)]")
+            "$(fc1.fraction) != $(fc2.fraction) [tol=$(tol)]")
     R = fc2.whole - fc1.whole
     return R
 end
@@ -313,7 +313,7 @@ function whichunitcell(uc ::UnitCell{O}, name ::O, fc ::FractCoord;
     fc1 = getorbitalcoord(uc, name)
     fc2 = fc
     @assert(isapprox(fc1.fraction, fc2.fraction; rtol=tol),
-    "$(fc1.fraction) != $(fc2.fraction) [tol=$(tol)]")
+            "$(fc1.fraction) != $(fc2.fraction) [tol=$(tol)]")
     R = fc2.whole - fc1.whole
     return R
 end

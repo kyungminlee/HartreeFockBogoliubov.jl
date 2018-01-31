@@ -621,26 +621,6 @@ function nambufy(uc::UnitCell{O}, hop::HoppingOffdiagonal{C}) where {O, C<:Numbe
 end
 
 
-
-"""
-"""
-function nambufy(uc::UnitCell{O}, hop::HoppingDiagonal{R}) where {O, R<:Real}
-    norb = numorbital(uc)
-    hop1 = HoppingDiagonal{R}( hop.amplitude, hop.i, hop.Ri)
-    hop2 = HoppingDiagonal{R}(-hop.amplitude, hop.i+norb, hop.Ri)
-    return (hop1, hop2)
-end
-
-
-"""
-"""
-function nambufy(uc::UnitCell{O}, hop::HoppingOffdiagonal{C}) where {O, C<:Number}
-    norb = numorbital(uc)
-    hop1 = HoppingOffdiagonal{C}(      hop.amplitude,  hop.i     , hop.j     , hop.Ri, hop.Rj)
-    hop2 = HoppingOffdiagonal{C}(-conj(hop.amplitude), hop.i+norb, hop.j+norb, hop.Ri, hop.Rj)
-    return (hop1, hop2)
-end
-
 function nambufy(uc::UnitCell{O}) where {O<:Tuple}
     NewOrbitalType = Tuple{O.parameters..., Symbol}
     nambuunitcell = Lattice.newunitcell(unitcell.latticevectors; OrbitalType=NewOrbitalType)
