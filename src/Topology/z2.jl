@@ -89,15 +89,15 @@ Compute Z2 index of time-reversal-invariant Hamiltonian.
   
 """
 function z2index(uc::UnitCell{O},
-                     hops::AbstractVector{Hopping},
-                     timereversal::AbstractMatrix,
-                     n1 ::Integer,
-                     n2 ::Integer,
-                     selectpairs::AbstractVector{<:Integer},
-                     ;
-                     rtol ::Real = sqrt(eps(Float64)),
-                     atol ::Real = sqrt(eps(Float64)),
-                     ) where {O}
+                 hops::AbstractVector{Hopping},
+                 timereversal::AbstractMatrix,
+                 n1 ::Integer,
+                 n2 ::Integer,
+                 selectpairs::AbstractVector{<:Integer},
+                 ;
+                 rtol ::Real = sqrt(eps(Float64)),
+                 atol ::Real = sqrt(eps(Float64)),
+                 ) where {O}
   squareuc = squarify(uc)
   norb = numorbital(squareuc)
   @assert(mod(norb, 2) == 0)
@@ -125,12 +125,13 @@ function z2index(uc::UnitCell{O},
       hk0 = zeros(Complex128, norb, norb)
       hk1 = zeros(Complex128, norb, norb)
       hk2 = zeros(Complex128, norb, norb)
-      
+        
       hkgen([0.0, 0.0], hk0)
       hkgen(squareuc.reciprocallatticevectors[:,1], hk1)
       hkgen(squareuc.reciprocallatticevectors[:,2], hk2)
       all(isapprox(hk0, hk1)) && all(isapprox(hk0, hk2))
-  end)
+    end,
+    "Hamiltonian at reciprocal lattice vectors should be the same as at 0.")
 
   hk = zeros(Complex128, norb, norb)
   for (idx, (t, idx2)) in igrid
