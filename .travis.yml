@@ -11,7 +11,7 @@ script:
   - julia -e 'Pkg.add("YAML")'
   - julia -e 'Pkg.add("ProgressMeter")'
   - julia -e 'Pkg.add("Conda")'
-  - julia -e 'Using Conda; ENV["PYTHON"]=joinpath(Conda.PYTHONDIR, "python"); Pkg.add("PyCall")'
+  - julia -e 'using Conda; ENV["PYTHON"]=joinpath(Conda.PYTHONDIR, "python"); Pkg.add("PyCall")'
   - julia -e 'using Conda; Conda.add("numpy")'
   - julia -e 'Pkg.clone(pwd())'
   - julia -e 'Pkg.add("HartreeFockBogoliubov")'
