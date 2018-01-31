@@ -1,5 +1,33 @@
 import DataStructures: OrderedDict
 
+"""
+    isvalidtimereversalmatrix
+
+Test whether the given matrix is a valid unitary matrix for the time reversal operation.
+
+    ```math
+    T = U ⋅ K
+    ```
+
+    ``U`` must satisfy the two conditions:
+    1. ``U U^{\dagger} = 1`` (from unitarity of ``U``)
+    2. ``U = - U^{\mathsf{T}}`` (from `T^2 = -1`)
+"""
+function isvalidtimereversalmatrix(
+            mat::AbstractMatrix{<:Number};
+            tol::Real=sqrt(eps(Float64)))
+    (nr, nc) = size(mat)
+    if nr != nc
+        return false
+    elseif ! isapprox(mat + mat.', zeros(mat); atol=tol)
+        return false
+    elseif ! isapprox(mat * mat', eye(mat); atol=tol)
+        return false
+    else
+        return true
+    end
+end
+
 function iscanonicaltimereversalinvariant(
     unitcell::UnitCell,
     timereversalmatrix::AbstractMatrix{<:Number},
