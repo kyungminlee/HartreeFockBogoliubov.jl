@@ -1,23 +1,29 @@
-export triindexgrid
-
 import DataStructures: OrderedDict
 
 """
 generate k-space grid
 (which has (2 n1, 2 n2) points TOTAL in the Brillouin zone)
 """
-function triindexgrid(n1 ::Integer, n2 ::Integer)
+function timereversalindexgrid(n1 ::Integer, n2 ::Integer)
     pointtypes = OrderedDict{Vector{Int64}, Tuple{Symbol, Vector{Int64}}}()
     for i2 in 0:(2*n2-1), i1 in 0:(2*n1 - 1)
         j1 = mod(-i1, 2*n1)
         j2 = mod(-i2, 2*n2)
         if i2 == 0 || i2 == n2
             if (i1, i2) == (j1, j2)
-                pointtypes[[i1,i2]] = (:TRI, [i1,i2])
+                pointtypes[[i1,i2]] = (:TRIZERO, [i1,i2])
             elseif haskey(pointtypes, [j1,j2])
-                pointtypes[[i1,i2]] = (:NEG, [j1,j2])
+                pointtypes[[i1,i2]] = (:NEGZERO, [j1,j2])
             else
-                pointtypes[[i1,i2]] = (:POS, [i1,i2])
+                pointtypes[[i1,i2]] = (:POSZERO, [i1,i2])
+            end
+        elseif i2 == n2
+            if (i1, i2) == (j1, j2)
+                pointtypes[[i1,i2]] = (:TRIHALF, [i1,i2])
+            elseif haskey(pointtypes, [j1,j2])
+                pointtypes[[i1,i2]] = (:NEGHALF, [j1,j2])
+            else
+                pointtypes[[i1,i2]] = (:POSHALF, [i1,i2])
             end
         else
             if (i1, i2) == (j1, j2)
@@ -32,7 +38,8 @@ function triindexgrid(n1 ::Integer, n2 ::Integer)
     return pointtypes
 end
 
-function triindexgrid(shape::AbstractVector{<:Integer})
+#=
+function timereversalindexgrid(shape::AbstractVector{<:Integer})
     ranges = [0:(2*n-1) for n in shape]
     hypercubicgrid = map((x) -> [x...], Base.product(ranges...))
 
@@ -60,42 +67,59 @@ function triindexgrid(shape::AbstractVector{<:Integer})
     end
     return pointtypes
 end
+=#
 
-function z2invariant(uc::UnitCell{O},
+"""
+$(SIGNATURES)
+
+Compute Z2 index of time-reversal-invariant Hamiltonian.
+
+# Arguments
+* `uc::UnitCell{O}`
+* `hops::AbstractVector{Hopping}`
+* `timereversal::AbstractMatrix`
+* `n1 ::Integer`
+* `n2 ::Integer`
+* `selectpairs::AbstractVector{<:Integer}`
+
+# Optional Arguments
+* `tol ::Real = sqrt(eps(Float64))`
+
+# Return
+  
+"""
+function z2index(uc::UnitCell{O},
                      hops::AbstractVector{Hopping},
                      timereversal::AbstractMatrix,
                      n1 ::Integer,
                      n2 ::Integer,
                      selectpairs::AbstractVector{<:Integer},
                      ;
-                     rtol ::Real = 0,
+                     rtol ::Real = sqrt(eps(Float64)),
                      atol ::Real = sqrt(eps(Float64)),
                      ) where {O}
-
-
   squareuc = squarify(uc)
-  igrid = triindexgrid(n1, n2)
+  norb = numorbital(squareuc)
+  @assert(mod(norb, 2) == 0)
+  hkgen = Generator.generatefast(squareuc, hops)
+  kgrid = momentumgrid(squareuc, [n1*2, n2*2])
+
+  igrid = timereversalindexgrid(n1, n2)
   eigenvaluegrid = Dict()
   eigenvectorgrid = Dict()
 
   selectbands = Int[]
   for idxpair in selectpairs
+    @assert(1 <= idxpair <= norb ÷ 2)
     push!(selectbands, idxpair*2-1)
     push!(selectbands, idxpair*2)
   end
 
-  #@show timereversal
-  #@show igrid
-  #@show selectpairs
-  #@show selectbands
-
-  norb = numorbital(squareuc)
-  hkgen = Generator.generatefast(squareuc, hops)
-  kgrid = momentumgrid(squareuc, [n1*2, n2*2])
-
   # check time reversal
-  @assert(all(isapprox.(timereversal + timereversal.', 0.0; rtol=rtol, atol=atol)))
-  @assert(isapprox(timereversal*timereversal', eye(norb); rtol=rtol, atol=atol))
+  @assert(all(isapprox.(timereversal + timereversal.', 0.0; rtol=rtol, atol=atol)),
+          "timereversalmatrix need to be antisymmetric")
+  @assert(isapprox(timereversal*timereversal', eye(norb); rtol=rtol, atol=atol),
+          "timereversalmatrix need to be unitary")
 
   @assert(let
       hk0 = zeros(Complex128, norb, norb)
@@ -108,36 +132,21 @@ function z2invariant(uc::UnitCell{O},
       all(isapprox(hk0, hk1)) && all(isapprox(hk0, hk2))
   end)
 
-  #@show kgrid
   hk = zeros(Complex128, norb, norb)
   for (idx, (t, idx2)) in igrid
-    if t == :TRI
+    if t == :TRIZERO || t == :TRIHALF
       k = kgrid[(i+1 for i in idx)...]
-      #@show idx, k, t
-      # k = squareuc.reciprocallatticevectors * [idx[1] / (2*n1), idx[2] / (2*n2)]
       hk[:] = 0.0
       hkgen(k, hk)
       u, v = eig(Hermitian(0.5 * (hk + hk')))
       for idxpair in selectpairs
         @assert(isapprox(u[idxpair*2-1], u[idxpair*2]; rtol=rtol, atol=atol))
-        #=
-        let
-            ψ1 = timereversal * conj(v[:, idxpair*2-1]) 
-            ψ2 = v[:, idxpair*2]
-            (_, idxnonzero) = findmax(abs.(ψ1))
-            ψ1 = ψ1 .* conj( ψ1[idxnonzero] / abs(ψ1[idxnonzero]) )
-            ψ2 = ψ2 .* conj( ψ2[idxnonzero] / abs(ψ2[idxnonzero]) )
-            @assert(isapprox(ψ1, ψ2))
-            # NOTE: may not be satisfied when there is additional degeneracy
-        end
-        =#
         v[:, idxpair*2] = timereversal * conj(v[:, idxpair*2-1])    # T = U_T K
       end
       eigenvaluegrid[idx] = u[selectbands]
       eigenvectorgrid[idx] = v[:, selectbands]
-    elseif t == :POS || t == :POSINT
+    elseif t == :POSZERO || t == :POSHALF || t == :POSINT
       k = kgrid[(i+1 for i in idx)...]
-      #@show idx, k, t
       hk[:] = 0.0
       hkgen(k, hk)
       u, v = eig(Hermitian(0.5 * (hk + hk')))
@@ -147,27 +156,16 @@ function z2invariant(uc::UnitCell{O},
   end
 
   for (idx, (t, idx2)) in igrid
-    if t == :NEG
-      #@show idx, t, idx2
+    if t == :NEGZERO || t == :NEGHALF
       eigenvalues = eigenvaluegrid[idx2]
       eigenvectors = eigenvectorgrid[idx2]
       eigenvaluegrid[idx] = eigenvalues
       eigenvectorgrid[idx] = timereversal * conj(eigenvectors)
-    elseif t == :NEGINT
-      #@show idx, t
     end
   end
 
-  #=
-  println("Eigenvectorgrid")
-  for (k, v) in eigenvectorgrid
-    @show k
-    display(v)
-    println()
-  end
-  =#
-
   # Eigenvectorgrid done. Now compute F and A
+
   F = 0.0
   for i2 in 0:(n2-1), i1 in 0:(2*n1-1)
     @assert(let
@@ -180,7 +178,6 @@ function z2invariant(uc::UnitCell{O},
     ψ2 = eigenvectorgrid[[i1p,i2 ]]
     ψ3 = eigenvectorgrid[[i1p,i2p]]
     ψ4 = eigenvectorgrid[[i1 ,i2p]]
-    #@show (i1, i2), angle(det(ψ1' * ψ2) * det(ψ2' * ψ3) * det(ψ3' * ψ4) * det(ψ4' * ψ1))
     F += angle(det(ψ1' * ψ2) * det(ψ2' * ψ3) * det(ψ3' * ψ4) * det(ψ4' * ψ1))
   end
 
@@ -196,16 +193,6 @@ function z2invariant(uc::UnitCell{O},
     ψ1 = eigenvectorgrid[[i1 ,0]]
     ψ2 = eigenvectorgrid[[i1p,0]]
     A += angle(det(ψ1' * ψ2))
-
-    let
-        (t,_) = igrid[[i1,0]]
-        (tp,_) = igrid[[i1p,0]]
-        #@show i1, 0, t, i1p, 0, tp
-        #@show ψ1
-        #@show ψ2
-        #@show '+', angle(det(ψ1' * ψ2))
-        #println()
-    end
   end
 
   for i1 in 0:(2*n1-1)
@@ -217,23 +204,10 @@ function z2invariant(uc::UnitCell{O},
     ψ1 = eigenvectorgrid[[i1 ,n2]]
     ψ2 = eigenvectorgrid[[i1p,n2]]
     A -= angle(det(ψ1' * ψ2))
-
-    let
-        (t,_) = igrid[[i1,0]]
-        (tp,_) = igrid[[i1p,0]]
-        #@show i1, 0, t, i1p, 0, tp
-        #@show ψ1
-        #@show ψ2  
-        #@show '-', angle(det(ψ1' * ψ2))
-        #println()
-    end
   end
-  #@show mod(F, 4π)
-  #@show mod(A, 4π)
   z2indexreal = (F-A) / (2π)
   z2indexint = round(z2indexreal)
   @assert(abs(z2indexreal - z2indexint) < atol)
-  #return z2indexint, z2indexreal
   return mod(z2indexint, 2)
 end
 
