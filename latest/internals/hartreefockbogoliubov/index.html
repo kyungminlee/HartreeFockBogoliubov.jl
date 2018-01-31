@@ -125,7 +125,7 @@
 </code></pre>
 
 <p>Cartesian coordinates. <code>Vector{Float64}</code>.</p>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/Lattice/coord.jl#L7-L11' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/Lattice/coord.jl#L7-L11' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.Lattice.FractCoord' href='#HartreeFockBogoliubov.Lattice.FractCoord'>#</a>
 <strong><code>HartreeFockBogoliubov.Lattice.FractCoord</code></strong> &mdash; <em>Type</em>.</p>
 <pre><code>FractCoord
@@ -137,7 +137,7 @@
 <li><code>whole ::Vector{Int64}</code>: Integer part of fractional coordinates</li>
 <li><code>fraction ::Vector{Float64}</code>: [0,1) part of fractional coordinates</li>
 </ul>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/Lattice/coord.jl#L15-L23' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/Lattice/coord.jl#L15-L23' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.Lattice.UnitCell' href='#HartreeFockBogoliubov.Lattice.UnitCell'>#</a>
 <strong><code>HartreeFockBogoliubov.Lattice.UnitCell</code></strong> &mdash; <em>Type</em>.</p>
 <pre><code>UnitCell{T}
@@ -151,7 +151,7 @@
 <li><code>orbitals ::Vector{Tuple{T, FractCoord}}</code>: List of orbitals within unit cell</li>
 <li><code>orbitalindices ::Dict{T, Int64}</code>: Indices of orbitals</li>
 </ul>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/Lattice/unitcell.jl#L20-L29' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/Lattice/unitcell.jl#L20-L29' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.Lattice.addorbital!-Union{Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O},O,HartreeFockBogoliubov.Lattice.FractCoord}, Tuple{O}} where O' href='#HartreeFockBogoliubov.Lattice.addorbital!-Union{Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O},O,HartreeFockBogoliubov.Lattice.FractCoord}, Tuple{O}} where O'>#</a>
 <strong><code>HartreeFockBogoliubov.Lattice.addorbital!</code></strong> &mdash; <em>Method</em>.</p>
 <pre><code>addorbital!
@@ -164,7 +164,7 @@
 <li><code>orbitalname ::{T}</code></li>
 <li><code>orbitalcoord ::FractCoord</code></li>
 </ul>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/Lattice/unitcell.jl#L129-L138' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/Lattice/unitcell.jl#L129-L138' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.Lattice.carte2fract-Tuple{AbstractArray{#s15,2} where #s15<:AbstractFloat,Array{Float64,1}}' href='#HartreeFockBogoliubov.Lattice.carte2fract-Tuple{AbstractArray{#s15,2} where #s15<:AbstractFloat,Array{Float64,1}}'>#</a>
 <strong><code>HartreeFockBogoliubov.Lattice.carte2fract</code></strong> &mdash; <em>Method</em>.</p>
 <pre><code>carte2fract
@@ -175,7 +175,7 @@
 <li><code>latticevectors ::Array{Float64, 2}</code></li>
 <li><code>cc ::CarteCoord</code></li>
 </ul>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/Lattice/coord.jl#L137-L143' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/Lattice/coord.jl#L137-L143' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.Lattice.carte2fract-Tuple{HartreeFockBogoliubov.Lattice.UnitCell,Array{Float64,1}}' href='#HartreeFockBogoliubov.Lattice.carte2fract-Tuple{HartreeFockBogoliubov.Lattice.UnitCell,Array{Float64,1}}'>#</a>
 <strong><code>HartreeFockBogoliubov.Lattice.carte2fract</code></strong> &mdash; <em>Method</em>.</p>
 <pre><code>carte2fract
@@ -186,7 +186,7 @@
 <li><code>latticevectors ::Array{Float64, 2}</code></li>
 <li><code>cc ::CarteCoord</code></li>
 </ul>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/Lattice/unitcell.jl#L271-L277' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/Lattice/unitcell.jl#L271-L277' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.Lattice.dimension-Tuple{HartreeFockBogoliubov.Lattice.FractCoord}' href='#HartreeFockBogoliubov.Lattice.dimension-Tuple{HartreeFockBogoliubov.Lattice.FractCoord}'>#</a>
 <strong><code>HartreeFockBogoliubov.Lattice.dimension</code></strong> &mdash; <em>Method</em>.</p>
 <pre><code>dimension
@@ -197,14 +197,14 @@
 <ul>
 <li><code>fc ::FractCoord</code>: Fractional coordinates.</li>
 </ul>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/Lattice/coord.jl#L62-L69' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/Lattice/coord.jl#L62-L69' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.Lattice.dimension-Union{Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O}}, Tuple{O}} where O' href='#HartreeFockBogoliubov.Lattice.dimension-Union{Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O}}, Tuple{O}} where O'>#</a>
 <strong><code>HartreeFockBogoliubov.Lattice.dimension</code></strong> &mdash; <em>Method</em>.</p>
 <pre><code>dimension
 </code></pre>
 
 <p>Spatial dimension of the unit cell.</p>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/Lattice/unitcell.jl#L106-L110' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/Lattice/unitcell.jl#L106-L110' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.Lattice.fract2carte-Tuple{AbstractArray{#s23,2} where #s23<:AbstractFloat,HartreeFockBogoliubov.Lattice.FractCoord}' href='#HartreeFockBogoliubov.Lattice.fract2carte-Tuple{AbstractArray{#s23,2} where #s23<:AbstractFloat,HartreeFockBogoliubov.Lattice.FractCoord}'>#</a>
 <strong><code>HartreeFockBogoliubov.Lattice.fract2carte</code></strong> &mdash; <em>Method</em>.</p>
 <pre><code>fract2carte
@@ -215,7 +215,7 @@
 <li><code>latticevectors ::Array{Float64, 2}</code></li>
 <li><code>fc ::FractCoord</code></li>
 </ul>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/Lattice/coord.jl#L122-L128' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/Lattice/coord.jl#L122-L128' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.Lattice.fract2carte-Tuple{HartreeFockBogoliubov.Lattice.UnitCell,HartreeFockBogoliubov.Lattice.FractCoord}' href='#HartreeFockBogoliubov.Lattice.fract2carte-Tuple{HartreeFockBogoliubov.Lattice.UnitCell,HartreeFockBogoliubov.Lattice.FractCoord}'>#</a>
 <strong><code>HartreeFockBogoliubov.Lattice.fract2carte</code></strong> &mdash; <em>Method</em>.</p>
 <pre><code>fract2carte
@@ -226,7 +226,7 @@
 <li><code>latticevectors ::Array{Float64, 2}</code></li>
 <li><code>fc ::FractCoord</code></li>
 </ul>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/Lattice/unitcell.jl#L257-L263' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/Lattice/unitcell.jl#L257-L263' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.Lattice.getorbital-Tuple{HartreeFockBogoliubov.Lattice.UnitCell,Integer}' href='#HartreeFockBogoliubov.Lattice.getorbital-Tuple{HartreeFockBogoliubov.Lattice.UnitCell,Integer}'>#</a>
 <strong><code>HartreeFockBogoliubov.Lattice.getorbital</code></strong> &mdash; <em>Method</em>.</p>
 <pre><code>getorbital
@@ -237,7 +237,7 @@
 <li><code>uc ::UnitCell{T}</code></li>
 <li><code>idx ::Integer</code></li>
 </ul>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/Lattice/unitcell.jl#L220-L226' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/Lattice/unitcell.jl#L220-L226' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.Lattice.getorbital-Union{Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O},O}, Tuple{O}} where O' href='#HartreeFockBogoliubov.Lattice.getorbital-Union{Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O},O}, Tuple{O}} where O'>#</a>
 <strong><code>HartreeFockBogoliubov.Lattice.getorbital</code></strong> &mdash; <em>Method</em>.</p>
 <pre><code>getorbital
@@ -249,7 +249,7 @@
 <li><code>uc ::UnitCell{O}</code></li>
 <li><code>name ::O</code></li>
 </ul>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/Lattice/unitcell.jl#L180-L188' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/Lattice/unitcell.jl#L180-L188' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.Lattice.getorbitalcoord-Tuple{HartreeFockBogoliubov.Lattice.UnitCell,Integer}' href='#HartreeFockBogoliubov.Lattice.getorbitalcoord-Tuple{HartreeFockBogoliubov.Lattice.UnitCell,Integer}'>#</a>
 <strong><code>HartreeFockBogoliubov.Lattice.getorbitalcoord</code></strong> &mdash; <em>Method</em>.</p>
 <pre><code>getorbitalcoord
@@ -260,7 +260,7 @@
 <li><code>uc ::UnitCell</code></li>
 <li><code>idx ::Integer</code></li>
 </ul>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/Lattice/unitcell.jl#L244-L250' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/Lattice/unitcell.jl#L244-L250' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.Lattice.getorbitalcoord-Union{Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O},O}, Tuple{O}} where O' href='#HartreeFockBogoliubov.Lattice.getorbitalcoord-Union{Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O},O}, Tuple{O}} where O'>#</a>
 <strong><code>HartreeFockBogoliubov.Lattice.getorbitalcoord</code></strong> &mdash; <em>Method</em>.</p>
 <pre><code>getorbitalcoord
@@ -271,7 +271,7 @@
 <li><code>uc ::UnitCell{O}</code></li>
 <li><code>name ::O</code></li>
 </ul>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/Lattice/unitcell.jl#L194-L200' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/Lattice/unitcell.jl#L194-L200' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.Lattice.getorbitalindex-Union{Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O},O}, Tuple{O}} where O' href='#HartreeFockBogoliubov.Lattice.getorbitalindex-Union{Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O},O}, Tuple{O}} where O'>#</a>
 <strong><code>HartreeFockBogoliubov.Lattice.getorbitalindex</code></strong> &mdash; <em>Method</em>.</p>
 <pre><code>getorbitalindex
@@ -283,7 +283,7 @@
 <li><code>uc ::UnitCell{O}</code></li>
 <li><code>name ::O</code></li>
 </ul>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/Lattice/unitcell.jl#L166-L174' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/Lattice/unitcell.jl#L166-L174' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.Lattice.getorbitalindexcoord-Union{Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O},O}, Tuple{O}} where O' href='#HartreeFockBogoliubov.Lattice.getorbitalindexcoord-Union{Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O},O}, Tuple{O}} where O'>#</a>
 <strong><code>HartreeFockBogoliubov.Lattice.getorbitalindexcoord</code></strong> &mdash; <em>Method</em>.</p>
 <pre><code>getorbitalindexcoord
@@ -294,7 +294,7 @@
 <li><code>uc ::UnitCell{T}</code></li>
 <li><code>name ::T</code></li>
 </ul>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/Lattice/unitcell.jl#L206-L212' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/Lattice/unitcell.jl#L206-L212' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.Lattice.getorbitalname-Tuple{HartreeFockBogoliubov.Lattice.UnitCell,Integer}' href='#HartreeFockBogoliubov.Lattice.getorbitalname-Tuple{HartreeFockBogoliubov.Lattice.UnitCell,Integer}'>#</a>
 <strong><code>HartreeFockBogoliubov.Lattice.getorbitalname</code></strong> &mdash; <em>Method</em>.</p>
 <pre><code>getorbitalname
@@ -305,7 +305,7 @@
 <li><code>uc ::UnitCell</code></li>
 <li><code>idx ::Integer</code></li>
 </ul>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/Lattice/unitcell.jl#L232-L238' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/Lattice/unitcell.jl#L232-L238' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.Lattice.hasorbital-Union{Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O},O}, Tuple{O}} where O' href='#HartreeFockBogoliubov.Lattice.hasorbital-Union{Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O},O}, Tuple{O}} where O'>#</a>
 <strong><code>HartreeFockBogoliubov.Lattice.hasorbital</code></strong> &mdash; <em>Method</em>.</p>
 <pre><code>hasorbital{T}
@@ -317,7 +317,7 @@
 <li><code>uc ::UnitCell{O}</code></li>
 <li><code>name ::O</code></li>
 </ul>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/Lattice/unitcell.jl#L152-L160' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/Lattice/unitcell.jl#L152-L160' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.Lattice.newunitcell-Tuple{AbstractArray{#s13,2} where #s13<:AbstractFloat}' href='#HartreeFockBogoliubov.Lattice.newunitcell-Tuple{AbstractArray{#s13,2} where #s13<:AbstractFloat}'>#</a>
 <strong><code>HartreeFockBogoliubov.Lattice.newunitcell</code></strong> &mdash; <em>Method</em>.</p>
 <pre><code>UnitCell
@@ -332,7 +332,7 @@
 <ul>
 <li><code>tol=sqrt(eps(Float64))</code>: Epsilon</li>
 </ul>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/Lattice/unitcell.jl#L72-L81' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/Lattice/unitcell.jl#L72-L81' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.Lattice.newunitcell-Tuple{AbstractFloat}' href='#HartreeFockBogoliubov.Lattice.newunitcell-Tuple{AbstractFloat}'>#</a>
 <strong><code>HartreeFockBogoliubov.Lattice.newunitcell</code></strong> &mdash; <em>Method</em>.</p>
 <pre><code>UnitCell
@@ -348,7 +348,7 @@
 <ul>
 <li><code>tol=sqrt(eps(Float64))</code>: Tolerance</li>
 </ul>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/Lattice/unitcell.jl#L52-L63' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/Lattice/unitcell.jl#L52-L63' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.Lattice.numorbital-Union{Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O}}, Tuple{O}} where O' href='#HartreeFockBogoliubov.Lattice.numorbital-Union{Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O}}, Tuple{O}} where O'>#</a>
 <strong><code>HartreeFockBogoliubov.Lattice.numorbital</code></strong> &mdash; <em>Method</em>.</p>
 <pre><code>numorbital
@@ -359,14 +359,14 @@
 <ul>
 <li><code>uc ::UnitCell</code></li>
 </ul>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/Lattice/unitcell.jl#L116-L123' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/Lattice/unitcell.jl#L116-L123' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.Lattice.whichunitcell-Union{Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O},O,Array{Float64,1}}, Tuple{O}} where O' href='#HartreeFockBogoliubov.Lattice.whichunitcell-Union{Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O},O,Array{Float64,1}}, Tuple{O}} where O'>#</a>
 <strong><code>HartreeFockBogoliubov.Lattice.whichunitcell</code></strong> &mdash; <em>Method</em>.</p>
 <pre><code>whichunitcell
 </code></pre>
 
 <p>Return which unit cell the specificied orbital/cartesian coordinates belongs to.</p>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/Lattice/unitcell.jl#L295-L299' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/Lattice/unitcell.jl#L295-L299' class='documenter-source'>source</a><br></p>
 <p><a id='Spec-1'></a></p>
 <h1 id="spec">Spec</h1>
 <p><a id='HartreeFockBogoliubov.Spec' href='#HartreeFockBogoliubov.Spec'>#</a>
@@ -374,19 +374,19 @@
 <pre><code>Submodule `Spec`
 </code></pre>
 
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/Hamiltonian/Spec.jl#L1-L4' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/Hamiltonian/Spec.jl#L1-L4' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.Spec.Hopping' href='#HartreeFockBogoliubov.Spec.Hopping'>#</a>
 <strong><code>HartreeFockBogoliubov.Spec.Hopping</code></strong> &mdash; <em>Constant</em>.</p>
 <pre><code>Hopping
 </code></pre>
 
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/Hamiltonian/Spec.jl#L225-L227' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/Hamiltonian/Spec.jl#L225-L227' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.Spec.Interaction' href='#HartreeFockBogoliubov.Spec.Interaction'>#</a>
 <strong><code>HartreeFockBogoliubov.Spec.Interaction</code></strong> &mdash; <em>Constant</em>.</p>
 <pre><code>Interaction
 </code></pre>
 
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/Hamiltonian/Spec.jl#L231-L233' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/Hamiltonian/Spec.jl#L231-L233' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.Spec.FullHamiltonian' href='#HartreeFockBogoliubov.Spec.FullHamiltonian'>#</a>
 <strong><code>HartreeFockBogoliubov.Spec.FullHamiltonian</code></strong> &mdash; <em>Type</em>.</p>
 <pre><code>FullHamiltonian
@@ -398,7 +398,7 @@
 <li><code>hoppings ::Vector{Hopping}</code></li>
 <li><code>interactions ::Vector{Interaction}</code></li>
 </ul>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/Hamiltonian/Spec.jl#L237-L244' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/Hamiltonian/Spec.jl#L237-L244' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.Spec.FullHamiltonian-Union{Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O}}, Tuple{O}} where O' href='#HartreeFockBogoliubov.Spec.FullHamiltonian-Union{Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O}}, Tuple{O}} where O'>#</a>
 <strong><code>HartreeFockBogoliubov.Spec.FullHamiltonian</code></strong> &mdash; <em>Method</em>.</p>
 <pre><code>Hamiltonian
@@ -409,7 +409,7 @@
 <ul>
 <li><code>unitcell ::UnitCell</code></li>
 </ul>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/Hamiltonian/Spec.jl#L252-L259' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/Hamiltonian/Spec.jl#L252-L259' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.Spec.HoppingDiagonal' href='#HartreeFockBogoliubov.Spec.HoppingDiagonal'>#</a>
 <strong><code>HartreeFockBogoliubov.Spec.HoppingDiagonal</code></strong> &mdash; <em>Type</em>.</p>
 <pre><code>HoppingDiagonal{R&lt;:Real}
@@ -427,10 +427,10 @@
 <li><code>i ::Int64</code>: name of orbital</li>
 <li><code>Ri ::Vector{Int64}</code>: which unit cell? (indexed by a1, and a2)</li>
 </ul>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/Hamiltonian/Spec.jl#L19-L30' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/Hamiltonian/Spec.jl#L19-L30' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.Spec.HoppingDiagonal-Union{Tuple{R,Integer,AbstractArray{#s23,1} where #s23<:Integer}, Tuple{R}} where R<:Real' href='#HartreeFockBogoliubov.Spec.HoppingDiagonal-Union{Tuple{R,Integer,AbstractArray{#s23,1} where #s23<:Integer}, Tuple{R}} where R<:Real'>#</a>
 <strong><code>HartreeFockBogoliubov.Spec.HoppingDiagonal</code></strong> &mdash; <em>Method</em>.</p>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/Hamiltonian/Spec.jl#L42-L44' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/Hamiltonian/Spec.jl#L42-L44' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.Spec.HoppingOffdiagonal' href='#HartreeFockBogoliubov.Spec.HoppingOffdiagonal'>#</a>
 <strong><code>HartreeFockBogoliubov.Spec.HoppingOffdiagonal</code></strong> &mdash; <em>Type</em>.</p>
 <pre><code>HoppingOffdiagonal{C&lt;:Number}
@@ -450,7 +450,7 @@
 <li><code>Ri ::Vector{Int64}</code></li>
 <li><code>Rj ::Vector{Int64}</code></li>
 </ul>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/Hamiltonian/Spec.jl#L52-L66' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/Hamiltonian/Spec.jl#L52-L66' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.Spec.InteractionDiagonal' href='#HartreeFockBogoliubov.Spec.InteractionDiagonal'>#</a>
 <strong><code>HartreeFockBogoliubov.Spec.InteractionDiagonal</code></strong> &mdash; <em>Type</em>.</p>
 <pre><code>InteractionDiagonal{R&lt;:Real}
@@ -470,7 +470,7 @@
 <li><code>Ri ::Vector{Int64}</code></li>
 <li><code>Rj ::Vector{Int64}</code></li>
 </ul>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/Hamiltonian/Spec.jl#L98-L112' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/Hamiltonian/Spec.jl#L98-L112' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.Spec.InteractionOffdiagonal' href='#HartreeFockBogoliubov.Spec.InteractionOffdiagonal'>#</a>
 <strong><code>HartreeFockBogoliubov.Spec.InteractionOffdiagonal</code></strong> &mdash; <em>Type</em>.</p>
 <pre><code>InteractionOffdiagonal{C&lt;:Number}
@@ -498,7 +498,7 @@ i &lt; j, k &lt; l, i &lt; k or (i == k and j &lt; l)
 <li><code>Rk ::Vector{Int64}</code></li>
 <li><code>Rl ::Vector{Int64}</code></li>
 </ul>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/Hamiltonian/Spec.jl#L145-L168' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/Hamiltonian/Spec.jl#L145-L168' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.Spec.addhopping!-Union{Tuple{C}, Tuple{HartreeFockBogoliubov.Spec.FullHamiltonian{O},HartreeFockBogoliubov.Spec.HoppingOffdiagonal{C}}, Tuple{O}} where C<:Number where O' href='#HartreeFockBogoliubov.Spec.addhopping!-Union{Tuple{C}, Tuple{HartreeFockBogoliubov.Spec.FullHamiltonian{O},HartreeFockBogoliubov.Spec.HoppingOffdiagonal{C}}, Tuple{O}} where C<:Number where O'>#</a>
 <strong><code>HartreeFockBogoliubov.Spec.addhopping!</code></strong> &mdash; <em>Method</em>.</p>
 <pre><code>addhopping!
@@ -509,7 +509,7 @@ i &lt; j, k &lt; l, i &lt; k or (i == k and j &lt; l)
 <li><code>hamiltonian ::Hamiltonian</code></li>
 <li><code>hopping ::HoppingOffdiagonal</code></li>
 </ul>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/Hamiltonian/Spec.jl#L438-L444' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/Hamiltonian/Spec.jl#L438-L444' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.Spec.addhopping!-Union{Tuple{HartreeFockBogoliubov.Spec.FullHamiltonian{O},HartreeFockBogoliubov.Spec.HoppingDiagonal{R}}, Tuple{O}, Tuple{R}} where R<:Real where O' href='#HartreeFockBogoliubov.Spec.addhopping!-Union{Tuple{HartreeFockBogoliubov.Spec.FullHamiltonian{O},HartreeFockBogoliubov.Spec.HoppingDiagonal{R}}, Tuple{O}, Tuple{R}} where R<:Real where O'>#</a>
 <strong><code>HartreeFockBogoliubov.Spec.addhopping!</code></strong> &mdash; <em>Method</em>.</p>
 <pre><code>addhopping!
@@ -520,7 +520,7 @@ i &lt; j, k &lt; l, i &lt; k or (i == k and j &lt; l)
 <li><code>hamiltonian ::Hamiltonian</code></li>
 <li><code>hopping ::HoppingDiagonal</code></li>
 </ul>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/Hamiltonian/Spec.jl#L420-L426' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/Hamiltonian/Spec.jl#L420-L426' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.Spec.addinteraction!-Union{Tuple{C}, Tuple{HartreeFockBogoliubov.Spec.FullHamiltonian{O},HartreeFockBogoliubov.Spec.InteractionOffdiagonal{C}}, Tuple{O}} where C<:Number where O' href='#HartreeFockBogoliubov.Spec.addinteraction!-Union{Tuple{C}, Tuple{HartreeFockBogoliubov.Spec.FullHamiltonian{O},HartreeFockBogoliubov.Spec.InteractionOffdiagonal{C}}, Tuple{O}} where C<:Number where O'>#</a>
 <strong><code>HartreeFockBogoliubov.Spec.addinteraction!</code></strong> &mdash; <em>Method</em>.</p>
 <pre><code>addinteraction!
@@ -531,7 +531,7 @@ i &lt; j, k &lt; l, i &lt; k or (i == k and j &lt; l)
 <li><code>hamiltonian ::Hamiltonian</code></li>
 <li><code>interaction ::InteractionOffdiagonal</code></li>
 </ul>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/Hamiltonian/Spec.jl#L478-L484' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/Hamiltonian/Spec.jl#L478-L484' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.Spec.addinteraction!-Union{Tuple{HartreeFockBogoliubov.Spec.FullHamiltonian{O},HartreeFockBogoliubov.Spec.InteractionDiagonal{R}}, Tuple{O}, Tuple{R}} where R<:Real where O' href='#HartreeFockBogoliubov.Spec.addinteraction!-Union{Tuple{HartreeFockBogoliubov.Spec.FullHamiltonian{O},HartreeFockBogoliubov.Spec.InteractionDiagonal{R}}, Tuple{O}, Tuple{R}} where R<:Real where O'>#</a>
 <strong><code>HartreeFockBogoliubov.Spec.addinteraction!</code></strong> &mdash; <em>Method</em>.</p>
 <pre><code>addinteraction!
@@ -542,7 +542,7 @@ i &lt; j, k &lt; l, i &lt; k or (i == k and j &lt; l)
 <li><code>hamiltonian ::Hamiltonian</code></li>
 <li><code>interaction ::InteractionDiagonal</code></li>
 </ul>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/Hamiltonian/Spec.jl#L458-L464' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/Hamiltonian/Spec.jl#L458-L464' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.Spec.hoppingbycarte-Union{Tuple{C}, Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O},C,O,O,Array{Float64,1},Array{Float64,1}}, Tuple{O}} where C<:Number where O' href='#HartreeFockBogoliubov.Spec.hoppingbycarte-Union{Tuple{C}, Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O},C,O,O,Array{Float64,1},Array{Float64,1}}, Tuple{O}} where C<:Number where O'>#</a>
 <strong><code>HartreeFockBogoliubov.Spec.hoppingbycarte</code></strong> &mdash; <em>Method</em>.</p>
 <pre><code>hoppingbycarte{T}
@@ -558,7 +558,7 @@ i &lt; j, k &lt; l, i &lt; k or (i == k and j &lt; l)
 <li><code>rj ::CarteCoord</code></li>
 <li><code>tol ::Real</code> : Optional. Defaults to <code>sqrt(eps(Float64))</code></li>
 </ul>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/Hamiltonian/Spec.jl#L284-L295' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/Hamiltonian/Spec.jl#L284-L295' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.Spec.hoppingbycarte-Union{Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O},R,O,Array{Float64,1}}, Tuple{O}, Tuple{R}} where R<:Real where O' href='#HartreeFockBogoliubov.Spec.hoppingbycarte-Union{Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O},R,O,Array{Float64,1}}, Tuple{O}, Tuple{R}} where R<:Real where O'>#</a>
 <strong><code>HartreeFockBogoliubov.Spec.hoppingbycarte</code></strong> &mdash; <em>Method</em>.</p>
 <pre><code>hoppingbycarte{T}
@@ -572,7 +572,7 @@ i &lt; j, k &lt; l, i &lt; k or (i == k and j &lt; l)
 <li><code>ri ::CarteCoord</code></li>
 <li><code>tol ::Real</code> : Optional. Defaults to <code>sqrt(eps(Float64))</code></li>
 </ul>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/Hamiltonian/Spec.jl#L263-L272' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/Hamiltonian/Spec.jl#L263-L272' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.Spec.interactionbycarte-Union{Tuple{C}, Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O},C,O,O,O,O,Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Float64,1}}, Tuple{O}} where C<:Number where O' href='#HartreeFockBogoliubov.Spec.interactionbycarte-Union{Tuple{C}, Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O},C,O,O,O,O,Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Float64,1}}, Tuple{O}} where C<:Number where O'>#</a>
 <strong><code>HartreeFockBogoliubov.Spec.interactionbycarte</code></strong> &mdash; <em>Method</em>.</p>
 <pre><code>interactionbycarte{T}
@@ -592,7 +592,7 @@ i &lt; j, k &lt; l, i &lt; k or (i == k and j &lt; l)
 * `tol ::Real` : Optional. Defaults to `sqrt(eps(Float64))`
 </code></pre>
 
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/Hamiltonian/Spec.jl#L334-L349' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/Hamiltonian/Spec.jl#L334-L349' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.Spec.interactionbycarte-Union{Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O},R,O,O,Array{Float64,1},Array{Float64,1}}, Tuple{O}, Tuple{R}} where R<:Real where O' href='#HartreeFockBogoliubov.Spec.interactionbycarte-Union{Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O},R,O,O,Array{Float64,1},Array{Float64,1}}, Tuple{O}, Tuple{R}} where R<:Real where O'>#</a>
 <strong><code>HartreeFockBogoliubov.Spec.interactionbycarte</code></strong> &mdash; <em>Method</em>.</p>
 <pre><code>interactionbycarte{T}
@@ -608,37 +608,37 @@ i &lt; j, k &lt; l, i &lt; k or (i == k and j &lt; l)
 * `tol ::Real` : Optional. Defaults to `sqrt(eps(Float64))`
 </code></pre>
 
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/Hamiltonian/Spec.jl#L309-L320' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/Hamiltonian/Spec.jl#L309-L320' class='documenter-source'>source</a><br></p>
 <p><a id='Generator-1'></a></p>
 <h1 id="generator">Generator</h1>
 <p><a id='HartreeFockBogoliubov.Generator' href='#HartreeFockBogoliubov.Generator'>#</a>
 <strong><code>HartreeFockBogoliubov.Generator</code></strong> &mdash; <em>Module</em>.</p>
 <p>Generator submodule</p>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/Hamiltonian/Generator.jl#L1-L3' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/Hamiltonian/Generator.jl#L1-L3' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.Generator.generatefast-Union{Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O},AbstractArray{Union{HartreeFockBogoliubov.Spec.HoppingDiagonal, HartreeFockBogoliubov.Spec.HoppingOffdiagonal},1}}, Tuple{O}} where O' href='#HartreeFockBogoliubov.Generator.generatefast-Union{Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O},AbstractArray{Union{HartreeFockBogoliubov.Spec.HoppingDiagonal, HartreeFockBogoliubov.Spec.HoppingOffdiagonal},1}}, Tuple{O}} where O'>#</a>
 <strong><code>HartreeFockBogoliubov.Generator.generatefast</code></strong> &mdash; <em>Method</em>.</p>
 <pre><code>generatefast
 </code></pre>
 
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/Hamiltonian/Generator.jl#L52-L54' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/Hamiltonian/Generator.jl#L52-L54' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.Generator.generatefast-Union{Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O},HartreeFockBogoliubov.Spec.HoppingDiagonal}, Tuple{O}} where O' href='#HartreeFockBogoliubov.Generator.generatefast-Union{Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O},HartreeFockBogoliubov.Spec.HoppingDiagonal}, Tuple{O}} where O'>#</a>
 <strong><code>HartreeFockBogoliubov.Generator.generatefast</code></strong> &mdash; <em>Method</em>.</p>
 <pre><code>generatefast
 </code></pre>
 
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/Hamiltonian/Generator.jl#L11-L13' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/Hamiltonian/Generator.jl#L11-L13' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.Generator.generatefast-Union{Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O},HartreeFockBogoliubov.Spec.HoppingOffdiagonal}, Tuple{O}} where O' href='#HartreeFockBogoliubov.Generator.generatefast-Union{Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O},HartreeFockBogoliubov.Spec.HoppingOffdiagonal}, Tuple{O}} where O'>#</a>
 <strong><code>HartreeFockBogoliubov.Generator.generatefast</code></strong> &mdash; <em>Method</em>.</p>
 <pre><code>generatefast
 </code></pre>
 
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/Hamiltonian/Generator.jl#L29-L31' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/Hamiltonian/Generator.jl#L29-L31' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.Generator.generatehoppingfast-Union{Tuple{HartreeFockBogoliubov.Spec.FullHamiltonian{O}}, Tuple{O}} where O' href='#HartreeFockBogoliubov.Generator.generatehoppingfast-Union{Tuple{HartreeFockBogoliubov.Spec.FullHamiltonian{O}}, Tuple{O}} where O'>#</a>
 <strong><code>HartreeFockBogoliubov.Generator.generatehoppingfast</code></strong> &mdash; <em>Method</em>.</p>
 <pre><code>generatefast
 </code></pre>
 
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/Hamiltonian/Generator.jl#L70-L72' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/Hamiltonian/Generator.jl#L70-L72' class='documenter-source'>source</a><br></p>
 <p><a id='Topology-1'></a></p>
 <h1 id="topology">Topology</h1>
 <p><a id='HartreeFockBogoliubov.Topology.squarify-Union{Tuple{HartreeFockBogoliubov.HFB.HFBHamiltonian{O}}, Tuple{O}} where O' href='#HartreeFockBogoliubov.Topology.squarify-Union{Tuple{HartreeFockBogoliubov.HFB.HFBHamiltonian{O}}, Tuple{O}} where O'>#</a>
@@ -650,7 +650,7 @@ i &lt; j, k &lt; l, i &lt; k or (i == k and j &lt; l)
 <ul>
 <li><code>uc::HFB.HFBHamiltonian{O}</code></li>
 </ul>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/Topology/basic.jl#L39-L44' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/Topology/basic.jl#L39-L44' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.Topology.squarify-Union{Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O}}, Tuple{O}} where O' href='#HartreeFockBogoliubov.Topology.squarify-Union{Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O}}, Tuple{O}} where O'>#</a>
 <strong><code>HartreeFockBogoliubov.Topology.squarify</code></strong> &mdash; <em>Method</em>.</p>
 <pre><code>squarify
@@ -661,7 +661,7 @@ i &lt; j, k &lt; l, i &lt; k or (i == k and j &lt; l)
 <ul>
 <li><code>uc::Lattice.UnitCell{O}</code></li>
 </ul>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/Topology/basic.jl#L5-L12' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/Topology/basic.jl#L5-L12' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.Topology.squarify-Union{Tuple{HartreeFockBogoliubov.Spec.FullHamiltonian{O}}, Tuple{O}} where O' href='#HartreeFockBogoliubov.Topology.squarify-Union{Tuple{HartreeFockBogoliubov.Spec.FullHamiltonian{O}}, Tuple{O}} where O'>#</a>
 <strong><code>HartreeFockBogoliubov.Topology.squarify</code></strong> &mdash; <em>Method</em>.</p>
 <pre><code>squarify
@@ -671,14 +671,30 @@ i &lt; j, k &lt; l, i &lt; k or (i == k and j &lt; l)
 <ul>
 <li><code>uc::Spec.FullHamiltonian{O}</code></li>
 </ul>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/Topology/basic.jl#L27-L32' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/Topology/basic.jl#L27-L32' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.Topology.chernnumber-Union{Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O},AbstractArray{Union{HartreeFockBogoliubov.Spec.HoppingDiagonal, HartreeFockBogoliubov.Spec.HoppingOffdiagonal},1},Integer,Integer,AbstractArray{#s15,1} where #s15<:Integer}, Tuple{O}} where O' href='#HartreeFockBogoliubov.Topology.chernnumber-Union{Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O},AbstractArray{Union{HartreeFockBogoliubov.Spec.HoppingDiagonal, HartreeFockBogoliubov.Spec.HoppingOffdiagonal},1},Integer,Integer,AbstractArray{#s15,1} where #s15<:Integer}, Tuple{O}} where O'>#</a>
 <strong><code>HartreeFockBogoliubov.Topology.chernnumber</code></strong> &mdash; <em>Method</em>.</p>
 <pre><code>chernnumber
 </code></pre>
 
 <p>Compute chern number of the band structure defined by the hoppings and the selected bands.</p>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/Topology/chern.jl#L4-L9' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/Topology/chern.jl#L4-L9' class='documenter-source'>source</a><br></p>
+<p><a id='HartreeFockBogoliubov.Topology.isvalidtimereversalmatrix-Tuple{AbstractArray{#s19,2} where #s19<:Number}' href='#HartreeFockBogoliubov.Topology.isvalidtimereversalmatrix-Tuple{AbstractArray{#s19,2} where #s19<:Number}'>#</a>
+<strong><code>HartreeFockBogoliubov.Topology.isvalidtimereversalmatrix</code></strong> &mdash; <em>Method</em>.</p>
+<pre><code>isvalidtimereversalmatrix
+</code></pre>
+
+<p>Test whether the given matrix is a valid unitary matrix for the time reversal operation.</p>
+<pre><code>```math
+T = U ⋅ K
+```
+
+``U`` must satisfy the two conditions:
+1. ``U U^{dagger} = 1`` (from unitarity of ``U``)
+2. ``U = - U^{mathsf{T}}`` (from `T^2 = -1`)
+</code></pre>
+
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/Topology/z2.jl#L3-L15' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.Topology.timereversalindexgrid-Tuple{Integer,Integer}' href='#HartreeFockBogoliubov.Topology.timereversalindexgrid-Tuple{Integer,Integer}'>#</a>
 <strong><code>HartreeFockBogoliubov.Topology.timereversalindexgrid</code></strong> &mdash; <em>Method</em>.</p>
 <p>generate k-space grid (which has (2 n1, 2 n2) points TOTAL in the Brillouin zone)</p>
@@ -697,7 +713,7 @@ i &lt; j, k &lt; l, i &lt; k or (i == k and j &lt; l)
 </code></pre>
 
 <p>where 0z, +z, -z are represented respectively by <code>:TRIZERO</code>, <code>:POSZERO</code>, and <code>:NEGZERO</code>, and   0h, +h, -h by <code>:TRIHALF</code>, <code>:POSHALF</code>, and <code>:NEGHALF</code>, and   +i, -i by <code>:POSINT</code>, <code>:NEGINT</code>.</p>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/Topology/z2.jl#L21-L45' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/Topology/z2.jl#L49-L73' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.Topology.z2index-Union{Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O},AbstractArray{Union{HartreeFockBogoliubov.Spec.HoppingDiagonal, HartreeFockBogoliubov.Spec.HoppingOffdiagonal},1},AbstractArray{T,2} where T,Integer,Integer,AbstractArray{#s151,1} where #s151<:Integer}, Tuple{O}} where O' href='#HartreeFockBogoliubov.Topology.z2index-Union{Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O},AbstractArray{Union{HartreeFockBogoliubov.Spec.HoppingDiagonal, HartreeFockBogoliubov.Spec.HoppingOffdiagonal},1},AbstractArray{T,2} where T,Integer,Integer,AbstractArray{#s151,1} where #s151<:Integer}, Tuple{O}} where O'>#</a>
 <strong><code>HartreeFockBogoliubov.Topology.z2index</code></strong> &mdash; <em>Method</em>.</p>
 <p>z2index</p>
@@ -717,50 +733,50 @@ i &lt; j, k &lt; l, i &lt; k or (i == k and j &lt; l)
 </ul>
 <p><strong>Returns</strong></p>
 <p>The Z2 index</p>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/Topology/z2.jl#L111-L129' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/Topology/z2.jl#L139-L157' class='documenter-source'>source</a><br></p>
 <p><a id='HFB-1'></a></p>
 <h1 id="hfb">HFB</h1>
 <p><a id='HartreeFockBogoliubov.HFB.HFBComputer' href='#HartreeFockBogoliubov.HFB.HFBComputer'>#</a>
 <strong><code>HartreeFockBogoliubov.HFB.HFBComputer</code></strong> &mdash; <em>Type</em>.</p>
 <p><code>HFBConmputer</code> is a type holding the ρ, t and Γ, Δ of a Hartree-Fock-Bogoliubov Hamiltonian.</p>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/HFB/computer.jl#L50-L53' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/HFB/computer.jl#L50-L53' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.HFB.HFBComputer-Union{Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O},AbstractArray{Union{HartreeFockBogoliubov.Spec.HoppingDiagonal, HartreeFockBogoliubov.Spec.HoppingOffdiagonal},1},Real}, Tuple{O}} where O' href='#HartreeFockBogoliubov.HFB.HFBComputer-Union{Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O},AbstractArray{Union{HartreeFockBogoliubov.Spec.HoppingDiagonal, HartreeFockBogoliubov.Spec.HoppingOffdiagonal},1},Real}, Tuple{O}} where O'>#</a>
 <strong><code>HartreeFockBogoliubov.HFB.HFBComputer</code></strong> &mdash; <em>Method</em>.</p>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/HFB/computer.jl#L67' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/HFB/computer.jl#L67' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.HFB.HFBHamiltonian' href='#HartreeFockBogoliubov.HFB.HFBHamiltonian'>#</a>
 <strong><code>HartreeFockBogoliubov.HFB.HFBHamiltonian</code></strong> &mdash; <em>Type</em>.</p>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/HFB/model.jl#L99' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/HFB/model.jl#L99' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.HFB.HFBHamiltonian-Union{Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O},AbstractArray{Union{HartreeFockBogoliubov.Spec.HoppingDiagonal, HartreeFockBogoliubov.Spec.HoppingOffdiagonal},1},AbstractArray{HartreeFockBogoliubov.HFB.HoppingMeanField,1},AbstractArray{HartreeFockBogoliubov.HFB.PairingMeanField,1}}, Tuple{O}} where O' href='#HartreeFockBogoliubov.HFB.HFBHamiltonian-Union{Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O},AbstractArray{Union{HartreeFockBogoliubov.Spec.HoppingDiagonal, HartreeFockBogoliubov.Spec.HoppingOffdiagonal},1},AbstractArray{HartreeFockBogoliubov.HFB.HoppingMeanField,1},AbstractArray{HartreeFockBogoliubov.HFB.PairingMeanField,1}}, Tuple{O}} where O'>#</a>
 <strong><code>HartreeFockBogoliubov.HFB.HFBHamiltonian</code></strong> &mdash; <em>Method</em>.</p>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/HFB/model.jl#L109' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/HFB/model.jl#L109' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.HFB.HFBHamiltonian-Union{Tuple{HartreeFockBogoliubov.Spec.FullHamiltonian{O}}, Tuple{O}} where O' href='#HartreeFockBogoliubov.HFB.HFBHamiltonian-Union{Tuple{HartreeFockBogoliubov.Spec.FullHamiltonian{O}}, Tuple{O}} where O'>#</a>
 <strong><code>HartreeFockBogoliubov.HFB.HFBHamiltonian</code></strong> &mdash; <em>Method</em>.</p>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/HFB/model.jl#L124' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/HFB/model.jl#L124' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.HFB.HFBSolver' href='#HartreeFockBogoliubov.HFB.HFBSolver'>#</a>
 <strong><code>HartreeFockBogoliubov.HFB.HFBSolver</code></strong> &mdash; <em>Type</em>.</p>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/HFB/solver.jl#L12' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/HFB/solver.jl#L12' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.HFB.HFBSolver-Union{Tuple{HartreeFockBogoliubov.Spec.FullHamiltonian{T},AbstractArray{#s20,1} where #s20<:Integer,Real}, Tuple{T}} where T' href='#HartreeFockBogoliubov.HFB.HFBSolver-Union{Tuple{HartreeFockBogoliubov.Spec.FullHamiltonian{T},AbstractArray{#s20,1} where #s20<:Integer,Real}, Tuple{T}} where T'>#</a>
 <strong><code>HartreeFockBogoliubov.HFB.HFBSolver</code></strong> &mdash; <em>Method</em>.</p>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/HFB/solver.jl#L28' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/HFB/solver.jl#L28' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.HFB.addinteraction!-Union{Tuple{C}, Tuple{HartreeFockBogoliubov.HFB.HFBHamiltonian{O},HartreeFockBogoliubov.Spec.InteractionOffdiagonal{C}}, Tuple{O}} where C<:Number where O' href='#HartreeFockBogoliubov.HFB.addinteraction!-Union{Tuple{C}, Tuple{HartreeFockBogoliubov.HFB.HFBHamiltonian{O},HartreeFockBogoliubov.Spec.InteractionOffdiagonal{C}}, Tuple{O}} where C<:Number where O'>#</a>
 <strong><code>HartreeFockBogoliubov.HFB.addinteraction!</code></strong> &mdash; <em>Method</em>.</p>
 <p>Add offdiagonal interaction</p>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/HFB/model.jl#L161-L163' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/HFB/model.jl#L161-L163' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.HFB.addinteraction!-Union{Tuple{HartreeFockBogoliubov.HFB.HFBHamiltonian{O},HartreeFockBogoliubov.Spec.InteractionDiagonal{R}}, Tuple{O}, Tuple{R}} where R<:Real where O' href='#HartreeFockBogoliubov.HFB.addinteraction!-Union{Tuple{HartreeFockBogoliubov.HFB.HFBHamiltonian{O},HartreeFockBogoliubov.Spec.InteractionDiagonal{R}}, Tuple{O}, Tuple{R}} where R<:Real where O'>#</a>
 <strong><code>HartreeFockBogoliubov.HFB.addinteraction!</code></strong> &mdash; <em>Method</em>.</p>
 <pre><code>addinteraction!
 </code></pre>
 
 <p>Add diagonal interaction</p>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/HFB/model.jl#L137-L141' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/HFB/model.jl#L137-L141' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.HFB.computetargetfields-Union{Tuple{HartreeFockBogoliubov.HFB.HFBComputer{O},AbstractArray{#s17,1} where #s17<:Number,AbstractArray{#s16,1} where #s16<:Number}, Tuple{O}} where O' href='#HartreeFockBogoliubov.HFB.computetargetfields-Union{Tuple{HartreeFockBogoliubov.HFB.HFBComputer{O},AbstractArray{#s17,1} where #s17<:Number,AbstractArray{#s16,1} where #s16<:Number}, Tuple{O}} where O'>#</a>
 <strong><code>HartreeFockBogoliubov.HFB.computetargetfields</code></strong> &mdash; <em>Method</em>.</p>
 <p>Compute Γ and Δ from ρ and t.</p>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/HFB/computer.jl#L322-L324' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/HFB/computer.jl#L322-L324' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.HFB.fixhfbsolution-Union{Tuple{HartreeFockBogoliubov.HFB.HFBComputer{O},HartreeFockBogoliubov.HFB.HFBSolution}, Tuple{O}} where O' href='#HartreeFockBogoliubov.HFB.fixhfbsolution-Union{Tuple{HartreeFockBogoliubov.HFB.HFBComputer{O},HartreeFockBogoliubov.HFB.HFBSolution}, Tuple{O}} where O'>#</a>
 <strong><code>HartreeFockBogoliubov.HFB.fixhfbsolution</code></strong> &mdash; <em>Method</em>.</p>
 <p>Recompute Γ and Δ from ρ and t in a <code>HFBSolution</code></p>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/HFB/computer.jl#L584-L586' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/HFB/computer.jl#L584-L586' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.HFB.freeze-Union{Tuple{HartreeFockBogoliubov.HFB.HFBComputer{O},AbstractArray{#s14,1} where #s14<:Number,AbstractArray{#s13,1} where #s13<:Number}, Tuple{O}} where O' href='#HartreeFockBogoliubov.HFB.freeze-Union{Tuple{HartreeFockBogoliubov.HFB.HFBComputer{O},AbstractArray{#s14,1} where #s14<:Number,AbstractArray{#s13,1} where #s13<:Number}, Tuple{O}} where O'>#</a>
 <strong><code>HartreeFockBogoliubov.HFB.freeze</code></strong> &mdash; <em>Method</em>.</p>
 <pre><code>freeze
@@ -771,13 +787,13 @@ Order:
 electrons......, HOLE......
 </code></pre>
 
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/HFB/computer.jl#L650-L657' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/HFB/computer.jl#L650-L657' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.HFB.getnextsolution-Union{Tuple{HartreeFockBogoliubov.HFB.HFBSolver{T},HartreeFockBogoliubov.HFB.HFBSolution}, Tuple{T}} where T' href='#HartreeFockBogoliubov.HFB.getnextsolution-Union{Tuple{HartreeFockBogoliubov.HFB.HFBSolver{T},HartreeFockBogoliubov.HFB.HFBSolution}, Tuple{T}} where T'>#</a>
 <strong><code>HartreeFockBogoliubov.HFB.getnextsolution</code></strong> &mdash; <em>Method</em>.</p>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/HFB/solver.jl#L50' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/HFB/solver.jl#L50' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.HFB.getnextsolutionpython-Union{Tuple{HartreeFockBogoliubov.HFB.HFBSolver{T},HartreeFockBogoliubov.HFB.HFBSolution}, Tuple{T}} where T' href='#HartreeFockBogoliubov.HFB.getnextsolutionpython-Union{Tuple{HartreeFockBogoliubov.HFB.HFBSolver{T},HartreeFockBogoliubov.HFB.HFBSolution}, Tuple{T}} where T'>#</a>
 <strong><code>HartreeFockBogoliubov.HFB.getnextsolutionpython</code></strong> &mdash; <em>Method</em>.</p>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/HFB/solver.jl#L66' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/HFB/solver.jl#L66' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.HFB.loop-Union{Tuple{HartreeFockBogoliubov.HFB.HFBSolver{T},HartreeFockBogoliubov.HFB.HFBSolution,Integer}, Tuple{T}} where T' href='#HartreeFockBogoliubov.HFB.loop-Union{Tuple{HartreeFockBogoliubov.HFB.HFBSolver{T},HartreeFockBogoliubov.HFB.HFBSolution,Integer}, Tuple{T}} where T'>#</a>
 <strong><code>HartreeFockBogoliubov.HFB.loop</code></strong> &mdash; <em>Method</em>.</p>
 <pre><code>loop
@@ -796,7 +812,7 @@ electrons......, HOLE......
 <li><code>precondition::Function=identity</code></li>
 <li><code>progressbar::Bool=false</code></li>
 </ul>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/HFB/solver.jl#L130-L144' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/HFB/solver.jl#L130-L144' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.HFB.looppython-Union{Tuple{HartreeFockBogoliubov.HFB.HFBSolver{T},HartreeFockBogoliubov.HFB.HFBSolution,Integer}, Tuple{T}} where T' href='#HartreeFockBogoliubov.HFB.looppython-Union{Tuple{HartreeFockBogoliubov.HFB.HFBSolver{T},HartreeFockBogoliubov.HFB.HFBSolution,Integer}, Tuple{T}} where T'>#</a>
 <strong><code>HartreeFockBogoliubov.HFB.looppython</code></strong> &mdash; <em>Method</em>.</p>
 <pre><code>loop
@@ -815,15 +831,15 @@ electrons......, HOLE......
 <li><code>precondition::Function=identity</code></li>
 <li><code>progressbar::Bool=false</code></li>
 </ul>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/HFB/solver.jl#L170-L185' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/HFB/solver.jl#L170-L185' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.HFB.makeDeltamatrix-Tuple{HartreeFockBogoliubov.HFB.HFBComputer,AbstractArray{#s46,1} where #s46<:Number}' href='#HartreeFockBogoliubov.HFB.makeDeltamatrix-Tuple{HartreeFockBogoliubov.HFB.HFBComputer,AbstractArray{#s46,1} where #s46<:Number}'>#</a>
 <strong><code>HartreeFockBogoliubov.HFB.makeDeltamatrix</code></strong> &mdash; <em>Method</em>.</p>
 <p>Return a generator of Δ matrix (which is a function of momentum)</p>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/HFB/computer.jl#L387-L389' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/HFB/computer.jl#L387-L389' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.HFB.makeGammamatrix-Tuple{HartreeFockBogoliubov.HFB.HFBComputer,AbstractArray{#s46,1} where #s46<:Number}' href='#HartreeFockBogoliubov.HFB.makeGammamatrix-Tuple{HartreeFockBogoliubov.HFB.HFBComputer,AbstractArray{#s46,1} where #s46<:Number}'>#</a>
 <strong><code>HartreeFockBogoliubov.HFB.makeGammamatrix</code></strong> &mdash; <em>Method</em>.</p>
 <p>Return a generator of Γ matrix (which is a function of momentum)</p>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/HFB/computer.jl#L361-L363' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/HFB/computer.jl#L361-L363' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.HFB.makegreencollectors-Union{Tuple{HartreeFockBogoliubov.HFB.HFBComputer{O}}, Tuple{O}} where O' href='#HartreeFockBogoliubov.HFB.makegreencollectors-Union{Tuple{HartreeFockBogoliubov.HFB.HFBComputer{O}}, Tuple{O}} where O'>#</a>
 <strong><code>HartreeFockBogoliubov.HFB.makegreencollectors</code></strong> &mdash; <em>Method</em>.</p>
 <pre><code>makegreencollectors
@@ -833,39 +849,39 @@ electrons......, HOLE......
 <pre><code>collector(k, eigenvalues, eigenvectors, ρout, tout)
 </code></pre>
 
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/HFB/computer.jl#L459-L466' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/HFB/computer.jl#L459-L466' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.HFB.makehamiltonian-Tuple{HartreeFockBogoliubov.HFB.HFBComputer,AbstractArray{#s21,1} where #s21<:Number,AbstractArray{#s20,1} where #s20<:Number}' href='#HartreeFockBogoliubov.HFB.makehamiltonian-Tuple{HartreeFockBogoliubov.HFB.HFBComputer,AbstractArray{#s21,1} where #s21<:Number,AbstractArray{#s20,1} where #s20<:Number}'>#</a>
 <strong><code>HartreeFockBogoliubov.HFB.makehamiltonian</code></strong> &mdash; <em>Method</em>.</p>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/HFB/computer.jl#L409' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/HFB/computer.jl#L409' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.HFB.makehoppingmatrix-Tuple{HartreeFockBogoliubov.HFB.HFBComputer}' href='#HartreeFockBogoliubov.HFB.makehoppingmatrix-Tuple{HartreeFockBogoliubov.HFB.HFBComputer}'>#</a>
 <strong><code>HartreeFockBogoliubov.HFB.makehoppingmatrix</code></strong> &mdash; <em>Method</em>.</p>
 <p>Return a generator of hopping matrix (which is a function of momentum)</p>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/HFB/computer.jl#L348-L350' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/HFB/computer.jl#L348-L350' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.HFB.makesourcefields-Union{Tuple{Function,Function,HartreeFockBogoliubov.HFB.HFBComputer{O}}, Tuple{O}} where O' href='#HartreeFockBogoliubov.HFB.makesourcefields-Union{Tuple{Function,Function,HartreeFockBogoliubov.HFB.HFBComputer{O}}, Tuple{O}} where O'>#</a>
 <strong><code>HartreeFockBogoliubov.HFB.makesourcefields</code></strong> &mdash; <em>Method</em>.</p>
 <p>func : (idx, i, j, r) -&gt; val</p>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/HFB/computer.jl#L288-L290' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/HFB/computer.jl#L288-L290' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.HFB.makesourcefields-Union{Tuple{HartreeFockBogoliubov.HFB.HFBComputer{O}}, Tuple{O}} where O' href='#HartreeFockBogoliubov.HFB.makesourcefields-Union{Tuple{HartreeFockBogoliubov.HFB.HFBComputer{O}}, Tuple{O}} where O'>#</a>
 <strong><code>HartreeFockBogoliubov.HFB.makesourcefields</code></strong> &mdash; <em>Method</em>.</p>
 <p>func : (idx, i, j, r) -&gt; 0</p>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/HFB/computer.jl#L313-L315' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/HFB/computer.jl#L313-L315' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.HFB.newhfbhint-Union{Tuple{HartreeFockBogoliubov.HFB.HFBComputer{O},HartreeFockBogoliubov.HFB.HFBSolution}, Tuple{O}} where O' href='#HartreeFockBogoliubov.HFB.newhfbhint-Union{Tuple{HartreeFockBogoliubov.HFB.HFBComputer{O},HartreeFockBogoliubov.HFB.HFBSolution}, Tuple{O}} where O'>#</a>
 <strong><code>HartreeFockBogoliubov.HFB.newhfbhint</code></strong> &mdash; <em>Method</em>.</p>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/HFB/computer.jl#L555' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/HFB/computer.jl#L555' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.HFB.newhfbsolution-Union{Tuple{HartreeFockBogoliubov.HFB.HFBComputer{O},HartreeFockBogoliubov.HFB.HFBHint{O}}, Tuple{O}} where O' href='#HartreeFockBogoliubov.HFB.newhfbsolution-Union{Tuple{HartreeFockBogoliubov.HFB.HFBComputer{O},HartreeFockBogoliubov.HFB.HFBHint{O}}, Tuple{O}} where O'>#</a>
 <strong><code>HartreeFockBogoliubov.HFB.newhfbsolution</code></strong> &mdash; <em>Method</em>.</p>
 <pre><code>Check if hint contains ρ
 </code></pre>
 
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/HFB/computer.jl#L517-L519' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/HFB/computer.jl#L517-L519' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.HFB.newhfbsolution-Union{Tuple{HartreeFockBogoliubov.HFB.HFBComputer{O}}, Tuple{O}} where O' href='#HartreeFockBogoliubov.HFB.newhfbsolution-Union{Tuple{HartreeFockBogoliubov.HFB.HFBComputer{O}}, Tuple{O}} where O'>#</a>
 <strong><code>HartreeFockBogoliubov.HFB.newhfbsolution</code></strong> &mdash; <em>Method</em>.</p>
 <p>Return a zero solution</p>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/HFB/computer.jl#L507-L509' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/HFB/computer.jl#L507-L509' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.HFB.randomize!-Union{Tuple{HartreeFockBogoliubov.HFB.HFBComputer{O},HartreeFockBogoliubov.HFB.HFBSolution}, Tuple{O}} where O' href='#HartreeFockBogoliubov.HFB.randomize!-Union{Tuple{HartreeFockBogoliubov.HFB.HFBComputer{O},HartreeFockBogoliubov.HFB.HFBSolution}, Tuple{O}} where O'>#</a>
 <strong><code>HartreeFockBogoliubov.HFB.randomize!</code></strong> &mdash; <em>Method</em>.</p>
 <p>Randomize a solution</p>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/HFB/computer.jl#L593-L595' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/HFB/computer.jl#L593-L595' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.HFB.CollectRow' href='#HartreeFockBogoliubov.HFB.CollectRow'>#</a>
 <strong><code>HartreeFockBogoliubov.HFB.CollectRow</code></strong> &mdash; <em>Type</em>.</p>
 <p><code>CollectRow</code> is holds info on how to compute ρ or t. Its elements are:</p>
@@ -875,7 +891,7 @@ electrons......, HOLE......
 <li>col orbital</li>
 <li>displacement r(col) - r(row)</li>
 </ol>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/HFB/computer.jl#L22-L29' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/HFB/computer.jl#L22-L29' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.HFB.DeployRow' href='#HartreeFockBogoliubov.HFB.DeployRow'>#</a>
 <strong><code>HartreeFockBogoliubov.HFB.DeployRow</code></strong> &mdash; <em>Type</em>.</p>
 <p><code>DeployRow</code> is holds info on how to compute Γ or Δ. Its elements are:</p>
@@ -889,35 +905,35 @@ electrons......, HOLE......
 <li>amplitude (coefficient to multiply to ρ or t)</li>
 <li>boolean indicating whether   (1) conjugation is needed (for ρ/Γ) or   (2) minus sign is needed (for t/Δ).</li>
 </ol>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/HFB/computer.jl#L33-L46' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/HFB/computer.jl#L33-L46' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.HFB.HoppingMeanField' href='#HartreeFockBogoliubov.HFB.HoppingMeanField'>#</a>
 <strong><code>HartreeFockBogoliubov.HFB.HoppingMeanField</code></strong> &mdash; <em>Type</em>.</p>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/HFB/model.jl#L5' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/HFB/model.jl#L5' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.HFB.PairingMeanField' href='#HartreeFockBogoliubov.HFB.PairingMeanField'>#</a>
 <strong><code>HartreeFockBogoliubov.HFB.PairingMeanField</code></strong> &mdash; <em>Type</em>.</p>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/HFB/model.jl#L51' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/HFB/model.jl#L51' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.HFB.getnextsolutionthreaded-Union{Tuple{HartreeFockBogoliubov.HFB.HFBSolver{O},HartreeFockBogoliubov.HFB.HFBSolution}, Tuple{O}} where O' href='#HartreeFockBogoliubov.HFB.getnextsolutionthreaded-Union{Tuple{HartreeFockBogoliubov.HFB.HFBSolver{O},HartreeFockBogoliubov.HFB.HFBSolution}, Tuple{O}} where O'>#</a>
 <strong><code>HartreeFockBogoliubov.HFB.getnextsolutionthreaded</code></strong> &mdash; <em>Method</em>.</p>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/HFB/solver.jl#L83' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/HFB/solver.jl#L83' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.HFB.makeparticleholeregistry-Union{Tuple{HartreeFockBogoliubov.HFB.HFBHamiltonian{T}}, Tuple{T}} where T' href='#HartreeFockBogoliubov.HFB.makeparticleholeregistry-Union{Tuple{HartreeFockBogoliubov.HFB.HFBHamiltonian{T}}, Tuple{T}} where T'>#</a>
 <strong><code>HartreeFockBogoliubov.HFB.makeparticleholeregistry</code></strong> &mdash; <em>Method</em>.</p>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/HFB/computer.jl#L77' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/HFB/computer.jl#L77' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.HFB.makeparticleparticleregistry-Union{Tuple{HartreeFockBogoliubov.HFB.HFBHamiltonian{T}}, Tuple{T}} where T' href='#HartreeFockBogoliubov.HFB.makeparticleparticleregistry-Union{Tuple{HartreeFockBogoliubov.HFB.HFBHamiltonian{T}}, Tuple{T}} where T'>#</a>
 <strong><code>HartreeFockBogoliubov.HFB.makeparticleparticleregistry</code></strong> &mdash; <em>Method</em>.</p>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/HFB/computer.jl#L144' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/HFB/computer.jl#L144' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.HFB.nambufy-Union{Tuple{C}, Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O},HartreeFockBogoliubov.Spec.HoppingOffdiagonal{C}}, Tuple{O}} where C<:Number where O' href='#HartreeFockBogoliubov.HFB.nambufy-Union{Tuple{C}, Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O},HartreeFockBogoliubov.Spec.HoppingOffdiagonal{C}}, Tuple{O}} where C<:Number where O'>#</a>
 <strong><code>HartreeFockBogoliubov.HFB.nambufy</code></strong> &mdash; <em>Method</em>.</p>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/HFB/computer.jl#L614' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/HFB/computer.jl#L614' class='documenter-source'>source</a><br></p>
 <p><a id='HartreeFockBogoliubov.HFB.nambufy-Union{Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O},HartreeFockBogoliubov.Spec.HoppingDiagonal{R}}, Tuple{O}, Tuple{R}} where R<:Real where O' href='#HartreeFockBogoliubov.HFB.nambufy-Union{Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O},HartreeFockBogoliubov.Spec.HoppingDiagonal{R}}, Tuple{O}, Tuple{R}} where R<:Real where O'>#</a>
 <strong><code>HartreeFockBogoliubov.HFB.nambufy</code></strong> &mdash; <em>Method</em>.</p>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/HFB/computer.jl#L604' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/HFB/computer.jl#L604' class='documenter-source'>source</a><br></p>
 <p><a id='LinearizedGap-1'></a></p>
 <h1 id="linearizedgap">LinearizedGap</h1>
 <p><a id='HartreeFockBogoliubov.LinearizedGap.linearizedpairingkernel-Union{Tuple{HartreeFockBogoliubov.HFB.HFBSolver{O}}, Tuple{O}} where O' href='#HartreeFockBogoliubov.LinearizedGap.linearizedpairingkernel-Union{Tuple{HartreeFockBogoliubov.HFB.HFBSolver{O}}, Tuple{O}} where O'>#</a>
 <strong><code>HartreeFockBogoliubov.LinearizedGap.linearizedpairingkernel</code></strong> &mdash; <em>Method</em>.</p>
 <p>linearizedpairingkernel</p>
 <p>Compute the kernel Γ of the linearized gap equation in the pairing channel which is written as Δ = Γ⋅Δ</p>
-<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/e373152089aae4a0b1914c8aa0776878f247650a/src/LinearizedGap/LinearizedGap.jl#L12-L17' class='documenter-source'>source</a><br></p></div>
+<p><a target='_blank' href='https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/5649a3ce7a74e0376807b403f45c201cd038fcd9/src/LinearizedGap/LinearizedGap.jl#L12-L17' class='documenter-source'>source</a><br></p></div>
         </div>
 
         <footer class="col-md-12">
