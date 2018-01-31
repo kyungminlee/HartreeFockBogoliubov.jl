@@ -621,6 +621,27 @@ function nambufy(uc::UnitCell{O}, hop::HoppingOffdiagonal{C}) where {O, C<:Numbe
 end
 
 
+
+"""
+"""
+function nambufy(uc::UnitCell{O}, hop::HoppingDiagonal{R}) where {O, R<:Real}
+  norb = numorbital(uc)
+  hop1 = HoppingDiagonal{R}( hop.amplitude, hop.i, hop.Ri)
+  hop2 = HoppingDiagonal{R}(-hop.amplitude, hop.i+norb, hop.Ri)
+  return (hop1, hop2)
+end
+
+
+"""
+"""
+function nambufy(uc::UnitCell{O}, hop::HoppingOffdiagonal{C}) where {O, C<:Number}
+  norb = numorbital(uc)
+  hop1 = HoppingOffdiagonal{C}(      hop.amplitude,  hop.i     , hop.j     , hop.Ri, hop.Rj)
+  hop2 = HoppingOffdiagonal{C}(-conj(hop.amplitude), hop.i+norb, hop.j+norb, hop.Ri, hop.Rj)
+  return (hop1, hop2)
+end
+
+
 """
     freeze
 
@@ -634,14 +655,24 @@ function freeze(computer ::HFBComputer{O},
                 Δs ::AbstractVector{<:Number}) where {O}
   norb = numorbital(computer.unitcell)
   unitcell = computer.unitcell
-  nambuunitcell = Lattice.newunitcell(unitcell.latticevectors; OrbitalType=Tuple{O, Symbol})
-  for (orb, fc) in unitcell.orbitals
-    addorbital!(nambuunitcell, (orb, :PARTICLE), fc)
-  end
-  for (orb, fc) in unitcell.orbitals
-    addorbital!(nambuunitcell, (orb, :HOLE), fc)
-  end
 
+  NewOrbitalType = (O <: Tuple) ? Tuple{O.parameters..., Symbol} : Tuple{O, Symbol}
+  nambuunitcell = Lattice.newunitcell(unitcell.latticevectors; OrbitalType=NewOrbitalType)
+  if O <: Tuple
+    for (orb, fc) in unitcell.orbitals
+      addorbital!(nambuunitcell, (orb..., :PARTICLE), fc)
+    end
+    for (orb, fc) in unitcell.orbitals
+      addorbital!(nambuunitcell, (orb..., :HOLE), fc)
+    end
+  else
+    for (orb, fc) in unitcell.orbitals
+      addorbital!(nambuunitcell, (orb, :PARTICLE), fc)
+    end
+    for (orb, fc) in unitcell.orbitals
+      addorbital!(nambuunitcell, (orb, :HOLE), fc)
+    end
+  end
   hoppings = Hopping[]
   for hop in computer.hoppings
     (hop1, hop2) = nambufy(unitcell, hop)
