@@ -4,7 +4,7 @@ repo_url: https://github.com/kyungminlee/HartreeFockBogoliubov.jl
 site_description: Hartree-Fock-Bogoliubov Solver
 site_author: kyungminlee
 
-theme: readthedocs
+theme: mkdocs
 
 extra_css:
   - assets/Documenter.css
