@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <meta name="author" content="kyungminlee">
+        
+        <link rel="shortcut icon" href="../../img/favicon.ico">
+        <title>Hartree-Fock-Bogoliubov Theory - HartreeFockBogoliubov.jl</title>
+        <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../../css/font-awesome-4.5.0.css" rel="stylesheet">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="../../css/highlight.css">
+        <link href="../../assets/Documenter.css" rel="stylesheet">
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+        <script src="../../js/jquery-1.10.2.min.js"></script>
+        <script src="../../js/bootstrap-3.0.3.min.js"></script>
+        <script src="../../js/highlight.pack.js"></script> 
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="../..">HartreeFockBogoliubov.jl</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+                <!-- Main navigation -->
+                <ul class="nav navbar-nav">
+                    <li >
+                        <a href="../..">Home</a>
+                    </li>
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Basics <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            
+<li class="active">
+    <a href="./">Hartree-Fock-Bogoliubov Theory</a>
+</li>
+                            
+<li >
+    <a href="../momentumspace/">Momentum Space Formulation</a>
+</li>
+                        </ul>
+                    </li>
+                    <li >
+                        <a href="../../about/">About</a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Internals <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            
+<li >
+    <a href="../../internals/">Internals</a>
+</li>
+                            
+<li >
+    <a href="../../internals/hartreefockbogoliubov/">More</a>
+</li>
+                        </ul>
+                    </li>
+                </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                        <i class="fa fa-search"></i> Search
+                    </a>
+                </li>
+                    <li >
+                        <a rel="next" href="../..">
+                            <i class="fa fa-arrow-left"></i> Previous
+                        </a>
+                    </li>
+                    <li >
+                        <a rel="prev" href="../momentumspace/">
+                            Next <i class="fa fa-arrow-right"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/kyungminlee/HartreeFockBogoliubov.jl/edit/master/docs/basics/hartreefockbogoliubov.md"><i class="fa fa-github"></i> Edit on GitHub</a>
+                    </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+        <div class="container">
+                <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+        <li class="main active"><a href="#hartree-fock-bogoliubov-theory">Hartree-Fock-Bogoliubov Theory</a></li>
+            <li><a href="#hartree-fock-bogoliubov-decomposition">Hartree-Fock-Bogoliubov Decomposition</a></li>
+    </ul>
+</div></div>
+                <div class="col-md-9" role="main">
+
+<p><a id='Hartree-Fock-Bogoliubov-Theory-1'></a></p>
+<h1 id="hartree-fock-bogoliubov-theory">Hartree-Fock-Bogoliubov Theory</h1>
+<p>This document contains basics of Hartree-Fock-Bogoliubov Theory. We will follow <a href="http://escholarship.org/uc/item/3xm630cr" title="Alan Goodman, Finite-Temperature Hartree-Fock-Bogoliubov Theory, LBNL Paper LBL-11151 (1980)">Goodman</a>.</p>
+<p>
+<script type="math/tex; mode=display">
+  H =  \sum_{ij} T_{ij} c_{i}^{\dagger} c_{j}
+     + \frac{1}{4} \sum_{ijkl} V_{ijkl} c_{i}^{\dagger} c_{j}^{\dagger} c_{l} c_{k}
+</script>
+</p>
+<p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+  \Gamma_{ij} &= \sum_{kl} V_{ikjl} \rho_{lk} \\
+  \Gamma_{ik} &= \sum_{jl} V_{ijkl} \rho_{lj} \\
+  \Delta_{ij} &= \frac{1}{2} \sum_{kl} V_{ijkl} t_{kl}
+\end{aligned}
+</script>
+</p>
+<p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+  \rho_{ij} &= \langle c_{j}^{\dagger} c_{i} \rangle
+             = \sum_{n} f(\epsilon_{n}) u_{in} u_{jn}^{*} \\
+  t_{ij}    &= \langle c_{j} c_{i} \rangle
+             = \sum_{n} f(\epsilon_{n}) u_{in} v_{jn}^{*}
+\end{aligned}
+</script>
+</p>
+<p><a id='Hartree-Fock-Bogoliubov-Decomposition-1'></a></p>
+<h2 id="hartree-fock-bogoliubov-decomposition">Hartree-Fock-Bogoliubov Decomposition</h2>
+<p><a id='Diagonal-Interaction-1'></a></p>
+<h3 id="diagonal-interaction">Diagonal Interaction</h3>
+<p>Let us first consider the <em>diagonal</em> interaction of the form</p>
+<p>
+<script type="math/tex; mode=display">
+  V c_{1}^{\dagger} c_{2}^{\dagger} c_{2} c_{1} ,
+</script>
+</p>
+<p>which is the Hermitian conjugate of itself. Following <a href="http://escholarship.org/uc/item/3xm630cr" title="Alan Goodman, Finite-Temperature Hartree-Fock-Bogoliubov Theory, LBNL Paper LBL-11151 (1980)">Goodman</a>, this interaction decomposes into the following mean fields in the particle-hole and particle-particle channels:</p>
+<table>
+<thead>
+<tr>
+<th align="left">Interaction</th>
+<th align="left">PH Channel</th>
+<th align="left">PP Channel</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">V(1212) =  V</td>
+<td align="left">Γ(11) =  V ρ(22)</td>
+<td align="left">Δ(12) =  ½ V t(12)</td>
+</tr>
+<tr>
+<td align="left">V(1221) = -V</td>
+<td align="left">Γ(12) = -V ρ(12)</td>
+<td align="left">Δ(12) = -½ V t(21)</td>
+</tr>
+<tr>
+<td align="left">V(2112) = -V</td>
+<td align="left">Γ(21) = -V ρ(21)</td>
+<td align="left">Δ(21) = -½ V t(12)</td>
+</tr>
+<tr>
+<td align="left">V(2121) =  V</td>
+<td align="left">Γ(22) =  V ρ(11)</td>
+<td align="left">Δ(21) =  ½ V t(21)</td>
+</tr>
+</tbody>
+</table>
+<p>Here, the equal sign '=' does not indicate equality. Rather, it refers to the contribution of the right hand side to the mean field on the left hand side. Some of the mean fields are redundant, as required by the Hermiticity of the Hamiltonian. Overall, we end up with</p>
+<p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\Gamma_{11} &=  V \rho_{22} \\
+\Gamma_{12} &= -V \rho_{12} \\
+\Gamma_{22} &=  V \rho_{11}
+\end{aligned}
+</script>
+</p>
+<p>in the particle-hole channel, and </p>
+<p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\Delta_{12} =  V t_{12}
+\end{aligned}
+</script>
+</p>
+<p>in the particle-particle channel.</p>
+<p><a id='Offdiagonal-Interaction-1'></a></p>
+<h3 id="offdiagonal-interaction">Offdiagonal Interaction</h3>
+<p>Now let us consider the <em>offdiagonal</em> interaction term of the form</p>
+<p>
+<script type="math/tex; mode=display">
+  V c_{1}^{\dagger} c_{2}^{\dagger} c_{4} c_{3}.
+</script>
+</p>
+<p>Given this term in the interaction, it is implied that its Hermitian conjugate</p>
+<p>
+<script type="math/tex; mode=display">
+  V^{*} c_{3}^{\dagger} c_{4}^{\dagger} c_{2} c_{1}.
+</script>
+</p>
+<p>is also included in the Hamiltonian. The two terms (the explicit term and its Hermitian conjugate) decomposes into</p>
+<table>
+<thead>
+<tr>
+<th align="left">Interaction</th>
+<th align="left">PH Channel</th>
+<th align="left">PP-Channel</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">V(1234) =  V</td>
+<td align="left">Γ(13) =  V ρ(42)</td>
+<td align="left">Δ(12) =  ½ V t(34)</td>
+</tr>
+<tr>
+<td align="left">V(1243) = -V</td>
+<td align="left">Γ(14) = -V ρ(32)</td>
+<td align="left">Δ(12) = -½ V t(43)</td>
+</tr>
+<tr>
+<td align="left">V(2134) = -V</td>
+<td align="left">Γ(23) = -V ρ(41)</td>
+<td align="left">Δ(21) = -½ V t(34)</td>
+</tr>
+<tr>
+<td align="left">V(2143) =  V</td>
+<td align="left">Γ(24) =  V ρ(31)</td>
+<td align="left">Δ(21) =  ½ V t(43)</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">V(3412) =  V*</td>
+<td align="left">Γ(31) =  V ρ(24)</td>
+<td align="left">Δ(34) =  ½ V t(12)</td>
+</tr>
+<tr>
+<td align="left">V(3421) = -V*</td>
+<td align="left">Γ(32) = -V ρ(14)</td>
+<td align="left">Δ(34) = -½ V t(21)</td>
+</tr>
+<tr>
+<td align="left">V(4312) = -V*</td>
+<td align="left">Γ(41) = -V ρ(23)</td>
+<td align="left">Δ(43) = -½ V t(12)</td>
+</tr>
+<tr>
+<td align="left">V(4321) =  V*</td>
+<td align="left">Γ(42) =  V ρ(13)</td>
+<td align="left">Δ(43) =  ½ V t(21)</td>
+</tr>
+</tbody>
+</table>
+<p>As we have mentioned above for the diagonal interaction terms, this table contains redundant mean fields. Overwall. we have</p>
+<p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\Gamma_{13} &=  V  \rho_{24}^* \\
+\Gamma_{14} &= -V  \rho_{23}^* \\
+\Gamma_{23} &= -V  \rho_{14}^* \\
+\Gamma_{24} &=  V  \rho_{13}^*
+\end{aligned}
+</script>
+</p>
+<p>in the particle-hole channel and</p>
+<p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\Delta_{12} &=  V   t_{34} \\
+\Delta_{34} &=  V^* t_{12}
+\end{aligned}
+</script>
+</p>
+<p>in the particle-particle channel.</p></div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>var base_url = '../..';</script>
+        <script src="../../js/base.js"></script>
+        <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="../../assets/mathjaxhelper.js"></script>
+        <script src="../../search/require.js"></script>
+        <script src="../../search/search.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form role="form">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="Keyboard Shortcuts Modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Keyboard Shortcuts</h4>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td><kbd>&larr;</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td><kbd>&rarr;</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    </body>
+</html>
