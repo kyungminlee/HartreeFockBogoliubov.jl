@@ -5,7 +5,8 @@ function chernnumber(uc::UnitCell{O},
                      hops::AbstractVector{Hopping},
                      n1 ::Integer,
                      n2 ::Integer,
-                     selectband::AbstractVector{<:Integer}) where {O}
+                     selectband::AbstractVector{<:Integer};
+                     tol::Real=sqrt(eps(Float64))) where {O}
   squareuc = squarify(uc)
   hkgen = Generator.generatefast(squareuc, hops)
 
@@ -39,6 +40,8 @@ function chernnumber(uc::UnitCell{O},
     ψ4 = eigenvectorgrid[i1 , i2p, :, :]
     flux += angle(det(ψ1' * ψ2) * det(ψ2' * ψ3) * det(ψ3' * ψ4) * det(ψ4' * ψ1))
   end
-  return flux / (2π)
+  chn = flux / (2π)
+  chnint = round(chn)
+  @assert(isapprox(chn, chnint; atol=tol), "Chern number should be almost integer")
 end
 
