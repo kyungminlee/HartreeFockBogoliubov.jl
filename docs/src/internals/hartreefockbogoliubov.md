@@ -5,16 +5,37 @@ Modules = [HartreeFockBogoliubov.Lattice]
 ```
 
 # Spec
+
 ```@autodocs
 Modules = [HartreeFockBogoliubov.Spec]
 ```
 
-# Embed
-```@autodocs
-Modules = [HartreeFockBogoliubov.Embed]
-```
-
 # Generator
+
 ```@autodocs
 Modules = [HartreeFockBogoliubov.Generator]
+```
+
+# IO
+
+```@autodocs
+Modules = [HartreeFockBogoliubov.IO]
+```
+
+# Topology
+
+```@autodocs
+Modules = [HartreeFockBogoliubov.Topology]
+```
+
+# HFB
+
+```@autodocs
+Modules = [HartreeFockBogoliubov.HFB]
+```
+
+# LinearizedGap
+
+```@autodocs
+Modules = [HartreeFockBogoliubov.LinearizedGap]
 ```
