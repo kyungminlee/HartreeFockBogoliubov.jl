@@ -5,7 +5,7 @@ function iscanonicaltimereversalinvariant(
     timereversalmatrix::AbstractMatrix{<:Number},
     hoppings::AbstractVector{Hopping};
     tol::Real = sqrt(eps(Float64)),
-    momentumgridsize
+    momentumgridsize = nothing
     )
 
     # 1. Check whether the orbitals are Kramer-paired.

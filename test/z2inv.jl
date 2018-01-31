@@ -5,7 +5,7 @@
   1. Construct (Kane-Mele-Hubbard) Hamiltonian
   2. Construct a hopping-hamiltonian-generator H1
   3. Squarify the Lattice and make generator H2
-  4. Make time-reversal-accounted Index Grid and Momentum Grid 
+  4. Make time-reversal-accounted Index Grid and Momentum Grid
   5. Define time-reversal operation unitary matrix U_T
      5-1. Confirm unitarity
      5-2. Confirm U_T^2 = -1
@@ -101,10 +101,10 @@ end
 
 function spinhalftimereversal(uc::UnitCell{O}, spinindex) where {O<:Tuple}
   @assert(
-    all(let 
+    all(let
       sp = orbname[spinindex]
       sp == :UP || sp == :DN
-    end for (orbname, fc) in uc.orbitals) 
+    end for (orbname, fc) in uc.orbitals)
   )
 
   rows = Int[]
@@ -125,24 +125,39 @@ end
 
 
 function main1()
-  Eg = 0.4
-  for mAB in linspace(0, Eg, 11)
-    λIsing = (Eg - mAB) / (3.0*sqrt(3.0))
-    kmh1 = makekanemelehamiltonian(0.0, 1.0, mAB, λIsing, 0.0, 0.0)
-    #@show numorbital(kmh1.unitcell)
-    #@show kmh1.unitcell
-    timereversalmatrix = spinhalftimereversal(kmh1.unitcell, 2)
-    #@show timereversalmatrix
+    Eg = 0.4
+    for mAB in linspace(0, Eg, 11)
+        λIsing = (Eg - mAB) / (3.0*sqrt(3.0))
+        kmh1 = makekanemelehamiltonian(0.0, 1.0, mAB, λIsing, 0.0, 0.0)
+        #@show numorbital(kmh1.unitcell)
+        #@show kmh1.unitcell
+        timereversalmatrix = spinhalftimereversal(kmh1.unitcell, 2)
+        #@show timereversalmatrix
 
-    z2index = Topology.z2invariant(
-                kmh1.unitcell,
-                kmh1.hoppings,
-                timereversalmatrix,
-                8,
-                8,
-                1:1)
-    @printf("%f\t%d\n", mAB, z2index)
-  end
+        z2index = Topology.z2invariant(
+        kmh1.unitcell,
+        kmh1.hoppings,
+        timereversalmatrix,
+        8,
+        8,
+        1:1)
+        @printf("%f\t%d\n", mAB, z2index)
+    end
+end
+
+
+function main2()
+    kmh1 = makekanemelehamiltonian(0.0, 1.0, 0.0, 0.2, 0.0, -3.0)
+    unitcell = kmh1.unitcell
+    nambuunitcell = HFB.nambufy(unitcell)
+
+    timereversalmatrix = spinhalftimereversal(unitcell, 2)
+    nambutimereversalmatrix = spinhalftimereversal(nambuunitcell, 2)
+
+    @show unitcell
+    @show timereversalmatrix
+    @show nambuunitcell
+    @show nambutimereversalmatrix
 end
 
 #=
@@ -224,4 +239,4 @@ function main2()
 end
 =#
 
-main1()
+main2()

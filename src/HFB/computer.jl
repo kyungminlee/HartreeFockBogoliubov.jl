@@ -621,7 +621,7 @@ function nambufy(uc::UnitCell{O}, hop::HoppingOffdiagonal{C}) where {O, C<:Numbe
 end
 
 
-function nambufy(uc::UnitCell{O}) where {O<:Tuple}
+function nambufy(unitcell::UnitCell{O}) where {O<:Tuple}
     NewOrbitalType = Tuple{O.parameters..., Symbol}
     nambuunitcell = Lattice.newunitcell(unitcell.latticevectors; OrbitalType=NewOrbitalType)
     for (orb, fc) in unitcell.orbitals
@@ -634,7 +634,7 @@ function nambufy(uc::UnitCell{O}) where {O<:Tuple}
 end
 
 
-function nambufy(uc::UnitCell{O}) where {O}
+function nambufy(unitcell::UnitCell{O}) where {O}
     NewOrbitalType = Tuple{O, Symbol}
     nambuunitcell = Lattice.newunitcell(unitcell.latticevectors; OrbitalType=NewOrbitalType)
     for (orb, fc) in unitcell.orbitals
