@@ -16,12 +16,6 @@ Modules = [HartreeFockBogoliubov.Spec]
 Modules = [HartreeFockBogoliubov.Generator]
 ```
 
-# IO
-
-```@autodocs
-Modules = [HartreeFockBogoliubov.IO]
-```
-
 # Topology
 
 ```@autodocs
