@@ -15,6 +15,8 @@ export makehoppingmatrix,
        makeGammamatrix,
        makeDeltamatrix
 
+export freeze
+
 using HartreeFockBogoliubov
 
 """
@@ -560,6 +562,8 @@ function newhfbsolution(computer::HFBComputer{O}, hint::HFBHint{O}) where {O}
 end
 
 
+"""
+"""
 function newhfbhint(computer::HFBComputer{O}, sol::HFBSolution) where {O}
   ρ = Dict{Tuple{O, O, Vector{Int64}}, Complex128}()
   t = Dict{Tuple{O, O, Vector{Int64}}, Complex128}()
@@ -586,6 +590,7 @@ function newhfbhint(computer::HFBComputer{O}, sol::HFBSolution) where {O}
   return HFBHint{O}(ρ, t)
 end
 
+
 """
     Recompute Γ and Δ from ρ and t in a `HFBSolution`
 """
@@ -593,6 +598,7 @@ function fixhfbsolution(computer::HFBComputer{O},
                         sol ::HFBSolution) where {O}
   sol.Γ[:], sol.Δ[:] = HFB.computetargetfields(computer, sol.ρ, sol.t)
 end
+
 
 """
     Randomize a solution
@@ -602,4 +608,96 @@ function randomize!(computer::HFBComputer{O},
   sol.ρ[:] = (rand(Float64, length(sol.ρ)))
   sol.t[:] = (rand(Complex128, length(sol.t)))
   sol.Γ[:], sol.Δ[:] = HFB.computetargetfields(computer, sol.ρ, sol.t)
+end
+
+
+"""
+"""
+function nambufy(uc::UnitCell{O}, hop::HoppingDiagonal{R}) where {O, R<:Real}
+  norb = numorbital(uc)
+  hop1 = HoppingDiagonal{R}( hop.amplitude, hop.i, hop.Ri)
+  hop2 = HoppingDiagonal{R}(-hop.amplitude, hop.i+norb, hop.Ri)
+  return (hop1, hop2)
+end
+
+
+"""
+"""
+function nambufy(uc::UnitCell{O}, hop::HoppingOffdiagonal{C}) where {O, C<:Number}
+  norb = numorbital(uc)
+  hop1 = HoppingOffdiagonal{C}(      hop.amplitude,  hop.i     , hop.j     , hop.Ri, hop.Rj)
+  hop2 = HoppingOffdiagonal{C}(-conj(hop.amplitude), hop.i+norb, hop.j+norb, hop.Ri, hop.Rj)
+  return (hop1, hop2)
+end
+
+
+"""
+    freeze
+
+    Create a hopping hamiltonian out of HFB Hamiltonian and Solution
+
+    Order: 
+    electrons......, HOLE......
+"""
+function freeze(computer ::HFBComputer{O},
+                Γs ::AbstractVector{Complex128},
+                Δs ::AbstractVector{Complex128}) where {O}
+  norb = numorbital(computer.unitcell)
+  unitcell = computer.unitcell
+  nambuunitcell = Lattice.newunitcell(unitcell.latticevectors; OrbitalType=Tuple{O, Symbol})
+  for (orb, fc) in unitcell.orbitals
+    addorbital!(nambuunitcell, (orb, :PARTICLE), fc)
+  end
+  for (orb, fc) in unitcell.orbitals
+    addorbital!(nambuunitcell, (orb, :HOLE), fc)
+  end
+
+  hoppings = Hopping[]
+  for hop in computer.hoppings
+    (hop1, hop2) = nambufy(unitcell, hop)
+    push!(hoppings, hop1)
+    push!(hoppings, hop2)
+  end
+
+  # 2/3. Gamma
+  for (idx, Γ) in enumerate(Γs)
+    (isdiag, i, j, r, _) = computer.Γ_registry[idx]
+    if isdiag
+      @assert(i==j && all(x -> isapprox(x, 0.0), r))
+      @assert(isapprox(imag(Γ), 0.0))
+
+      iname, icoord = getorbital(unitcell, i)
+      Ri = whichunitcell(unitcell, iname, fract2carte(unitcell, icoord))
+
+      push!(hoppings, HoppingDiagonal{Float64}( real(Γ), i, Ri))
+      push!(hoppings, HoppingDiagonal{Float64}(-real(Γ), i+norb, Ri))
+    else
+      @assert(!(i==j && all(x -> isapprox(x, 0.0), r)))
+      
+      iname, icoord = getorbital(unitcell, i)
+      jname, jcoord = getorbital(unitcell, j)
+      Ri = whichunitcell(unitcell, iname, fract2carte(unitcell, icoord))
+      Rj = whichunitcell(unitcell, jname, fract2carte(unitcell, icoord) + r)
+
+      push!(hoppings, HoppingOffdiagonal{Complex128}( Γ      , i, j, Ri, Rj))
+      push!(hoppings, HoppingOffdiagonal{Complex128}(-conj(Γ), i+norb, j+norb, Ri, Rj))
+    end
+  end
+
+  # 3/3. Delta
+  for (idx, Δ) in enumerate(Δs)
+    (isdiag, i, j, r, _) = computer.Δ_registry[idx]
+
+    @assert( !isdiag )
+    @assert( !(i==j && all(x -> isapprox(x, 0.0), r)) )
+    
+    iname, icoord = getorbital(unitcell, i)
+    jname, jcoord = getorbital(unitcell, j)
+    Ri = whichunitcell(unitcell, iname, fract2carte(unitcell, icoord))
+    Rj = whichunitcell(unitcell, jname, fract2carte(unitcell, icoord) + r)
+
+    push!(hoppings, HoppingOffdiagonal{Complex128}( Δ , i, j + norb, Ri, Rj))
+    push!(hoppings, HoppingOffdiagonal{Complex128}(-Δ , j, i + norb, Rj, Ri))
+  end
+  return (nambuunitcell, hoppings)
 end
