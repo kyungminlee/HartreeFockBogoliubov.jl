@@ -323,8 +323,8 @@ end
 Compute Γ and Δ from ρ and t.
 """
 function computetargetfields(computer ::HFBComputer{O},
-                             ρs ::AbstractVector{Complex128},
-                             ts ::AbstractVector{Complex128}) where {O}
+                             ρs ::AbstractVector{<:Number},
+                             ts ::AbstractVector{<:Number}) where {O}
   Γs = zeros(Complex128, length(computer.Γ_registry))
   Δs = zeros(Complex128, length(computer.Δ_registry))
   for (tgtidx, (_, i, j, r, srcs)) in enumerate(computer.Γ_registry)
@@ -362,7 +362,7 @@ end
 Return a generator of Γ matrix (which is a function of momentum)
 """
 function makeGammamatrix(computer::HFBComputer,
-                         Γs ::AbstractVector{Complex128})
+                         Γs ::AbstractVector{<:Number})
   norb = numorbital(computer.unitcell)
   function(k ::AbstractVector{Float64})
     out = zeros(Complex128, (norb, norb))
@@ -388,7 +388,7 @@ end
 Return a generator of Δ matrix (which is a function of momentum)
 """
 function makeDeltamatrix(computer::HFBComputer,
-                         Δs ::AbstractVector{Complex128})
+                         Δs ::AbstractVector{<:Number})
   norb = numorbital(computer.unitcell)
   function(k ::AbstractVector{Float64})
     out = zeros(Complex128, (norb, norb))
@@ -409,8 +409,8 @@ end
 """
 """
 function makehamiltonian(computer ::HFBComputer,
-                         Γs ::AbstractVector{Complex128},
-                         Δs ::AbstractVector{Complex128})
+                         Γs ::AbstractVector{<:Number},
+                         Δs ::AbstractVector{<:Number})
   norb = numorbital(computer.unitcell)
   hk = Generator.generatefast(computer.unitcell, computer.hoppings)
 
@@ -422,8 +422,6 @@ function makehamiltonian(computer ::HFBComputer,
     # 2/3. Gamma
     for (idx, Γ) in enumerate(Γs)
       (isdiag, i, j, r, _) = computer.Γ_registry[idx]
-      #out[i,1,j,1] += Γ * cis(dot( k, r))
-      #out[i,2,j,2] += Γ * cis(dot(-k, r))
       if isdiag
         @assert(i==j && all(x -> isapprox(x, 0.0), r))
         @assert(isapprox(imag(Γ), 0.0))
@@ -438,22 +436,14 @@ function makehamiltonian(computer ::HFBComputer,
         out[j,2,i,2] += conj(Γ) * phase
       end
     end
-
     out[:,2,:,2] = -transpose(out[:,2,:,2])
 
     # 3/3. Delta
     for (idx, Δ) in enumerate(Δs)
       (isdiag, i, j, r, _) = computer.Δ_registry[idx]
-      #out[i,1,j,2] += Δ * cis(dot( k, r))
-      #out[j,2,i,1] += conj(Δ) * cis(-dot(k, r))
       @assert( !isdiag )
       @assert( !(i==j && all(x -> isapprox(x, 0.0), r)) )
       phase = cis(dot(k, r))
-      #val = Δ * cis(dot( k, r))
-      #out[i,1,j,2] += val
-      #out[j,1,i,2] -= val
-      #out[j,2,i,1] += conj(val)
-      #out[i,2,j,1] -= conj(val)
       val1 = Δ * phase
       val2 = Δ * conj(phase)
       out[i,1,j,2] += val1
@@ -480,9 +470,9 @@ function makegreencollectors(computer::HFBComputer{O}) where {O}
   ρ_registry = computer.ρ_registry
   t_registry = computer.t_registry
 
-  function(k::AbstractVector{Float64},
-           eigenvalues ::AbstractVector{Float64},
-           eigenvectors ::AbstractMatrix{Complex128},
+  function(k::AbstractVector{<:Real},
+           eigenvalues ::AbstractVector{<:Real},
+           eigenvectors ::AbstractMatrix{<:Number},
            ρout ::AbstractVector{Complex128},
            tout ::AbstractVector{Complex128})
     @assert(length(eigenvalues) == 2*norb)
@@ -640,8 +630,8 @@ end
     electrons......, HOLE......
 """
 function freeze(computer ::HFBComputer{O},
-                Γs ::AbstractVector{Complex128},
-                Δs ::AbstractVector{Complex128}) where {O}
+                Γs ::AbstractVector{<:Number},
+                Δs ::AbstractVector{<:Number}) where {O}
   norb = numorbital(computer.unitcell)
   unitcell = computer.unitcell
   nambuunitcell = Lattice.newunitcell(unitcell.latticevectors; OrbitalType=Tuple{O, Symbol})
