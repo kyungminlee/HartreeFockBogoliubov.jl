@@ -62,7 +62,7 @@ function timereversalindexgrid(shape::AbstractVector{<:Integer})
                 pointtypes[i] = (:NEGINT, j)
             else
                 pointtypes[i] = (:POSINT, i)
-            end            
+            end
         end
     end
     return pointtypes
@@ -70,7 +70,7 @@ end
 =#
 
 """
-$(SIGNATURES)
+    z2index
 
 Compute Z2 index of time-reversal-invariant Hamiltonian.
 
@@ -86,7 +86,7 @@ Compute Z2 index of time-reversal-invariant Hamiltonian.
 * `tol ::Real = sqrt(eps(Float64))`
 
 # Return
-  
+
 """
 function z2index(uc::UnitCell{O},
                  hops::AbstractVector{Hopping},
@@ -125,7 +125,7 @@ function z2index(uc::UnitCell{O},
       hk0 = zeros(Complex128, norb, norb)
       hk1 = zeros(Complex128, norb, norb)
       hk2 = zeros(Complex128, norb, norb)
-        
+
       hkgen([0.0, 0.0], hk0)
       hkgen(squareuc.reciprocallatticevectors[:,1], hk1)
       hkgen(squareuc.reciprocallatticevectors[:,2], hk2)
@@ -215,17 +215,17 @@ end
 #=
 function z2invariant(uc::UnitCell{O},
                      hops::AbstractVector{Hopping},
-                     n1::Integer, 
+                     n1::Integer,
                      n2::Integer,
                      selectband::AbstractVector{<:Integer}) where {O}
   @assert(n1 > 0 && n1 % 2 == 0, "n1 should be a positive even number")
   @assert(n2 > 0 && n2 % 2 == 0, "n2 should be a positive even number")
-  
+
   @assert(length(selectband) % 2 == 0, "selectband should account for time reversal")
-  
+
   squareuc = squarify(uc)
   igrid = triindexgrid(n1, n2)
-  eg 
-  
+  eg
+
 end
 =#
