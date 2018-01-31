@@ -13,16 +13,16 @@ squarify
 * `uc::Lattice.UnitCell{O}`
 """
 function squarify(uc::Lattice.UnitCell{O}) where {O}
-newdimension = dimension(uc)
-newlatticevectors = eye(newdimension)
+  newdimension = dimension(uc)
+  newlatticevectors = eye(newdimension)
 
-origin = FractCoord(zeros(Int64, newdimension), zeros(Float64, newdimension))
+  origin = FractCoord(zeros(Int64, newdimension), zeros(Float64, newdimension))
 
-newuc = newunitcell(newlatticevectors; OrbitalType=O)
-for (orbname, fc) in uc.orbitals
-addorbital!(newuc, orbname, origin)
-end
-return newuc
+  newuc = newunitcell(newlatticevectors; OrbitalType=O)
+  for (orbname, fc) in uc.orbitals
+    addorbital!(newuc, orbname, origin)
+  end
+  return newuc
 end
 
 
@@ -33,8 +33,8 @@ squarify
 * `uc::Spec.FullHamiltonian{O}`
 """
 function squarify(ham::Spec.FullHamiltonian{O}) where {O}
-newuc = squarify(ham.unitcell)
-return FullHamiltonian{O}(newuc, ham.hoppings, ham.interactions)
+  newuc = squarify(ham.unitcell)
+  return FullHamiltonian{O}(newuc, ham.hoppings, ham.interactions)
 end
 
 
@@ -45,9 +45,9 @@ squarify
 * `uc::HFB.HFBHamiltonian{O}`
 """
 function squarify(ham::HFB.HFBHamiltonian{O}) where {O}
-newuc = squarify(ham.unitcell)
-return HFBHamiltonian{O}(newuc,
-                       ham.hoppings,
-                       ham.particle_hole_interactions,
-                       ham.particle_particle_interactions)
+    newuc = squarify(ham.unitcell)
+    return HFBHamiltonian{O}(newuc,
+                             ham.hoppings,
+                             ham.particle_hole_interactions,
+                             ham.particle_particle_interactions)
 end
