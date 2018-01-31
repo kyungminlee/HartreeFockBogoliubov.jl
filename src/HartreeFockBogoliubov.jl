@@ -5,7 +5,7 @@ include("Lattice/Lattice.jl")
 using .Lattice
 
 for symb in names(Lattice)
-  eval(Expr(:export, symb))
+    eval(Expr(:export, symb))
 end
 
 include("Hamiltonian/Spec.jl")

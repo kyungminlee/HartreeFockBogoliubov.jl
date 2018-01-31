@@ -12,16 +12,16 @@ using PyCall
 """
 """
 mutable struct HFBSolver{O}
-  # Originals
-  hamiltonian ::FullHamiltonian{O}
-  size ::Vector{Int64}
-  temperature ::Float64
+    # Originals
+    hamiltonian ::FullHamiltonian{O}
+    size ::Vector{Int64}
+    temperature ::Float64
 
-  # Derivatives
-  momentumgrid ::Array{Vector{Float64}}
-  hfbhamiltonian ::HFBHamiltonian{O}
-  hfbcomputer ::HFBComputer{O}
-  greencollectors ::Function
+    # Derivatives
+    momentumgrid ::Array{Vector{Float64}}
+    hfbhamiltonian ::HFBHamiltonian{O}
+    hfbcomputer ::HFBComputer{O}
+    greencollectors ::Function
 end
 
 
@@ -31,52 +31,52 @@ function HFBSolver(hamiltonian::FullHamiltonian{T},
                    size ::AbstractVector{<:Integer},
                    temperature ::Real;
                    tol::Float64=eps(Float64)) where {T}
-  dim = dimension(hamiltonian.unitcell)
-  @assert(length(size) == dim, "dimension and size do not match: size=$(size)")
-  @assert(all((x) -> x > 0, size), "size should be positive: size=$(size)")
-  @assert(temperature >= 0, "temperature should be non-negative")
+    dim = dimension(hamiltonian.unitcell)
+    @assert(length(size) == dim, "dimension and size do not match: size=$(size)")
+    @assert(all((x) -> x > 0, size), "size should be positive: size=$(size)")
+    @assert(temperature >= 0, "temperature should be non-negative")
 
-  momentumgrid = Lattice.momentumgrid(hamiltonian.unitcell, size)
+    momentumgrid = Lattice.momentumgrid(hamiltonian.unitcell, size)
 
-  hfbhamiltonian = HFB.HFBHamiltonian(hamiltonian)
-  hfbcomputer = HFB.HFBComputer(hfbhamiltonian, temperature)
-  greencollectors = HFB.makegreencollectors(hfbcomputer)
-  return HFBSolver{T}(hamiltonian, size, temperature,
-                      momentumgrid,
-                      hfbhamiltonian, hfbcomputer, greencollectors)
+    hfbhamiltonian = HFB.HFBHamiltonian(hamiltonian)
+    hfbcomputer = HFB.HFBComputer(hfbhamiltonian, temperature)
+    greencollectors = HFB.makegreencollectors(hfbcomputer)
+    return HFBSolver{T}(hamiltonian, size, temperature,
+                        momentumgrid,
+                        hfbhamiltonian, hfbcomputer, greencollectors)
 end
 
 
 """
 """
 function getnextsolution(solver ::HFBSolver{T}, sol ::HFBSolution) where {T}
-  newsol = newhfbsolution(solver.hfbcomputer)
-  ham = makehamiltonian(solver.hfbcomputer, sol.Γ, sol.Δ)
-  for momentum in solver.momentumgrid
-    hk = ham(momentum)
-    (eivals, eivecs) = eig(Hermitian(hk))
-    solver.greencollectors(momentum, eivals, eivecs, newsol.ρ, newsol.t)
-  end
-  newsol.ρ /= length(solver.momentumgrid)
-  newsol.t /= length(solver.momentumgrid)
-  newsol.Γ[:], newsol.Δ[:] = HFB.computetargetfields(solver.hfbcomputer, newsol.ρ, newsol.t)
-  return newsol
+    newsol = newhfbsolution(solver.hfbcomputer)
+    ham = makehamiltonian(solver.hfbcomputer, sol.Γ, sol.Δ)
+    for momentum in solver.momentumgrid
+        hk = ham(momentum)
+        (eivals, eivecs) = eig(Hermitian(hk))
+        solver.greencollectors(momentum, eivals, eivecs, newsol.ρ, newsol.t)
+    end
+    newsol.ρ /= length(solver.momentumgrid)
+    newsol.t /= length(solver.momentumgrid)
+    newsol.Γ[:], newsol.Δ[:] = HFB.computetargetfields(solver.hfbcomputer, newsol.ρ, newsol.t)
+    return newsol
 end
 
 """
 """
 function getnextsolutionpython(solver ::HFBSolver{T}, sol ::HFBSolution) where {T}
-  newsol = newhfbsolution(solver.hfbcomputer)
-  ham = makehamiltonian(solver.hfbcomputer, sol.Γ, sol.Δ)
-  for momentum in solver.momentumgrid
-    hk = ham(momentum)
-    (eivals, eivecs) = npl.eigh(hk)
-    solver.greencollectors(momentum, eivals, eivecs, newsol.ρ, newsol.t)
-  end
-  newsol.ρ /= length(solver.momentumgrid)
-  newsol.t /= length(solver.momentumgrid)
-  newsol.Γ[:], newsol.Δ[:] = HFB.computetargetfields(solver.hfbcomputer, newsol.ρ, newsol.t)
-  return newsol
+    newsol = newhfbsolution(solver.hfbcomputer)
+    ham = makehamiltonian(solver.hfbcomputer, sol.Γ, sol.Δ)
+    for momentum in solver.momentumgrid
+        hk = ham(momentum)
+        (eivals, eivecs) = npl.eigh(hk)
+        solver.greencollectors(momentum, eivals, eivecs, newsol.ρ, newsol.t)
+    end
+    newsol.ρ /= length(solver.momentumgrid)
+    newsol.t /= length(solver.momentumgrid)
+    newsol.Γ[:], newsol.Δ[:] = HFB.computetargetfields(solver.hfbcomputer, newsol.ρ, newsol.t)
+    return newsol
 end
 
 
@@ -84,47 +84,47 @@ end
 """
 function getnextsolutionthreaded(solver ::HFBSolver{O},
                                  sol ::HFBSolution) where {O}
-  newsol = newhfbsolution(solver.hfbcomputer)
-  const ham = makehamiltonian(solver.hfbcomputer, sol.Γ, sol.Δ)
+    newsol = newhfbsolution(solver.hfbcomputer)
+    const ham = makehamiltonian(solver.hfbcomputer, sol.Γ, sol.Δ)
 
-  threadedρ = [zeros(newsol.ρ) for tid in 1:Threads.nthreads()]
-  threadedt = [zeros(newsol.t) for tid in 1:Threads.nthreads()]
+    threadedρ = [zeros(newsol.ρ) for tid in 1:Threads.nthreads()]
+    threadedt = [zeros(newsol.t) for tid in 1:Threads.nthreads()]
 
-  num_momentum = length(solver.momentumgrid)
-  Threads.@threads for idx_momentum in 1:num_momentum
-    momentum = solver.momentumgrid[idx_momentum]
-    tid = Threads.threadid()
-    hk = ham(momentum)
-    (eivals, eivecs) = eig(Hermitian(hk))
-    solver.greencollectors(momentum, eivals, eivecs,
-                           threadedρ[tid], threadedt[tid])
-  end
+    num_momentum = length(solver.momentumgrid)
+    Threads.@threads for idx_momentum in 1:num_momentum
+        momentum = solver.momentumgrid[idx_momentum]
+        tid = Threads.threadid()
+        hk = ham(momentum)
+        (eivals, eivecs) = eig(Hermitian(hk))
+        solver.greencollectors(momentum, eivals, eivecs,
+        threadedρ[tid], threadedt[tid])
+    end
 
-  for ρ in threadedρ
-    newsol.ρ += ρ
-  end
-  for t in threadedt
-    newsol.t += t
-  end
+    for ρ in threadedρ
+        newsol.ρ += ρ
+    end
+    for t in threadedt
+        newsol.t += t
+    end
 
-  newsol.ρ /= length(solver.momentumgrid)
-  newsol.t /= length(solver.momentumgrid)
-  newsol.Γ[:], newsol.Δ[:] = HFB.computetargetfields(solver.hfbcomputer, newsol.ρ, newsol.t)
-  return newsol
+    newsol.ρ /= length(solver.momentumgrid)
+    newsol.t /= length(solver.momentumgrid)
+    newsol.Γ[:], newsol.Δ[:] = HFB.computetargetfields(solver.hfbcomputer, newsol.ρ, newsol.t)
+    return newsol
 end
 
 
 
 function simpleupdate(sol::HFBSolution, newsol ::HFBSolution)
-  @assert(length(sol.ρ) == length(newsol.ρ))
-  @assert(length(sol.t) == length(newsol.t))
-  @assert(length(sol.Γ) == length(newsol.Γ))
-  @assert(length(sol.Δ) == length(newsol.Δ))
-  sol.ρ[:] = newsol.ρ[:]
-  sol.t[:] = newsol.t[:]
-  sol.Γ[:] = newsol.Γ[:]
-  sol.Δ[:] = newsol.Δ[:]
-  sol
+    @assert(length(sol.ρ) == length(newsol.ρ))
+    @assert(length(sol.t) == length(newsol.t))
+    @assert(length(sol.Γ) == length(newsol.Γ))
+    @assert(length(sol.Δ) == length(newsol.Δ))
+    sol.ρ[:] = newsol.ρ[:]
+    sol.t[:] = newsol.t[:]
+    sol.Γ[:] = newsol.Γ[:]
+    sol.Δ[:] = newsol.Δ[:]
+    sol
 end
 
 
@@ -135,45 +135,45 @@ function loop(solver ::HFBSolver{T},
               precondition::Function=identity,
               progressbar::Bool=false
               ) where {T}
-  sol = copy(sol)
-  if progressbar
-    @showprogress for i in 1:run
-      precondition(sol)
-      newsol = getnextsolution(solver, sol)
-      update(sol, newsol)
+    sol = copy(sol)
+    if progressbar
+        @showprogress for i in 1:run
+            precondition(sol)
+            newsol = getnextsolution(solver, sol)
+            update(sol, newsol)
+        end
+    else
+        for i in 1:run
+            precondition(sol)
+            newsol = getnextsolution(solver, sol)
+            update(sol, newsol)
+        end
     end
-  else
-    for i in 1:run
-      precondition(sol)
-      newsol = getnextsolution(solver, sol)
-      update(sol, newsol)
-    end
-  end
-  sol
+    sol
 end
 
 function looppython(solver ::HFBSolver{T},
-              sol::HFBSolution,
-              run::Integer;
-              update::Function=simpleupdate,
-              precondition::Function=identity,
-              progressbar::Bool=false
-              ) where {T}
-  sol = copy(sol)
-  if progressbar
-    @showprogress for i in 1:run
-      precondition(sol)
-      newsol = getnextsolutionpython(solver, sol)
-      update(sol, newsol)
+                    sol::HFBSolution,
+                    run::Integer;
+                    update::Function=simpleupdate,
+                    precondition::Function=identity,
+                    progressbar::Bool=false
+                    ) where {T}
+    sol = copy(sol)
+    if progressbar
+        @showprogress for i in 1:run
+            precondition(sol)
+            newsol = getnextsolutionpython(solver, sol)
+            update(sol, newsol)
+        end
+    else
+        for i in 1:run
+            precondition(sol)
+            newsol = getnextsolutionpython(solver, sol)
+            update(sol, newsol)
+        end
     end
-  else
-    for i in 1:run
-      precondition(sol)
-      newsol = getnextsolutionpython(solver, sol)
-      update(sol, newsol)
-    end
-  end
-  sol
+    sol
 end
 
 
