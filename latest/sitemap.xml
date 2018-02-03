@@ -4,7 +4,7 @@
     
     <url>
      <loc>/</loc>
-     <lastmod>2018-01-31</lastmod>
+     <lastmod>2018-02-03</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -13,37 +13,75 @@
         
     <url>
      <loc>/basics/hartreefockbogoliubov/</loc>
-     <lastmod>2018-01-31</lastmod>
+     <lastmod>2018-02-03</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>/basics/momentumspace/</loc>
-     <lastmod>2018-01-31</lastmod>
+     <lastmod>2018-02-03</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>/basics/topology/</loc>
+     <lastmod>2018-02-03</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     
 
     
+        
     <url>
-     <loc>/about/</loc>
-     <lastmod>2018-01-31</lastmod>
+     <loc>/manual/frontpage/</loc>
+     <lastmod>2018-02-03</lastmod>
      <changefreq>daily</changefreq>
     </url>
+        
+    <url>
+     <loc>/manual/lattice/</loc>
+     <lastmod>2018-02-03</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>/manual/hamiltonian/</loc>
+     <lastmod>2018-02-03</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>/manual/hfb/</loc>
+     <lastmod>2018-02-03</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>/manual/linearizedgap/</loc>
+     <lastmod>2018-02-03</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>/manual/topology/</loc>
+     <lastmod>2018-02-03</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
     
 
     
         
     <url>
      <loc>/internals/</loc>
-     <lastmod>2018-01-31</lastmod>
+     <lastmod>2018-02-03</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>/internals/hartreefockbogoliubov/</loc>
-     <lastmod>2018-01-31</lastmod>
+     <lastmod>2018-02-03</lastmod>
      <changefreq>daily</changefreq>
     </url>
         

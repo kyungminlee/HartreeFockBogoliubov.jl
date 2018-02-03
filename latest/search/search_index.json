@@ -56,14 +56,124 @@
             "title": "Momentum Space Formulation"
         }, 
         {
-            "location": "/about/", 
-            "text": "About", 
-            "title": "About"
+            "location": "/basics/topology/", 
+            "text": "Topology\n\n\nTopology blah.\n\n\n\n\nChern Number\n\n\nTKNN Kohmoto Haldane\n\n\n\n\nZ2 Topological Index of a Time-Reversal-Invariant System\n\n\nKane-Mele Fu-Kane Fukui-Hatsugai", 
+            "title": "Topological Invariants"
         }, 
         {
-            "location": "/about/#about", 
+            "location": "/basics/topology/#topology", 
+            "text": "Topology blah.", 
+            "title": "Topology"
+        }, 
+        {
+            "location": "/basics/topology/#chern-number", 
+            "text": "TKNN Kohmoto Haldane", 
+            "title": "Chern Number"
+        }, 
+        {
+            "location": "/basics/topology/#z2-topological-index-of-a-time-reversal-invariant-system", 
+            "text": "Kane-Mele Fu-Kane Fukui-Hatsugai", 
+            "title": "Z2 Topological Index of a Time-Reversal-Invariant System"
+        }, 
+        {
+            "location": "/manual/frontpage/", 
+            "text": "The HartreeFockBogoliubov.jl Manual\n\n\nThis user manual is\n\n\n\n\nContents\n\n\nThe contents are\n\n\n\n\nLattice\n\n\nHamiltonian: Full Interacting Hamiltonian\n\n\nHFB: Hartree-Fock-Bogoliubov\n\n\nLinearizedGap\n\n\nTopology", 
+            "title": "Front Page"
+        }, 
+        {
+            "location": "/manual/frontpage/#the-hartreefockbogoliubovjl-manual", 
+            "text": "This user manual is", 
+            "title": "The HartreeFockBogoliubov.jl Manual"
+        }, 
+        {
+            "location": "/manual/frontpage/#contents", 
+            "text": "The contents are   Lattice  Hamiltonian: Full Interacting Hamiltonian  HFB: Hartree-Fock-Bogoliubov  LinearizedGap  Topology", 
+            "title": "Contents"
+        }, 
+        {
+            "location": "/manual/lattice/", 
+            "text": "Lattice\n\n\n\n\nCarteCoord and FractCoord\n\n\n\n\nUnitCell\n\n\nunitcell = newunitcell([1.0 0.0; 0.0 1.0]; OrbitalType=Tuple{Symbol, Symbol})\naddorbital!(unitcell, (:A, :UP), FractCoord([0,0], [0.0, 0.0]))\naddorbital!(unitcell, (:A, :DN), FractCoord([0,0], [0.0, 0.0]))", 
+            "title": "Lattice"
+        }, 
+        {
+            "location": "/manual/lattice/#lattice", 
             "text": "", 
-            "title": "About"
+            "title": "Lattice"
+        }, 
+        {
+            "location": "/manual/lattice/#cartecoord-and-fractcoord", 
+            "text": "", 
+            "title": "CarteCoord and FractCoord"
+        }, 
+        {
+            "location": "/manual/lattice/#unitcell", 
+            "text": "unitcell = newunitcell([1.0 0.0; 0.0 1.0]; OrbitalType=Tuple{Symbol, Symbol})\naddorbital!(unitcell, (:A, :UP), FractCoord([0,0], [0.0, 0.0]))\naddorbital!(unitcell, (:A, :DN), FractCoord([0,0], [0.0, 0.0]))", 
+            "title": "UnitCell"
+        }, 
+        {
+            "location": "/manual/hamiltonian/", 
+            "text": "Hamiltonian: Full Interacting Hamiltonian\n\n\n\n\nSection\n\n\nSome text.", 
+            "title": "Hamiltonian"
+        }, 
+        {
+            "location": "/manual/hamiltonian/#hamiltonian-full-interacting-hamiltonian", 
+            "text": "", 
+            "title": "Hamiltonian: Full Interacting Hamiltonian"
+        }, 
+        {
+            "location": "/manual/hamiltonian/#section", 
+            "text": "Some text.", 
+            "title": "Section"
+        }, 
+        {
+            "location": "/manual/hfb/", 
+            "text": "HFB: Hartree-Fock-Bogoliubov\n\n\n\n\nHFBComputer\n\n\nHFBComputer\n is blah.\n\n\n\n\nHFBSolver\n\n\nHFBSolver\n is blah.", 
+            "title": "HFB"
+        }, 
+        {
+            "location": "/manual/hfb/#hfb-hartree-fock-bogoliubov", 
+            "text": "", 
+            "title": "HFB: Hartree-Fock-Bogoliubov"
+        }, 
+        {
+            "location": "/manual/hfb/#hfbcomputer", 
+            "text": "HFBComputer  is blah.", 
+            "title": "HFBComputer"
+        }, 
+        {
+            "location": "/manual/hfb/#hfbsolver", 
+            "text": "HFBSolver  is blah.", 
+            "title": "HFBSolver"
+        }, 
+        {
+            "location": "/manual/linearizedgap/", 
+            "text": "LinearizedGap\n\n\nLinearized gap equation. Refer to basics.", 
+            "title": "Linearized Gap Equation"
+        }, 
+        {
+            "location": "/manual/linearizedgap/#linearizedgap", 
+            "text": "Linearized gap equation. Refer to basics.", 
+            "title": "LinearizedGap"
+        }, 
+        {
+            "location": "/manual/topology/", 
+            "text": "Topology\n\n\n\n\nChern\n\n\n\n\nZ2\n\n\nz2index(...)", 
+            "title": "Topology"
+        }, 
+        {
+            "location": "/manual/topology/#topology", 
+            "text": "", 
+            "title": "Topology"
+        }, 
+        {
+            "location": "/manual/topology/#chern", 
+            "text": "", 
+            "title": "Chern"
+        }, 
+        {
+            "location": "/manual/topology/#z2", 
+            "text": "z2index(...)", 
+            "title": "Z2"
         }, 
         {
             "location": "/internals/", 
