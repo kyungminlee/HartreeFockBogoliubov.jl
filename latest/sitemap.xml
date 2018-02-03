@@ -3,7 +3,7 @@
 
     
     <url>
-     <loc>/</loc>
+     <loc>https://kyungminlee.org/HartreeFockBogoliubov.jl//</loc>
      <lastmod>2018-02-03</lastmod>
      <changefreq>daily</changefreq>
     </url>
@@ -12,59 +12,19 @@
     
         
     <url>
-     <loc>/basics/hartreefockbogoliubov/</loc>
+     <loc>https://kyungminlee.org/HartreeFockBogoliubov.jl//basics/hartreefockbogoliubov/</loc>
      <lastmod>2018-02-03</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
-     <loc>/basics/momentumspace/</loc>
+     <loc>https://kyungminlee.org/HartreeFockBogoliubov.jl//basics/momentumspace/</loc>
      <lastmod>2018-02-03</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
-     <loc>/basics/topology/</loc>
-     <lastmod>2018-02-03</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-        
-    
-
-    
-        
-    <url>
-     <loc>/manual/frontpage/</loc>
-     <lastmod>2018-02-03</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-        
-    <url>
-     <loc>/manual/lattice/</loc>
-     <lastmod>2018-02-03</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-        
-    <url>
-     <loc>/manual/hamiltonian/</loc>
-     <lastmod>2018-02-03</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-        
-    <url>
-     <loc>/manual/hfb/</loc>
-     <lastmod>2018-02-03</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-        
-    <url>
-     <loc>/manual/linearizedgap/</loc>
-     <lastmod>2018-02-03</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-        
-    <url>
-     <loc>/manual/topology/</loc>
+     <loc>https://kyungminlee.org/HartreeFockBogoliubov.jl//basics/topology/</loc>
      <lastmod>2018-02-03</lastmod>
      <changefreq>daily</changefreq>
     </url>
@@ -74,13 +34,59 @@
     
         
     <url>
-     <loc>/internals/</loc>
+     <loc>https://kyungminlee.org/HartreeFockBogoliubov.jl//manual/frontpage/</loc>
      <lastmod>2018-02-03</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
-     <loc>/internals/hartreefockbogoliubov/</loc>
+     <loc>https://kyungminlee.org/HartreeFockBogoliubov.jl//manual/install/</loc>
+     <lastmod>2018-02-03</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>https://kyungminlee.org/HartreeFockBogoliubov.jl//manual/lattice/</loc>
+     <lastmod>2018-02-03</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>https://kyungminlee.org/HartreeFockBogoliubov.jl//manual/hamiltonian/</loc>
+     <lastmod>2018-02-03</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>https://kyungminlee.org/HartreeFockBogoliubov.jl//manual/hfb/</loc>
+     <lastmod>2018-02-03</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>https://kyungminlee.org/HartreeFockBogoliubov.jl//manual/linearizedgap/</loc>
+     <lastmod>2018-02-03</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>https://kyungminlee.org/HartreeFockBogoliubov.jl//manual/topology/</loc>
+     <lastmod>2018-02-03</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    
+
+    
+        
+    <url>
+     <loc>https://kyungminlee.org/HartreeFockBogoliubov.jl//internals/</loc>
+     <lastmod>2018-02-03</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>https://kyungminlee.org/HartreeFockBogoliubov.jl//internals/hartreefockbogoliubov/</loc>
      <lastmod>2018-02-03</lastmod>
      <changefreq>daily</changefreq>
     </url>

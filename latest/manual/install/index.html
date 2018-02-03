@@ -110,14 +110,14 @@
 
                         
                             
-<li >
-    <a href="../install/">Installation</a>
+<li class="active">
+    <a href="./">Installation</a>
 </li>
 
                         
                             
-<li class="active">
-    <a href="./">Lattice</a>
+<li >
+    <a href="../lattice/">Lattice</a>
 </li>
 
                         
@@ -179,17 +179,17 @@
                         </a>
                     </li>
                     <li >
-                        <a rel="next" href="../install/">
+                        <a rel="next" href="../frontpage/">
                             <i class="fa fa-arrow-left"></i> Previous
                         </a>
                     </li>
                     <li >
-                        <a rel="prev" href="../hamiltonian/">
+                        <a rel="prev" href="../lattice/">
                             Next <i class="fa fa-arrow-right"></i>
                         </a>
                     </li>
                     <li>
-                        <a href="https://github.com/kyungminlee/HartreeFockBogoliubov.jl/edit/master/docs/manual/lattice.md"><i class="fa fa-github"></i> Edit on GitHub</a>
+                        <a href="https://github.com/kyungminlee/HartreeFockBogoliubov.jl/edit/master/docs/manual/install.md"><i class="fa fa-github"></i> Edit on GitHub</a>
                     </li>
             </ul>
         </div>
@@ -200,24 +200,15 @@
         
         <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
-        <li class="first-level active"><a href="#lattice">Lattice</a></li>
-            <li class="second-level"><a href="#cartecoord-and-fractcoord">CarteCoord and FractCoord</a></li>
-                
-            <li class="second-level"><a href="#unitcell">UnitCell</a></li>
-                
+        <li class="first-level active"><a href="#installation">Installation</a></li>
     </ul>
 </div></div>
         <div class="col-md-9" role="main">
 
-<p><a id='Lattice-1'></a></p>
-<h1 id="lattice">Lattice</h1>
-<p><a id='CarteCoord-and-FractCoord-1'></a></p>
-<h2 id="cartecoord-and-fractcoord">CarteCoord and FractCoord</h2>
-<p><a id='UnitCell-1'></a></p>
-<h2 id="unitcell">UnitCell</h2>
-<div class="codehilite"><pre><span></span><span class="n">unitcell</span> <span class="o">=</span> <span class="n">newunitcell</span><span class="p">([</span><span class="mf">1.0</span> <span class="mf">0.0</span><span class="p">;</span> <span class="mf">0.0</span> <span class="mf">1.0</span><span class="p">];</span> <span class="n">OrbitalType</span><span class="o">=</span><span class="kt">Tuple</span><span class="p">{</span><span class="kt">Symbol</span><span class="p">,</span> <span class="kt">Symbol</span><span class="p">})</span>
-<span class="n">addorbital!</span><span class="p">(</span><span class="n">unitcell</span><span class="p">,</span> <span class="p">(</span><span class="o">:</span><span class="n">A</span><span class="p">,</span> <span class="o">:</span><span class="n">UP</span><span class="p">),</span> <span class="n">FractCoord</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]))</span>
-<span class="n">addorbital!</span><span class="p">(</span><span class="n">unitcell</span><span class="p">,</span> <span class="p">(</span><span class="o">:</span><span class="n">A</span><span class="p">,</span> <span class="o">:</span><span class="n">DN</span><span class="p">),</span> <span class="n">FractCoord</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]))</span>
+<p><a id='Installation-1'></a></p>
+<h1 id="installation">Installation</h1>
+<p>Install HartreeFockBogoliubov.jl by</p>
+<div class="codehilite"><pre><span></span>Pkg.add(...)
 </pre></div></div>
         
     </div>
