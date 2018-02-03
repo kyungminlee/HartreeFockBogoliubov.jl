@@ -6,12 +6,11 @@ using HartreeFockBogoliubov
 import HartreeFockBogoliubov: Spec, Generator, HFB, Topology
 using HartreeFockBogoliubov: HFB
 
-
 function makehaldanemodel(μ ::Float64,
-                                 t ::Float64,
-                                 mAB ::Float64,
-                                 λIsing ::Float64,
-                                 V ::Float64)
+                          t ::Float64,
+                          mAB ::Float64,
+                          λIsing ::Float64,
+                          V ::Float64)
   a0 = [ 0.0, 0.0]
   a1 = [ 0.0, 1.0]
   a2 = [-sqrt(3.0) * 0.5,-0.5]
