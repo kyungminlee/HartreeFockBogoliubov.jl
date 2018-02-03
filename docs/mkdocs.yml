@@ -2,7 +2,7 @@ site_name: HartreeFockBogoliubov.jl
 
 site_description: Hartree-Fock-Bogoliubov Solver
 site_author: kyungminlee
-
+site_url: https://kyungminlee.org/HartreeFockBogoliubov.jl/
 repo_url: https://github.com/kyungminlee/HartreeFockBogoliubov.jl
 
 copyright: Copyright (c) 2016 Kyungmin Lee
@@ -20,6 +20,8 @@ markdown_extensions:
   - extra
   - tables
   - fenced_code
+  - codehilite
+  - def_list
   - mdx_math
 
 docs_dir: 'build'
@@ -32,6 +34,7 @@ pages:
     - Topological Invariants: basics/topology.md
   - Manual:
       - Front Page: manual/frontpage.md
+      - Installation: manual/install.md
       - Lattice: manual/lattice.md
       - Hamiltonian: manual/hamiltonian.md
       - HFB: manual/hfb.md
