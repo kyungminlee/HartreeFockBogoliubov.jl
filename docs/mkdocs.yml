@@ -23,10 +23,17 @@ docs_dir: 'build'
 
 pages:
   - Home: index.md
-  - Basics:
+  - Basic Theory:
     - Hartree-Fock-Bogoliubov Theory: basics/hartreefockbogoliubov.md
     - Momentum Space Formulation: basics/momentumspace.md
-  - About: about.md
+    - Topological Invariants: basics/topology.md
+  - Manual:
+      - Front Page: manual/frontpage.md
+      - Lattice: manual/lattice.md
+      - Hamiltonian: manual/hamiltonian.md
+      - HFB: manual/hfb.md
+      - Linearized Gap Equation: manual/linearizedgap.md
+      - Topology: manual/topology.md
   - Internals:
     - Internals: internals.md
     - More: internals/hartreefockbogoliubov.md
