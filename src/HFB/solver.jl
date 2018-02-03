@@ -27,10 +27,10 @@ end
 
 """
 """
-function HFBSolver(hamiltonian::FullHamiltonian{T},
+function HFBSolver(hamiltonian::FullHamiltonian{O},
                    size ::AbstractVector{<:Integer},
                    temperature ::Real;
-                   tol::Float64=eps(Float64)) where {T}
+                   tol::Float64=eps(Float64)) where {O}
     dim = dimension(hamiltonian.unitcell)
     @assert(length(size) == dim, "dimension and size do not match: size=$(size)")
     @assert(all((x) -> x > 0, size), "size should be positive: size=$(size)")
@@ -41,7 +41,7 @@ function HFBSolver(hamiltonian::FullHamiltonian{T},
     hfbhamiltonian = HFB.HFBHamiltonian(hamiltonian)
     hfbcomputer = HFB.HFBComputer(hfbhamiltonian, temperature)
     greencollectors = HFB.makegreencollectors(hfbcomputer)
-    return HFBSolver{T}(hamiltonian, size, temperature,
+    return HFBSolver{O}(hamiltonian, size, temperature,
                         momentumgrid,
                         hfbhamiltonian, hfbcomputer, greencollectors)
 end
@@ -116,10 +116,11 @@ end
 
 
 function simpleupdate(sol::HFBSolution, newsol ::HFBSolution)
-    @assert(length(sol.ρ) == length(newsol.ρ))
-    @assert(length(sol.t) == length(newsol.t))
-    @assert(length(sol.Γ) == length(newsol.Γ))
-    @assert(length(sol.Δ) == length(newsol.Δ))
+    # Tested anyway by the assignment
+    #@assert(length(sol.ρ) == length(newsol.ρ))
+    #@assert(length(sol.t) == length(newsol.t))
+    #@assert(length(sol.Γ) == length(newsol.Γ))
+    #@assert(length(sol.Δ) == length(newsol.Δ))
     sol.ρ[:] = newsol.ρ[:]
     sol.t[:] = newsol.t[:]
     sol.Γ[:] = newsol.Γ[:]

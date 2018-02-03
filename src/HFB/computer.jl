@@ -660,7 +660,7 @@ function freeze(computer ::HFBComputer{O},
                 Δs ::AbstractVector{<:Number}) where {O}
     norb = numorbital(computer.unitcell)
     unitcell = computer.unitcell
-    nambuunitcell = nambufy(uc)
+    nambuunitcell = nambufy(unitcell)
     hoppings = Hopping[]
     for hop in computer.hoppings
         (hop1, hop2) = nambufy(unitcell, hop)

@@ -1,5 +1,7 @@
 import DataStructures: OrderedDict
 
+export isvalidtimereversalmatrix
+
 """
     isvalidtimereversalmatrix
 
@@ -76,7 +78,7 @@ function timereversalindexgrid(n1 ::Integer, n2 ::Integer)
     for i2 in 0:(2*n2-1), i1 in 0:(2*n1 - 1)
         j1 = mod(-i1, 2*n1)
         j2 = mod(-i2, 2*n2)
-        if i2 == 0 || i2 == n2
+        if i2 == 0
             if (i1, i2) == (j1, j2)
                 pointtypes[[i1,i2]] = (:TRIZERO, [i1,i2])
             elseif haskey(pointtypes, [j1,j2])
@@ -196,7 +198,8 @@ function z2index(uc::UnitCell{O},
             hkgen([0.0, 0.0], hk0)
             hkgen(squareuc.reciprocallatticevectors[:,1], hk1)
             hkgen(squareuc.reciprocallatticevectors[:,2], hk2)
-            all(isapprox(hk0, hk1)) && all(isapprox(hk0, hk2))
+
+            all(isapprox(hk0, hk1; rtol=rtol, atol=atol)) && all(isapprox(hk0, hk2; rtol=rtol, atol=atol))
         end,
         "Hamiltonian at reciprocal lattice vectors should be the same as at 0.")
 
@@ -208,7 +211,8 @@ function z2index(uc::UnitCell{O},
             hkgen(k, hk)
             u, v = eig(Hermitian(0.5 * (hk + hk')))
             for idxpair in selectpairs
-                @assert(isapprox(u[idxpair*2-1], u[idxpair*2]; rtol=rtol, atol=atol))
+                @assert(isapprox(u[idxpair*2-1], u[idxpair*2]; rtol=rtol, atol=atol),
+                        "$idxpair's eigenpair $(u[idxpair*2-1]) and $(u[idxpair*2-1]) should be equal.")
                 v[:, idxpair*2] = timereversal * conj(v[:, idxpair*2-1])    # T = U_T K
             end
             eigenvaluegrid[idx] = u[selectbands]
@@ -238,7 +242,7 @@ function z2index(uc::UnitCell{O},
     for i2 in 0:(n2-1), i1 in 0:(2*n1-1)
         @assert(let
             (t,_) = igrid[[i1,i2]]
-            t == :TRI || t == :POS || t == :NEG || t == :POSINT
+            t == :TRIZERO || t == :POSZERO || t == :NEGZERO || t == :POSINT
         end)
         i1p = mod(i1 + 1, 2*n1)
         i2p = i2 + 1
@@ -254,9 +258,11 @@ function z2index(uc::UnitCell{O},
         i1p = mod(i1 + 1, 2*n1)
 
         @assert(let
-            (t,_) = igrid[[i1,0]]
-            t == :TRI || t == :POS || t == :NEG
-        end)
+                (t,_) = igrid[[i1,0]]
+                t == :TRIZERO || t == :POSZERO || t == :NEGZERO
+            end,
+            "$t has the wrong type"
+            )
 
     ψ1 = eigenvectorgrid[[i1 ,0]]
     ψ2 = eigenvectorgrid[[i1p,0]]
@@ -265,18 +271,23 @@ function z2index(uc::UnitCell{O},
 
     for i1 in 0:(2*n1-1)
         @assert(let
-            (t,_) = igrid[[i1,n2]]
-            t == :TRI || t == :POS || t == :NEG
-        end)
+                (t,_) = igrid[[i1,n2]]
+                t == :TRIHALF || t == :POSHALF || t == :NEGHALF
+            end,
+            "$t has the wrong type"
+            )
         i1p = mod(i1 + 1, 2*n1)
         ψ1 = eigenvectorgrid[[i1 ,n2]]
         ψ2 = eigenvectorgrid[[i1p,n2]]
         A -= angle(det(ψ1' * ψ2))
     end
     z2indexreal = (F-A) / (2π)
-    z2indexint = round(z2indexreal)
-    @assert(abs(z2indexreal - z2indexint) < atol)
-    return mod(z2indexint, 2)
+    z2indexint = round(Int, z2indexreal)
+    if ! ( abs(z2indexreal - z2indexint) < atol )
+        warn("$z2indexreal is not close to integer")
+    end
+    return mod(round(z2indexreal, precision(z2indexreal) ÷ 2, 2), 2)
+    #return mod(z2indexint, 2)
 end
 
 #=
