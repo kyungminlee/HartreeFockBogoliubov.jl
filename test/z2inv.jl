@@ -24,6 +24,8 @@ using HartreeFockBogoliubov
 import HartreeFockBogoliubov: Spec, Generator, HFB, Topology
 using HartreeFockBogoliubov: HFB
 
+
+
 function makekanemelehamiltonian(μ ::Float64,
                                  t ::Float64,
                                  mAB ::Float64,
@@ -83,7 +85,7 @@ function makekanemelehamiltonian(μ ::Float64,
 
   if abs(U) > eps(Float64)
     for orb in [:A, :B]
-      r = orbloc[orb, idx]
+      r = orbloc[orb]
       Spec.addinteraction!(hamspec, Spec.interactionbycarte(unitcell, U, (orb, :UP), (orb, :DN), r, r))
     end
   end
@@ -135,30 +137,124 @@ function main1()
         #@show timereversalmatrix
 
         z2index = Topology.z2invariant(
-        kmh1.unitcell,
-        kmh1.hoppings,
-        timereversalmatrix,
-        8,
-        8,
-        1:1)
+                kmh1.unitcell,
+                kmh1.hoppings,
+                timereversalmatrix,
+                8,
+                8,
+                1:1)
         @printf("%f\t%d\n", mAB, z2index)
     end
 end
 
 
 function main2()
-    kmh1 = makekanemelehamiltonian(0.0, 1.0, 0.0, 0.2, 0.0, -3.0)
+    kmh1 = makekanemelehamiltonian(0.0, 1.0, 0.0, 0.4, -1.0, 0.0)
     unitcell = kmh1.unitcell
     nambuunitcell = HFB.nambufy(unitcell)
 
     timereversalmatrix = spinhalftimereversal(unitcell, 2)
     nambutimereversalmatrix = spinhalftimereversal(nambuunitcell, 2)
 
+    #@show isvalidtimerversalmatrix(timereversalmatrix)
+    #@show isvalidtimerversalmatrix(nambutimereversalmatrix)
+
     @show unitcell
-    @show timereversalmatrix
+    display(full(timereversalmatrix))
+    println()
     @show nambuunitcell
-    @show nambutimereversalmatrix
+    display(full(nambutimereversalmatrix))
+    println()
+
+
+    #hfb_computer = HFBComputer(hfb_kmh1, 0.0)
+    hfb_solver = HFBSolver(kmh1, [12, 12], 0)
+
+    hfb_solution = newhfbsolution(hfb_solver.hfbcomputer)
+    hfb_solution.Γ[:] = 0.0
+    hfb_solution.Δ[:] = 0.3
+
+    function nogammaupdate(sol::HFBSolution, newsol::HFBSolution)
+        sol.ρ[:] = newsol.ρ[:]
+        sol.t[:] = newsol.t[:]
+        sol.Γ[:] = 0
+        sol.Δ[:] = newsol.Δ[:]
+        sol
+    end
+
+    hfb_solution = loop(hfb_solver,
+                        hfb_solution,
+                        10;
+                        update=nogammaupdate,
+                        progressbar=true
+                       )
+    hfb_solution.Γ[:] = 0.0
+    hfb_solution.Δ[:] = 1.0
+
+    (nambuunitcell, nambuhoppings) = HFB.freeze(hfb_solver.hfbcomputer, hfb_solution.Γ, hfb_solution.Δ)
+    @show numorbital(unitcell)
+    @show numorbital(nambuunitcell)
+    @show nambuunitcell
+    @show nambuhoppings
+    @show Topology.z2index(nambuunitcell, nambuhoppings, nambutimereversalmatrix, 12, 12, 1:2)
+    @show Topology.z2index(unitcell, kmh1.hoppings, timereversalmatrix, 12, 12, 1:1)
 end
+
+
+function testpwave()
+    for μ in linspace(-6, 0, 121)
+        t = 1.0
+        #μ = 0.3
+        V = 1.0
+        unitcell = newunitcell([[1.0, 0.0] [0.0, 1.0]]; OrbitalType=Tuple{Symbol, Symbol})
+        for spin in [:UP, :DN]
+            addorbital!(unitcell, (:A, spin), carte2fract(unitcell, [0.0, 0.0]))
+        end
+        hamspec = Spec.FullHamiltonian(unitcell)
+        for sp in [:UP, :DN]
+            Spec.addhopping!(hamspec, Spec.hoppingbycarte(unitcell, -μ, (:A, sp), [0.0, 0.0]))
+            Spec.addhopping!(hamspec, Spec.hoppingbycarte(unitcell, -t, (:A, sp), (:A, sp), [0.0, 0.0], [ 1.0, 0.0]))
+            #Spec.addhopping!(hamspec, Spec.hoppingbycarte(unitcell, -t, (:A, sp), (:A, sp), [0.0, 0.0], [-1.0, 0.0]))
+            Spec.addhopping!(hamspec, Spec.hoppingbycarte(unitcell, -t, (:A, sp), (:A, sp), [0.0, 0.0], [ 0.0, 1.0]))
+            #Spec.addhopping!(hamspec, Spec.hoppingbycarte(unitcell, -t, (:A, sp), (:A, sp), [0.0, 0.0], [ 0.0,-1.0]))
+        end
+        Spec.addinteraction!(hamspec, Spec.interactionbycarte(unitcell, V, (:A, :UP), (:A, :DN), [0.0, 0.0], [ 1.0, 0.0]))
+        Spec.addinteraction!(hamspec, Spec.interactionbycarte(unitcell, V, (:A, :UP), (:A, :DN), [0.0, 0.0], [-1.0, 0.0]))
+        Spec.addinteraction!(hamspec, Spec.interactionbycarte(unitcell, V, (:A, :UP), (:A, :DN), [0.0, 0.0], [ 0.0, 1.0]))
+        Spec.addinteraction!(hamspec, Spec.interactionbycarte(unitcell, V, (:A, :UP), (:A, :DN), [0.0, 0.0], [ 0.0,-1.0]))
+
+        hfbsolver = HFB.HFBSolver(hamspec, [16, 16], 0.0)
+        #@show hfbsolver
+        hfbsolution = newhfbsolution(hfbsolver.hfbcomputer)
+        hfbsolution.Γ[:] = 0.0
+        hfbsolution.Δ[:] = 0.0
+
+        #=
+        for (idx, (isdiag, i, j, r, _)) in enumerate(hfbsolver.hfbcomputer.Δ_registry)
+            @show getorbital(unitcell, i)
+            @show getorbital(unitcell, j)
+            @show r
+            println()
+            hfbsolution.Δ[idx]
+        end
+        =#
+
+        if true
+            Δ0 = 0.1
+            hfbsolution.Δ[1] =   Δ0
+            hfbsolution.Δ[2] =  -Δ0
+            hfbsolution.Δ[3] =   Δ0 * im
+            hfbsolution.Δ[4] =  -Δ0 * im
+        end
+
+        (nambuunitcell, nambuhoppings) = HFB.freeze(hfbsolver.hfbcomputer, hfbsolution.Γ, hfbsolution.Δ)
+        nambutimereversalmatrix = spinhalftimereversal(nambuunitcell, 2)
+        #@show hfbsolver.hfbcomputer.Δ_registry
+        z = Topology.z2index(nambuunitcell, nambuhoppings, nambutimereversalmatrix, 64, 64, 1:1)
+        println("$μ\t$(round(z))")
+    end
+end
+
 
 #=
 function main2()
@@ -239,4 +335,6 @@ function main2()
 end
 =#
 
-main2()
+#main2()
+
+testpwave()
