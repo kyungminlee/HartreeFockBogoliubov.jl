@@ -213,8 +213,41 @@
 <h1 id="lattice">Lattice</h1>
 <p><a id='CarteCoord-and-FractCoord-1'></a></p>
 <h2 id="cartecoord-and-fractcoord">CarteCoord and FractCoord</h2>
+<p><code>CarteCoord</code> is simply an alias for <code>Vector{Float64}</code>, which represents the coordinates in the real-space. <code>FractCoord</code> on the other hand, represents a location in the units of the lattice vectors. For example, <code>fc</code> in the following code represents a location in two-dimensional space whose <code>CarteCoord</code> is $2.1 \mathbf{a}_1 + 3.2 \mathbf{a}_2$ where $\mathbf{a}_1$ and $\mathbf{a}_2$ are lattice vectors.</p>
+<div class="codehilite"><pre><span></span>fc = FractCoord([2, 3], [0.1, 0.2])
+</pre></div>
+
+
+<p><code>FractCoord</code> can also be created in the following ways</p>
+<div class="codehilite"><pre><span></span>fc2 = FractCoord([2.3, 3.2])
+fc3 = FractCoord(2)
+</pre></div>
+
+
+<p><code>fc2</code> is the same as <code>fc</code>, and <code>fc3</code> represents origin in two dimensions.</p>
+<p><code>FractCoord</code> supports the following arithmetic operations</p>
+<div class="codehilite"><pre><span></span><span class="n">fc</span> <span class="o">=</span> <span class="n">FractCoord</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">])</span>
+
+<span class="n">fc</span> <span class="o">+</span> <span class="n">fc</span>
+<span class="n">fc</span> <span class="o">-</span> <span class="n">fc</span>
+<span class="n">fc</span> <span class="o">+</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">fc</span> <span class="o">-</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+</pre></div>
+
+
+<p>Conversion between <code>CarteCoord</code> and <code>FractCoord</code>:</p>
+<div class="codehilite"><pre><span></span><span class="n">latticevectors</span> <span class="o">=</span> <span class="p">[</span><span class="mf">2.0</span> <span class="mf">0.0</span><span class="p">;</span> <span class="mf">0.0</span> <span class="mf">1.0</span><span class="p">]</span>
+
+<span class="n">fc</span> <span class="o">=</span> <span class="n">FractCoord</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">])</span>
+<span class="n">cc</span> <span class="o">=</span> <span class="n">fract2carte</span><span class="p">(</span><span class="n">latticevectors</span><span class="p">,</span> <span class="n">fc</span><span class="p">)</span>
+<span class="n">fc2</span> <span class="o">=</span> <span class="n">carte2fract</span><span class="p">(</span><span class="n">latticevectors</span><span class="p">,</span> <span class="n">cc</span><span class="p">)</span>
+</pre></div>
+
+
+<p><code>cc</code> is <code>[4.2, 3.2]</code> and <code>fc ≈ fc2</code> is <code>true</code>.</p>
 <p><a id='UnitCell-1'></a></p>
 <h2 id="unitcell">UnitCell</h2>
+<p>A <code>UnitCell</code> is defined by lattice vectors and orbitals (orbitals here contain all possible degrees of freedom, such as spin, physical "orbital", sublattice, etc.).</p>
 <div class="codehilite"><pre><span></span><span class="n">unitcell</span> <span class="o">=</span> <span class="n">newunitcell</span><span class="p">([</span><span class="mf">1.0</span> <span class="mf">0.0</span><span class="p">;</span> <span class="mf">0.0</span> <span class="mf">1.0</span><span class="p">];</span> <span class="n">OrbitalType</span><span class="o">=</span><span class="kt">Tuple</span><span class="p">{</span><span class="kt">Symbol</span><span class="p">,</span> <span class="kt">Symbol</span><span class="p">})</span>
 <span class="n">addorbital!</span><span class="p">(</span><span class="n">unitcell</span><span class="p">,</span> <span class="p">(</span><span class="o">:</span><span class="n">A</span><span class="p">,</span> <span class="o">:</span><span class="n">UP</span><span class="p">),</span> <span class="n">FractCoord</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]))</span>
 <span class="n">addorbital!</span><span class="p">(</span><span class="n">unitcell</span><span class="p">,</span> <span class="p">(</span><span class="o">:</span><span class="n">A</span><span class="p">,</span> <span class="o">:</span><span class="n">DN</span><span class="p">),</span> <span class="n">FractCoord</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]))</span>

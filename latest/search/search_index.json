@@ -92,17 +92,17 @@
         }, 
         {
             "location": "/manual/install/", 
-            "text": "Installation\n\n\nInstall HartreeFockBogoliubov.jl by\n\n\nPkg.add(...)", 
+            "text": "Installation\n\n\nHartreeFockBogoliubov.jl\n is not a registered package. Install it by\n\n\nPkg.clone(\nhttps://github.com/kyungminlee/HartreeFockBogoliubov.jl.git\n)", 
             "title": "Installation"
         }, 
         {
             "location": "/manual/install/#installation", 
-            "text": "Install HartreeFockBogoliubov.jl by  Pkg.add(...)", 
+            "text": "HartreeFockBogoliubov.jl  is not a registered package. Install it by  Pkg.clone( https://github.com/kyungminlee/HartreeFockBogoliubov.jl.git )", 
             "title": "Installation"
         }, 
         {
             "location": "/manual/lattice/", 
-            "text": "Lattice\n\n\n\n\nCarteCoord and FractCoord\n\n\n\n\nUnitCell\n\n\nunitcell\n \n=\n \nnewunitcell\n([\n1.0\n \n0.0\n;\n \n0.0\n \n1.0\n];\n \nOrbitalType\n=\nTuple\n{\nSymbol\n,\n \nSymbol\n})\n\n\naddorbital!\n(\nunitcell\n,\n \n(\n:\nA\n,\n \n:\nUP\n),\n \nFractCoord\n([\n0\n,\n0\n],\n \n[\n0.0\n,\n \n0.0\n]))\n\n\naddorbital!\n(\nunitcell\n,\n \n(\n:\nA\n,\n \n:\nDN\n),\n \nFractCoord\n([\n0\n,\n0\n],\n \n[\n0.0\n,\n \n0.0\n]))", 
+            "text": "Lattice\n\n\n\n\nCarteCoord and FractCoord\n\n\nCarteCoord\n is simply an alias for \nVector{Float64}\n, which represents the coordinates in the real-space. \nFractCoord\n on the other hand, represents a location in the units of the lattice vectors. For example, \nfc\n in the following code represents a location in two-dimensional space whose \nCarteCoord\n is $2.1 \\mathbf{a}_1 + 3.2 \\mathbf{a}_2$ where $\\mathbf{a}_1$ and $\\mathbf{a}_2$ are lattice vectors.\n\n\nfc = FractCoord([2, 3], [0.1, 0.2])\n\n\n\n\n\nFractCoord\n can also be created in the following ways\n\n\nfc2 = FractCoord([2.3, 3.2])\nfc3 = FractCoord(2)\n\n\n\n\n\nfc2\n is the same as \nfc\n, and \nfc3\n represents origin in two dimensions.\n\n\nFractCoord\n supports the following arithmetic operations\n\n\nfc\n \n=\n \nFractCoord\n([\n2\n,\n \n3\n],\n \n[\n0.1\n,\n \n0.2\n])\n\n\n\nfc\n \n+\n \nfc\n\n\nfc\n \n-\n \nfc\n\n\nfc\n \n+\n \n[\n1\n,\n \n0\n]\n\n\nfc\n \n-\n \n[\n1\n,\n \n0\n]\n\n\n\n\n\n\nConversion between \nCarteCoord\n and \nFractCoord\n:\n\n\nlatticevectors\n \n=\n \n[\n2.0\n \n0.0\n;\n \n0.0\n \n1.0\n]\n\n\n\nfc\n \n=\n \nFractCoord\n([\n2\n,\n \n3\n],\n \n[\n0.1\n,\n \n0.2\n])\n\n\ncc\n \n=\n \nfract2carte\n(\nlatticevectors\n,\n \nfc\n)\n\n\nfc2\n \n=\n \ncarte2fract\n(\nlatticevectors\n,\n \ncc\n)\n\n\n\n\n\n\ncc\n is \n[4.2, 3.2]\n and \nfc \u2248 fc2\n is \ntrue\n.\n\n\n\n\nUnitCell\n\n\nA \nUnitCell\n is defined by lattice vectors and orbitals (orbitals here contain all possible degrees of freedom, such as spin, physical \"orbital\", sublattice, etc.).\n\n\nunitcell\n \n=\n \nnewunitcell\n([\n1.0\n \n0.0\n;\n \n0.0\n \n1.0\n];\n \nOrbitalType\n=\nTuple\n{\nSymbol\n,\n \nSymbol\n})\n\n\naddorbital!\n(\nunitcell\n,\n \n(\n:\nA\n,\n \n:\nUP\n),\n \nFractCoord\n([\n0\n,\n0\n],\n \n[\n0.0\n,\n \n0.0\n]))\n\n\naddorbital!\n(\nunitcell\n,\n \n(\n:\nA\n,\n \n:\nDN\n),\n \nFractCoord\n([\n0\n,\n0\n],\n \n[\n0.0\n,\n \n0.0\n]))", 
             "title": "Lattice"
         }, 
         {
@@ -112,12 +112,12 @@
         }, 
         {
             "location": "/manual/lattice/#cartecoord-and-fractcoord", 
-            "text": "", 
+            "text": "CarteCoord  is simply an alias for  Vector{Float64} , which represents the coordinates in the real-space.  FractCoord  on the other hand, represents a location in the units of the lattice vectors. For example,  fc  in the following code represents a location in two-dimensional space whose  CarteCoord  is $2.1 \\mathbf{a}_1 + 3.2 \\mathbf{a}_2$ where $\\mathbf{a}_1$ and $\\mathbf{a}_2$ are lattice vectors.  fc = FractCoord([2, 3], [0.1, 0.2])  FractCoord  can also be created in the following ways  fc2 = FractCoord([2.3, 3.2])\nfc3 = FractCoord(2)  fc2  is the same as  fc , and  fc3  represents origin in two dimensions.  FractCoord  supports the following arithmetic operations  fc   =   FractCoord ([ 2 ,   3 ],   [ 0.1 ,   0.2 ])  fc   +   fc  fc   -   fc  fc   +   [ 1 ,   0 ]  fc   -   [ 1 ,   0 ]   Conversion between  CarteCoord  and  FractCoord :  latticevectors   =   [ 2.0   0.0 ;   0.0   1.0 ]  fc   =   FractCoord ([ 2 ,   3 ],   [ 0.1 ,   0.2 ])  cc   =   fract2carte ( latticevectors ,   fc )  fc2   =   carte2fract ( latticevectors ,   cc )   cc  is  [4.2, 3.2]  and  fc \u2248 fc2  is  true .", 
             "title": "CarteCoord and FractCoord"
         }, 
         {
             "location": "/manual/lattice/#unitcell", 
-            "text": "unitcell   =   newunitcell ([ 1.0   0.0 ;   0.0   1.0 ];   OrbitalType = Tuple { Symbol ,   Symbol })  addorbital! ( unitcell ,   ( : A ,   : UP ),   FractCoord ([ 0 , 0 ],   [ 0.0 ,   0.0 ]))  addorbital! ( unitcell ,   ( : A ,   : DN ),   FractCoord ([ 0 , 0 ],   [ 0.0 ,   0.0 ]))", 
+            "text": "A  UnitCell  is defined by lattice vectors and orbitals (orbitals here contain all possible degrees of freedom, such as spin, physical \"orbital\", sublattice, etc.).  unitcell   =   newunitcell ([ 1.0   0.0 ;   0.0   1.0 ];   OrbitalType = Tuple { Symbol ,   Symbol })  addorbital! ( unitcell ,   ( : A ,   : UP ),   FractCoord ([ 0 , 0 ],   [ 0.0 ,   0.0 ]))  addorbital! ( unitcell ,   ( : A ,   : DN ),   FractCoord ([ 0 , 0 ],   [ 0.0 ,   0.0 ]))", 
             "title": "UnitCell"
         }, 
         {
@@ -137,7 +137,7 @@
         }, 
         {
             "location": "/manual/hfb/", 
-            "text": "HFB: Hartree-Fock-Bogoliubov\n\n\n\n\nHFBComputer\n\n\nHFBComputer\n is blah.\n\n\n\n\nHFBSolver\n\n\nHFBSolver\n is blah.", 
+            "text": "HFB: Hartree-Fock-Bogoliubov\n\n\n\n\nHFBComputer\n\n\nHFBComputer\n is a struct which is used to calculate the Hartree-Fock-Bogoliubov Hamiltonian from mean-field parameters, and the parameters from the eigenstates of Hartree-Fock-Bogoliubov Hamiltonian.\n\n\nmutable\n \nstruct\n \nHFBComputer\n{\nO\n}\n\n    \nunitcell\n \n::\nUnitCell\n{\nO\n}\n\n    \nhoppings\n \n::\nVector\n{\nSpec\n.\nHopping\n}\n\n    \ntemperature\n \n::\nFloat64\n\n\n    \nfermi\n \n::\nFunction\n\n    \n\u03c1_registry\n \n::\nVector\n{\nCollectRow\n}\n\n    \nt_registry\n \n::\nVector\n{\nCollectRow\n}\n\n    \n\u0393_registry\n \n::\nVector\n{\nDeployRow\n}\n\n    \n\u0394_registry\n \n::\nVector\n{\nDeployRow\n}\n\n\nend\n\n\n\n\n\n\nThe type \nCollectRow\n keeps record of the \"observables\" that need to be measured in order to calculate the mean-field parameters. They are the \u03c1(i,j) and t(i,j) as defined by Goodman.\n\n\nconst\n \nCollectRow\n \n=\n \nTuple\n{\nBool\n,\n \nInt64\n,\n \nInt64\n,\n \nVector\n{\nFloat64\n}}\n\n\n\n\n\n\nDeployRow\n contains necessary information to calculate \u0393(i,j) and \u0394(i,j), using the measured \u03c1(i,j) and t(i,j)\n\n\nconst\n \nDeployRow\n \n=\n \nTuple\n{\nBool\n,\n \nInt64\n,\n \nInt64\n,\n \nVector\n{\nFloat64\n},\n \nVector\n{\nTuple\n{\nInt64\n,\n \nComplex128\n,\n \nBool\n}}}\n\n\n\n\n\n\n\n\nHFBSolver\n\n\nHFBSolver\n is blah.\n\n\nmutable\n \nstruct\n \nHFBSolver\n{\nO\n}\n\n    \n# Originals\n\n    \nhamiltonian\n \n::\nFullHamiltonian\n{\nO\n}\n\n    \nsize\n \n::\nVector\n{\nInt64\n}\n\n    \ntemperature\n \n::\nFloat64\n\n\n    \n# Derivatives\n\n    \nmomentumgrid\n \n::\nArray\n{\nVector\n{\nFloat64\n}}\n\n    \nhfbhamiltonian\n \n::\nHFBHamiltonian\n{\nO\n}\n\n    \nhfbcomputer\n \n::\nHFBComputer\n{\nO\n}\n\n    \ngreencollectors\n \n::\nFunction\n\n\nend\n\n\n\n\n\n\nHFBSolver contains:\n\n\n\n\nThe full interacting Hamiltonian,\n\n\nSize of the system (i.e. number of k-points in the Brillouin zone)\n\n\nTemperature (needed to calculate the \u03c1 and t)\n\n\n\n\nAnd using these properties, BLAH.\n\n\n\n\nUsing HFBSolver to Find Self-Consistent Solution\n\n\nloop\n(\nsolver\n,\n \nsolution\n,\n \n100\n)", 
             "title": "HFB"
         }, 
         {
@@ -147,13 +147,18 @@
         }, 
         {
             "location": "/manual/hfb/#hfbcomputer", 
-            "text": "HFBComputer  is blah.", 
+            "text": "HFBComputer  is a struct which is used to calculate the Hartree-Fock-Bogoliubov Hamiltonian from mean-field parameters, and the parameters from the eigenstates of Hartree-Fock-Bogoliubov Hamiltonian.  mutable   struct   HFBComputer { O } \n     unitcell   :: UnitCell { O } \n     hoppings   :: Vector { Spec . Hopping } \n     temperature   :: Float64 \n\n     fermi   :: Function \n     \u03c1_registry   :: Vector { CollectRow } \n     t_registry   :: Vector { CollectRow } \n     \u0393_registry   :: Vector { DeployRow } \n     \u0394_registry   :: Vector { DeployRow }  end   The type  CollectRow  keeps record of the \"observables\" that need to be measured in order to calculate the mean-field parameters. They are the \u03c1(i,j) and t(i,j) as defined by Goodman.  const   CollectRow   =   Tuple { Bool ,   Int64 ,   Int64 ,   Vector { Float64 }}   DeployRow  contains necessary information to calculate \u0393(i,j) and \u0394(i,j), using the measured \u03c1(i,j) and t(i,j)  const   DeployRow   =   Tuple { Bool ,   Int64 ,   Int64 ,   Vector { Float64 },   Vector { Tuple { Int64 ,   Complex128 ,   Bool }}}", 
             "title": "HFBComputer"
         }, 
         {
             "location": "/manual/hfb/#hfbsolver", 
-            "text": "HFBSolver  is blah.", 
+            "text": "HFBSolver  is blah.  mutable   struct   HFBSolver { O } \n     # Originals \n     hamiltonian   :: FullHamiltonian { O } \n     size   :: Vector { Int64 } \n     temperature   :: Float64 \n\n     # Derivatives \n     momentumgrid   :: Array { Vector { Float64 }} \n     hfbhamiltonian   :: HFBHamiltonian { O } \n     hfbcomputer   :: HFBComputer { O } \n     greencollectors   :: Function  end   HFBSolver contains:   The full interacting Hamiltonian,  Size of the system (i.e. number of k-points in the Brillouin zone)  Temperature (needed to calculate the \u03c1 and t)   And using these properties, BLAH.", 
             "title": "HFBSolver"
+        }, 
+        {
+            "location": "/manual/hfb/#using-hfbsolver-to-find-self-consistent-solution", 
+            "text": "loop ( solver ,   solution ,   100 )", 
+            "title": "Using HFBSolver to Find Self-Consistent Solution"
         }, 
         {
             "location": "/manual/linearizedgap/", 
@@ -167,7 +172,7 @@
         }, 
         {
             "location": "/manual/topology/", 
-            "text": "Topology\n\n\n\n\nChern\n\n\n\n\nZ2\n\n\nz2index\n(\n...\n)", 
+            "text": "Topology\n\n\n\n\nChern\n\n\n\n\nZ2\n\n\nZ2 index of time-reversal invariant topological insulator/superconductor.\n\n\nz2index\n(\n...\n)", 
             "title": "Topology"
         }, 
         {
@@ -182,7 +187,7 @@
         }, 
         {
             "location": "/manual/topology/#z2", 
-            "text": "z2index ( ... )", 
+            "text": "Z2 index of time-reversal invariant topological insulator/superconductor.  z2index ( ... )", 
             "title": "Z2"
         }, 
         {
