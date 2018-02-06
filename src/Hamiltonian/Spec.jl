@@ -498,4 +498,49 @@ function addinteraction!(hamiltonian ::FullHamiltonian{O},
     end
 end
 
+
+import Base:isless
+
+isless(hop1 ::HoppingDiagonal, hop2::HoppingOffdiagonal) = true
+isless(hop1 ::HoppingOffdiagonal, hop2::HoppingDiagonal) = false
+
+function isless(hop1 ::HoppingDiagonal, hop2::HoppingOffdiagonal)
+
+end
+
+function simplify(hamiltonian::FullHamiltonian{O}) where {O}
+
+    hopdiadict = Dict{Int64, Float64}()
+    hopoffdict = Dict{Tuple{Int64, Int64, Vector{Int64}}, Complex128}()
+
+    for hop in hoppings
+        if isa(newhop, HoppingDiagonal)
+            k = hop.i
+            if haskey(hopdiadict, k)
+                hopdiadict[k].amplitude += hop.amplitude
+            else
+                hopdiadict[k] = hop
+            end
+        else
+            k = (hop.i, hop.j, hop.Rj - hop.Ri)
+            if haskey(hopoffdict, k)
+                hopoffdict[k].amplitude += hop.amplitude
+            else
+                hopoffdict[k] = hop
+            end
+        end
+    end
+
+    # TODO
+    error("unimplemented")
+
+
+    #newhamiltonian = FullHamiltonian{O}(hamiltonian.unitcell)
+    #for hop in hamiltonian.hoppings
+    #    addhopping!
+    #end
+
+
+end
+
 end # Spec
