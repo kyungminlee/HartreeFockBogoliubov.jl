@@ -1,7 +1,7 @@
 # Installation
 
-Install HartreeFockBogoliubov.jl by
+`HartreeFockBogoliubov.jl` is not a registered package. Install it by
 
 ```
-Pkg.add(...)
+Pkg.clone("https://github.com/kyungminlee/HartreeFockBogoliubov.jl.git")
 ```
