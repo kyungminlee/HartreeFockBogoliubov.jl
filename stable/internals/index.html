@@ -1,33 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        
-        <meta name="author" content="kyungminlee">
-        
-        <link rel="shortcut icon" href="../img/favicon.ico">
-        <title>Internals - HartreeFockBogoliubov.jl</title>
-        <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
-        <link href="../css/font-awesome-4.5.0.css" rel="stylesheet">
-        <link href="../css/base.css" rel="stylesheet">
-        <link rel="stylesheet" href="../css/highlight.css">
-        <link href="../assets/Documenter.css" rel="stylesheet">
-        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!--[if lt IE 9]>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">   
+    <link rel="shortcut icon" href="../img/favicon.ico">
+
+    <title></title>
+
+    <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/font-hack/2.018/css/hack.min.css">
+    <link href='//fonts.googleapis.com/css?family=PT+Sans:400,400italic,700,700italic&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,600,700&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    <link href="../css/base.css" rel="stylesheet">
+    <link href="../css/cinder.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/highlight.css">
+
+
+    <link href="../assets/Documenter.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
             <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
             <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
         <![endif]-->
 
-        <script src="../js/jquery-1.10.2.min.js"></script>
-        <script src="../js/bootstrap-3.0.3.min.js"></script>
-        <script src="../js/highlight.pack.js"></script> 
-    </head>
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.5.18/webfont.js"></script>
+    <script>
+    WebFont.load({
+        google: {
+            families: ['Open Sans', 'PT Sans']
+        }
+    });
+    </script>
 
-    <body>
+    
+</head>
 
-        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+<body>
+
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
     <div class="container">
 
         <!-- Collapsed navigation -->
@@ -39,6 +53,10 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
+            
+
+            <!-- Main title -->
+
             <a class="navbar-brand" href="..">HartreeFockBogoliubov.jl</a>
         </div>
 
@@ -46,48 +64,122 @@
         <div class="navbar-collapse collapse">
                 <!-- Main navigation -->
                 <ul class="nav navbar-nav">
+                
+                
                     <li >
                         <a href="..">Home</a>
                     </li>
+                
+                
+                
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Basics <b class="caret"></b></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Basic Theory <b class="caret"></b></a>
                         <ul class="dropdown-menu">
+                        
                             
 <li >
     <a href="../basics/hartreefockbogoliubov/">Hartree-Fock-Bogoliubov Theory</a>
 </li>
+
+                        
                             
 <li >
     <a href="../basics/momentumspace/">Momentum Space Formulation</a>
 </li>
+
+                        
+                            
+<li >
+    <a href="../basics/topology/">Topological Invariants</a>
+</li>
+
+                        
                         </ul>
                     </li>
-                    <li >
-                        <a href="../about/">About</a>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Manual <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../manual/frontpage/">Front Page</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../manual/install/">Installation</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../manual/lattice/">Lattice</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../manual/hamiltonian/">Hamiltonian</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../manual/hfb/">HFB</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../manual/linearizedgap/">Linearized Gap Equation</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../manual/topology/">Topology</a>
+</li>
+
+                        
+                        </ul>
                     </li>
+                
+                
+                
                     <li class="dropdown active">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Internals <b class="caret"></b></a>
                         <ul class="dropdown-menu">
+                        
                             
 <li class="active">
     <a href="./">Internals</a>
 </li>
+
+                        
                             
 <li >
     <a href="hartreefockbogoliubov/">More</a>
 </li>
+
+                        
                         </ul>
                     </li>
+                
+                
                 </ul>
 
             <ul class="nav navbar-nav navbar-right">
-                <li>
-                    <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
-                        <i class="fa fa-search"></i> Search
-                    </a>
-                </li>
+                    <li>
+                        <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                            <i class="fa fa-search"></i> Search
+                        </a>
+                    </li>
                     <li >
-                        <a rel="next" href="../about/">
+                        <a rel="next" href="../manual/topology/">
                             <i class="fa fa-arrow-left"></i> Previous
                         </a>
                     </li>
@@ -104,15 +196,18 @@
     </div>
 </div>
 
-        <div class="container">
-                <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <div class="container">
+        
+        <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
-        <li class="main active"><a href="#internal-documentation">Internal Documentation</a></li>
-            <li><a href="#contents">Contents</a></li>
-            <li><a href="#index">Index</a></li>
+        <li class="first-level active"><a href="#internal-documentation">Internal Documentation</a></li>
+            <li class="second-level"><a href="#contents">Contents</a></li>
+                
+            <li class="second-level"><a href="#index">Index</a></li>
+                
     </ul>
 </div></div>
-                <div class="col-md-9" role="main">
+        <div class="col-md-9" role="main">
 
 <p><a id='Internal-Documentation-1'></a></p>
 <h1 id="internal-documentation">Internal Documentation</h1>
@@ -137,27 +232,27 @@
 <li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.Spec.Interaction"><code>HartreeFockBogoliubov.Spec.Interaction</code></a></li>
 <li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.CollectRow"><code>HartreeFockBogoliubov.HFB.CollectRow</code></a></li>
 <li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.DeployRow"><code>HartreeFockBogoliubov.HFB.DeployRow</code></a></li>
-<li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.HFBComputer"><code>HartreeFockBogoliubov.HFB.HFBComputer</code></a></li>
 <li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.HFBComputer-Union{Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O},AbstractArray{Union{HartreeFockBogoliubov.Spec.HoppingDiagonal, HartreeFockBogoliubov.Spec.HoppingOffdiagonal},1},Real}, Tuple{O}} where O"><code>HartreeFockBogoliubov.HFB.HFBComputer</code></a></li>
+<li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.HFBComputer"><code>HartreeFockBogoliubov.HFB.HFBComputer</code></a></li>
+<li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.HFBHamiltonian-Union{Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O},AbstractArray{Union{HartreeFockBogoliubov.Spec.HoppingDiagonal, HartreeFockBogoliubov.Spec.HoppingOffdiagonal},1},AbstractArray{HartreeFockBogoliubov.HFB.HoppingMeanField,1},AbstractArray{HartreeFockBogoliubov.HFB.PairingMeanField,1}}, Tuple{O}} where O"><code>HartreeFockBogoliubov.HFB.HFBHamiltonian</code></a></li>
 <li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.HFBHamiltonian-Union{Tuple{HartreeFockBogoliubov.Spec.FullHamiltonian{O}}, Tuple{O}} where O"><code>HartreeFockBogoliubov.HFB.HFBHamiltonian</code></a></li>
 <li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.HFBHamiltonian"><code>HartreeFockBogoliubov.HFB.HFBHamiltonian</code></a></li>
-<li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.HFBHamiltonian-Union{Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O},AbstractArray{Union{HartreeFockBogoliubov.Spec.HoppingDiagonal, HartreeFockBogoliubov.Spec.HoppingOffdiagonal},1},AbstractArray{HartreeFockBogoliubov.HFB.HoppingMeanField,1},AbstractArray{HartreeFockBogoliubov.HFB.PairingMeanField,1}}, Tuple{O}} where O"><code>HartreeFockBogoliubov.HFB.HFBHamiltonian</code></a></li>
-<li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.HFBSolver-Union{Tuple{HartreeFockBogoliubov.Spec.FullHamiltonian{T},AbstractArray{#s20,1} where #s20&lt;:Integer,Real}, Tuple{T}} where T"><code>HartreeFockBogoliubov.HFB.HFBSolver</code></a></li>
+<li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.HFBSolver-Union{Tuple{HartreeFockBogoliubov.Spec.FullHamiltonian{O},AbstractArray{#s20,1} where #s20&lt;:Integer,Real}, Tuple{O}} where O"><code>HartreeFockBogoliubov.HFB.HFBSolver</code></a></li>
 <li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.HFBSolver"><code>HartreeFockBogoliubov.HFB.HFBSolver</code></a></li>
 <li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.HoppingMeanField"><code>HartreeFockBogoliubov.HFB.HoppingMeanField</code></a></li>
 <li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.PairingMeanField"><code>HartreeFockBogoliubov.HFB.PairingMeanField</code></a></li>
 <li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.Lattice.CarteCoord"><code>HartreeFockBogoliubov.Lattice.CarteCoord</code></a></li>
 <li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.Lattice.FractCoord"><code>HartreeFockBogoliubov.Lattice.FractCoord</code></a></li>
 <li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.Lattice.UnitCell"><code>HartreeFockBogoliubov.Lattice.UnitCell</code></a></li>
-<li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.Spec.FullHamiltonian-Union{Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O}}, Tuple{O}} where O"><code>HartreeFockBogoliubov.Spec.FullHamiltonian</code></a></li>
 <li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.Spec.FullHamiltonian"><code>HartreeFockBogoliubov.Spec.FullHamiltonian</code></a></li>
+<li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.Spec.FullHamiltonian-Union{Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O}}, Tuple{O}} where O"><code>HartreeFockBogoliubov.Spec.FullHamiltonian</code></a></li>
 <li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.Spec.HoppingDiagonal"><code>HartreeFockBogoliubov.Spec.HoppingDiagonal</code></a></li>
 <li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.Spec.HoppingDiagonal-Union{Tuple{R,Integer,AbstractArray{#s23,1} where #s23&lt;:Integer}, Tuple{R}} where R&lt;:Real"><code>HartreeFockBogoliubov.Spec.HoppingDiagonal</code></a></li>
 <li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.Spec.HoppingOffdiagonal"><code>HartreeFockBogoliubov.Spec.HoppingOffdiagonal</code></a></li>
 <li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.Spec.InteractionDiagonal"><code>HartreeFockBogoliubov.Spec.InteractionDiagonal</code></a></li>
 <li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.Spec.InteractionOffdiagonal"><code>HartreeFockBogoliubov.Spec.InteractionOffdiagonal</code></a></li>
-<li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.Generator.generatefast-Union{Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O},HartreeFockBogoliubov.Spec.HoppingDiagonal}, Tuple{O}} where O"><code>HartreeFockBogoliubov.Generator.generatefast</code></a></li>
 <li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.Generator.generatefast-Union{Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O},HartreeFockBogoliubov.Spec.HoppingOffdiagonal}, Tuple{O}} where O"><code>HartreeFockBogoliubov.Generator.generatefast</code></a></li>
+<li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.Generator.generatefast-Union{Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O},HartreeFockBogoliubov.Spec.HoppingDiagonal}, Tuple{O}} where O"><code>HartreeFockBogoliubov.Generator.generatefast</code></a></li>
 <li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.Generator.generatefast-Union{Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O},AbstractArray{Union{HartreeFockBogoliubov.Spec.HoppingDiagonal, HartreeFockBogoliubov.Spec.HoppingOffdiagonal},1}}, Tuple{O}} where O"><code>HartreeFockBogoliubov.Generator.generatefast</code></a></li>
 <li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.Generator.generatehoppingfast-Union{Tuple{HartreeFockBogoliubov.Spec.FullHamiltonian{O}}, Tuple{O}} where O"><code>HartreeFockBogoliubov.Generator.generatehoppingfast</code></a></li>
 <li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.addinteraction!-Union{Tuple{C}, Tuple{HartreeFockBogoliubov.HFB.HFBHamiltonian{O},HartreeFockBogoliubov.Spec.InteractionOffdiagonal{C}}, Tuple{O}} where C&lt;:Number where O"><code>HartreeFockBogoliubov.HFB.addinteraction!</code></a></li>
@@ -179,125 +274,98 @@
 <li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.makeparticleparticleregistry-Union{Tuple{HartreeFockBogoliubov.HFB.HFBHamiltonian{T}}, Tuple{T}} where T"><code>HartreeFockBogoliubov.HFB.makeparticleparticleregistry</code></a></li>
 <li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.makesourcefields-Union{Tuple{HartreeFockBogoliubov.HFB.HFBComputer{O}}, Tuple{O}} where O"><code>HartreeFockBogoliubov.HFB.makesourcefields</code></a></li>
 <li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.makesourcefields-Union{Tuple{Function,Function,HartreeFockBogoliubov.HFB.HFBComputer{O}}, Tuple{O}} where O"><code>HartreeFockBogoliubov.HFB.makesourcefields</code></a></li>
-<li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.nambufy-Union{Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O},HartreeFockBogoliubov.Spec.HoppingDiagonal{R}}, Tuple{O}, Tuple{R}} where R&lt;:Real where O"><code>HartreeFockBogoliubov.HFB.nambufy</code></a></li>
 <li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.nambufy-Union{Tuple{C}, Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O},HartreeFockBogoliubov.Spec.HoppingOffdiagonal{C}}, Tuple{O}} where C&lt;:Number where O"><code>HartreeFockBogoliubov.HFB.nambufy</code></a></li>
+<li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.nambufy-Union{Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O},HartreeFockBogoliubov.Spec.HoppingDiagonal{R}}, Tuple{O}, Tuple{R}} where R&lt;:Real where O"><code>HartreeFockBogoliubov.HFB.nambufy</code></a></li>
 <li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.newhfbhint-Union{Tuple{HartreeFockBogoliubov.HFB.HFBComputer{O},HartreeFockBogoliubov.HFB.HFBSolution}, Tuple{O}} where O"><code>HartreeFockBogoliubov.HFB.newhfbhint</code></a></li>
-<li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.newhfbsolution-Union{Tuple{HartreeFockBogoliubov.HFB.HFBComputer{O},HartreeFockBogoliubov.HFB.HFBHint{O}}, Tuple{O}} where O"><code>HartreeFockBogoliubov.HFB.newhfbsolution</code></a></li>
 <li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.newhfbsolution-Union{Tuple{HartreeFockBogoliubov.HFB.HFBComputer{O}}, Tuple{O}} where O"><code>HartreeFockBogoliubov.HFB.newhfbsolution</code></a></li>
+<li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.newhfbsolution-Union{Tuple{HartreeFockBogoliubov.HFB.HFBComputer{O},HartreeFockBogoliubov.HFB.HFBHint{O}}, Tuple{O}} where O"><code>HartreeFockBogoliubov.HFB.newhfbsolution</code></a></li>
 <li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.randomize!-Union{Tuple{HartreeFockBogoliubov.HFB.HFBComputer{O},HartreeFockBogoliubov.HFB.HFBSolution}, Tuple{O}} where O"><code>HartreeFockBogoliubov.HFB.randomize!</code></a></li>
 <li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.Lattice.addorbital!-Union{Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O},O,HartreeFockBogoliubov.Lattice.FractCoord}, Tuple{O}} where O"><code>HartreeFockBogoliubov.Lattice.addorbital!</code></a></li>
 <li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.Lattice.carte2fract-Tuple{HartreeFockBogoliubov.Lattice.UnitCell,Array{Float64,1}}"><code>HartreeFockBogoliubov.Lattice.carte2fract</code></a></li>
 <li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.Lattice.carte2fract-Tuple{AbstractArray{#s15,2} where #s15&lt;:AbstractFloat,Array{Float64,1}}"><code>HartreeFockBogoliubov.Lattice.carte2fract</code></a></li>
-<li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.Lattice.dimension-Tuple{HartreeFockBogoliubov.Lattice.FractCoord}"><code>HartreeFockBogoliubov.Lattice.dimension</code></a></li>
 <li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.Lattice.dimension-Union{Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O}}, Tuple{O}} where O"><code>HartreeFockBogoliubov.Lattice.dimension</code></a></li>
-<li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.Lattice.fract2carte-Tuple{HartreeFockBogoliubov.Lattice.UnitCell,HartreeFockBogoliubov.Lattice.FractCoord}"><code>HartreeFockBogoliubov.Lattice.fract2carte</code></a></li>
+<li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.Lattice.dimension-Tuple{HartreeFockBogoliubov.Lattice.FractCoord}"><code>HartreeFockBogoliubov.Lattice.dimension</code></a></li>
 <li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.Lattice.fract2carte-Tuple{AbstractArray{#s23,2} where #s23&lt;:AbstractFloat,HartreeFockBogoliubov.Lattice.FractCoord}"><code>HartreeFockBogoliubov.Lattice.fract2carte</code></a></li>
+<li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.Lattice.fract2carte-Tuple{HartreeFockBogoliubov.Lattice.UnitCell,HartreeFockBogoliubov.Lattice.FractCoord}"><code>HartreeFockBogoliubov.Lattice.fract2carte</code></a></li>
 <li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.Lattice.getorbital-Union{Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O},O}, Tuple{O}} where O"><code>HartreeFockBogoliubov.Lattice.getorbital</code></a></li>
 <li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.Lattice.getorbital-Tuple{HartreeFockBogoliubov.Lattice.UnitCell,Integer}"><code>HartreeFockBogoliubov.Lattice.getorbital</code></a></li>
-<li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.Lattice.getorbitalcoord-Tuple{HartreeFockBogoliubov.Lattice.UnitCell,Integer}"><code>HartreeFockBogoliubov.Lattice.getorbitalcoord</code></a></li>
 <li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.Lattice.getorbitalcoord-Union{Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O},O}, Tuple{O}} where O"><code>HartreeFockBogoliubov.Lattice.getorbitalcoord</code></a></li>
+<li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.Lattice.getorbitalcoord-Tuple{HartreeFockBogoliubov.Lattice.UnitCell,Integer}"><code>HartreeFockBogoliubov.Lattice.getorbitalcoord</code></a></li>
 <li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.Lattice.getorbitalindex-Union{Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O},O}, Tuple{O}} where O"><code>HartreeFockBogoliubov.Lattice.getorbitalindex</code></a></li>
 <li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.Lattice.getorbitalindexcoord-Union{Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O},O}, Tuple{O}} where O"><code>HartreeFockBogoliubov.Lattice.getorbitalindexcoord</code></a></li>
 <li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.Lattice.getorbitalname-Tuple{HartreeFockBogoliubov.Lattice.UnitCell,Integer}"><code>HartreeFockBogoliubov.Lattice.getorbitalname</code></a></li>
 <li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.Lattice.hasorbital-Union{Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O},O}, Tuple{O}} where O"><code>HartreeFockBogoliubov.Lattice.hasorbital</code></a></li>
-<li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.Lattice.newunitcell-Tuple{AbstractArray{#s13,2} where #s13&lt;:AbstractFloat}"><code>HartreeFockBogoliubov.Lattice.newunitcell</code></a></li>
 <li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.Lattice.newunitcell-Tuple{AbstractFloat}"><code>HartreeFockBogoliubov.Lattice.newunitcell</code></a></li>
+<li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.Lattice.newunitcell-Tuple{AbstractArray{#s13,2} where #s13&lt;:AbstractFloat}"><code>HartreeFockBogoliubov.Lattice.newunitcell</code></a></li>
 <li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.Lattice.numorbital-Union{Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O}}, Tuple{O}} where O"><code>HartreeFockBogoliubov.Lattice.numorbital</code></a></li>
 <li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.Lattice.whichunitcell-Union{Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O},O,Array{Float64,1}}, Tuple{O}} where O"><code>HartreeFockBogoliubov.Lattice.whichunitcell</code></a></li>
 <li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.LinearizedGap.linearizedpairingkernel-Union{Tuple{HartreeFockBogoliubov.HFB.HFBSolver{O}}, Tuple{O}} where O"><code>HartreeFockBogoliubov.LinearizedGap.linearizedpairingkernel</code></a></li>
-<li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.Spec.addhopping!-Union{Tuple{HartreeFockBogoliubov.Spec.FullHamiltonian{O},HartreeFockBogoliubov.Spec.HoppingDiagonal{R}}, Tuple{O}, Tuple{R}} where R&lt;:Real where O"><code>HartreeFockBogoliubov.Spec.addhopping!</code></a></li>
 <li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.Spec.addhopping!-Union{Tuple{C}, Tuple{HartreeFockBogoliubov.Spec.FullHamiltonian{O},HartreeFockBogoliubov.Spec.HoppingOffdiagonal{C}}, Tuple{O}} where C&lt;:Number where O"><code>HartreeFockBogoliubov.Spec.addhopping!</code></a></li>
-<li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.Spec.addinteraction!-Union{Tuple{C}, Tuple{HartreeFockBogoliubov.Spec.FullHamiltonian{O},HartreeFockBogoliubov.Spec.InteractionOffdiagonal{C}}, Tuple{O}} where C&lt;:Number where O"><code>HartreeFockBogoliubov.Spec.addinteraction!</code></a></li>
+<li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.Spec.addhopping!-Union{Tuple{HartreeFockBogoliubov.Spec.FullHamiltonian{O},HartreeFockBogoliubov.Spec.HoppingDiagonal{R}}, Tuple{O}, Tuple{R}} where R&lt;:Real where O"><code>HartreeFockBogoliubov.Spec.addhopping!</code></a></li>
 <li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.Spec.addinteraction!-Union{Tuple{HartreeFockBogoliubov.Spec.FullHamiltonian{O},HartreeFockBogoliubov.Spec.InteractionDiagonal{R}}, Tuple{O}, Tuple{R}} where R&lt;:Real where O"><code>HartreeFockBogoliubov.Spec.addinteraction!</code></a></li>
+<li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.Spec.addinteraction!-Union{Tuple{C}, Tuple{HartreeFockBogoliubov.Spec.FullHamiltonian{O},HartreeFockBogoliubov.Spec.InteractionOffdiagonal{C}}, Tuple{O}} where C&lt;:Number where O"><code>HartreeFockBogoliubov.Spec.addinteraction!</code></a></li>
 <li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.Spec.hoppingbycarte-Union{Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O},R,O,Array{Float64,1}}, Tuple{O}, Tuple{R}} where R&lt;:Real where O"><code>HartreeFockBogoliubov.Spec.hoppingbycarte</code></a></li>
 <li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.Spec.hoppingbycarte-Union{Tuple{C}, Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O},C,O,O,Array{Float64,1},Array{Float64,1}}, Tuple{O}} where C&lt;:Number where O"><code>HartreeFockBogoliubov.Spec.hoppingbycarte</code></a></li>
 <li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.Spec.interactionbycarte-Union{Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O},R,O,O,Array{Float64,1},Array{Float64,1}}, Tuple{O}, Tuple{R}} where R&lt;:Real where O"><code>HartreeFockBogoliubov.Spec.interactionbycarte</code></a></li>
 <li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.Spec.interactionbycarte-Union{Tuple{C}, Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O},C,O,O,O,O,Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Float64,1}}, Tuple{O}} where C&lt;:Number where O"><code>HartreeFockBogoliubov.Spec.interactionbycarte</code></a></li>
 <li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.Topology.chernnumber-Union{Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O},AbstractArray{Union{HartreeFockBogoliubov.Spec.HoppingDiagonal, HartreeFockBogoliubov.Spec.HoppingOffdiagonal},1},Integer,Integer,AbstractArray{#s15,1} where #s15&lt;:Integer}, Tuple{O}} where O"><code>HartreeFockBogoliubov.Topology.chernnumber</code></a></li>
 <li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.Topology.isvalidtimereversalmatrix-Tuple{AbstractArray{#s19,2} where #s19&lt;:Number}"><code>HartreeFockBogoliubov.Topology.isvalidtimereversalmatrix</code></a></li>
-<li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.Topology.squarify-Union{Tuple{HartreeFockBogoliubov.HFB.HFBHamiltonian{O}}, Tuple{O}} where O"><code>HartreeFockBogoliubov.Topology.squarify</code></a></li>
 <li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.Topology.squarify-Union{Tuple{HartreeFockBogoliubov.Spec.FullHamiltonian{O}}, Tuple{O}} where O"><code>HartreeFockBogoliubov.Topology.squarify</code></a></li>
 <li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.Topology.squarify-Union{Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O}}, Tuple{O}} where O"><code>HartreeFockBogoliubov.Topology.squarify</code></a></li>
+<li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.Topology.squarify-Union{Tuple{HartreeFockBogoliubov.HFB.HFBHamiltonian{O}}, Tuple{O}} where O"><code>HartreeFockBogoliubov.Topology.squarify</code></a></li>
 <li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.Topology.timereversalindexgrid-Tuple{Integer,Integer}"><code>HartreeFockBogoliubov.Topology.timereversalindexgrid</code></a></li>
 <li><a href="hartreefockbogoliubov/#HartreeFockBogoliubov.Topology.z2index-Union{Tuple{HartreeFockBogoliubov.Lattice.UnitCell{O},AbstractArray{Union{HartreeFockBogoliubov.Spec.HoppingDiagonal, HartreeFockBogoliubov.Spec.HoppingOffdiagonal},1},AbstractArray{T,2} where T,Integer,Integer,AbstractArray{#s151,1} where #s151&lt;:Integer}, Tuple{O}} where O"><code>HartreeFockBogoliubov.Topology.z2index</code></a></li>
 </ul></div>
-        </div>
+        
+    </div>
 
-        <footer class="col-md-12">
-            <hr>
-            <p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p>
-        </footer>
-        <script>var base_url = '..';</script>
-        <script src="../js/base.js"></script>
-        <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-        <script src="../assets/mathjaxhelper.js"></script>
-        <script src="../search/require.js"></script>
-        <script src="../search/search.js"></script>
+    <footer class="col-md-12 text-center">
+        <hr>
+        <p>
+        <small>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p></small>
+    </footer>
 
-        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                <h4 class="modal-title" id="exampleModalLabel">Search</h4>
-            </div>
-            <div class="modal-body">
-                <p>
-                    From here you can search these documents. Enter
-                    your search terms below.
-                </p>
-                <form role="form">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query">
-                    </div>
-                </form>
-                <div id="mkdocs-search-results"></div>
-            </div>
-            <div class="modal-footer">
+    <script src="../js/jquery-1.10.2.min.js"></script>
+    <script src="../js/bootstrap-3.0.3.min.js"></script>
+    <script src="../js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script>
+    var base_url = '..';
+    </script>
+    <script data-main="../mkdocs/js/search.js" src="../mkdocs/js/require.js"></script>
+    <script src="../js/base.js"></script>
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script src="../assets/mathjaxhelper.js"></script>
+    <script src="../search/require.js"></script>
+    <script src="../search/search.js"></script>
+
+    <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        From here you can search these documents. Enter your search terms below.
+                    </p>
+                    <form role="form">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query">
+                        </div>
+                    </form>
+                    <div id="mkdocs-search-results"></div>
+                </div>
+                <div class="modal-footer">
+                </div>
             </div>
         </div>
     </div>
-</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="Keyboard Shortcuts Modal" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                <h4 class="modal-title" id="exampleModalLabel">Keyboard Shortcuts</h4>
-            </div>
-            <div class="modal-body">
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th style="width: 20%;">Keys</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><kbd>?</kbd></td>
-                    <td>Open this help</td>
-                  </tr>
-                  <tr>
-                    <td><kbd>&larr;</kbd></td>
-                    <td>Previous page</td>
-                  </tr>
-                  <tr>
-                    <td><kbd>&rarr;</kbd></td>
-                    <td>Next page</td>
-                  </tr>
-                  <tr>
-                    <td><kbd>s</kbd></td>
-                    <td>Search</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <div class="modal-footer">
-            </div>
-        </div>
-    </div>
-</div>
-
 
     </body>
+
 </html>
