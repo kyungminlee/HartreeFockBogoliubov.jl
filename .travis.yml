@@ -1,6 +1,7 @@
 language: julia
 os:
   - linux
+  - osx
 julia:
   - 0.6
 notifications:
@@ -9,7 +10,6 @@ script:
   - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
   - julia -e 'Pkg.add("DataStructures")'
   - julia -e 'Pkg.add("YAML")'
-  - julia -e 'Pkg.add("ProgressMeter")'
   - julia -e 'ENV["CONDA_JL_VERSION"]="3"; Pkg.add("Conda")'
   - julia -e 'using Conda; ENV["PYTHON"]=joinpath(Conda.PYTHONDIR, "python"); Pkg.add("PyCall")'
   - julia -e 'using Conda; Conda.add("numpy")'
