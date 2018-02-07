@@ -15,7 +15,7 @@ The hermiticity of the Hamiltonian requires that ``t_{ii}`` be real, and ``t_{ij
 H_{\text{offdiagonal-hopping}} = \sum_{i \lt j} t_{ij} c_{i}^{*} c_{j} + t_{ij}^{*} c_{j}^{*} c_{i}
 ```
 To incorporate this we define two `struct`s: `HoppingDiagonal` and `HoppingOffdiagonal`:
-```julia
+``` julia
 struct HoppingDiagonal{R<:Real}
     amplitude ::R
     i ::Int64
