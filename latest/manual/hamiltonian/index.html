@@ -201,17 +201,110 @@
         <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
         <li class="first-level active"><a href="#hamiltonian-full-interacting-hamiltonian">Hamiltonian: Full Interacting Hamiltonian</a></li>
-            <li class="second-level"><a href="#section">Section</a></li>
+            <li class="second-level"><a href="#terms-of-hamiltonian">Terms of Hamiltonian</a></li>
                 
+                <li class="third-level"><a href="#functions-creating-terms">Functions Creating Terms</a></li>
+                <li class="third-level"><a href="#fullhamiltonian">FullHamiltonian</a></li>
     </ul>
 </div></div>
         <div class="col-md-9" role="main">
 
 <p><a id='Hamiltonian:-Full-Interacting-Hamiltonian-1'></a></p>
 <h1 id="hamiltonian-full-interacting-hamiltonian">Hamiltonian: Full Interacting Hamiltonian</h1>
-<p><a id='Section-1'></a></p>
-<h2 id="section">Section</h2>
-<p>Some text.</p></div>
+<p><a id='Terms-of-Hamiltonian-1'></a></p>
+<h2 id="terms-of-hamiltonian">Terms of Hamiltonian</h2>
+<p><code>HartreeFockBogoliubov.jl</code> currently supports Hamiltonian with hopping and (quartic) interaction terms. The hopping terms can be grouped into "diagonal" terms and "offdiagonal" terms:</p>
+<p>
+<script type="math/tex; mode=display">
+\begin{align}
+H_{\text{diagonal-hopping}} &= \sum_{i} t_{ii} c_{i}^{*} c_{i} \\
+H_{\text{offdiagonal-hopping}} &= \sum_{i \neq j} t_{ij} c_{i}^{*} c_{j}
+\end{align}
+</script>
+</p>
+<p>The hermiticity of the Hamiltonian requires that $t_{ii}$ be real, and $t_{ij} = t_{ji}^{*}$. Thus we can rewrite the offdiagonal term as</p>
+<p>
+<script type="math/tex; mode=display">
+H_{\text{offdiagonal-hopping}} = \sum_{i \lt j} t_{ij} c_{i}^{*} c_{j} + t_{ij}^{*} c_{j}^{*} c_{i}
+</script>
+</p>
+<p>To incorporate this we define two <code>struct</code>s: <code>HoppingDiagonal</code> and <code>HoppingOffdiagonal</code>:</p>
+<div class="codehilite"><pre><span></span><span class="n">struct</span> <span class="n">HoppingDiagonal</span><span class="p">{</span><span class="n">R</span><span class="o">&lt;:</span><span class="kt">Real</span><span class="p">}</span>
+    <span class="n">amplitude</span> <span class="o">::</span><span class="n">R</span>
+    <span class="n">i</span> <span class="o">::</span><span class="kt">Int64</span>
+    <span class="n">Ri</span> <span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="kt">Int64</span><span class="p">}</span>
+<span class="k">end</span>
+
+<span class="n">struct</span> <span class="n">HoppingOffdiagonal</span><span class="p">{</span><span class="n">C</span><span class="o">&lt;:</span><span class="kt">Number</span><span class="p">}</span>
+    <span class="n">amplitude</span> <span class="o">::</span><span class="n">C</span>
+    <span class="n">i</span> <span class="o">::</span><span class="kt">Int64</span>
+    <span class="n">j</span> <span class="o">::</span><span class="kt">Int64</span>
+    <span class="n">Ri</span> <span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="kt">Int64</span><span class="p">}</span>
+    <span class="n">Rj</span> <span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="kt">Int64</span><span class="p">}</span>
+<span class="k">end</span>
+</pre></div>
+
+
+<p><code>i</code> and <code>j</code> are integers representing the "index" of the orbital, and <code>Ri</code> and <code>Rj</code> represents which unitcell they are in. A single <code>HoppingOffdiagonal</code> represents both <code>t_{ij} c_{i}^{*} c_{j}</code> and its hermitian conjugate.</p>
+<p>Similarly for the interaction, two structs are defined:</p>
+<div class="codehilite"><pre><span></span><span class="n">struct</span> <span class="n">InteractionDiagonal</span><span class="p">{</span><span class="n">R</span><span class="o">&lt;:</span><span class="kt">Real</span><span class="p">}</span>
+    <span class="n">amplitude</span> <span class="o">::</span><span class="n">R</span>
+    <span class="n">i</span> <span class="o">::</span><span class="kt">Int64</span>
+    <span class="n">j</span> <span class="o">::</span><span class="kt">Int64</span>
+    <span class="n">Ri</span> <span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="kt">Int64</span><span class="p">}</span>
+    <span class="n">Rj</span> <span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="kt">Int64</span><span class="p">}</span>
+<span class="k">end</span>
+
+<span class="n">struct</span> <span class="n">InteractionOffdiagonal</span><span class="p">{</span><span class="n">C</span><span class="o">&lt;:</span><span class="kt">Number</span><span class="p">}</span>
+    <span class="n">amplitude</span> <span class="o">::</span><span class="n">C</span>
+    <span class="n">i</span> <span class="o">::</span><span class="kt">Int64</span>
+    <span class="n">j</span> <span class="o">::</span><span class="kt">Int64</span>
+    <span class="n">k</span> <span class="o">::</span><span class="kt">Int64</span>
+    <span class="n">l</span> <span class="o">::</span><span class="kt">Int64</span>
+    <span class="n">Ri</span> <span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="kt">Int64</span><span class="p">}</span>
+    <span class="n">Rj</span> <span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="kt">Int64</span><span class="p">}</span>
+    <span class="n">Rk</span> <span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="kt">Int64</span><span class="p">}</span>
+    <span class="n">Rl</span> <span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="kt">Int64</span><span class="p">}</span>
+<span class="k">end</span>
+</pre></div>
+
+
+<p>which represent</p>
+<p>
+<script type="math/tex; mode=display">
+U c_{i}^{*} c_{j}^{*} c_{j} c_{i}, \qquad i \lt j
+</script>
+</p>
+<p>and</p>
+<p>
+<script type="math/tex; mode=display">
+U     c_{i}^{*} c_{j}^{*} c_{l} c_{k} +
+U^{*} c_{k}^{*} c_{l}^{*} c_{j} c_{i}, \qquad
+i \lt j \wedge k \lt l \wedge [ i \lt k \vee ( i = k \wedge j \lt l )]
+</script>
+</p>
+<p>In other words, (i,j) and (k,l) each need to be in lexicographical order, as well as $(i,j) &lt; (k,l)$.</p>
+<p>The following unions are defined</p>
+<div class="codehilite"><pre><span></span><span class="kd">const</span> <span class="n">Hopping</span> <span class="o">=</span> <span class="kt">Union</span><span class="p">{</span><span class="n">HoppingDiagonal</span><span class="p">,</span> <span class="n">HoppingOffdiagonal</span><span class="p">}</span>
+<span class="kd">const</span> <span class="n">Interaction</span> <span class="o">=</span> <span class="kt">Union</span><span class="p">{</span><span class="n">InteractionDiagonal</span><span class="p">,</span> <span class="n">InteractionOffdiagonal</span><span class="p">}</span>
+</pre></div>
+
+
+<p><a id='Functions-Creating-Terms-1'></a></p>
+<h3 id="functions-creating-terms">Functions Creating Terms</h3>
+<p><code>HartreeFockBogoliubov.jl</code> provides functions that allows generation of hopping terms and interaction terms from the orbital names and their <code>CarteCoord</code>: <code>hoppingbycarte</code> and <code>interactionbycarte</code>.</p>
+<p><a id='FullHamiltonian-1'></a></p>
+<h3 id="fullhamiltonian">FullHamiltonian</h3>
+<p>The full interacting Hamiltonian is represented by the <code>FullHamiltonian</code> class</p>
+<div class="codehilite"><pre><span></span><span class="n">mutable</span> <span class="n">struct</span> <span class="n">FullHamiltonian</span><span class="p">{</span><span class="n">O</span><span class="p">}</span>
+    <span class="n">unitcell</span> <span class="o">::</span><span class="n">UnitCell</span><span class="p">{</span><span class="n">O</span><span class="p">}</span>
+    <span class="n">hoppings</span> <span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="n">Hopping</span><span class="p">}</span>
+    <span class="n">interactions</span> <span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="n">Interaction</span><span class="p">}</span>
+<span class="k">end</span>
+</pre></div>
+
+
+<p><code>addhopping!</code> and <code>addinteraction!</code>.</p></div>
         
     </div>
 
