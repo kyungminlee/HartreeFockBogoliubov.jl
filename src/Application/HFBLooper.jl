@@ -10,7 +10,7 @@ using HartreeFockBogoliubov: HFB
 
 
 function detectresult(outpath)
-    
+
     for resultfilename in ["result_concise.json", "result_history.json"]
         result = nothing
         resultfilepath = joinpath(outpath, resultfilename)
@@ -98,12 +98,22 @@ function runloop(solver ::HFBSolver;
         currentsolution.Γ[:] = 0
     end
 
+
     for batchrun in 1:nbatch
         println("BATCH $batchrun")
+        nrun = nbunch + (batchrun % 2);
+        p = Progress(nrun)
+
+        callback = verbose ? (i, n) -> next!(p) : (i, n) -> nothing
+
         starttime = now()
         previoussolution = copy(currentsolution)
-        currentsolution = loop(solver, currentsolution, nbunch + (batchrun % 2);
-        update=nogammaupdate, progressbar=false)
+        currentsolution = loop(solver,
+                               currentsolution,
+                               nbunch + (batchrun % 2);
+                               update=nogammaupdate,
+                               callback=callback,
+                               )
         endtime = now()
         println("Duration: ", (endtime - starttime))
 

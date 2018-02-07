@@ -5,7 +5,7 @@ export getnextsolution,
        looppython,
        simpleupdate
 
-using ProgressMeter
+#using ProgressMeter
 using PyCall
 @pyimport numpy.linalg as npl
 
@@ -128,6 +128,8 @@ function simpleupdate(sol::HFBSolution, newsol ::HFBSolution)
     sol
 end
 
+_noop(x...) = nothing
+
 """
     loop
 
@@ -141,28 +143,22 @@ Perform selfconsistency loop a number of times with the given precondition and g
 # Optional Arguments
 * `update::Function=simpleupdate`
 * `precondition::Function=identity`
-* `progressbar::Bool=false`
+* `callback::Function=_noop`: Function called after every update as
+`callback(i, run)`
 """
 function loop(solver ::HFBSolver{T},
               sol::HFBSolution,
               run::Integer;
               update::Function=simpleupdate,
               precondition::Function=identity,
-              progressbar::Bool=false
+              callback::Function=_noop,
               ) where {T}
     sol = copy(sol)
-    if progressbar
-        @showprogress for i in 1:run
-            precondition(sol)
-            newsol = getnextsolution(solver, sol)
-            update(sol, newsol)
-        end
-    else
-        for i in 1:run
-            precondition(sol)
-            newsol = getnextsolution(solver, sol)
-            update(sol, newsol)
-        end
+    for i in 1:run
+        precondition(sol)
+        newsol = getnextsolution(solver, sol)
+        update(sol, newsol)
+        callback(i, run)
     end
     sol
 end
@@ -182,28 +178,22 @@ using Python's `numpy.linalg.eigh` (which hopefully is using MKL library).
 # Optional Arguments
 * `update::Function=simpleupdate`
 * `precondition::Function=identity`
-* `progressbar::Bool=false`
+* `callback::Function=_noop`: Function called after every update as
+`callback(i, run)`
 """
 function looppython(solver ::HFBSolver{T},
                     sol::HFBSolution,
                     run::Integer;
                     update::Function=simpleupdate,
                     precondition::Function=identity,
-                    progressbar::Bool=false
+                    callback::Function=_noop,
                     ) where {T}
     sol = copy(sol)
-    if progressbar
-        @showprogress for i in 1:run
-            precondition(sol)
-            newsol = getnextsolutionpython(solver, sol)
-            update(sol, newsol)
-        end
-    else
-        for i in 1:run
-            precondition(sol)
-            newsol = getnextsolutionpython(solver, sol)
-            update(sol, newsol)
-        end
+    for i in 1:run
+        precondition(sol)
+        newsol = getnextsolutionpython(solver, sol)
+        update(sol, newsol)
+        callback(i, run)
     end
     sol
 end
