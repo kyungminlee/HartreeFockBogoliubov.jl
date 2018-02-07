@@ -504,10 +504,6 @@ import Base:isless
 isless(hop1 ::HoppingDiagonal, hop2::HoppingOffdiagonal) = true
 isless(hop1 ::HoppingOffdiagonal, hop2::HoppingDiagonal) = false
 
-function isless(hop1 ::HoppingDiagonal, hop2::HoppingOffdiagonal)
-
-end
-
 function simplify(hamiltonian::FullHamiltonian{O}) where {O}
 
     hopdiadict = Dict{Int64, Float64}()
