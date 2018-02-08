@@ -3,6 +3,7 @@
 *Hartree-Fock-Bogoliubov Solver*
 
 [![Build Status][travis-img]][travis-url]
+[![Code Coverage][codecov-img]][codecov-url]
 
 ## Installation
 
@@ -17,3 +18,6 @@
 
 [travis-img]: https://travis-ci.org/kyungminlee/HartreeFockBogoliubov.jl.svg?branch=master
 [travis-url]: https://travis-ci.org/kyungminlee/HartreeFockBogoliubov.jl
+
+[codecov-img]: https://codecov.io/gh/kyungminlee/HartreeFockBogoliubov.jl/branch/master/graph/badge.svg
+[codecov-url]: https://codecov.io/gh/kyungminlee/HartreeFockBogoliubov.jl

@@ -12,7 +12,7 @@ script:
   - julia -e 'using Conda; ENV["PYTHON"]=joinpath(Conda.PYTHONDIR, "python"); Pkg.add("PyCall")'
   - julia -e 'using Conda; Conda.add("numpy")'
   - julia -e 'Pkg.clone(pwd())'
-  - julia -e 'Pkg.add("HartreeFockBogoliubov")'
+  - julia -e 'Pkg.build("HartreeFockBogoliubov")'
   - julia -e 'Pkg.test("HartreeFockBogoliubov", coverage=true)'
 
 after_success:
