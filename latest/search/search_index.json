@@ -57,7 +57,7 @@
         }, 
         {
             "location": "/basics/topology/", 
-            "text": "Topology\n\n\nTopology blah.\n\n\n\n\nChern Number\n\n\nKohmoto\n [Fukui, Hatsugai, and Suzuki][Fukui05] Haldane\n\n\n\n\nZ2 Topological Index of a Time-Reversal-Invariant System\n\n\nKane-Mele [Fu and Kane][Fu06]. [Fukui and Hatsugai][Fukui07].", 
+            "text": "Topology\n\n\nTopology blah.\n\n\n\n\nChern Number\n\n\nKohmoto\n Haldane \nFukui, Hatsugai, and Suzuki\n\n\n\n\nZ2 Topological Index of a Time-Reversal-Invariant System\n\n\nFu and Kane\n. \nFukui and Hatsugai\n.", 
             "title": "Topological Invariants"
         }, 
         {
@@ -67,12 +67,12 @@
         }, 
         {
             "location": "/basics/topology/#chern-number", 
-            "text": "Kohmoto  [Fukui, Hatsugai, and Suzuki][Fukui05] Haldane", 
+            "text": "Kohmoto  Haldane  Fukui, Hatsugai, and Suzuki", 
             "title": "Chern Number"
         }, 
         {
             "location": "/basics/topology/#z2-topological-index-of-a-time-reversal-invariant-system", 
-            "text": "Kane-Mele [Fu and Kane][Fu06]. [Fukui and Hatsugai][Fukui07].", 
+            "text": "Fu and Kane .  Fukui and Hatsugai .", 
             "title": "Z2 Topological Index of a Time-Reversal-Invariant System"
         }, 
         {
