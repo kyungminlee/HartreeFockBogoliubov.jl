@@ -18,5 +18,5 @@ include("unitcell.jl")
 include("spec.jl")
 include("generator.jl")
 
-include("hfb.jl")
-include("dictify.jl")
+#include("hfb.jl")
+#include("dictify.jl")

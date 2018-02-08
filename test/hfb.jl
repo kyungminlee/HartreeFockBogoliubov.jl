@@ -128,7 +128,6 @@
   =#
 
 end
-=#
 
 @testset "squarehubbard" begin
   latticevectors = [1.0 0.0 ; 0.0 1.0]
