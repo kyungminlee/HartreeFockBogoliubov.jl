@@ -14,7 +14,7 @@ Haldane
 [Fukui and Hatsugai][Fukui07].
 
 
-[Kohmoto85]: <https://doi.org/10.1016/0003-4916(85)90148-4> "Mahito Kohmoto, Topological invariant and the quantization of the Hall conductance, Ann. Phys. **160**, 343 (1985)"
+[Kohmoto85]: https://doi.org/10.1016/0003-4916%2885%2990148-4 "Mahito Kohmoto, Topological invariant and the quantization of the Hall conductance, Ann. Phys. **160**, 343 (1985)"
 
 [Fukui05]: https://doi.org/10.1143/JPSJ.74.1674 "Takahiro Fukui, Yasuhiro Hatsugai, and Hiroshi Suzuki, Chern Numbers in Discretized Brillouin Zone: Efficient Method of Computing (Spin) Hall Conductances, J. Phys. Soc. Jpn. **74**, 1674 (2005)."
 
