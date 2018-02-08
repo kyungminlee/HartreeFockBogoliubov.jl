@@ -13,6 +13,7 @@ script:
   - julia -e 'using Conda; Conda.add("numpy")'
   - julia -e 'Pkg.clone(pwd())'
   - julia -e 'Pkg.add("HartreeFockBogoliubov")'
+  - julia -e 'Pkg.test("HartreeFockBogoliubov", coverage=true)'
 
 after_success:
   - julia -e 'cd(Pkg.dir("HartreeFockBogoliubov")); Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'
