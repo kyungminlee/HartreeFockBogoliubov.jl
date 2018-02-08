@@ -31,7 +31,8 @@ struct HoppingOffdiagonal{C<:Number}
 end
 ```
 `i` and `j` are integers representing the "index" of the orbital, and `Ri` and `Rj` represents which unitcell they are in.
-A single `HoppingOffdiagonal` represents both `t_{ij} c_{i}^{*} c_{j}` and its hermitian conjugate.
+The "unitcell coordinates" `Ri` and `Rj` are necessary for the representation of the Hamiltonian in the momentum space.
+A single `HoppingOffdiagonal` represents both ``t_{ij} c_{i}^{*} c_{j}`` and its hermitian conjugate.
 
 
 Similarly for the interaction, two structs are defined:

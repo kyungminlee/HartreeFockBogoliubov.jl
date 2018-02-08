@@ -7,7 +7,7 @@ repo_url: https://github.com/kyungminlee/HartreeFockBogoliubov.jl
 
 copyright: Copyright (c) 2016 Kyungmin Lee
 
-theme: cinder
+theme: material
 
 extra_css:
   - assets/Documenter.css
