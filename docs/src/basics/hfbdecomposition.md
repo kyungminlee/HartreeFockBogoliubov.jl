@@ -17,6 +17,8 @@ H &= \sum_{ij} T_{ij} c_{i}^{*} c_{j}
     - V_{ijij} c_{i}^{*} c_{j}^{*} c_{i} c_{j}
     + V_{ijij} c_{j}^{*} c_{i}^{*} c_{i} c_{j}
   \right]
+  \\
+  &\quad
   + \frac{1}{4} \sum_{\substack{(i<j), (k<l) \\ \text{ and } \\ (i,j) < (k,l) }}
   \left[
       V_{ijkl}     c_{i}^{*} c_{j}^{*} c_{l} c_{k}
