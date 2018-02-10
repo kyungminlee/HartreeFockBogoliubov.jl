@@ -8,7 +8,8 @@ H &= \sum_{ij} T_{ij} c_{i}^{\dagger} c_{j}
  + \frac{1}{4} \sum_{ijkl} c_{i}^{\dagger} c_{j} c_{l} c_{k}
 \\
   &= \sum_{i} T_{i}{i} c_{i}^{\dagger} c_{i}
-    + \sum_{i \lt j} (T_{ij} c_{i}^{\dagger} c_{j} + T_{ij}^{*} c_{j}^{\dagger} c_{i})
+    + \sum_{i \lt j} (T_{ij} c_{i}^{\dagger} c_{j} + T_{ij}^{*} c_{j}^{\dagger} c_{i}) \\
+  &\quad
     + \sum_{i < j} V_{ij ij} c_{i}^{\dagger} c_{j}^{\dagger} c_{j} c_{i}
     + \sum_{ (i<j), (k<l) \text{ and } (i,j) < (k,l) }
         V_{ijkl} c_{i}^{\dagger} c_{i}^{\dagger} c_{l} c_{k} +

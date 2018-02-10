@@ -12,15 +12,15 @@ H_{\text{HFB}} = E_0 + \sum_{i} E_{n} a_{n}^{\dagger} a_{n}
 ```
 
 ```math
-a_{i}^{\dagger} = \sum_{j} \left( U_{ij} c_{j}^{\dagger} + V_{ij} c_{j} \right)
+c_{i} = \sum_{n} \left( U_{in} a_{n} + V_{in} a_{n}^{*} \right)
 ```
 TODO: is this correct?
 
 
 ```math
 \begin{align}
-D_{\text{HFB}} &= \frac{1}{Z_{\text{HFB}}} e^{-\beta \sum_{i} E_{i} \hat{n}_{i} } \\
-Z_{\text{HFB}} &= \mathrm{Tr} e^{-\beta \sum_{i} E_{i} \hat{n}_{i} }
+  D_{\text{HFB}} &= \frac{1}{Z_{\text{HFB}}} e^{-\beta \sum_{i} E_{i} \hat{n}_{i} } \\
+  Z_{\text{HFB}} &= \mathrm{Tr} e^{-\beta \sum_{i} E_{i} \hat{n}_{i} }
 \end{align}
 ```
 
@@ -52,17 +52,17 @@ Single-quasparticle density matrix ``\overline{\rho}``  and pairing tensor ``\ov
 \begin{align}
 \overline{\rho}_{ij}
   &= \left\langle a_{j}^{\dagger} a_{i} \right\rangle
-  &= \mathrm{Tr} \left( D a_{j}^{\dagger} a_{i} \right) \\
+   = \mathrm{Tr} \left( D a_{j}^{\dagger} a_{i} \right) \\
 \overline{t}_{ij}
   &= \left\langle a_{j} a_{i} \right\rangle
-   &= \mathrm{Tr} \left( D a_{j} a_{i} \right)
+   = \mathrm{Tr} \left( D a_{j} a_{i} \right)
 \end{align}
 ```
 Within HFB,
 ```math
 \begin{align}
-\overline{\rho}_{ij} = \delta_{ij} f_{i} \\
-\overline{t}_{ij} = 0
+  \overline{\rho}_{ij} = \delta_{ij} f_{i} \\
+  \overline{t}_{ij} = 0
 \end{align}
 ```
 The single-particle density matrix and pairing tensor are
@@ -79,8 +79,8 @@ t_{ij}
 
 ```math
 \begin{align}
-\rho &= U^{\intercal} f U^{*} + V^{\dagger} (1-f) V \\
-t    &= U^{\intercal} f V^{*} + V^{\dagger} (1-f) U
+  \rho &= U f U^{\dagger} + V (1-f) V^{\dagger} \\
+  t    &= U f V^{\intercal} + V (1-f) U^{\intercal}
 \end{align}
 ```
 where ``f_{ij} = \delta_{ij} f_{i}``.
@@ -90,7 +90,7 @@ where ``f_{ij} = \delta_{ij} f_{i}``.
 ### Expectation Values
 Wick's theorem
 ```math
-\left\langle c_{i}^{\dagger} c_{j}^{\dagger} c_{l} c_{k} \rignt\rangle
+\left\langle c_{i}^{\dagger} c_{j}^{\dagger} c_{l} c_{k} \right\rangle
 =
 \left\langle c_{i}^{\dagger} c_{k} \right\rangle
 \left\langle c_{j}^{\dagger} c_{l} \right\rangle
@@ -104,7 +104,7 @@ Wick's theorem
 \begin{align}
 E &= \mathrm{tr}
 \left[
-  (T + \frac{1}{2} \Gamma) \rho + \frac{1}{2} \Delta t^{\dagger}
+  \left( T + \frac{1}{2} \Gamma \right) \rho + \frac{1}{2} \Delta t^{\dagger}
 \right] \\
 S &= - k_B \sum_{i} \left[ f_{i} \ln f_{i} + (1-f_{i}) \ln (1-f_i)\right] \\
 N &= \mathrm{tr} \rho
@@ -120,8 +120,8 @@ N &= \mathrm{tr} \rho
 
 The grand potential
 ```math
-\Omega = \sum_{ij} (T - \mu)_{ij} \rho_{ji} + \frac{1}{2} \sum_{ijkl} v_{ijkl} \rho_{l j} \rho_{ki}
-+ \frac{1}{4} \sum_{ijkl} v_{ijkl} t_{ij}^{*} t_{kl}
+\Omega = \sum_{ij} (T - \mu)_{ij} \rho_{ji} + \frac{1}{2} \sum_{ijkl} V_{ijkl} \rho_{l j} \rho_{ki}
++ \frac{1}{4} \sum_{ijkl} V_{ijkl} t_{ij}^{*} t_{kl}
 + k_B T \sum_{i} \left[ f_{i} \ln f_{i} + (1-f_{i}) \ln (1-f_i)\right]
 ```
 ----
