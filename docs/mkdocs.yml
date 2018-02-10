@@ -5,7 +5,7 @@ site_author: kyungminlee
 site_url: https://kyungminlee.org/HartreeFockBogoliubov.jl/
 repo_url: https://github.com/kyungminlee/HartreeFockBogoliubov.jl
 
-copyright: Copyright (c) 2016 Kyungmin Lee
+#copyright: Copyright (c) 2016 Kyungmin Lee
 
 theme: mkdocs
 

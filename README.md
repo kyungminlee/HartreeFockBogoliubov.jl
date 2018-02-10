@@ -1,6 +1,6 @@
 # HartreeFockBogoliubov
 
-*Hartree-Fock-Bogoliubov Solver*
+*Hartree-Fock-Bogoliubov Solver* written in [Julia](https://julialang.org)
 
 [![Build Status][travis-img]][travis-url]
 [![Code Coverage][codecov-img]][codecov-url]
