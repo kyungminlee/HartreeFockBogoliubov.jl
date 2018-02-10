@@ -92,12 +92,12 @@
         }, 
         {
             "location": "/manual/install/", 
-            "text": "Installation\n\n\nHartreeFockBogoliubov.jl\n is not a registered package. Install it by\n\n\nPkg\n.\nclone\n(\nhttps://github.com/kyungminlee/HartreeFockBogoliubov.jl.git\n)\n\n\nPkg\n.\nbuild\n(\nHartreeFockBogoliubov\n)\n\n\n\n\n\n\ndef\n \nmain\n(\nx\n \n:\nstr\n):\n\n    \nprint\n(\nHello World {}\n.\nformat\n(\nx\n))", 
+            "text": "Installation\n\n\nHartreeFockBogoliubov.jl\n is not a registered package. Install it by\n\n\nPkg\n.\nclone\n(\nhttps://github.com/kyungminlee/HartreeFockBogoliubov.jl.git\n)\n\n\nPkg\n.\nbuild\n(\nHartreeFockBogoliubov\n)", 
             "title": "Installation"
         }, 
         {
             "location": "/manual/install/#installation", 
-            "text": "HartreeFockBogoliubov.jl  is not a registered package. Install it by  Pkg . clone ( https://github.com/kyungminlee/HartreeFockBogoliubov.jl.git )  Pkg . build ( HartreeFockBogoliubov )   def   main ( x   : str ): \n     print ( Hello World {} . format ( x ))", 
+            "text": "HartreeFockBogoliubov.jl  is not a registered package. Install it by  Pkg . clone ( https://github.com/kyungminlee/HartreeFockBogoliubov.jl.git )  Pkg . build ( HartreeFockBogoliubov )", 
             "title": "Installation"
         }, 
         {
