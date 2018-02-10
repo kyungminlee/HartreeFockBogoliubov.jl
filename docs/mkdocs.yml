@@ -7,7 +7,7 @@ repo_url: https://github.com/kyungminlee/HartreeFockBogoliubov.jl
 
 copyright: Copyright (c) 2016 Kyungmin Lee
 
-theme: material
+theme: mkdocs
 
 extra_css:
   - assets/Documenter.css
@@ -30,6 +30,8 @@ pages:
   - Home: index.md
   - Basic Theory:
     - Hartree-Fock-Bogoliubov Theory: basics/hartreefockbogoliubov.md
+    - Hartree-Fock-Bogoliubov Equations: basics/hfbequation.md
+    - Hartree-Fock-Bogoliubov Decomposition: basics/hfbdecomposition.md
     - Momentum Space Formulation: basics/momentumspace.md
     - Topological Invariants: basics/topology.md
   - User Guide:

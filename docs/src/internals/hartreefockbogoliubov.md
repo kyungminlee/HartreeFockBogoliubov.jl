@@ -1,16 +1,18 @@
-# Lattice
+# Internals
+
+## Lattice
 
 ```@autodocs
 Modules = [HartreeFockBogoliubov.Lattice]
 ```
 
-# Spec
+## Spec
 
 ```@autodocs
 Modules = [HartreeFockBogoliubov.Spec]
 ```
 
-# Generator
+## Generator
 
 ```@autodocs
 Modules = [HartreeFockBogoliubov.Generator]
@@ -22,13 +24,13 @@ Modules = [HartreeFockBogoliubov.Generator]
 Modules = [HartreeFockBogoliubov.Topology]
 ```
 
-# HFB
+## HFB
 
 ```@autodocs
 Modules = [HartreeFockBogoliubov.HFB]
 ```
 
-# LinearizedGap
+## LinearizedGap
 
 ```@autodocs
 Modules = [HartreeFockBogoliubov.LinearizedGap]
