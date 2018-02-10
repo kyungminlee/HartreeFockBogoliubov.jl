@@ -13,7 +13,7 @@
         <meta name="description" content="Hartree-Fock-Bogoliubov Solver">
       
       
-        <link rel="canonical" href="https://kyungminlee.org/HartreeFockBogoliubov.jl/manual/hfb/">
+        <link rel="canonical" href="https://kyungminlee.org/HartreeFockBogoliubov.jl/guide/hamiltonian/">
       
       
         <meta name="author" content="kyungminlee">
@@ -42,7 +42,7 @@
     
     
       
-        <title>HFB - HartreeFockBogoliubov.jl</title>
+        <title>Hamiltonian - HartreeFockBogoliubov.jl</title>
       
     
     
@@ -96,7 +96,7 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="search">
     <label class="md-overlay" data-md-component="overlay" for="drawer"></label>
     
-      <a href="#hfb-hartree-fock-bogoliubov" tabindex="1" class="md-skip">
+      <a href="#hamiltonian-full-interacting-hamiltonian" tabindex="1" class="md-skip">
         Skip to content
       </a>
     
@@ -122,7 +122,7 @@
                 HartreeFockBogoliubov.jl
               </span>
               <span class="md-header-nav__topic">
-                HFB
+                Hamiltonian
               </span>
             
           
@@ -317,11 +317,11 @@
       <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" checked>
     
     <label class="md-nav__link" for="nav-3">
-      Manual
+      User Guide
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
       <label class="md-nav__title" for="nav-3">
-        Manual
+        User Guide
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
         
@@ -332,44 +332,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../frontpage/" title="Front Page" class="md-nav__link">
-      Front Page
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../install/" title="Installation" class="md-nav__link">
-      Installation
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
     <a href="../lattice/" title="Lattice" class="md-nav__link">
       Lattice
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../hamiltonian/" title="Hamiltonian" class="md-nav__link">
-      Hamiltonian
     </a>
   </li>
 
@@ -389,11 +353,11 @@
     
     
       <label class="md-nav__link md-nav__link--active" for="toc">
-        HFB
+        Hamiltonian
       </label>
     
-    <a href="./" title="HFB" class="md-nav__link md-nav__link--active">
-      HFB
+    <a href="./" title="Hamiltonian" class="md-nav__link md-nav__link--active">
+      Hamiltonian
     </a>
     
       
@@ -407,23 +371,23 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#hfbcomputer" title="HFBComputer" class="md-nav__link">
-    HFBComputer
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#hfbsolver" title="HFBSolver" class="md-nav__link">
-    HFBSolver
+  <a href="#terms-of-hamiltonian" title="Terms of Hamiltonian" class="md-nav__link">
+    Terms of Hamiltonian
   </a>
   
     <nav class="md-nav">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#using-hfbsolver-to-find-self-consistent-solution" title="Using HFBSolver to Find Self-Consistent Solution" class="md-nav__link">
-    Using HFBSolver to Find Self-Consistent Solution
+  <a href="#functions-creating-terms" title="Functions Creating Terms" class="md-nav__link">
+    Functions Creating Terms
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fullhamiltonian" title="FullHamiltonian" class="md-nav__link">
+    FullHamiltonian
   </a>
   
 </li>
@@ -448,6 +412,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../hfb/" title="HFB" class="md-nav__link">
+      HFB
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../linearizedgap/" title="Linearized Gap Equation" class="md-nav__link">
       Linearized Gap Equation
     </a>
@@ -462,6 +438,18 @@
   <li class="md-nav__item">
     <a href="../topology/" title="Topology" class="md-nav__link">
       Topology
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../example/" title="Example" class="md-nav__link">
+      Example
     </a>
   </li>
 
@@ -540,23 +528,23 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#hfbcomputer" title="HFBComputer" class="md-nav__link">
-    HFBComputer
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#hfbsolver" title="HFBSolver" class="md-nav__link">
-    HFBSolver
+  <a href="#terms-of-hamiltonian" title="Terms of Hamiltonian" class="md-nav__link">
+    Terms of Hamiltonian
   </a>
   
     <nav class="md-nav">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#using-hfbsolver-to-find-self-consistent-solution" title="Using HFBSolver to Find Self-Consistent Solution" class="md-nav__link">
-    Using HFBSolver to Find Self-Consistent Solution
+  <a href="#functions-creating-terms" title="Functions Creating Terms" class="md-nav__link">
+    Functions Creating Terms
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fullhamiltonian" title="FullHamiltonian" class="md-nav__link">
+    FullHamiltonian
   </a>
   
 </li>
@@ -580,67 +568,105 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/kyungminlee/HartreeFockBogoliubov.jl/edit/master/docs/manual/hfb.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                  <a href="https://github.com/kyungminlee/HartreeFockBogoliubov.jl/edit/master/docs/guide/hamiltonian.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
-                <p><a id='HFB:-Hartree-Fock-Bogoliubov-1'></a></p>
-<h1 id="hfb-hartree-fock-bogoliubov">HFB: Hartree-Fock-Bogoliubov</h1>
-<p><a id='HFBComputer-1'></a></p>
-<h2 id="hfbcomputer">HFBComputer</h2>
-<p><code>HFBComputer</code> is a struct which is used to calculate the Hartree-Fock-Bogoliubov Hamiltonian from mean-field parameters, and the parameters from the eigenstates of Hartree-Fock-Bogoliubov Hamiltonian.</p>
-<div class="codehilite"><pre><span></span><span class="n">mutable</span> <span class="n">struct</span> <span class="n">HFBComputer</span><span class="p">{</span><span class="n">O</span><span class="p">}</span>
+                <p><a id='Hamiltonian:-Full-Interacting-Hamiltonian-1'></a></p>
+<h1 id="hamiltonian-full-interacting-hamiltonian">Hamiltonian: Full Interacting Hamiltonian</h1>
+<p><a id='Terms-of-Hamiltonian-1'></a></p>
+<h2 id="terms-of-hamiltonian">Terms of Hamiltonian</h2>
+<p><code>HartreeFockBogoliubov.jl</code> currently supports Hamiltonian with hopping and (quartic) interaction terms. The hopping terms can be grouped into "diagonal" terms and "offdiagonal" terms:</p>
+<p>
+<script type="math/tex; mode=display">
+\begin{align}
+H_{\text{diagonal-hopping}} &= \sum_{i} t_{ii} c_{i}^{*} c_{i} \\
+H_{\text{offdiagonal-hopping}} &= \sum_{i \neq j} t_{ij} c_{i}^{*} c_{j}
+\end{align}
+</script>
+</p>
+<p>The hermiticity of the Hamiltonian requires that $t_{ii}$ be real, and $t_{ij} = t_{ji}^{*}$. Thus we can rewrite the offdiagonal term as</p>
+<p>
+<script type="math/tex; mode=display">
+H_{\text{offdiagonal-hopping}} = \sum_{i \lt j} t_{ij} c_{i}^{*} c_{j} + t_{ij}^{*} c_{j}^{*} c_{i}
+</script>
+</p>
+<p>To incorporate this we define two <code>struct</code>s: <code>HoppingDiagonal</code> and <code>HoppingOffdiagonal</code>:</p>
+<div class="codehilite"><pre><span></span><span class="n">struct</span> <span class="n">HoppingDiagonal</span><span class="p">{</span><span class="n">R</span><span class="o">&lt;:</span><span class="kt">Real</span><span class="p">}</span>
+    <span class="n">amplitude</span> <span class="o">::</span><span class="n">R</span>
+    <span class="n">i</span> <span class="o">::</span><span class="kt">Int64</span>
+    <span class="n">Ri</span> <span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="kt">Int64</span><span class="p">}</span>
+<span class="k">end</span>
+
+<span class="n">struct</span> <span class="n">HoppingOffdiagonal</span><span class="p">{</span><span class="n">C</span><span class="o">&lt;:</span><span class="kt">Number</span><span class="p">}</span>
+    <span class="n">amplitude</span> <span class="o">::</span><span class="n">C</span>
+    <span class="n">i</span> <span class="o">::</span><span class="kt">Int64</span>
+    <span class="n">j</span> <span class="o">::</span><span class="kt">Int64</span>
+    <span class="n">Ri</span> <span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="kt">Int64</span><span class="p">}</span>
+    <span class="n">Rj</span> <span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="kt">Int64</span><span class="p">}</span>
+<span class="k">end</span>
+</pre></div>
+
+
+<p><code>i</code> and <code>j</code> are integers representing the "index" of the orbital, and <code>Ri</code> and <code>Rj</code> represents which unitcell they are in. The "unitcell coordinates" <code>Ri</code> and <code>Rj</code> are necessary for the representation of the Hamiltonian in the momentum space. A single <code>HoppingOffdiagonal</code> represents both $t_{ij} c_{i}^{*} c_{j}$ and its hermitian conjugate.</p>
+<p>Similarly for the interaction, two structs are defined:</p>
+<div class="codehilite"><pre><span></span><span class="n">struct</span> <span class="n">InteractionDiagonal</span><span class="p">{</span><span class="n">R</span><span class="o">&lt;:</span><span class="kt">Real</span><span class="p">}</span>
+    <span class="n">amplitude</span> <span class="o">::</span><span class="n">R</span>
+    <span class="n">i</span> <span class="o">::</span><span class="kt">Int64</span>
+    <span class="n">j</span> <span class="o">::</span><span class="kt">Int64</span>
+    <span class="n">Ri</span> <span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="kt">Int64</span><span class="p">}</span>
+    <span class="n">Rj</span> <span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="kt">Int64</span><span class="p">}</span>
+<span class="k">end</span>
+
+<span class="n">struct</span> <span class="n">InteractionOffdiagonal</span><span class="p">{</span><span class="n">C</span><span class="o">&lt;:</span><span class="kt">Number</span><span class="p">}</span>
+    <span class="n">amplitude</span> <span class="o">::</span><span class="n">C</span>
+    <span class="n">i</span> <span class="o">::</span><span class="kt">Int64</span>
+    <span class="n">j</span> <span class="o">::</span><span class="kt">Int64</span>
+    <span class="n">k</span> <span class="o">::</span><span class="kt">Int64</span>
+    <span class="n">l</span> <span class="o">::</span><span class="kt">Int64</span>
+    <span class="n">Ri</span> <span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="kt">Int64</span><span class="p">}</span>
+    <span class="n">Rj</span> <span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="kt">Int64</span><span class="p">}</span>
+    <span class="n">Rk</span> <span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="kt">Int64</span><span class="p">}</span>
+    <span class="n">Rl</span> <span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="kt">Int64</span><span class="p">}</span>
+<span class="k">end</span>
+</pre></div>
+
+
+<p>which represent</p>
+<p>
+<script type="math/tex; mode=display">
+U c_{i}^{*} c_{j}^{*} c_{j} c_{i}, \qquad i \lt j
+</script>
+</p>
+<p>and</p>
+<p>
+<script type="math/tex; mode=display">
+U     c_{i}^{*} c_{j}^{*} c_{l} c_{k} +
+U^{*} c_{k}^{*} c_{l}^{*} c_{j} c_{i}, \qquad
+i \lt j \wedge k \lt l \wedge [ i \lt k \vee ( i = k \wedge j \lt l )]
+</script>
+</p>
+<p>In other words, (i,j) and (k,l) each need to be in lexicographical order, as well as $(i,j) &lt; (k,l)$.</p>
+<p>The following unions are defined</p>
+<div class="codehilite"><pre><span></span><span class="kd">const</span> <span class="n">Hopping</span> <span class="o">=</span> <span class="kt">Union</span><span class="p">{</span><span class="n">HoppingDiagonal</span><span class="p">,</span> <span class="n">HoppingOffdiagonal</span><span class="p">}</span>
+<span class="kd">const</span> <span class="n">Interaction</span> <span class="o">=</span> <span class="kt">Union</span><span class="p">{</span><span class="n">InteractionDiagonal</span><span class="p">,</span> <span class="n">InteractionOffdiagonal</span><span class="p">}</span>
+</pre></div>
+
+
+<p><a id='Functions-Creating-Terms-1'></a></p>
+<h3 id="functions-creating-terms">Functions Creating Terms</h3>
+<p><code>HartreeFockBogoliubov.jl</code> provides functions that allows generation of hopping terms and interaction terms from the orbital names and their <code>CarteCoord</code>: <code>hoppingbycarte</code> and <code>interactionbycarte</code>.</p>
+<p><a id='FullHamiltonian-1'></a></p>
+<h3 id="fullhamiltonian">FullHamiltonian</h3>
+<p>The full interacting Hamiltonian is represented by the <code>FullHamiltonian</code> class</p>
+<div class="codehilite"><pre><span></span><span class="n">mutable</span> <span class="n">struct</span> <span class="n">FullHamiltonian</span><span class="p">{</span><span class="n">O</span><span class="p">}</span>
     <span class="n">unitcell</span> <span class="o">::</span><span class="n">UnitCell</span><span class="p">{</span><span class="n">O</span><span class="p">}</span>
-    <span class="n">hoppings</span> <span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="n">Spec</span><span class="o">.</span><span class="n">Hopping</span><span class="p">}</span>
-    <span class="n">temperature</span> <span class="o">::</span><span class="kt">Float64</span>
-
-    <span class="n">fermi</span> <span class="o">::</span><span class="kt">Function</span>
-    <span class="n">ρ_registry</span> <span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="n">CollectRow</span><span class="p">}</span>
-    <span class="n">t_registry</span> <span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="n">CollectRow</span><span class="p">}</span>
-    <span class="n">Γ_registry</span> <span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="n">DeployRow</span><span class="p">}</span>
-    <span class="n">Δ_registry</span> <span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="n">DeployRow</span><span class="p">}</span>
+    <span class="n">hoppings</span> <span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="n">Hopping</span><span class="p">}</span>
+    <span class="n">interactions</span> <span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="n">Interaction</span><span class="p">}</span>
 <span class="k">end</span>
 </pre></div>
 
 
-<p>The type <code>CollectRow</code> keeps record of the "observables" that need to be measured in order to calculate the mean-field parameters. They are the ρ(i,j) and t(i,j) as defined by Goodman.</p>
-<div class="codehilite"><pre><span></span><span class="kd">const</span> <span class="n">CollectRow</span> <span class="o">=</span> <span class="kt">Tuple</span><span class="p">{</span><span class="kt">Bool</span><span class="p">,</span> <span class="kt">Int64</span><span class="p">,</span> <span class="kt">Int64</span><span class="p">,</span> <span class="kt">Vector</span><span class="p">{</span><span class="kt">Float64</span><span class="p">}}</span>
-</pre></div>
-
-
-<p><code>DeployRow</code> contains necessary information to calculate Γ(i,j) and Δ(i,j), using the measured ρ(i,j) and t(i,j)</p>
-<div class="codehilite"><pre><span></span><span class="kd">const</span> <span class="n">DeployRow</span> <span class="o">=</span> <span class="kt">Tuple</span><span class="p">{</span><span class="kt">Bool</span><span class="p">,</span> <span class="kt">Int64</span><span class="p">,</span> <span class="kt">Int64</span><span class="p">,</span> <span class="kt">Vector</span><span class="p">{</span><span class="kt">Float64</span><span class="p">},</span> <span class="kt">Vector</span><span class="p">{</span><span class="kt">Tuple</span><span class="p">{</span><span class="kt">Int64</span><span class="p">,</span> <span class="kt">Complex128</span><span class="p">,</span> <span class="kt">Bool</span><span class="p">}}}</span>
-</pre></div>
-
-
-<p><a id='HFBSolver-1'></a></p>
-<h2 id="hfbsolver">HFBSolver</h2>
-<p><code>HFBSolver</code> is blah.</p>
-<div class="codehilite"><pre><span></span><span class="n">mutable</span> <span class="n">struct</span> <span class="n">HFBSolver</span><span class="p">{</span><span class="n">O</span><span class="p">}</span>
-    <span class="c"># Originals</span>
-    <span class="n">hamiltonian</span> <span class="o">::</span><span class="n">FullHamiltonian</span><span class="p">{</span><span class="n">O</span><span class="p">}</span>
-    <span class="n">size</span> <span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="kt">Int64</span><span class="p">}</span>
-    <span class="n">temperature</span> <span class="o">::</span><span class="kt">Float64</span>
-
-    <span class="c"># Derivatives</span>
-    <span class="n">momentumgrid</span> <span class="o">::</span><span class="kt">Array</span><span class="p">{</span><span class="kt">Vector</span><span class="p">{</span><span class="kt">Float64</span><span class="p">}}</span>
-    <span class="n">hfbhamiltonian</span> <span class="o">::</span><span class="n">HFBHamiltonian</span><span class="p">{</span><span class="n">O</span><span class="p">}</span>
-    <span class="n">hfbcomputer</span> <span class="o">::</span><span class="n">HFBComputer</span><span class="p">{</span><span class="n">O</span><span class="p">}</span>
-    <span class="n">greencollectors</span> <span class="o">::</span><span class="kt">Function</span>
-<span class="k">end</span>
-</pre></div>
-
-
-<p>HFBSolver contains:</p>
-<ol>
-<li>The full interacting Hamiltonian,</li>
-<li>Size of the system (i.e. number of k-points in the Brillouin zone)</li>
-<li>Temperature (needed to calculate the ρ and t)</li>
-</ol>
-<p>And using these properties, BLAH.</p>
-<p><a id='Using-HFBSolver-to-Find-Self-Consistent-Solution-1'></a></p>
-<h3 id="using-hfbsolver-to-find-self-consistent-solution">Using HFBSolver to Find Self-Consistent Solution</h3>
-<div class="codehilite"><pre><span></span><span class="n">loop</span><span class="p">(</span><span class="n">solver</span><span class="p">,</span> <span class="n">solution</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
-</pre></div>
+<p><code>addhopping!</code> and <code>addinteraction!</code>.</p>
                 
                   
                 
@@ -659,7 +685,7 @@
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
         
-          <a href="../hamiltonian/" title="Hamiltonian" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="../lattice/" title="Lattice" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-flex__cell md-flex__cell--shrink">
               <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
             </div>
@@ -668,19 +694,19 @@
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                Hamiltonian
+                Lattice
               </span>
             </div>
           </a>
         
         
-          <a href="../linearizedgap/" title="Linearized Gap Equation" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="../hfb/" title="HFB" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
               <span class="md-flex__ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                Linearized Gap Equation
+                HFB
               </span>
             </div>
             <div class="md-flex__cell md-flex__cell--shrink">

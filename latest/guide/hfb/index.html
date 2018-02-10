@@ -13,7 +13,7 @@
         <meta name="description" content="Hartree-Fock-Bogoliubov Solver">
       
       
-        <link rel="canonical" href="https://kyungminlee.org/HartreeFockBogoliubov.jl/manual/install/">
+        <link rel="canonical" href="https://kyungminlee.org/HartreeFockBogoliubov.jl/guide/hfb/">
       
       
         <meta name="author" content="kyungminlee">
@@ -42,7 +42,7 @@
     
     
       
-        <title>Installation - HartreeFockBogoliubov.jl</title>
+        <title>HFB - HartreeFockBogoliubov.jl</title>
       
     
     
@@ -96,7 +96,7 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="search">
     <label class="md-overlay" data-md-component="overlay" for="drawer"></label>
     
-      <a href="#installation" tabindex="1" class="md-skip">
+      <a href="#hfb-hartree-fock-bogoliubov" tabindex="1" class="md-skip">
         Skip to content
       </a>
     
@@ -122,7 +122,7 @@
                 HartreeFockBogoliubov.jl
               </span>
               <span class="md-header-nav__topic">
-                Installation
+                HFB
               </span>
             
           
@@ -317,47 +317,14 @@
       <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" checked>
     
     <label class="md-nav__link" for="nav-3">
-      Manual
+      User Guide
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
       <label class="md-nav__title" for="nav-3">
-        Manual
+        User Guide
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
         
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../frontpage/" title="Front Page" class="md-nav__link">
-      Front Page
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-  
-
-
-  <li class="md-nav__item md-nav__item--active">
-    
-    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="toc">
-    
-      
-    
-    
-    <a href="./" title="Installation" class="md-nav__link md-nav__link--active">
-      Installation
-    </a>
-    
-  </li>
-
         
           
           
@@ -387,11 +354,67 @@
           
           
 
+  
 
-  <li class="md-nav__item">
-    <a href="../hfb/" title="HFB" class="md-nav__link">
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="toc">
+        HFB
+      </label>
+    
+    <a href="./" title="HFB" class="md-nav__link md-nav__link--active">
       HFB
     </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#hfbcomputer" title="HFBComputer" class="md-nav__link">
+    HFBComputer
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hfbsolver" title="HFBSolver" class="md-nav__link">
+    HFBSolver
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#using-hfbsolver-to-find-self-consistent-solution" title="Using HFBSolver to Find Self-Consistent Solution" class="md-nav__link">
+    Using HFBSolver to Find Self-Consistent Solution
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+    </ul>
+  
+</nav>
+    
   </li>
 
         
@@ -415,6 +438,18 @@
   <li class="md-nav__item">
     <a href="../topology/" title="Topology" class="md-nav__link">
       Topology
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../example/" title="Example" class="md-nav__link">
+      Example
     </a>
   </li>
 
@@ -489,6 +524,40 @@
     
   
   
+    <label class="md-nav__title" for="toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#hfbcomputer" title="HFBComputer" class="md-nav__link">
+    HFBComputer
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hfbsolver" title="HFBSolver" class="md-nav__link">
+    HFBSolver
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#using-hfbsolver-to-find-self-consistent-solution" title="Using HFBSolver to Find Self-Consistent Solution" class="md-nav__link">
+    Using HFBSolver to Find Self-Consistent Solution
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -499,14 +568,66 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/kyungminlee/HartreeFockBogoliubov.jl/edit/master/docs/manual/install.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                  <a href="https://github.com/kyungminlee/HartreeFockBogoliubov.jl/edit/master/docs/guide/hfb.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
-                <p><a id='Installation-1'></a></p>
-<h1 id="installation">Installation</h1>
-<p><code>HartreeFockBogoliubov.jl</code> is not a registered package. Install it by</p>
-<div class="codehilite"><pre><span></span><span class="n">Pkg</span><span class="o">.</span><span class="n">clone</span><span class="p">(</span><span class="s">&quot;https://github.com/kyungminlee/HartreeFockBogoliubov.jl.git&quot;</span><span class="p">)</span>
-<span class="n">Pkg</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="s">&quot;HartreeFockBogoliubov&quot;</span><span class="p">)</span>
+                <p><a id='HFB:-Hartree-Fock-Bogoliubov-1'></a></p>
+<h1 id="hfb-hartree-fock-bogoliubov">HFB: Hartree-Fock-Bogoliubov</h1>
+<p><a id='HFBComputer-1'></a></p>
+<h2 id="hfbcomputer">HFBComputer</h2>
+<p><code>HFBComputer</code> is a struct which is used to calculate the Hartree-Fock-Bogoliubov Hamiltonian from mean-field parameters, and the parameters from the eigenstates of Hartree-Fock-Bogoliubov Hamiltonian.</p>
+<div class="codehilite"><pre><span></span><span class="n">mutable</span> <span class="n">struct</span> <span class="n">HFBComputer</span><span class="p">{</span><span class="n">O</span><span class="p">}</span>
+    <span class="n">unitcell</span> <span class="o">::</span><span class="n">UnitCell</span><span class="p">{</span><span class="n">O</span><span class="p">}</span>
+    <span class="n">hoppings</span> <span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="n">Spec</span><span class="o">.</span><span class="n">Hopping</span><span class="p">}</span>
+    <span class="n">temperature</span> <span class="o">::</span><span class="kt">Float64</span>
+
+    <span class="n">fermi</span> <span class="o">::</span><span class="kt">Function</span>
+    <span class="n">ρ_registry</span> <span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="n">CollectRow</span><span class="p">}</span>
+    <span class="n">t_registry</span> <span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="n">CollectRow</span><span class="p">}</span>
+    <span class="n">Γ_registry</span> <span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="n">DeployRow</span><span class="p">}</span>
+    <span class="n">Δ_registry</span> <span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="n">DeployRow</span><span class="p">}</span>
+<span class="k">end</span>
+</pre></div>
+
+
+<p>The type <code>CollectRow</code> keeps record of the "observables" that need to be measured in order to calculate the mean-field parameters. They are the ρ(i,j) and t(i,j) as defined by Goodman.</p>
+<div class="codehilite"><pre><span></span><span class="kd">const</span> <span class="n">CollectRow</span> <span class="o">=</span> <span class="kt">Tuple</span><span class="p">{</span><span class="kt">Bool</span><span class="p">,</span> <span class="kt">Int64</span><span class="p">,</span> <span class="kt">Int64</span><span class="p">,</span> <span class="kt">Vector</span><span class="p">{</span><span class="kt">Float64</span><span class="p">}}</span>
+</pre></div>
+
+
+<p><code>DeployRow</code> contains necessary information to calculate Γ(i,j) and Δ(i,j), using the measured ρ(i,j) and t(i,j)</p>
+<div class="codehilite"><pre><span></span><span class="kd">const</span> <span class="n">DeployRow</span> <span class="o">=</span> <span class="kt">Tuple</span><span class="p">{</span><span class="kt">Bool</span><span class="p">,</span> <span class="kt">Int64</span><span class="p">,</span> <span class="kt">Int64</span><span class="p">,</span> <span class="kt">Vector</span><span class="p">{</span><span class="kt">Float64</span><span class="p">},</span> <span class="kt">Vector</span><span class="p">{</span><span class="kt">Tuple</span><span class="p">{</span><span class="kt">Int64</span><span class="p">,</span> <span class="kt">Complex128</span><span class="p">,</span> <span class="kt">Bool</span><span class="p">}}}</span>
+</pre></div>
+
+
+<p><a id='HFBSolver-1'></a></p>
+<h2 id="hfbsolver">HFBSolver</h2>
+<p><code>HFBSolver</code> is blah.</p>
+<div class="codehilite"><pre><span></span><span class="n">mutable</span> <span class="n">struct</span> <span class="n">HFBSolver</span><span class="p">{</span><span class="n">O</span><span class="p">}</span>
+    <span class="c"># Originals</span>
+    <span class="n">hamiltonian</span> <span class="o">::</span><span class="n">FullHamiltonian</span><span class="p">{</span><span class="n">O</span><span class="p">}</span>
+    <span class="n">size</span> <span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="kt">Int64</span><span class="p">}</span>
+    <span class="n">temperature</span> <span class="o">::</span><span class="kt">Float64</span>
+
+    <span class="c"># Derivatives</span>
+    <span class="n">momentumgrid</span> <span class="o">::</span><span class="kt">Array</span><span class="p">{</span><span class="kt">Vector</span><span class="p">{</span><span class="kt">Float64</span><span class="p">}}</span>
+    <span class="n">hfbhamiltonian</span> <span class="o">::</span><span class="n">HFBHamiltonian</span><span class="p">{</span><span class="n">O</span><span class="p">}</span>
+    <span class="n">hfbcomputer</span> <span class="o">::</span><span class="n">HFBComputer</span><span class="p">{</span><span class="n">O</span><span class="p">}</span>
+    <span class="n">greencollectors</span> <span class="o">::</span><span class="kt">Function</span>
+<span class="k">end</span>
+</pre></div>
+
+
+<p>HFBSolver contains:</p>
+<ol>
+<li>The full interacting Hamiltonian,</li>
+<li>Size of the system (i.e. number of k-points in the Brillouin zone)</li>
+<li>Temperature (needed to calculate the ρ and t)</li>
+</ol>
+<p>And using these properties, BLAH.</p>
+<p><a id='Using-HFBSolver-to-Find-Self-Consistent-Solution-1'></a></p>
+<h3 id="using-hfbsolver-to-find-self-consistent-solution">Using HFBSolver to Find Self-Consistent Solution</h3>
+<div class="codehilite"><pre><span></span><span class="n">loop</span><span class="p">(</span><span class="n">solver</span><span class="p">,</span> <span class="n">solution</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
 </pre></div>
                 
                   
@@ -526,7 +647,7 @@
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
         
-          <a href="../frontpage/" title="Front Page" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="../hamiltonian/" title="Hamiltonian" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-flex__cell md-flex__cell--shrink">
               <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
             </div>
@@ -535,19 +656,19 @@
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                Front Page
+                Hamiltonian
               </span>
             </div>
           </a>
         
         
-          <a href="../lattice/" title="Lattice" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="../linearizedgap/" title="Linearized Gap Equation" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
               <span class="md-flex__ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                Lattice
+                Linearized Gap Equation
               </span>
             </div>
             <div class="md-flex__cell md-flex__cell--shrink">
