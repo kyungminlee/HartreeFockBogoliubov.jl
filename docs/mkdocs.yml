@@ -32,14 +32,13 @@ pages:
     - Hartree-Fock-Bogoliubov Theory: basics/hartreefockbogoliubov.md
     - Momentum Space Formulation: basics/momentumspace.md
     - Topological Invariants: basics/topology.md
-  - Manual:
-      - Front Page: manual/frontpage.md
-      - Installation: manual/install.md
-      - Lattice: manual/lattice.md
-      - Hamiltonian: manual/hamiltonian.md
-      - HFB: manual/hfb.md
-      - Linearized Gap Equation: manual/linearizedgap.md
-      - Topology: manual/topology.md
+  - User Guide:
+      - Lattice: guide/lattice.md
+      - Hamiltonian: guide/hamiltonian.md
+      - HFB: guide/hfb.md
+      - Linearized Gap Equation: guide/linearizedgap.md
+      - Topology: guide/topology.md
+      - Example: guide/example.md
   - Internals:
     - Internals: internals.md
     - More: internals/hartreefockbogoliubov.md

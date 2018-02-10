@@ -1,17 +1,17 @@
 # HartreeFockBogoliubov.jl Documentation
 
-## Basics
+## Overview
 
-```@contents
-Pages = [
-  "basics/hartreefockbogoliubov.md",
-  "basics/momentumspace.md"
-]
+
+
+## Installation
+
+`HartreeFockBogoliubov.jl` is not a registered package. Install it by
+
+``` julia
+Pkg.clone("https://github.com/kyungminlee/HartreeFockBogoliubov.jl.git")
+Pkg.build("HartreeFockBogoliubov")
 ```
 
-## Internals
-```@contents
-Pages = [
-  "internals.md"
-]
-```
+
+## License
