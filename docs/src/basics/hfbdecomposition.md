@@ -52,16 +52,6 @@ H &= \sum_{ij} T_{ij} c_{i}^{*} c_{j}
 \end{align}
 ```
 
-```math
-\begin{align}
-  \rho_{ij} &= \langle c_{j}^{*} c_{i} \rangle
-             = \sum_{n} f(\epsilon_{n}) u_{in} u_{jn}^{*} \\
-  t_{ij}    &= \langle c_{j} c_{i} \rangle
-             = \sum_{n} f(\epsilon_{n}) u_{in} v_{jn}^{*}
-\end{align}
-```
-
-
 ## Diagonal Interaction
 
 Let us first consider the *diagonal* interaction of the form
