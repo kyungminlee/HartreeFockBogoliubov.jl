@@ -3,56 +3,62 @@
 This document contains basics of Hartree-Fock-Bogoliubov Theory. We will follow [Goodman][Goodman80].
 
 ```math
-  H =  \sum_{ij} T_{ij} c_{i}^{\dagger} c_{j}
-     + \frac{1}{4} \sum_{ijkl} V_{ijkl} c_{i}^{\dagger} c_{j}^{\dagger} c_{l} c_{k}
+  H =  \sum_{ij} T_{ij} c_{i}^{*} c_{j}
+     + \frac{1}{4} \sum_{ijkl} V_{ijkl} c_{i}^{*} c_{j}^{*} c_{l} c_{k}
 ```
-
+The finite-temperature properties of the system described by the above Hamiltonian can be computed using the density matrix
 ```math
-H_{\text{HFB}} = E_0 + \sum_{i} E_{n} a_{n}^{\dagger} a_{n}
+\begin{align}
+D &= \frac{Z} e^{-\beta H} \\
+Z = \mathrm{Tr} e^{-\beta H}
+\end{align}
 ```
-
+In Hartree-Fock-Bogoliubov theory, we approximate the Hamiltonian ``H`` by a non-interacting Hamiltonian of "quasiparticles"
+```math
+H_{\text{HFB}} = E_0 + \sum_{n} E_{n} a_{n}^{*} a_{n}
+```
+The quasiparticle operator ``a`` is related to ``c`` in the following way:
 ```math
 c_{i} = \sum_{n} \left( U_{in} a_{n} + V_{in} a_{n}^{*} \right)
 ```
-TODO: is this correct?
-
-
+The HFB density matrix is given by
 ```math
 \begin{align}
-  D_{\text{HFB}} &= \frac{1}{Z_{\text{HFB}}} e^{-\beta \sum_{i} E_{i} \hat{n}_{i} } \\
-  Z_{\text{HFB}} &= \mathrm{Tr} e^{-\beta \sum_{i} E_{i} \hat{n}_{i} }
+  D_{\text{HFB}} &= \frac{1}{Z_{\text{HFB}}} e^{-\beta \sum_{n} E_{n} \hat{n}_{n} } \\
+  Z_{\text{HFB}} &= \mathrm{Tr} e^{-\beta \sum_{n} E_{n} \hat{n}_{n} }
 \end{align}
-```
-
-```math
-\hat{n}_{i} = a_{i}^{\dagger} a_{i}
-```
-
-
-```math
-Z_{\text{HFB}} = \prod_{i} \left( 1 + e^{-\beta E_{i}} \right)
-```
-
-
-```math
-D_{\text{HFB}} = Z_{\text{HFB}}^{-1} \prod_{i}
-\left[
-  e^{-\beta E_{i}} \hat{n}_{i} + (1 - \hat{n}_i)
-\right]
-= \prod_{i} \left[ f_{i} \hat{n}_{i} + (1-f_{i}) (1 - \hat{n}_{i}) \right]
 ```
 where
 ```math
-f_{i} = \frac{1}{1 + e^{\beta E_{i}}}
+\hat{n}_{n} = a_{n}^{*} a_{n}
 ```
+is the quasiparticle number operator.
 
+The HFB partition function can be calculated:
+```math
+Z_{\text{HFB}} = \prod_{n} \left( 1 + e^{-\beta E_{n}} \right)
+```
+and the density matrix is given in terms of the quasiparticle number operator
+```math
+D_{\text{HFB}} = Z_{\text{HFB}}^{-1}
+\prod_{n}
+\left[
+  e^{-\beta E_{n}} \hat{n}_{n} + (1 - \hat{n}_{n})
+\right]
+= \prod_{n} \left[ f_{n} \hat{n}_{n} + (1-f_{n}) (1 - \hat{n}_{n}) \right]
+```
+where
+```math
+f_{n} = \frac{1}{1 + e^{\beta E_{n}}}
+```
+is the Fermi-Dirac distribution function for the nth quasiparticle
 
 Single-quasparticle density matrix ``\overline{\rho}``  and pairing tensor ``\overline{t}``
 ```math
 \begin{align}
 \overline{\rho}_{ij}
-  &= \left\langle a_{j}^{\dagger} a_{i} \right\rangle
-   = \mathrm{Tr} \left( D a_{j}^{\dagger} a_{i} \right) \\
+  &= \left\langle a_{j}^{*} a_{i} \right\rangle
+   = \mathrm{Tr} \left( D a_{j}^{*} a_{i} \right) \\
 \overline{t}_{ij}
   &= \left\langle a_{j} a_{i} \right\rangle
    = \mathrm{Tr} \left( D a_{j} a_{i} \right)
@@ -69,8 +75,8 @@ The single-particle density matrix and pairing tensor are
 ```math
 \begin{align}
 \rho_{ij}
-  &= \left\langle c_{j}^{\dagger} c_{i} \right\rangle
-  = \mathrm{Tr} \left( D c_{j}^{\dagger} c_{i} \right) \\
+  &= \left\langle c_{j}^{*} c_{i} \right\rangle
+  = \mathrm{Tr} \left( D c_{j}^{*} c_{i} \right) \\
 t_{ij}
   &= \left\langle c_{j} c_{i} \right\rangle
   = \mathrm{Tr} \left( D c_{j} c_{i} \right)
@@ -90,13 +96,13 @@ where ``f_{ij} = \delta_{ij} f_{i}``.
 ### Expectation Values
 Wick's theorem
 ```math
-\left\langle c_{i}^{\dagger} c_{j}^{\dagger} c_{l} c_{k} \right\rangle
+\left\langle c_{i}^{*} c_{j}^{*} c_{l} c_{k} \right\rangle
 =
-\left\langle c_{i}^{\dagger} c_{k} \right\rangle
-\left\langle c_{j}^{\dagger} c_{l} \right\rangle
-- \left\langle c_{i}^{\dagger} c_{l} \right\rangle
-\left\langle c_{j}^{\dagger} c_{k} \right\rangle
-+ \left\langle c_{i}^{\dagger} c_{j}^{\dagger} \right\rangle
+\left\langle c_{i}^{*} c_{k} \right\rangle
+\left\langle c_{j}^{*} c_{l} \right\rangle
+- \left\langle c_{i}^{*} c_{l} \right\rangle
+\left\langle c_{j}^{*} c_{k} \right\rangle
++ \left\langle c_{i}^{*} c_{j}^{*} \right\rangle
 \left\langle c_{l} c_{k} \right\rangle
 ```
 
@@ -120,14 +126,15 @@ N &= \mathrm{tr} \rho
 
 The grand potential
 ```math
-\Omega = \sum_{ij} (T - \mu)_{ij} \rho_{ji} + \frac{1}{2} \sum_{ijkl} V_{ijkl} \rho_{l j} \rho_{ki}
+\Omega
+= \sum_{ij} (T - \mu)_{ij} \rho_{ji}
++ \frac{1}{2} \sum_{ijkl} V_{ijkl} \rho_{lj} \rho_{ki}
 + \frac{1}{4} \sum_{ijkl} V_{ijkl} t_{ij}^{*} t_{kl}
 + k_B T \sum_{i} \left[ f_{i} \ln f_{i} + (1-f_{i}) \ln (1-f_i)\right]
 ```
+
+
 ----
-
-
-
 
 
 

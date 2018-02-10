@@ -4,16 +4,16 @@
 We can write the Hamiltonian in the way that makes the Hermiticity manifest, taking into account duplicates properly
 ``` math
 \begin{align}
-H &= \sum_{ij} T_{ij} c_{i}^{\dagger} c_{j}
- + \frac{1}{4} \sum_{ijkl} c_{i}^{\dagger} c_{j} c_{l} c_{k}
+H &= \sum_{ij} T_{ij} c_{i}^{*} c_{j}
+ + \frac{1}{4} \sum_{ijkl} c_{i}^{*} c_{j}^{*} c_{l} c_{k}
 \\
-  &= \sum_{i} T_{i}{i} c_{i}^{\dagger} c_{i}
-    + \sum_{i \lt j} (T_{ij} c_{i}^{\dagger} c_{j} + T_{ij}^{*} c_{j}^{\dagger} c_{i}) \\
+  &= \sum_{i} T_{i}{i} c_{i}^{*} c_{i}
+    + \sum_{i \lt j} (T_{ij} c_{i}^{*} c_{j} + T_{ij}^{*} c_{j}^{*} c_{i}) \\
   &\quad
-    + \sum_{i < j} V_{ij ij} c_{i}^{\dagger} c_{j}^{\dagger} c_{j} c_{i}
-    + \sum_{ (i<j), (k<l) \text{ and } (i,j) < (k,l) }
-        V_{ijkl} c_{i}^{\dagger} c_{i}^{\dagger} c_{l} c_{k} +
-        V_{ijkl}^{*} c_{k}^{\dagger} c_{l}^{\dagger} c_{j} c_{i}
+    + \sum_{i < j} V_{ij ij} c_{i}^{*} c_{j}^{*} c_{j} c_{i}
+    + \sum_{\substack{(i<j), (k<l) \\ \text{ and } \\ (i,j) < (k,l) }}
+        V_{ijkl}     c_{i}^{*} c_{i}^{*} c_{l} c_{k} +
+        V_{ijkl}^{*} c_{k}^{*} c_{l}^{*} c_{j} c_{i}
 \end{align}
 ```
 
@@ -27,7 +27,7 @@ H &= \sum_{ij} T_{ij} c_{i}^{\dagger} c_{j}
 
 ```math
 \begin{align}
-  \rho_{ij} &= \langle c_{j}^{\dagger} c_{i} \rangle
+  \rho_{ij} &= \langle c_{j}^{*} c_{i} \rangle
              = \sum_{n} f(\epsilon_{n}) u_{in} u_{jn}^{*} \\
   t_{ij}    &= \langle c_{j} c_{i} \rangle
              = \sum_{n} f(\epsilon_{n}) u_{in} v_{jn}^{*}
@@ -39,7 +39,7 @@ H &= \sum_{ij} T_{ij} c_{i}^{\dagger} c_{j}
 
 Let us first consider the *diagonal* interaction of the form
 ```math
-  V c_{1}^{\dagger} c_{2}^{\dagger} c_{2} c_{1} ,
+  V c_{1}^{*} c_{2}^{*} c_{2} c_{1} ,
 ```
 which is the Hermitian conjugate of itself. Following [Goodman][Goodman80], this interaction decomposes into the following mean fields in the particle-hole and particle-particle channels:
 
@@ -69,11 +69,11 @@ in the particle-particle channel.
 ## Offdiagonal Interaction
 Now let us consider the *offdiagonal* interaction term of the form
 ```math
-  V c_{1}^{\dagger} c_{2}^{\dagger} c_{4} c_{3}.
+  V c_{1}^{*} c_{2}^{*} c_{4} c_{3}.
 ```
 Given this term in the interaction, it is implied that its Hermitian conjugate
 ```math
-  V^{*} c_{3}^{\dagger} c_{4}^{\dagger} c_{2} c_{1}.
+  V^{*} c_{3}^{*} c_{4}^{*} c_{2} c_{1}.
 ```
 is also included in the Hamiltonian. The two terms (the explicit term and its Hermitian conjugate) decomposes into
 
