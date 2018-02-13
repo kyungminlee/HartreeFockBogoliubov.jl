@@ -3,7 +3,8 @@ export getnextsolution,
        getnextsolutionpython,
        loop,
        looppython,
-       simpleupdate
+       simpleupdate,
+       isvalidsolution
 
 #using ProgressMeter
 using PyCall
@@ -198,7 +199,11 @@ function looppython(solver ::HFBSolver{T},
     sol
 end
 
-
+function isvalidsolution(solver ::HFBSolver{O},
+                         solution ::HFBSolution;
+                         tolerance::Real = sqrt(eps(Float64))) where {O}
+    return isvalidsolution{O}(solver.hfbcomputer, solution; tolerance=tolerance)
+end
 #=
 function totalfreeenergy(solver ::HFBSolver{T}, sol::HFBSolution) where T
   error("Not Implemented")

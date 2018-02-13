@@ -9,7 +9,8 @@ export makesourcefields,
        newhfbsolution,
        randomize!,
        fixhfbsolution,
-       iscompatible
+       iscompatible,
+       isvalidsolution
 
 export makehoppingmatrix,
        makeGammamatrix,
@@ -709,4 +710,22 @@ function freeze(computer ::HFBComputer{O},
         push!(hoppings, HoppingOffdiagonal{Complex128}(-Δ , j, i + norb, Rj, Ri))
     end
     return (nambuunitcell, hoppings)
+end
+
+function isvalidsolution(computer ::HFBComputer{O},
+                         solution ::HFBSolution;
+                         tolerance::Real = sqrt(eps(Float64))) where {O}
+    if (length(computer.ρ_registry) != length(solution.ρ) ||
+        length(computer.t_registry) != length(solution.t) ||
+        length(computer.Γ_registry) != length(solution.Γ) ||
+        length(computer.Δ_registry) != length(solution.Δ) )
+        return false
+    end
+
+    for (idx, (isdiag, i, j, r)) in enumerate(computer.ρ_registry)
+        if isdiag && ! isapprox(imag(solution.ρ[idx]), 0; atol=tolerance)
+            return false
+        end
+    end
+    return true
 end
