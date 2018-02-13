@@ -2,6 +2,7 @@ export HFBSolver
 export getnextsolution,
        getnextsolutionpython,
        loop,
+       loopthreaded,
        looppython,
        simpleupdate,
        isvalidsolution
@@ -97,8 +98,7 @@ function getnextsolutionthreaded(solver ::HFBSolver{O},
         tid = Threads.threadid()
         hk = ham(momentum)
         (eivals, eivecs) = eig(Hermitian(hk))
-        solver.greencollectors(momentum, eivals, eivecs,
-        threadedρ[tid], threadedt[tid])
+        solver.greencollectors(momentum, eivals, eivecs, threadedρ[tid], threadedt[tid])
     end
 
     for ρ in threadedρ
@@ -158,6 +158,41 @@ function loop(solver ::HFBSolver{T},
     for i in 1:run
         precondition(sol)
         newsol = getnextsolution(solver, sol)
+        update(sol, newsol)
+        callback(i, run)
+    end
+    sol
+end
+
+
+
+"""
+    loop
+
+Perform selfconsistency loop a number of times with the given precondition and given update functions.
+
+# Arguments
+* `solver ::HFBSolver{T}`
+* `sol::HFBSolution`
+* `run::Integer`
+
+# Optional Arguments
+* `update::Function=simpleupdate`
+* `precondition::Function=identity`
+* `callback::Function=_noop`: Function called after every update as
+`callback(i, run)`
+"""
+function loopthreaded(solver ::HFBSolver{T},
+                      sol::HFBSolution,
+                      run::Integer;
+                      update::Function=simpleupdate,
+                      precondition::Function=identity,
+                      callback::Function=_noop,
+                      ) where {T}
+    sol = copy(sol)
+    for i in 1:run
+        precondition(sol)
+        newsol = getnextsolutionthreaded(solver, sol)
         update(sol, newsol)
         callback(i, run)
     end
