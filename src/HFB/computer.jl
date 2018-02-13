@@ -285,6 +285,17 @@ function \(value :: T, sol1::HFBSolution) where {T <: Number}
                 value \ sol1.Γ, value \ sol1.Δ)
 end
 
+import Base: isapprox
+
+function isapprox(sol1::HFBSolution, sol2::HFBSolution;
+    atol::Real=0, rtol::Real=sqrt(eps(Float64)), nans::Bool=false)
+    return (isapprox(sol1.ρ, sol2.ρ; rtol=rtol, atol=atol, nans=nans) &&
+            isapprox(sol1.t, sol2.t; rtol=rtol, atol=atol, nans=nans) &&
+            isapprox(sol1.Γ, sol2.Γ; rtol=rtol, atol=atol, nans=nans) &&
+            isapprox(sol1.Δ, sol2.Δ; rtol=rtol, atol=atol, nans=nans) )
+end
+
+
 
 """
 func : (idx, i, j, r) -> val
@@ -585,8 +596,7 @@ end
 """
 Recompute Γ and Δ from ρ and t in a `HFBSolution`
 """
-function fixhfbsolution(computer::HFBComputer{O},
-    sol ::HFBSolution) where {O}
+function fixhfbsolution(computer::HFBComputer{O}, sol ::HFBSolution) where {O}
     sol.Γ[:], sol.Δ[:] = HFB.computetargetfields(computer, sol.ρ, sol.t)
 end
 
@@ -594,8 +604,7 @@ end
 """
 Randomize a solution
 """
-function randomize!(computer::HFBComputer{O},
-    sol ::HFBSolution) where {O}
+function randomize!(computer::HFBComputer{O}, sol ::HFBSolution) where {O}
     sol.ρ[:] = (rand(Float64, length(sol.ρ)))
     sol.t[:] = (rand(Complex128, length(sol.t)))
     sol.Γ[:], sol.Δ[:] = HFB.computetargetfields(computer, sol.ρ, sol.t)
