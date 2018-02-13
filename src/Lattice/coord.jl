@@ -67,7 +67,7 @@ Dimension of the fractional coordinates
 # Arguments
 * `fc ::FractCoord`: Fractional coordinates.
 """
-function dimension(fc ::FractCoord)
+function dimension(fc ::FractCoord) ::Integer
     d1 = length(fc.whole)
     d2 = length(fc.fraction)
     @assert(d1 == d2, "FractCoord: wrong dimension")
@@ -77,29 +77,29 @@ end
 import Base: +, -
 
 
-function -(fc ::FractCoord)
+function -(fc ::FractCoord) ::FractCoord
     return FractCoord(-(fc.whole + fc.fraction))
 end
 
 
-function +(fractcoord ::FractCoord, R ::AbstractVector{<:Integer})
+function +(fractcoord ::FractCoord, R ::AbstractVector{<:Integer}) ::FractCoord
     return FractCoord(fractcoord.whole + R, fractcoord.fraction)
 end
 
 
-function -(fractcoord ::FractCoord, R ::AbstractVector{<:Integer})
+function -(fractcoord ::FractCoord, R ::AbstractVector{<:Integer}) ::FractCoord
     return FractCoord(fractcoord.whole - R, fractcoord.fraction)
 end
 
 
-function +(fc1 ::FractCoord, fc2 ::FractCoord)
+function +(fc1 ::FractCoord, fc2 ::FractCoord) ::FractCoord
     R = Int64[fld(x+y,1) for (x,y) in zip(fc1.fraction, fc2.fraction)]
     r = Float64[mod(x+y,1) for (x,y) in zip(fc1.fraction, fc2.fraction)]
     return FractCoord(fc1.whole + fc2.whole + R, r)
 end
 
 
-function -(fc1 ::FractCoord, fc2 ::FractCoord)
+function -(fc1 ::FractCoord, fc2 ::FractCoord) ::FractCoord
     R = Int64[fld(x-y,1) for (x,y) in zip(fc1.fraction, fc2.fraction)]
     r = Float64[mod(x-y,1) for (x,y) in zip(fc1.fraction, fc2.fraction)]
     return FractCoord(fc1.whole - fc2.whole + R, r)
@@ -108,9 +108,10 @@ end
 import Base.isapprox
 
 function isapprox(fc1 ::FractCoord, fc2 ::FractCoord;
-    rtol::Float64=sqrt(eps(Float64)) )
+                  atol::Real=sqrt(eps(Float64)),
+                  rtol::Real=sqrt(eps(Float64)) ) ::Bool
     return (fc1.whole == fc2.whole) &&
-    isapprox(fc1.fraction, fc2.fraction; rtol=rtol)
+    isapprox(fc1.fraction, fc2.fraction; atol=atol)
 end
 
 import Base.show
@@ -127,7 +128,7 @@ end
 * `fc ::FractCoord`
 """
 function fract2carte(latticevectors ::AbstractArray{<:AbstractFloat, 2},
-    fc ::FractCoord)
+                     fc ::FractCoord) ::CarteCoord
     mc = fc.whole + fc.fraction
     cc = latticevectors * mc
     return CarteCoord(cc)
@@ -142,8 +143,8 @@ end
 * `cc ::CarteCoord`
 """
 function carte2fract(latticevectors ::AbstractArray{<:AbstractFloat, 2},
-    cc ::CarteCoord;
-    tol=sqrt(eps(Float64)))
+                     cc ::CarteCoord;
+                     tol=sqrt(eps(Float64))) ::FractCoord
     fc = inv(latticevectors) * cc
     w = Int64[fld(x, 1) for x in fc]
     f = Float64[mod(x, 1) for x in fc]

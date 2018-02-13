@@ -91,7 +91,7 @@ function newunitcell(latticevectors ::AbstractArray{<:AbstractFloat, 2};
     orbitals = Tuple{OrbitalType, FractCoord}[]
     orbitalindices = Dict{OrbitalType, Int64}()
     return UnitCell{OrbitalType}(latticevectors, orbitals,
-    reduced_rlv, 2*pi*reduced_rlv, orbitalindices)
+                                 reduced_rlv, 2*pi*reduced_rlv, orbitalindices)
 end
 
 

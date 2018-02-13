@@ -247,40 +247,40 @@ copy{T}(x::HFBHint{T}) = HFBHint{T}(copy(x.ρ), copy(x.t))
 
 import Base: +, -, *, /, \
 
-function +(sol1::HFBSolution)
+function +(sol1::HFBSolution) ::HFBSolution
     HFBSolution(sol1.ρ, sol1.t, sol1.Γ, sol1.Δ)
 end
 
-function -(sol1::HFBSolution)
+function -(sol1::HFBSolution) ::HFBSolution
     HFBSolution(-sol1.ρ, -sol1.t, -sol1.Γ, -sol1.Δ)
 end
 
-function +(sol1::HFBSolution, sol2::HFBSolution)
+function +(sol1::HFBSolution, sol2::HFBSolution) ::HFBSolution
     HFBSolution(sol1.ρ + sol2.ρ, sol1.t + sol2.t,
                 sol1.Γ + sol2.Γ, sol1.Δ + sol2.Δ)
 end
 
-function -(sol1::HFBSolution, sol2::HFBSolution)
+function -(sol1::HFBSolution, sol2::HFBSolution) ::HFBSolution
     HFBSolution(sol1.ρ - sol2.ρ, sol1.t - sol2.t,
                 sol1.Γ - sol2.Γ, sol1.Δ - sol2.Δ)
 end
 
-function *(sol1::HFBSolution, value :: T) where {T <: Number}
+function *(sol1::HFBSolution, value :: T) ::HFBSolution where {T <: Number}
     HFBSolution(sol1.ρ * value, sol1.t * value,
                 sol1.Γ * value, sol1.Δ * value)
 end
 
-function *(value :: T, sol1::HFBSolution) where {T <: Number}
+function *(value :: T, sol1::HFBSolution) ::HFBSolution where {T <: Number}
     HFBSolution(value * sol1.ρ, value * sol1.t,
                 value * sol1.Γ, value * sol1.Δ)
 end
 
-function /(sol1::HFBSolution, value :: T) where {T <: Number}
+function /(sol1::HFBSolution, value :: T) ::HFBSolution where {T <: Number}
     HFBSolution(sol1.ρ / value, sol1.t / value,
                 sol1.Γ / value, sol1.Δ / value)
 end
 
-function \(value :: T, sol1::HFBSolution) where {T <: Number}
+function \(value :: T, sol1::HFBSolution) ::HFBSolution where {T <: Number}
     HFBSolution(value \ sol1.ρ, value \ sol1.t,
                 value \ sol1.Γ, value \ sol1.Δ)
 end
@@ -288,7 +288,9 @@ end
 import Base: isapprox
 
 function isapprox(sol1::HFBSolution, sol2::HFBSolution;
-    atol::Real=0, rtol::Real=sqrt(eps(Float64)), nans::Bool=false)
+                  atol::Real=sqrt(eps(Float64)),
+                  rtol::Real=sqrt(eps(Float64)),
+                  nans::Bool=false) ::Bool
     return (isapprox(sol1.ρ, sol2.ρ; rtol=rtol, atol=atol, nans=nans) &&
             isapprox(sol1.t, sol2.t; rtol=rtol, atol=atol, nans=nans) &&
             isapprox(sol1.Γ, sol2.Γ; rtol=rtol, atol=atol, nans=nans) &&
@@ -297,6 +299,7 @@ end
 
 
 
+#TODO: move funcρ and funct to the back
 """
 func : (idx, i, j, r) -> val
 """
@@ -360,10 +363,10 @@ end
 """
 Return a generator of hopping matrix (which is a function of momentum)
 """
-function makehoppingmatrix(computer::HFBComputer)
+function makehoppingmatrix(computer::HFBComputer) ::Function
     norb = numorbital(computer.unitcell)
     hk = Generator.generatefast(computer.unitcell, computer.hoppings)
-    function(k ::AbstractVector{Float64})
+    function ret(k ::AbstractVector{Float64}) ::Matrix{Complex128}
         out = zeros(Complex128, (norb, norb))
         hk( k, out )
         return out
@@ -374,9 +377,9 @@ end
 Return a generator of Γ matrix (which is a function of momentum)
 """
 function makeGammamatrix(computer::HFBComputer,
-                         Γs ::AbstractVector{<:Number})
+                         Γs ::AbstractVector{<:Number}) ::Function
     norb = numorbital(computer.unitcell)
-    function(k ::AbstractVector{Float64})
+    function ret(k ::AbstractVector{Float64}) ::Matrix{Complex128}
         out = zeros(Complex128, (norb, norb))
         for (idx, Γ) in enumerate(Γs)
             (isdiag, i, j, r, _) = computer.Γ_registry[idx]
@@ -400,9 +403,9 @@ end
 Return a generator of Δ matrix (which is a function of momentum)
 """
 function makeDeltamatrix(computer::HFBComputer,
-                         Δs ::AbstractVector{<:Number})
+                         Δs ::AbstractVector{<:Number}) ::Function
     norb = numorbital(computer.unitcell)
-    function(k ::AbstractVector{Float64})
+    function ret(k ::AbstractVector{Float64}) ::Matrix{Complex128}
         out = zeros(Complex128, (norb, norb))
         # 3/3. Delta
         for (idx, Δ) in enumerate(Δs)
@@ -422,11 +425,11 @@ end
 """
 function makehamiltonian(computer ::HFBComputer,
                          Γs ::AbstractVector{<:Number},
-                         Δs ::AbstractVector{<:Number})
+                         Δs ::AbstractVector{<:Number}) ::Function
     norb = numorbital(computer.unitcell)
     hk = Generator.generatefast(computer.unitcell, computer.hoppings)
 
-    function(k ::AbstractVector{Float64})
+    function ret(k ::AbstractVector{Float64}) ::Matrix{Complex128}
         out = zeros(Complex128, (norb, 2, norb, 2))
         # 1/3. non-interacting kinetic part
         hk( k, view(out, :,1,:,1))
@@ -476,17 +479,17 @@ Returns a function which has the following signature
 collector(k, eigenvalues, eigenvectors, ρout, tout)
 ```
 """
-function makegreencollectors(computer::HFBComputer{O}) where {O}
+function makegreencollectors(computer::HFBComputer{O}) ::Function where {O}
     fermi = computer.fermi
     norb = numorbital(computer.unitcell)
     ρ_registry = computer.ρ_registry
     t_registry = computer.t_registry
 
-    function(k::AbstractVector{<:Real},
-             eigenvalues ::AbstractVector{<:Real},
-             eigenvectors ::AbstractMatrix{<:Number},
-             ρout ::AbstractVector{Complex128},
-             tout ::AbstractVector{Complex128})
+    function ret(k::AbstractVector{<:Real},
+                 eigenvalues ::AbstractVector{<:Real},
+                 eigenvectors ::AbstractMatrix{<:Number},
+                 ρout ::AbstractVector{Complex128},
+                 tout ::AbstractVector{Complex128})
         @assert(length(eigenvalues) == 2*norb)
         @assert(size(eigenvectors) == (2*norb, 2*norb))
 
@@ -519,7 +522,7 @@ end
 """
   Return a zero solution
 """
-function newhfbsolution(computer::HFBComputer{O}) where {O}
+function newhfbsolution(computer::HFBComputer{O}) ::HFBSolution where {O}
     ρ, t = HFB.makesourcefields(computer)
     Γ, Δ = HFB.computetargetfields(computer, ρ, t)
     return HFBSolution(ρ, t, Γ, Δ)
@@ -529,7 +532,7 @@ end
 """
     Check if hint contains ρ
 """
-function newhfbsolution(computer::HFBComputer{O}, hint::HFBHint{O}) where {O}
+function newhfbsolution(computer::HFBComputer{O}, hint::HFBHint{O}) ::HFBSolution where {O}
     ρ, t = HFB.makesourcefields(computer)
     unitcell = computer.unitcell
 
@@ -566,7 +569,7 @@ end
 
 """
 """
-function newhfbhint(computer::HFBComputer{O}, sol::HFBSolution) where {O}
+function newhfbhint(computer::HFBComputer{O}, sol::HFBSolution) ::HFBHint{O} where {O}
     ρ = Dict{Tuple{O, O, Vector{Int64}}, Complex128}()
     t = Dict{Tuple{O, O, Vector{Int64}}, Complex128}()
     uc = computer.unitcell
@@ -723,7 +726,7 @@ end
 
 function isvalidsolution(computer ::HFBComputer{O},
                          solution ::HFBSolution;
-                         tolerance::Real = sqrt(eps(Float64))) where {O}
+                         tolerance::Real = sqrt(eps(Float64))) ::Bool where {O}
     if (length(computer.ρ_registry) != length(solution.ρ) ||
         length(computer.t_registry) != length(solution.t) ||
         length(computer.Γ_registry) != length(solution.Γ) ||

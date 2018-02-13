@@ -32,7 +32,7 @@ end
 function HFBSolver(hamiltonian::FullHamiltonian{O},
                    size ::AbstractVector{<:Integer},
                    temperature ::Real;
-                   tol::Float64=eps(Float64)) where {O}
+                   tol::Float64=eps(Float64)) ::HFBSolver{O} where {O}
     dim = dimension(hamiltonian.unitcell)
     @assert(length(size) == dim, "dimension and size do not match: size=$(size)")
     @assert(all((x) -> x > 0, size), "size should be positive: size=$(size)")
@@ -51,7 +51,7 @@ end
 
 """
 """
-function getnextsolution(solver ::HFBSolver{T}, sol ::HFBSolution) where {T}
+function getnextsolution(solver ::HFBSolver{T}, sol ::HFBSolution) ::HFBSolution where {T}
     newsol = newhfbsolution(solver.hfbcomputer)
     ham = makehamiltonian(solver.hfbcomputer, sol.Γ, sol.Δ)
     for momentum in solver.momentumgrid
@@ -67,7 +67,7 @@ end
 
 """
 """
-function getnextsolutionpython(solver ::HFBSolver{T}, sol ::HFBSolution) where {T}
+function getnextsolutionpython(solver ::HFBSolver{T}, sol ::HFBSolution) ::HFBSolution where {T}
     newsol = newhfbsolution(solver.hfbcomputer)
     ham = makehamiltonian(solver.hfbcomputer, sol.Γ, sol.Δ)
     for momentum in solver.momentumgrid
@@ -85,7 +85,7 @@ end
 """
 """
 function getnextsolutionthreaded(solver ::HFBSolver{O},
-                                 sol ::HFBSolution) where {O}
+                                 sol ::HFBSolution) ::HFBSolution where {O}
     newsol = newhfbsolution(solver.hfbcomputer)
     const ham = makehamiltonian(solver.hfbcomputer, sol.Γ, sol.Δ)
 
@@ -116,7 +116,7 @@ end
 
 
 
-function simpleupdate(sol::HFBSolution, newsol ::HFBSolution)
+function simpleupdate(sol::HFBSolution, newsol ::HFBSolution) ::HFBSolution
     # Tested anyway by the assignment
     #@assert(length(sol.ρ) == length(newsol.ρ))
     #@assert(length(sol.t) == length(newsol.t))
@@ -147,13 +147,13 @@ Perform selfconsistency loop a number of times with the given precondition and g
 * `callback::Function=_noop`: Function called after every update as
 `callback(i, run)`
 """
-function loop(solver ::HFBSolver{T},
+function loop(solver ::HFBSolver{O},
               sol::HFBSolution,
               run::Integer;
               update::Function=simpleupdate,
               precondition::Function=identity,
               callback::Function=_noop,
-              ) where {T}
+              ) ::HFBSolution where {O}
     sol = copy(sol)
     for i in 1:run
         precondition(sol)
@@ -182,13 +182,13 @@ Perform selfconsistency loop a number of times with the given precondition and g
 * `callback::Function=_noop`: Function called after every update as
 `callback(i, run)`
 """
-function loopthreaded(solver ::HFBSolver{T},
+function loopthreaded(solver ::HFBSolver{O},
                       sol::HFBSolution,
                       run::Integer;
                       update::Function=simpleupdate,
                       precondition::Function=identity,
                       callback::Function=_noop,
-                      ) where {T}
+                      ) ::HFBSolution where {O}
     sol = copy(sol)
     for i in 1:run
         precondition(sol)
@@ -217,13 +217,13 @@ using Python's `numpy.linalg.eigh` (which hopefully is using MKL library).
 * `callback::Function=_noop`: Function called after every update as
 `callback(i, run)`
 """
-function looppython(solver ::HFBSolver{T},
+function looppython(solver ::HFBSolver{O},
                     sol::HFBSolution,
                     run::Integer;
                     update::Function=simpleupdate,
                     precondition::Function=identity,
                     callback::Function=_noop,
-                    ) where {T}
+                    ) ::HFBSolution where {O}
     sol = copy(sol)
     for i in 1:run
         precondition(sol)
@@ -236,7 +236,7 @@ end
 
 function isvalidsolution(solver ::HFBSolver{O},
                          solution ::HFBSolution;
-                         tolerance::Real = sqrt(eps(Float64))) where {O}
+                         tolerance::Real = sqrt(eps(Float64))) ::Bool where {O}
     return isvalidsolution{O}(solver.hfbcomputer, solution; tolerance=tolerance)
 end
 #=
