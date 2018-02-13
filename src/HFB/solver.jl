@@ -1,5 +1,6 @@
 export HFBSolver
 export getnextsolution,
+       getnextsolutionthreaded,
        getnextsolutionpython,
        loop,
        loopthreaded,
