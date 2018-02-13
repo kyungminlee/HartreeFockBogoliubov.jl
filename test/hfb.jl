@@ -1,3 +1,7 @@
+using Base.Test
+
+using HartreeFockBogoliubov
+using HartreeFockBogoliubov: Spec, Generator, HFB, Dictify
 
 #=
 @testset "single-site" begin
@@ -75,7 +79,7 @@
     @show Δn
     (Γs, Δs) = (Γn * 0.5 + Γs * 0.5, Δn * 0.5 + Δs * 0.5)
   end
-
+=#
 
 
 
@@ -125,9 +129,10 @@
   # 2. Decide on FractCoord vs CarteCoord
   # 3. Implement HFBComputer
   # 4. Test
-  =#
 
 end
+=#
+
 
 @testset "squarehubbard" begin
   latticevectors = [1.0 0.0 ; 0.0 1.0]
@@ -194,4 +199,45 @@ end
     end
     println("U = $(U), ρ = $(ρn)")
   end
+end
+
+
+using BenchmarkTools, Compat
+
+@testset "pairinghubbard" begin
+    latticevectors = [1.0 0.0 ; 0.0 1.0]
+    unitcell = newunitcell(latticevectors, OrbitalType=Symbol)
+    addorbital!(unitcell, :UP, FractCoord([0,0], [0.0, 0.0]))
+    addorbital!(unitcell, :DN, FractCoord([0,0], [0.0, 0.0]))
+
+    U = -2.0
+    hamspec = Spec.FullHamiltonian(unitcell)
+    μ = 0.0
+    #U = 5.0
+    for sp in [:UP, :DN]
+        Spec.addhopping!(hamspec, Spec.hoppingbycarte(unitcell, -μ - 0.5*U, sp, [0.0, 0.0]))
+        Spec.addhopping!(hamspec, Spec.hoppingbycarte(unitcell, -1.0, sp, sp, [0.0, 0.0], [ 1.0, 0.0]))
+        Spec.addhopping!(hamspec, Spec.hoppingbycarte(unitcell, -1.0, sp, sp, [0.0, 0.0], [ 0.0, 1.0]))
+    end
+
+    Spec.addinteraction!(hamspec, Spec.interactionbycarte(unitcell, U, :UP, :DN, [0.0, 0.0], [0.0, 0.0]))
+
+    solver = HFBSolver(hamspec, [24, 24], 0.0)
+    sol = newhfbsolution(solver.hfbcomputer)
+    randomize!(solver.hfbcomputer, sol)
+
+    @show Threads.nthreads()
+
+
+    #@btime loop($solver, $sol, 30)
+    #@btime loopthreaded($solver, $sol, 30)
+    #loop($solver, $sol, 30)
+    #loopthreaded($solver, $sol, 30)
+
+    newsol1 = loop(solver, sol, 3)
+    newsol2 = loopthreaded(solver, sol, 3)
+
+    @show newsol1
+    @show newsol2
+    @show isapprox(newsol1, newsol2)
 end
