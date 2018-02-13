@@ -239,6 +239,28 @@ function isvalidsolution(solver ::HFBSolver{O},
                          tolerance::Real = sqrt(eps(Float64))) ::Bool where {O}
     return isvalidsolution{O}(solver.hfbcomputer, solution; tolerance=tolerance)
 end
+
+
+# ===== Functions from HFBComputer
+for fname in [:makesourcefields,
+              :computetargetfields,
+              :makehoppingmatrix, :makeGammamatrix, :makeDeltamatrix,
+              :makehamiltonian,
+              :makegreencollectors,
+              :newhfbsolution,
+              :newhfbhint,
+              :fixhfbsolution,
+              :randomize!,
+              :freeze,
+              :isvalidsolution
+              ]
+    @eval begin
+        $fname(solver::HFBSolver, args...) = ($fname)(solver.hfbcomputer, args...)
+    end
+end
+
+
+
 #=
 function totalfreeenergy(solver ::HFBSolver{T}, sol::HFBSolution) where T
   error("Not Implemented")
