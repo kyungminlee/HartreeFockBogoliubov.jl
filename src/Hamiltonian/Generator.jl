@@ -11,7 +11,7 @@ using ..Spec
 """
     generatefast
 """
-function generatefast(uc ::UnitCell{O}, hop::HoppingDiagonal) where {O}
+function generatefast(uc ::UnitCell{O}, hop::HoppingDiagonal{R}) where {O, R<:Real}
     ndim = dimension(uc)
     norb = numorbital(uc)
     v = hop.amplitude
@@ -29,7 +29,7 @@ end
 """
     generatefast
 """
-function generatefast(uc ::UnitCell{O}, hop::HoppingOffdiagonal) where {O}
+function generatefast(uc ::UnitCell{O}, hop::HoppingOffdiagonal{C}) where {O, C<:Number}
     ndim = dimension(uc)
     norb = numorbital(uc)
     v = hop.amplitude
