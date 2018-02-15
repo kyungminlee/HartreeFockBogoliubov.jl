@@ -424,6 +424,75 @@ end
 """
 """
 function makehamiltonian(computer ::HFBComputer,
+                         theΓs ::AbstractVector{<:Number},
+                         theΔs ::AbstractVector{<:Number}) ::Function
+    norb = numorbital(computer.unitcell)
+    hk = Generator.generatefast(computer.unitcell, computer.hoppings)
+    Γ_registry = copy(computer.Γ_registry)
+    Δ_registry = copy(computer.Δ_registry)
+    Γs = Array{Complex128}(theΓs)
+    Δs = Array{Complex128}(theΔs)
+
+    for (idx, Γ) in enumerate(Γs)
+        (isdiag, i, j, r, _) = Γ_registry[idx]
+        if isdiag
+            @assert(i==j && all(x -> isapprox(x, 0.0), r))
+            @assert(isapprox(imag(Γ), 0.0))
+        else
+            @assert(!(i==j && all(x -> isapprox(x, 0.0), r)))
+        end
+    end
+    for (idx, Δ) in enumerate(Δs)
+        (isdiag, i, j, r, _) = Δ_registry[idx]
+        @assert( !isdiag )
+        @assert( !(i==j && all(x -> isapprox(x, 0.0), r)) )
+    end
+
+    function ret(k ::AbstractVector{Float64}) ::Matrix{Complex128}
+        out = zeros(Complex128, (norb, 2, norb, 2))
+        h11 = view(out, :, 1, :, 1)
+        h12 = view(out, :, 1, :, 2)
+        h21 = view(out, :, 2, :, 1)
+        h22 = view(out, :, 2, :, 2)
+
+        # 1/3. non-interacting kinetic part
+        hk( k, h11)
+        hk(-k, h22)
+
+        # 2/3. Gamma
+        for (idx, Γ) in enumerate(Γs)
+            (isdiag, i, j, r, _) = Γ_registry[idx]
+            if isdiag
+                h11[i,i] += real(Γ)
+                h22[i,i] += real(Γ)
+            else
+                phase = cis(dot( k, r))
+                h11[i,j] += Γ * phase
+                h22[i,j] += Γ * conj(phase)
+                h11[j,i] += conj(Γ * phase)
+                h22[j,i] += conj(Γ) * phase
+            end
+        end
+        h22[:,:] = -transpose(h22)
+
+        # 3/3. Delta
+        for (idx, Δ) in enumerate(Δs)
+            (isdiag, i, j, r, _) = Δ_registry[idx]
+            phase = cis(dot(k, r))
+            val1 = Δ * phase
+            val2 = Δ * conj(phase)
+            h12[i,j] += val1
+            h12[j,i] -= val2
+            h21[j,i] += conj(val1)
+            h21[i,j] -= conj(val2)
+        end
+        return reshape(out, (norb*2, norb*2))
+    end
+end
+
+"""
+"""
+function makehamiltonianold(computer ::HFBComputer,
                          Γs ::AbstractVector{<:Number},
                          Δs ::AbstractVector{<:Number}) ::Function
     norb = numorbital(computer.unitcell)
