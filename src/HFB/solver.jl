@@ -11,6 +11,8 @@ export getnextsolution,
 #using ProgressMeter
 using PyCall
 @pyimport numpy.linalg as npl
+@pyimport scipy.linalg as spl
+@pyimport scipy.linalg.lapack as spll
 
 """
 """
@@ -74,6 +76,9 @@ function getnextsolutionpython(solver ::HFBSolver{T}, sol ::HFBSolution) ::HFBSo
     for momentum in solver.momentumgrid
         hk = ham(momentum)
         (eivals, eivecs) = npl.eigh(hk)
+        #(eivals, eivecs) = spl.eigh(hk, overwrite_a=true, turbo=true)
+        #(eivals, eivecs, info) = spll.zheevd(hk, overwrite_a=1)
+        #@assert(info == 0, "zheevd error")
         solver.greencollectors(momentum, eivals, eivecs, newsol.ρ, newsol.t)
     end
     newsol.ρ /= length(solver.momentumgrid)
@@ -119,10 +124,6 @@ end
 
 function simpleupdate(sol::HFBSolution, newsol ::HFBSolution) ::HFBSolution
     # Tested anyway by the assignment
-    #@assert(length(sol.ρ) == length(newsol.ρ))
-    #@assert(length(sol.t) == length(newsol.t))
-    #@assert(length(sol.Γ) == length(newsol.Γ))
-    #@assert(length(sol.Δ) == length(newsol.Δ))
     sol.ρ[:] = newsol.ρ[:]
     sol.t[:] = newsol.t[:]
     sol.Γ[:] = newsol.Γ[:]
