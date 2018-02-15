@@ -554,6 +554,18 @@ function makegreencollectors(computer::HFBComputer{O}) ::Function where {O}
     ρ_registry = copy(computer.ρ_registry)
     t_registry = copy(computer.t_registry)
 
+    for (idx, (isdiag, i, j, r)) in enumerate(ρ_registry)
+        if isdiag
+            @assert((i==j && all(x -> isapprox(x, 0.0), r)))
+        else
+            @assert(!(i==j && all(x -> isapprox(x, 0.0), r)))
+        end
+    end
+    for (idx, (isdiag, i, j, r)) in enumerate(t_registry)
+        @assert(!isdiag)
+        @assert(!(i==j && all(x -> isapprox(x, 0.0), r)))
+    end
+
     function ret(k::AbstractVector{<:Real},
                  eigenvalues ::AbstractVector{<:Real},
                  eigenvectors ::AbstractMatrix{<:Number},
@@ -567,44 +579,19 @@ function makegreencollectors(computer::HFBComputer{O}) ::Function where {O}
         ψ = reshape(eigenvectors, (norb, 2, norb*2))
         u = view(ψ, :, 1, :)
         v = view(ψ, :, 2, :)
-        #u = ψ[:, 1, :]
-        #v = ψ[:, 2, :]
 
-        #=
-        ρdiag(i ::Int) ::Complex128 = sum(f .* abs2.(u[i, :]))
-        ρfunc(i ::Int, j ::Int) ::Complex128 = sum(f .* u[i, :] .* conj(u[j, :]))
-        tfunc(i ::Int, j ::Int) ::Complex128 = sum(f .* u[i, :] .* conj(v[j, :]))
-
-        ρmat1 = zeros(Complex128, (norb, norb))
-        tmat1 = zeros(Complex128, (norb, norb))
-        for i in 1:norb, j in 1:norb
-            ρmat1[i,j] = sum(f .* u[i, :] .* conj(u[j, :]))
-            tmat1[i,j] = sum(f .* u[i, :] .* conj(v[j, :]))
-        end
-        =#
-        #fdiag = Diagonal(f)
-        #ρmat = u * fdiag * (u')
-        #tmat = u * fdiag * (v')
         uf = u * Diagonal(f)
         ρmat = uf * (u')
         tmat = uf * (v')
 
         for (idx, (isdiag, i, j, r)) in enumerate(ρ_registry)
             if isdiag
-                #@assert((i==j && all(x -> isapprox(x, 0.0), r)))
-                #ρout[idx] += real( ρfunc(i, i) )
-                #ρout[idx] += ρdiag(i, i)
                 ρout[idx] += real( ρmat[i,i] )
             else
-                #@assert(!(i==j && all(x -> isapprox(x, 0.0), r)))
-                #ρout[idx] += ρfunc(i, j) * cis(-dot(k, r))
                 ρout[idx] += ρmat[i, j] * cis(-dot(k, r))
             end
         end
         for (idx, (isdiag, i, j, r)) in enumerate(t_registry)
-            #@assert(!isdiag)
-            #@assert(!(i==j && all(x -> isapprox(x, 0.0), r)))
-            #tout[idx] += tfunc(i, j) * cis(-dot(k, r))
             tout[idx] += tmat[i, j] * cis(-dot(k, r))
         end
         nothing
@@ -638,7 +625,6 @@ function makegreencollectorsold(computer::HFBComputer{O}) ::Function where {O}
         for (idx, (isdiag, i, j, r)) in enumerate(ρ_registry)
             if isdiag
                 @assert((i==j && all(x -> isapprox(x, 0.0), r)))
-                #ρout[idx] += real( ρfunc(i, i) )
                 ρout[idx] += ρdiag(i, i)
             else
                 @assert(!(i==j && all(x -> isapprox(x, 0.0), r)))
