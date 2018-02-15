@@ -551,8 +551,8 @@ collector(k, eigenvalues, eigenvectors, ρout, tout)
 function makegreencollectors(computer::HFBComputer{O}) ::Function where {O}
     fermi = computer.fermi
     norb = numorbital(computer.unitcell)
-    ρ_registry = computer.ρ_registry
-    t_registry = computer.t_registry
+    ρ_registry = copy(computer.ρ_registry)
+    t_registry = copy(computer.t_registry)
 
     function ret(k::AbstractVector{<:Real},
                  eigenvalues ::AbstractVector{<:Real},
@@ -565,8 +565,10 @@ function makegreencollectors(computer::HFBComputer{O}) ::Function where {O}
 
         f = [fermi(e) for e in eigenvalues]
         ψ = reshape(eigenvectors, (norb, 2, norb*2))
-        u = ψ[:, 1, :]
-        v = ψ[:, 2, :]
+        u = view(ψ, :, 1, :)
+        v = view(ψ, :, 2, :)
+        #u = ψ[:, 1, :]
+        #v = ψ[:, 2, :]
 
         #=
         ρdiag(i ::Int) ::Complex128 = sum(f .* abs2.(u[i, :]))
@@ -580,27 +582,28 @@ function makegreencollectors(computer::HFBComputer{O}) ::Function where {O}
             tmat1[i,j] = sum(f .* u[i, :] .* conj(v[j, :]))
         end
         =#
-        fdiag = Diagonal(f)
-        ρmat = u * fdiag * (u')
-        tmat = u * fdiag * (v')
-        #@show isapprox(ρmat, ρmat1)
-        #@show isapprox(tmat, tmat1)
+        #fdiag = Diagonal(f)
+        #ρmat = u * fdiag * (u')
+        #tmat = u * fdiag * (v')
+        uf = u * Diagonal(f)
+        ρmat = uf * (u')
+        tmat = uf * (v')
 
         for (idx, (isdiag, i, j, r)) in enumerate(ρ_registry)
             if isdiag
-                @assert((i==j && all(x -> isapprox(x, 0.0), r)))
+                #@assert((i==j && all(x -> isapprox(x, 0.0), r)))
                 #ρout[idx] += real( ρfunc(i, i) )
                 #ρout[idx] += ρdiag(i, i)
                 ρout[idx] += real( ρmat[i,i] )
             else
-                @assert(!(i==j && all(x -> isapprox(x, 0.0), r)))
+                #@assert(!(i==j && all(x -> isapprox(x, 0.0), r)))
                 #ρout[idx] += ρfunc(i, j) * cis(-dot(k, r))
                 ρout[idx] += ρmat[i, j] * cis(-dot(k, r))
             end
         end
         for (idx, (isdiag, i, j, r)) in enumerate(t_registry)
-            @assert(!isdiag)
-            @assert(!(i==j && all(x -> isapprox(x, 0.0), r)))
+            #@assert(!isdiag)
+            #@assert(!(i==j && all(x -> isapprox(x, 0.0), r)))
             #tout[idx] += tfunc(i, j) * cis(-dot(k, r))
             tout[idx] += tmat[i, j] * cis(-dot(k, r))
         end
