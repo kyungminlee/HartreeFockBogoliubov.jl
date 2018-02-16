@@ -1,3 +1,4 @@
+__precompile__(false)  ## because HFB uses pyimport
 module HFB
 
 using ..Lattice
