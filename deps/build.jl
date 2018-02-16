@@ -3,7 +3,6 @@ using Conda
 const PACKAGES = ["numpy", "scipy"]
 
 Conda.add("numpy")
-Conda.add("scipy")
 
 #=
 # Import pip
