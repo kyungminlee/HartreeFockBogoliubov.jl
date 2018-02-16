@@ -12,8 +12,10 @@ script:
   - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
   - julia -e 'Pkg.clone(pwd())'
   - julia -e 'Pkg.build("HartreeFockBogoliubov")'
-  - julia -e 'Pkg.test("HartreeFockBogoliubov", coverage=true)'
+  #- julia -e 'Pkg.test("HartreeFockBogoliubov", coverage=true)'
 after_success:
+  - PIP=`which pip || (python --version 2>&1 | grep -q 'Python 2' && which pip2) || (python --version 2>&1 | grep -q 'Python 3' && which pip3)`
+  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then alias pip=$PIP; fi
   - julia -e 'cd(Pkg.dir("HartreeFockBogoliubov")); Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'
   - julia -e 'Pkg.add("Documenter")'
   - julia -e 'cd(Pkg.dir("HartreeFockBogoliubov")); include(joinpath("docs", "make.jl"))'
