@@ -490,55 +490,6 @@ function makehamiltonian(computer ::HFBComputer,
     end
 end
 
-"""
-"""
-function makehamiltonianold(computer ::HFBComputer,
-                         Γs ::AbstractVector{<:Number},
-                         Δs ::AbstractVector{<:Number}) ::Function
-    norb = numorbital(computer.unitcell)
-    hk = Generator.generatefast(computer.unitcell, computer.hoppings)
-
-    function ret(k ::AbstractVector{Float64}) ::Matrix{Complex128}
-        out = zeros(Complex128, (norb, 2, norb, 2))
-        # 1/3. non-interacting kinetic part
-        hk( k, view(out, :,1,:,1))
-        hk(-k, view(out, :,2,:,2))
-        # 2/3. Gamma
-        for (idx, Γ) in enumerate(Γs)
-            (isdiag, i, j, r, _) = computer.Γ_registry[idx]
-            if isdiag
-                @assert(i==j && all(x -> isapprox(x, 0.0), r))
-                @assert(isapprox(imag(Γ), 0.0))
-                out[i,1,j,1] += real(Γ)
-                out[i,2,j,2] += real(Γ)
-            else
-                @assert(!(i==j && all(x -> isapprox(x, 0.0), r)))
-                phase = cis(dot( k, r))
-                out[i,1,j,1] += Γ * phase
-                out[i,2,j,2] += Γ * conj(phase)
-                out[j,1,i,1] += conj(Γ * phase)
-                out[j,2,i,2] += conj(Γ) * phase
-            end
-        end
-        out[:,2,:,2] = -transpose(out[:,2,:,2])
-
-        # 3/3. Delta
-        for (idx, Δ) in enumerate(Δs)
-            (isdiag, i, j, r, _) = computer.Δ_registry[idx]
-            @assert( !isdiag )
-            @assert( !(i==j && all(x -> isapprox(x, 0.0), r)) )
-            phase = cis(dot(k, r))
-            val1 = Δ * phase
-            val2 = Δ * conj(phase)
-            out[i,1,j,2] += val1
-            out[j,1,i,2] -= val2
-            out[j,2,i,1] += conj(val1)
-            out[i,2,j,1] -= conj(val2)
-        end
-        return reshape(out, (norb*2, norb*2))
-    end
-end
-
 
 """
     makegreencollectors
@@ -555,8 +506,8 @@ function makegreencollectors(computer::HFBComputer{O}) ::Function where {O}
     t_registry = copy(computer.t_registry)
 
     for (idx, (isdiag, i, j, r)) in enumerate(ρ_registry)
-        if isdiag
-            @assert((i==j && all(x -> isapprox(x, 0.0), r)))
+        if
+            @assert(isdiag == (i==j && all(x -> isapprox(x, 0.0), r)))
         else
             @assert(!(i==j && all(x -> isapprox(x, 0.0), r)))
         end
@@ -597,50 +548,6 @@ function makegreencollectors(computer::HFBComputer{O}) ::Function where {O}
         nothing
     end
 end
-
-function makegreencollectorsold(computer::HFBComputer{O}) ::Function where {O}
-    fermi = computer.fermi
-    norb = numorbital(computer.unitcell)
-    ρ_registry = computer.ρ_registry
-    t_registry = computer.t_registry
-
-    function ret(k::AbstractVector{<:Real},
-                 eigenvalues ::AbstractVector{<:Real},
-                 eigenvectors ::AbstractMatrix{<:Number},
-                 ρout ::AbstractVector{Complex128},
-                 tout ::AbstractVector{Complex128}) ::Void
-
-        @assert(length(eigenvalues) == 2*norb)
-        @assert(size(eigenvectors) == (2*norb, 2*norb))
-
-        f = [fermi(e) for e in eigenvalues]
-        ψ = reshape(eigenvectors, (norb, 2, norb*2))
-        u = ψ[:, 1, :]
-        v = ψ[:, 2, :]
-
-        ρdiag(i ::Int) ::Complex128 = sum(f .* abs2.(u[i, :]))
-        ρfunc(i ::Int, j ::Int) ::Complex128 = sum(f .* u[i, :] .* conj(u[j, :]))
-        tfunc(i ::Int, j ::Int) ::Complex128 = sum(f .* u[i, :] .* conj(v[j, :]))
-
-        for (idx, (isdiag, i, j, r)) in enumerate(ρ_registry)
-            if isdiag
-                @assert((i==j && all(x -> isapprox(x, 0.0), r)))
-                ρout[idx] += ρdiag(i, i)
-            else
-                @assert(!(i==j && all(x -> isapprox(x, 0.0), r)))
-                ρout[idx] += ρfunc(i, j) * cis(-dot(k, r))
-            end
-        end
-        for (idx, (isdiag, i, j, r)) in enumerate(t_registry)
-            @assert(!isdiag)
-            @assert(!(i==j && all(x -> isapprox(x, 0.0), r)))
-            tout[idx] += tfunc(i, j) * cis(-dot(k, r))
-        end
-        nothing
-    end
-end
-
-
 
 
 """
