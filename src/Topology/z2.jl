@@ -212,7 +212,7 @@ function z2index(uc::UnitCell{O},
             u, v = eig(Hermitian(0.5 * (hk + hk')))
             for idxpair in selectpairs
                 @assert(isapprox(u[idxpair*2-1], u[idxpair*2]; rtol=rtol, atol=atol),
-                        "$idxpair's eigenpair $(u[idxpair*2-1]) and $(u[idxpair*2]) should be equal.")
+                        "$idxpair's eigenpair $(u[idxpair*2-1]) and $(u[idxpair*2-1]) should be equal.")
                 v[:, idxpair*2] = timereversal * conj(v[:, idxpair*2-1])    # T = U_T K
             end
             eigenvaluegrid[idx] = u[selectbands]
