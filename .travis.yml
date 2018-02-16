@@ -10,7 +10,7 @@ script:
   - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
   - julia -e 'ENV["CONDA_JL_VERSION"]="3"; Pkg.add("Conda")'
   - julia -e 'using Conda; ENV["PYTHON"]=joinpath(Conda.PYTHONDIR, "python"); Pkg.add("PyCall")'
-  - julia -e 'using Conda; Conda.add("numpy")'
+  - julia -e 'using Conda; Conda.add("numpy"); Conda.add("scipy")'
   - julia -e 'Pkg.clone(pwd())'
   - julia -e 'Pkg.build("HartreeFockBogoliubov")'
   - julia -e 'Pkg.test("HartreeFockBogoliubov", coverage=true)'
