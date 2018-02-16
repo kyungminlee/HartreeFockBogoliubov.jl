@@ -6,3 +6,5 @@ docs/site/
 lab/
 example/
 testapp/
+
+*.swp
