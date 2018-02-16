@@ -54,7 +54,7 @@ using HartreeFockBogoliubov: Spec, Generator, HFB, Dictify
   end
 
   greencollectors = HFB.makegreencollectors(computer)
-  ρs, ts = HFB.makesourcefields((x...) -> rand(Float64), (x...) -> rand(Float64), computer)
+  ρs, ts = HFB.makesourcefields(computer, (x...) -> rand(Float64), (x...) -> rand(Float64))
   (Γs, Δs) = HFB.computetargetfields(computer, ρs, ts)
 
   ρn, tn = HFB.makesourcefields(computer)
@@ -105,9 +105,10 @@ using HartreeFockBogoliubov: Spec, Generator, HFB, Dictify
   rng = MersenneTwister(1)
 
   (Γs, Δs) = HartreeFockBogoliubovModel.makesourcefields(
+                computer,
                 (x...) -> rand(rng, Float64),
                 (x...) -> rand(rng, Complex128),
-                 computer)
+                )
 
   for idx in 1:length(Γs)
     println("setting Γ[$(idx)] = 100.0")
@@ -155,7 +156,7 @@ end
     computer = HFB.HFBComputer(hamhfb, 0.1)
     greencollectors = HFB.makegreencollectors(computer)
 
-    ρs, ts = HFB.makesourcefields((x...) -> rand(Float64), (x...) -> rand(Float64), computer)
+    ρs, ts = HFB.makesourcefields(computer, (x...) -> rand(Float64), (x...) -> rand(Float64))
     ρn, tn = HFB.makesourcefields(computer)
 
     @show computer.ρ_registry
