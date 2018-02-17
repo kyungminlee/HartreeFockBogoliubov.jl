@@ -8,9 +8,6 @@ export getnextsolution,
        simpleupdate,
        isvalidsolution
 
-using PyCall
-@pyimport numpy.linalg as npl
-
 """
 """
 mutable struct HFBSolver{O}
@@ -72,7 +69,7 @@ function getnextsolutionpython(solver ::HFBSolver{T}, sol ::HFBSolution) ::HFBSo
     ham = makehamiltonian(solver.hfbcomputer, sol.Γ, sol.Δ)
     for momentum in solver.momentumgrid
         hk = ham(momentum)
-        (eivals, eivecs) = npl.eigh(hk)
+        (eivals, eivecs) = npl[:eigh](hk)
         solver.greencollectors(momentum, eivals, eivecs, newsol.ρ, newsol.t)
     end
     newsol.ρ /= length(solver.momentumgrid)
