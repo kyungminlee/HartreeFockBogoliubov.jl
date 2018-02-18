@@ -18,16 +18,16 @@ To incorporate this we define two `struct`s: `HoppingDiagonal` and `HoppingOffdi
 ``` julia
 struct HoppingDiagonal{R<:Real}
     amplitude ::R
-    i ::Int64
-    Ri ::Vector{Int64}
+    i ::Int
+    Ri ::Vector{Int}
 end
 
 struct HoppingOffdiagonal{C<:Number}
     amplitude ::C
-    i ::Int64
-    j ::Int64
-    Ri ::Vector{Int64}
-    Rj ::Vector{Int64}
+    i ::Int
+    j ::Int
+    Ri ::Vector{Int}
+    Rj ::Vector{Int}
 end
 ```
 `i` and `j` are integers representing the "index" of the orbital, and `Ri` and `Rj` represents which unitcell they are in.
@@ -39,22 +39,22 @@ Similarly for the interaction, two structs are defined:
 ```julia
 struct InteractionDiagonal{R<:Real}
     amplitude ::R
-    i ::Int64
-    j ::Int64
-    Ri ::Vector{Int64}
-    Rj ::Vector{Int64}
+    i ::Int
+    j ::Int
+    Ri ::Vector{Int}
+    Rj ::Vector{Int}
 end
 
 struct InteractionOffdiagonal{C<:Number}
     amplitude ::C
-    i ::Int64
-    j ::Int64
-    k ::Int64
-    l ::Int64
-    Ri ::Vector{Int64}
-    Rj ::Vector{Int64}
-    Rk ::Vector{Int64}
-    Rl ::Vector{Int64}
+    i ::Int
+    j ::Int
+    k ::Int
+    l ::Int
+    Ri ::Vector{Int}
+    Rj ::Vector{Int}
+    Rk ::Vector{Int}
+    Rl ::Vector{Int}
 end
 ```
 which represent
