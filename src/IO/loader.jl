@@ -118,7 +118,7 @@ function load_Γ_registry(data)
         col ::Int = item["Col"]
         vec ::Vector{Float64} = item["Vec"]
         @assert(index == index2)
-        sources = Tuple{Int64, Complex128, Bool}[
+        sources = Tuple{Int, Complex128, Bool}[
         (src["Index"], src["Amplitude"], src["Conjugate"])
         for src in item["Sources"]
             ]
@@ -136,7 +136,7 @@ function load_Γ_registry(data)
             col ::Int = item["Col"]
             vec ::Vector{Float64} = item["Vec"]
             @assert(index == index2)
-            sources = Tuple{Int64, Complex128, Bool}[
+            sources = Tuple{Int, Complex128, Bool}[
             (src["Index"], src["Amplitude"], src["Conjugate"])
             for src in item["Sources"]
                 ]

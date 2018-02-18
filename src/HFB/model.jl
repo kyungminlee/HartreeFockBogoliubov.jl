@@ -6,8 +6,8 @@ export addinteraction!
 """
 struct HoppingMeanField{C<:Number}
     amplitude ::C
-    target ::Tuple{Int64, Int64, Vector{Int64}}
-    source ::Tuple{Int64, Int64, Vector{Int64}}
+    target ::Tuple{Int, Int, Vector{Int}}
+    source ::Tuple{Int, Int, Vector{Int}}
     star ::Bool
 
     function HoppingMeanField{C}(
@@ -52,8 +52,8 @@ end
 """
 struct PairingMeanField{C<:Number}
     amplitude ::C
-    target ::Tuple{Int64, Int64, Vector{Int64}}
-    source ::Tuple{Int64, Int64, Vector{Int64}}
+    target ::Tuple{Int, Int, Vector{Int}}
+    source ::Tuple{Int, Int, Vector{Int}}
     negate ::Bool
 
     function PairingMeanField{C}(

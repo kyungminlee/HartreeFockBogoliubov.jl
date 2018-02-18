@@ -28,7 +28,7 @@ Its elements are:
 3. col orbital
 4. displacement r(col) - r(row)
 """
-const CollectRow = Tuple{Bool, Int64, Int64, Vector{Float64}}
+const CollectRow = Tuple{Bool, Int, Int, Vector{Float64}}
 
 
 """
@@ -45,7 +45,7 @@ Its elements are:
      (1) conjugation is needed (for ρ/Γ) or
      (2) minus sign is needed (for t/Δ).
 """
-const DeployRow = Tuple{Bool, Int64, Int64, Vector{Float64}, Vector{Tuple{Int64, Complex128, Bool}}}
+const DeployRow = Tuple{Bool, Int, Int, Vector{Float64}, Vector{Tuple{Int, Complex128, Bool}}}
 
 
 """
@@ -78,7 +78,7 @@ end
 """
 """
 function makeparticleholeregistry(ham::HFBHamiltonian{O}) where {O}
-    function getdistance(i ::Int64, j ::Int64, Rij::Vector{Int64}) ::Vector{Float64}
+    function getdistance(i ::Int, j ::Int, Rij::Vector{Int}) ::Vector{Float64}
         ri, rj = getorbitalcoord(ham.unitcell, i), getorbitalcoord(ham.unitcell, j)
         rj = rj + Rij
         ri, rj = fract2carte(ham.unitcell, ri), fract2carte(ham.unitcell, rj)
@@ -89,7 +89,7 @@ function makeparticleholeregistry(ham::HFBHamiltonian{O}) where {O}
     deploy_reg = Dict()
 
     let
-        R = zeros(Int64, dimension(ham.unitcell))
+        R = zeros(Int, dimension(ham.unitcell))
         r = zeros(Float64, dimension(ham.unitcell))
         for (i, orb) in enumerate(ham.unitcell.orbitals)
             collect_reg[i, i, zeros(R)] = (length(collect_reg)+1, (true, i, i, zeros(r)))
@@ -145,7 +145,7 @@ end
 """
 """
 function makeparticleparticleregistry(ham::HFBHamiltonian{O}) where {O}
-    function getdistance(i ::Int64, j ::Int64, Rij::Vector{Int64}) ::Vector{Float64}
+    function getdistance(i ::Int, j ::Int, Rij::Vector{Int}) ::Vector{Float64}
         ri, rj = getorbitalcoord(ham.unitcell, i), getorbitalcoord(ham.unitcell, j)
         rj = rj + Rij
         ri, rj = fract2carte(ham.unitcell, ri), fract2carte(ham.unitcell, rj)
@@ -228,8 +228,8 @@ mutable struct HFBSolution
 end
 
 mutable struct HFBHint{O}
-    ρ ::Dict{Tuple{O, O, Vector{Int64}}, Complex128}
-    t ::Dict{Tuple{O, O, Vector{Int64}}, Complex128}
+    ρ ::Dict{Tuple{O, O, Vector{Int}}, Complex128}
+    t ::Dict{Tuple{O, O, Vector{Int}}, Complex128}
 end
 
 function iscompatible(s1 ::HFBSolution, s2::HFBSolution)
@@ -600,8 +600,8 @@ end
 """
 """
 function newhfbhint(computer::HFBComputer{O}, sol::HFBSolution) ::HFBHint{O} where {O}
-    ρ = Dict{Tuple{O, O, Vector{Int64}}, Complex128}()
-    t = Dict{Tuple{O, O, Vector{Int64}}, Complex128}()
+    ρ = Dict{Tuple{O, O, Vector{Int}}, Complex128}()
+    t = Dict{Tuple{O, O, Vector{Int}}, Complex128}()
     uc = computer.unitcell
 
     for (ρidx, (_, i, j, rij)) in enumerate(computer.ρ_registry)

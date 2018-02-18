@@ -20,12 +20,12 @@ end
 
 The type `CollectRow` keeps record of the "observables" that need to be measured in order to calculate the mean-field parameters. They are the ρ(i,j) and t(i,j) as defined by Goodman.
 ```julia
-const CollectRow = Tuple{Bool, Int64, Int64, Vector{Float64}}
+const CollectRow = Tuple{Bool, Int, Int, Vector{Float64}}
 ```
 
 `DeployRow` contains necessary information to calculate Γ(i,j) and Δ(i,j), using the measured ρ(i,j) and t(i,j)
 ```julia
-const DeployRow = Tuple{Bool, Int64, Int64, Vector{Float64}, Vector{Tuple{Int64, Complex128, Bool}}}
+const DeployRow = Tuple{Bool, Int, Int, Vector{Float64}, Vector{Tuple{Int, Complex128, Bool}}}
 ```
 
 
@@ -37,7 +37,7 @@ const DeployRow = Tuple{Bool, Int64, Int64, Vector{Float64}, Vector{Tuple{Int64,
 mutable struct HFBSolver{O}
     # Originals
     hamiltonian ::FullHamiltonian{O}
-    size ::Vector{Int64}
+    size ::Vector{Int}
     temperature ::Float64
 
     # Derivatives

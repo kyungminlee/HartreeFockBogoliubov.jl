@@ -13,7 +13,7 @@ export getnextsolution,
 mutable struct HFBSolver{O}
     # Originals
     hamiltonian ::FullHamiltonian{O}
-    size ::Vector{Int64}
+    size ::Vector{Int}
     temperature ::Float64
 
     # Derivatives
@@ -258,7 +258,7 @@ end
 function totalfreeenergy(solver ::HFBSolver{T}, sol::HFBSolution) where T
   error("Not Implemented")
   const computeT = generatehoppingfast(solver.hamiltonian)
-  const norb::Int64 = numorbital(solver.unitcell)
+  const norb::Int = numorbital(solver.unitcell)
   const computeH = makehamiltonian(solver.hfbcomputer, sol.Γ, sol.Δ)
 
   for k in solver.momentumgrid
@@ -270,8 +270,8 @@ function totalfreeenergy(solver ::HFBSolver{T}, sol::HFBSolution) where T
     v = ψ[:, 2, :]
     f = [fermi(e) for e in eigenvalues]
 
-    ρ(i ::Int64, j ::Int64) = sum(f .* u[i, :] .* conj(u[j, :]))
-    t(i ::Int64, j ::Int64) = sum(f .* u[i, :] .* conj(v[j, :]))
+    ρ(i ::Int, j ::Int) = sum(f .* u[i, :] .* conj(u[j, :]))
+    t(i ::Int, j ::Int) = sum(f .* u[i, :] .* conj(v[j, :]))
 
     for (idx, Γ) in enumerate(sol.Γ)
       (i, j, r, s) = solver.hfbcomputer.Γ_registry[idx]

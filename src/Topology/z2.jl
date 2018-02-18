@@ -74,7 +74,7 @@ and   0h, +h, -h by `:TRIHALF`, `:POSHALF`, and `:NEGHALF`,
 and   +i, -i by `:POSINT`, `:NEGINT`.
 """
 function timereversalindexgrid(n1 ::Integer, n2 ::Integer)
-    pointtypes = OrderedDict{Vector{Int64}, Tuple{Symbol, Vector{Int64}}}()
+    pointtypes = OrderedDict{Vector{Int}, Tuple{Symbol, Vector{Int}}}()
     for i2 in 0:(2*n2-1), i1 in 0:(2*n1 - 1)
         j1 = mod(-i1, 2*n1)
         j2 = mod(-i2, 2*n2)
@@ -112,7 +112,7 @@ function timereversalindexgrid(shape::AbstractVector{<:Integer})
 ranges = [0:(2*n-1) for n in shape]
 hypercubicgrid = map((x) -> [x...], Base.product(ranges...))
 
-pointtypes = OrderedDict{Vector{Int64}, Tuple{Symbol, Vector{Int64}}}()
+pointtypes = OrderedDict{Vector{Int}, Tuple{Symbol, Vector{Int}}}()
 
 for i in hypercubicgrid
 j = [mod(-x, 2*n) for (x, n) in zip(i, shape)]

@@ -18,11 +18,11 @@ const CarteCoord = Vector{Float64}
 Fractional coordinates.
 
 # Members
-* `whole ::Vector{Int64}`: Integer part of fractional coordinates
+* `whole ::Vector{Int}`: Integer part of fractional coordinates
 * `fraction ::Vector{Float64}`: [0,1) part of fractional coordinates
 """
 struct FractCoord
-    whole ::Vector{Int64}
+    whole ::Vector{Int}
     fraction ::Vector{Float64}
 
     function FractCoord(w ::AbstractVector{<:Integer},
@@ -45,14 +45,14 @@ struct FractCoord
 
     function FractCoord(coord ::AbstractVector{<:AbstractFloat};
         tol::Real=sqrt(eps(Float64)))
-        w = Int64[fld(x,1) for x in coord]
+        w = Int[fld(x,1) for x in coord]
         f = Float64[mod(x,1) for x in coord]
         return FractCoord(w, f; tol=tol)
     end
 
     function FractCoord(ndim ::Integer)
         @assert(ndim > 0, "ndim should be positive")
-        w = zeros(Int64, ndim)
+        w = zeros(Int, ndim)
         f = zeros(Float64, ndim)
         return new(w, f)
     end
@@ -93,14 +93,14 @@ end
 
 
 function +(fc1 ::FractCoord, fc2 ::FractCoord) ::FractCoord
-    R = Int64[fld(x+y,1) for (x,y) in zip(fc1.fraction, fc2.fraction)]
+    R = Int[fld(x+y,1) for (x,y) in zip(fc1.fraction, fc2.fraction)]
     r = Float64[mod(x+y,1) for (x,y) in zip(fc1.fraction, fc2.fraction)]
     return FractCoord(fc1.whole + fc2.whole + R, r)
 end
 
 
 function -(fc1 ::FractCoord, fc2 ::FractCoord) ::FractCoord
-    R = Int64[fld(x-y,1) for (x,y) in zip(fc1.fraction, fc2.fraction)]
+    R = Int[fld(x-y,1) for (x,y) in zip(fc1.fraction, fc2.fraction)]
     r = Float64[mod(x-y,1) for (x,y) in zip(fc1.fraction, fc2.fraction)]
     return FractCoord(fc1.whole - fc2.whole + R, r)
 end
@@ -146,7 +146,7 @@ function carte2fract(latticevectors ::AbstractArray{<:AbstractFloat, 2},
                      cc ::CarteCoord;
                      tol=sqrt(eps(Float64))) ::FractCoord
     fc = inv(latticevectors) * cc
-    w = Int64[fld(x, 1) for x in fc]
+    w = Int[fld(x, 1) for x in fc]
     f = Float64[mod(x, 1) for x in fc]
     return FractCoord(w, f; tol=tol)
 end

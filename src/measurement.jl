@@ -1,22 +1,22 @@
 
 struct MeasureParticleHoleDiagonal
-    i ::Int64
-    j ::Int64
-    Rij ::Vector{Int64}
+    i ::Int
+    j ::Int
+    Rij ::Vector{Int}
     rij ::Vector{Float64}
 
     function MeasureParticleHoleDiagonal(
         unitcell::UnitCell,
         i::Integer)
         ndim = dimension(unitcell)
-        return new(i, i, zeros(Int64, ndim), zeros(Float64, ndim))
+        return new(i, i, zeros(Int, ndim), zeros(Float64, ndim))
     end
 end
 
 struct MeasureParticleHoleOffdiagonal
-    i ::Int64
-    j ::Int64
-    Rij ::Vector{Int64}
+    i ::Int
+    j ::Int
+    Rij ::Vector{Int}
     rij ::Vector{Float64}
 
     function MeasureParticleHoleOffdiagonal(
@@ -40,9 +40,9 @@ struct MeasureParticleHoleOffdiagonal
 end
 
 struct MeasureParticleParticle
-    i ::Int64
-    j ::Int64
-    Rij ::Vector{Int64}
+    i ::Int
+    j ::Int
+    Rij ::Vector{Int}
     rij ::Vector{Float64}
 
     function MeasureParticleParticle(
@@ -76,8 +76,8 @@ struct MeasurementList
     particlehole ::Vector{MeasureParticleHole}
     particleparticle ::Vector{MeasureParticleParticle}
 
-    particlehole_index ::Dict{Tuple{Int64, Int64, Vector{Int64}}, Int64}
-    particleparticle_index ::Dict{Tuple{Int64, Int64, Vector{Int64}}, Int64}
+    particlehole_index ::Dict{Tuple{Int, Int, Vector{Int}}, Int}
+    particleparticle_index ::Dict{Tuple{Int, Int, Vector{Int}}, Int}
 end
 
 function addmeasurement!(ml::MeasurementList, ph::MeasureParticleHole)

@@ -25,7 +25,7 @@ import Base.zeros
 * `reducedreciprocallatticevectors ::Array{Float64, 2}`: Reduced reciprocal lattice vectors (transpose of inverse of `latticevectors`)
 * `reciprocallatticevectors ::Array{Float64, 2}`: Reciprocal lattice vectors
 * `orbitals ::Vector{Tuple{T, FractCoord}}`: List of orbitals within unit cell
-* `orbitalindices ::Dict{T, Int64}`: Indices of orbitals
+* `orbitalindices ::Dict{T, Int}`: Indices of orbitals
 """
 mutable struct UnitCell{O}
     latticevectors ::Array{Float64, 2}
@@ -33,7 +33,7 @@ mutable struct UnitCell{O}
 
     reducedreciprocallatticevectors ::Array{Float64, 2}
     reciprocallatticevectors ::Array{Float64, 2}
-    orbitalindices ::Dict{O, Int64}
+    orbitalindices ::Dict{O, Int}
     function UnitCell{O}(latticevectors ::AbstractArray{<:Real, 2},
                          orbitals ::AbstractVector{Tuple{O, FractCoord}},
                          reducedreciprocallatticevectors ::AbstractArray{<:Real, 2},
@@ -89,7 +89,7 @@ function newunitcell(latticevectors ::AbstractArray{<:AbstractFloat, 2};
 
     reduced_rlv = transpose(inv(latticevectors))
     orbitals = Tuple{OrbitalType, FractCoord}[]
-    orbitalindices = Dict{OrbitalType, Int64}()
+    orbitalindices = Dict{OrbitalType, Int}()
     return UnitCell{OrbitalType}(latticevectors, orbitals,
                                  reduced_rlv, 2*pi*reduced_rlv, orbitalindices)
 end
@@ -280,7 +280,7 @@ function carte2fract(unitcell ::UnitCell,
                      tol::Real=sqrt(eps(Float64)))
     #fc = inv(unitcell.latticevectors) * cc
     fc = transpose(unitcell.reducedreciprocallatticevectors) * cc
-    w = Int64[fld(x, 1.0) for x in fc]
+    w = Int[fld(x, 1.0) for x in fc]
     f = Float64[mod(x, 1.0) for x in fc]
     for i in length(w)
         if f[i] + tol >= 1.0

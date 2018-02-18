@@ -26,13 +26,13 @@ Represents
 ```
   # Members
   * `amplitude ::R`
-  * `i ::Int64`: name of orbital
-  * `Ri ::Vector{Int64}`: which unit cell? (indexed by a1, and a2)
+  * `i ::Int`: name of orbital
+  * `Ri ::Vector{Int}`: which unit cell? (indexed by a1, and a2)
 """
 struct HoppingDiagonal{R<:Real}
     amplitude ::R
-    i ::Int64
-    Ri ::Vector{Int64}
+    i ::Int
+    Ri ::Vector{Int}
     function HoppingDiagonal{R}(v::R,
                                 i::Integer,
                                 Ri::AbstractVector{<:Integer}) where {R<:Real}
@@ -62,15 +62,15 @@ Represents
   * `amplitude :: C`
   * `i ::T`
   * `j ::T`
-  * `Ri ::Vector{Int64}`
-  * `Rj ::Vector{Int64}`
+  * `Ri ::Vector{Int}`
+  * `Rj ::Vector{Int}`
 """
 struct HoppingOffdiagonal{C<:Number}
     amplitude ::C
-    i ::Int64
-    j ::Int64
-    Ri ::Vector{Int64}
-    Rj ::Vector{Int64}
+    i ::Int
+    j ::Int
+    Ri ::Vector{Int}
+    Rj ::Vector{Int}
     function HoppingOffdiagonal{C}(v::C,
                                    i::Integer,
                                    j::Integer,
@@ -108,15 +108,15 @@ Represents
   * `amplitude ::R`
   * `i ::T`
   * `j ::T`
-  * `Ri ::Vector{Int64}`
-  * `Rj ::Vector{Int64}`
+  * `Ri ::Vector{Int}`
+  * `Rj ::Vector{Int}`
 """
 struct InteractionDiagonal{R<:Real}
     amplitude ::R
-    i ::Int64
-    j ::Int64
-    Ri ::Vector{Int64}
-    Rj ::Vector{Int64}
+    i ::Int
+    j ::Int
+    Ri ::Vector{Int}
+    Rj ::Vector{Int}
     function InteractionDiagonal{R}(v::R,
                                     i::Integer,
                                     j::Integer,
@@ -162,21 +162,21 @@ Only keep the first term (and require i < j, k < l, i <= k)
   * `j ::T`
   * `k ::T`
   * `l ::T`
-  * `Ri ::Vector{Int64}`
-  * `Rj ::Vector{Int64}`
-  * `Rk ::Vector{Int64}`
-  * `Rl ::Vector{Int64}`
+  * `Ri ::Vector{Int}`
+  * `Rj ::Vector{Int}`
+  * `Rk ::Vector{Int}`
+  * `Rl ::Vector{Int}`
 """
 struct InteractionOffdiagonal{C<:Number}
     amplitude ::C
-    i ::Int64
-    j ::Int64
-    k ::Int64
-    l ::Int64
-    Ri ::Vector{Int64}
-    Rj ::Vector{Int64}
-    Rk ::Vector{Int64}
-    Rl ::Vector{Int64}
+    i ::Int
+    j ::Int
+    k ::Int
+    l ::Int
+    Ri ::Vector{Int}
+    Rj ::Vector{Int}
+    Rk ::Vector{Int}
+    Rl ::Vector{Int}
     function InteractionOffdiagonal{C}(v::C,
                                        i::Integer,
                                        j::Integer,
@@ -507,8 +507,8 @@ isless(hop1 ::HoppingOffdiagonal, hop2::HoppingDiagonal) = false
 
 function simplify(hamiltonian::FullHamiltonian{O}) where {O}
 
-    hopdiadict = Dict{Int64, Float64}()
-    hopoffdict = Dict{Tuple{Int64, Int64, Vector{Int64}}, Complex128}()
+    hopdiadict = Dict{Int, Float64}()
+    hopoffdict = Dict{Tuple{Int, Int, Vector{Int}}, Complex128}()
 
     for hop in hoppings
         if isa(newhop, HoppingDiagonal)
