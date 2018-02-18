@@ -172,12 +172,12 @@
 
 
 <p>The type <code>CollectRow</code> keeps record of the "observables" that need to be measured in order to calculate the mean-field parameters. They are the ρ(i,j) and t(i,j) as defined by Goodman.</p>
-<div class="codehilite"><pre><span></span><span class="kd">const</span> <span class="n">CollectRow</span> <span class="o">=</span> <span class="kt">Tuple</span><span class="p">{</span><span class="kt">Bool</span><span class="p">,</span> <span class="kt">Int64</span><span class="p">,</span> <span class="kt">Int64</span><span class="p">,</span> <span class="kt">Vector</span><span class="p">{</span><span class="kt">Float64</span><span class="p">}}</span>
+<div class="codehilite"><pre><span></span><span class="kd">const</span> <span class="n">CollectRow</span> <span class="o">=</span> <span class="kt">Tuple</span><span class="p">{</span><span class="kt">Bool</span><span class="p">,</span> <span class="kt">Int</span><span class="p">,</span> <span class="kt">Int</span><span class="p">,</span> <span class="kt">Vector</span><span class="p">{</span><span class="kt">Float64</span><span class="p">}}</span>
 </pre></div>
 
 
 <p><code>DeployRow</code> contains necessary information to calculate Γ(i,j) and Δ(i,j), using the measured ρ(i,j) and t(i,j)</p>
-<div class="codehilite"><pre><span></span><span class="kd">const</span> <span class="n">DeployRow</span> <span class="o">=</span> <span class="kt">Tuple</span><span class="p">{</span><span class="kt">Bool</span><span class="p">,</span> <span class="kt">Int64</span><span class="p">,</span> <span class="kt">Int64</span><span class="p">,</span> <span class="kt">Vector</span><span class="p">{</span><span class="kt">Float64</span><span class="p">},</span> <span class="kt">Vector</span><span class="p">{</span><span class="kt">Tuple</span><span class="p">{</span><span class="kt">Int64</span><span class="p">,</span> <span class="kt">Complex128</span><span class="p">,</span> <span class="kt">Bool</span><span class="p">}}}</span>
+<div class="codehilite"><pre><span></span><span class="kd">const</span> <span class="n">DeployRow</span> <span class="o">=</span> <span class="kt">Tuple</span><span class="p">{</span><span class="kt">Bool</span><span class="p">,</span> <span class="kt">Int</span><span class="p">,</span> <span class="kt">Int</span><span class="p">,</span> <span class="kt">Vector</span><span class="p">{</span><span class="kt">Float64</span><span class="p">},</span> <span class="kt">Vector</span><span class="p">{</span><span class="kt">Tuple</span><span class="p">{</span><span class="kt">Int</span><span class="p">,</span> <span class="kt">Complex128</span><span class="p">,</span> <span class="kt">Bool</span><span class="p">}}}</span>
 </pre></div>
 
 
@@ -187,7 +187,7 @@
 <div class="codehilite"><pre><span></span><span class="n">mutable</span> <span class="n">struct</span> <span class="n">HFBSolver</span><span class="p">{</span><span class="n">O</span><span class="p">}</span>
     <span class="c"># Originals</span>
     <span class="n">hamiltonian</span> <span class="o">::</span><span class="n">FullHamiltonian</span><span class="p">{</span><span class="n">O</span><span class="p">}</span>
-    <span class="n">size</span> <span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="kt">Int64</span><span class="p">}</span>
+    <span class="n">size</span> <span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="kt">Int</span><span class="p">}</span>
     <span class="n">temperature</span> <span class="o">::</span><span class="kt">Float64</span>
 
     <span class="c"># Derivatives</span>
