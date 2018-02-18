@@ -173,16 +173,16 @@ H_{\text{offdiagonal-hopping}} = \sum_{i \lt j} t_{ij} c_{i}^{*} c_{j} + t_{ij}^
 <p>To incorporate this we define two <code>struct</code>s: <code>HoppingDiagonal</code> and <code>HoppingOffdiagonal</code>:</p>
 <div class="codehilite"><pre><span></span><span class="n">struct</span> <span class="n">HoppingDiagonal</span><span class="p">{</span><span class="n">R</span><span class="o">&lt;:</span><span class="kt">Real</span><span class="p">}</span>
     <span class="n">amplitude</span> <span class="o">::</span><span class="n">R</span>
-    <span class="n">i</span> <span class="o">::</span><span class="kt">Int64</span>
-    <span class="n">Ri</span> <span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="kt">Int64</span><span class="p">}</span>
+    <span class="n">i</span> <span class="o">::</span><span class="kt">Int</span>
+    <span class="n">Ri</span> <span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="kt">Int</span><span class="p">}</span>
 <span class="k">end</span>
 
 <span class="n">struct</span> <span class="n">HoppingOffdiagonal</span><span class="p">{</span><span class="n">C</span><span class="o">&lt;:</span><span class="kt">Number</span><span class="p">}</span>
     <span class="n">amplitude</span> <span class="o">::</span><span class="n">C</span>
-    <span class="n">i</span> <span class="o">::</span><span class="kt">Int64</span>
-    <span class="n">j</span> <span class="o">::</span><span class="kt">Int64</span>
-    <span class="n">Ri</span> <span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="kt">Int64</span><span class="p">}</span>
-    <span class="n">Rj</span> <span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="kt">Int64</span><span class="p">}</span>
+    <span class="n">i</span> <span class="o">::</span><span class="kt">Int</span>
+    <span class="n">j</span> <span class="o">::</span><span class="kt">Int</span>
+    <span class="n">Ri</span> <span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="kt">Int</span><span class="p">}</span>
+    <span class="n">Rj</span> <span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="kt">Int</span><span class="p">}</span>
 <span class="k">end</span>
 </pre></div>
 
@@ -191,22 +191,22 @@ H_{\text{offdiagonal-hopping}} = \sum_{i \lt j} t_{ij} c_{i}^{*} c_{j} + t_{ij}^
 <p>Similarly for the interaction, two structs are defined:</p>
 <div class="codehilite"><pre><span></span><span class="n">struct</span> <span class="n">InteractionDiagonal</span><span class="p">{</span><span class="n">R</span><span class="o">&lt;:</span><span class="kt">Real</span><span class="p">}</span>
     <span class="n">amplitude</span> <span class="o">::</span><span class="n">R</span>
-    <span class="n">i</span> <span class="o">::</span><span class="kt">Int64</span>
-    <span class="n">j</span> <span class="o">::</span><span class="kt">Int64</span>
-    <span class="n">Ri</span> <span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="kt">Int64</span><span class="p">}</span>
-    <span class="n">Rj</span> <span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="kt">Int64</span><span class="p">}</span>
+    <span class="n">i</span> <span class="o">::</span><span class="kt">Int</span>
+    <span class="n">j</span> <span class="o">::</span><span class="kt">Int</span>
+    <span class="n">Ri</span> <span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="kt">Int</span><span class="p">}</span>
+    <span class="n">Rj</span> <span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="kt">Int</span><span class="p">}</span>
 <span class="k">end</span>
 
 <span class="n">struct</span> <span class="n">InteractionOffdiagonal</span><span class="p">{</span><span class="n">C</span><span class="o">&lt;:</span><span class="kt">Number</span><span class="p">}</span>
     <span class="n">amplitude</span> <span class="o">::</span><span class="n">C</span>
-    <span class="n">i</span> <span class="o">::</span><span class="kt">Int64</span>
-    <span class="n">j</span> <span class="o">::</span><span class="kt">Int64</span>
-    <span class="n">k</span> <span class="o">::</span><span class="kt">Int64</span>
-    <span class="n">l</span> <span class="o">::</span><span class="kt">Int64</span>
-    <span class="n">Ri</span> <span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="kt">Int64</span><span class="p">}</span>
-    <span class="n">Rj</span> <span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="kt">Int64</span><span class="p">}</span>
-    <span class="n">Rk</span> <span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="kt">Int64</span><span class="p">}</span>
-    <span class="n">Rl</span> <span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="kt">Int64</span><span class="p">}</span>
+    <span class="n">i</span> <span class="o">::</span><span class="kt">Int</span>
+    <span class="n">j</span> <span class="o">::</span><span class="kt">Int</span>
+    <span class="n">k</span> <span class="o">::</span><span class="kt">Int</span>
+    <span class="n">l</span> <span class="o">::</span><span class="kt">Int</span>
+    <span class="n">Ri</span> <span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="kt">Int</span><span class="p">}</span>
+    <span class="n">Rj</span> <span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="kt">Int</span><span class="p">}</span>
+    <span class="n">Rk</span> <span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="kt">Int</span><span class="p">}</span>
+    <span class="n">Rl</span> <span class="o">::</span><span class="kt">Vector</span><span class="p">{</span><span class="kt">Int</span><span class="p">}</span>
 <span class="k">end</span>
 </pre></div>
 
