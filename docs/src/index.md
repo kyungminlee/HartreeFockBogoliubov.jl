@@ -3,7 +3,6 @@
 ## Overview
 
 
-
 ## Installation
 
 `HartreeFockBogoliubov.jl` is not a registered package. Install it by
@@ -19,7 +18,7 @@ Pkg.build("HartreeFockBogoliubov")
 ```
 MIT License
 
-Copyright (c) 2018 Kyungmin Lee
+Copyright (c) 2016 Kyungmin Lee
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

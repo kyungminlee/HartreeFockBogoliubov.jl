@@ -4,8 +4,8 @@ site_description: Hartree-Fock-Bogoliubov Solver
 site_author: kyungminlee
 site_url: https://kyungminlee.org/HartreeFockBogoliubov.jl/
 repo_url: https://github.com/kyungminlee/HartreeFockBogoliubov.jl
-
-#copyright: Copyright (c) 2016 Kyungmin Lee
+edit_uri: blob/master/docs/src/
+copyright: Copyright (c) 2016 Kyungmin Lee
 
 theme: mkdocs
 
