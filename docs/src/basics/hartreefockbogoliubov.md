@@ -9,8 +9,8 @@ This document contains basics of Hartree-Fock-Bogoliubov Theory. We will follow 
 The finite-temperature properties of the system described by the above Hamiltonian can be computed using the density matrix
 ```math
 \begin{align}
-D &= \frac{Z} e^{-\beta H} \\
-Z = \mathrm{Tr} e^{-\beta H}
+D &= \frac{e^{-\beta H}}{Z} \\
+Z &= \mathrm{Tr} e^{-\beta H}
 \end{align}
 ```
 In Hartree-Fock-Bogoliubov theory, we approximate the Hamiltonian ``H`` by a non-interacting Hamiltonian of "quasiparticles"
