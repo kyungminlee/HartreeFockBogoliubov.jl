@@ -1,111 +1,5 @@
+using MicroLogging
 import DataStructures: OrderedDict
-
-export isvalidtimereversalmatrix
-
-"""
-    isvalidtimereversalmatrix
-
-Test whether the given matrix is a valid unitary matrix for the time reversal operation.
-
-    ```math
-    T = U ⋅ K
-    ```
-
-    ``U`` must satisfy the two conditions:
-    1. ``U U^{\dagger} = 1`` (from unitarity of ``U``)
-    2. ``U = - U^{\mathsf{T}}`` (from `T^2 = -1`)
-"""
-function isvalidtimereversalmatrix(
-            mat::AbstractMatrix{<:Number};
-            tol::Real=sqrt(eps(Float64)))
-    (nr, nc) = size(mat)
-    if nr != nc
-        return false
-    elseif ! isapprox(mat + mat.', zeros(mat); atol=tol)
-        return false
-    elseif ! isapprox(mat * mat', eye(mat); atol=tol)
-        return false
-    else
-        return true
-    end
-end
-
-function iscanonicaltimereversalinvariant(
-    unitcell::UnitCell,
-    timereversalmatrix::AbstractMatrix{<:Number},
-    hoppings::AbstractVector{Hopping};
-    tol::Real = sqrt(eps(Float64)),
-    momentumgridsize = nothing
-    )
-
-    # 1. Check whether the orbitals are Kramer-paired.
-    # 2. Check whether the location of all orbitals are at the origin (for periodicity of the Hamiltonian in momentum space)
-    # 3. Check whether the the hoppings can be Kramer-paired
-
-    # 4. Construct Hamiltonian as function of momentum
-    # 5. Check whether the H(0) and H(G) are the same
-    # 6. Check whether H(k) = U ⋅ H(-k) ⋅ U⁻¹
-    error("unimplemented")
-end
-
-"""
-generate k-space grid
-(which has (2 n1, 2 n2) points TOTAL in the Brillouin zone)
-
-# Example
-
-When n1 = 4, n2 = 3, this function returns an `OrderedDict` that represents the following structure
-
-```
-i2|
-  |
-5 | -i -i -i -i -i -i -i -i
-4 | -i -i -i -i -i -i -i -i
-3 | 0h +h +h +h 0h -h -h -h
-2 | +i +i +i +i +i +i +i +i
-1 | +i +i +i +i +i +i +i +i
-0 | 0z +z +z +z 0z -z -z -z
---+----------------------------
-  |  0  1  2  3  4  5  6  7  i1
-```
-
-where 0z, +z, -z are represented respectively by `:TRIZERO`, `:POSZERO`, and `:NEGZERO`,
-and   0h, +h, -h by `:TRIHALF`, `:POSHALF`, and `:NEGHALF`,
-and   +i, -i by `:POSINT`, `:NEGINT`.
-"""
-function timereversalindexgrid(n1 ::Integer, n2 ::Integer)
-    pointtypes = OrderedDict{Vector{Int}, Tuple{Symbol, Vector{Int}}}()
-    for i2 in 0:(2*n2-1), i1 in 0:(2*n1 - 1)
-        j1 = mod(-i1, 2*n1)
-        j2 = mod(-i2, 2*n2)
-        if i2 == 0
-            if (i1, i2) == (j1, j2)
-                pointtypes[[i1,i2]] = (:TRIZERO, [i1,i2])
-            elseif haskey(pointtypes, [j1,j2])
-                pointtypes[[i1,i2]] = (:NEGZERO, [j1,j2])
-            else
-                pointtypes[[i1,i2]] = (:POSZERO, [i1,i2])
-            end
-        elseif i2 == n2
-            if (i1, i2) == (j1, j2)
-                pointtypes[[i1,i2]] = (:TRIHALF, [i1,i2])
-            elseif haskey(pointtypes, [j1,j2])
-                pointtypes[[i1,i2]] = (:NEGHALF, [j1,j2])
-            else
-                pointtypes[[i1,i2]] = (:POSHALF, [i1,i2])
-            end
-        else
-            if (i1, i2) == (j1, j2)
-                @assert(false)
-            elseif haskey(pointtypes, [j1,j2])
-                pointtypes[[i1,i2]] = (:NEGINT, [j1,j2])
-            else
-                pointtypes[[i1,i2]] = (:POSINT, [i1,i2])
-            end
-        end
-    end
-    return pointtypes
-end
 
 #=
 function timereversalindexgrid(shape::AbstractVector{<:Integer})
@@ -158,22 +52,24 @@ Compute Z2 index of time-reversal-invariant Hamiltonian.
 The Z2 index
 """
 function z2index(uc::UnitCell{O},
-    hops::AbstractVector{Hopping},
-    timereversal::AbstractMatrix,
-    n1 ::Integer,
-    n2 ::Integer,
-    selectpairs::AbstractVector{<:Integer},
-    ;
-    rtol ::Real = sqrt(eps(Float64)),
-    atol ::Real = sqrt(eps(Float64)),
-    ) where {O}
+                 hops::AbstractVector{Hopping},
+                 timereversal::AbstractMatrix,
+                 n1 ::Integer,
+                 n2 ::Integer,
+                 selectpairs::AbstractVector{<:Integer},
+                 ;
+                 rtol ::Real = sqrt(eps(Float64)),
+                 atol ::Real = sqrt(eps(Float64)),
+                 ) where {O}
+
     squareuc = squarify(uc)
     norb = numorbital(squareuc)
     @assert(mod(norb, 2) == 0)
     hkgen = Generator.generatefast(squareuc, hops)
-    kgrid = momentumgrid(squareuc, [n1*2, n2*2])
 
+    kgrid = momentumgrid(squareuc, [n1*2, n2*2])
     igrid = timereversalindexgrid(n1, n2)
+
     eigenvaluegrid = Dict()
     eigenvectorgrid = Dict()
 
@@ -201,7 +97,7 @@ function z2index(uc::UnitCell{O},
 
             all(isapprox(hk0, hk1; rtol=rtol, atol=atol)) && all(isapprox(hk0, hk2; rtol=rtol, atol=atol))
         end,
-        "Hamiltonian at reciprocal lattice vectors should be the same as at 0.")
+        "Hamiltonian at reciprocal lattice vectors should be the same as that at 0.")
 
     hk = zeros(Complex128, norb, norb)
     for (idx, (t, idx2)) in igrid
@@ -210,11 +106,55 @@ function z2index(uc::UnitCell{O},
             hk[:] = 0.0
             hkgen(k, hk)
             u, v = eig(Hermitian(0.5 * (hk + hk')))
+            @debug("Eigenvalues at TRIM ($k) = $u")
+            #=
+            for idxpair in 1:(norb÷2)
+                @assert(isapprox(u[idxpair*2-1], u[idxpair*2]; rtol=rtol, atol=atol),
+                        "$idxpair's eigenpair $(u[idxpair*2-1]) and $(u[idxpair*2-1]) should be equal.")
+                #@show norm( dot(v[:, idxpair*2], timereversal * conj(v[:, idxpair*2-1])) )
+                #@assert(norm( dot(v[:, idxpair*2], timereversal * conj(v[:, idxpair*2-1])) ) ≈ 1, "pair eigenvectors?"  )
+                v[:, idxpair*2] = timereversal * conj(v[:, idxpair*2-1])   # T = U_T K
+            end
+            =#
+
+            let
+                #@show timereversal
+                #@show timereversal + timereversal'
+
+                hk2 = timereversal' * hk * timereversal
+
+                #println("== hk ==")
+                #display((hk))
+                #println()
+                #println("== conj(hk2) ==")
+                #display(conj(hk2))
+                #println()
+
+                maxdiff = maximum(abs.((hk2).' - hk))
+                if maxdiff > atol
+                    @warn "Hamiltonian is not time reversal symmetric (maxdiff = $maxdiff)"
+                    return NaN
+                end
+            end
+            kramerpairup!(u, v, timereversal; tolerance=max(atol, rtol))
+
+            #@debug("Cheking whether the new v is unitary")
+            #let
+                #a = [abs(x) < sqrt(eps(Float64)) ? 0.0 : x for x in (v * v')]
+                #b = [abs(x) < sqrt(eps(Float64)) ? 0.0 : x for x in (v' * v)]
+                #@debug "v * v' = $(a)"
+                #@debug "v * v' = $(a)"
+            #end
+
+            #=
             for idxpair in selectpairs
                 @assert(isapprox(u[idxpair*2-1], u[idxpair*2]; rtol=rtol, atol=atol),
                         "$idxpair's eigenpair $(u[idxpair*2-1]) and $(u[idxpair*2-1]) should be equal.")
+                @show norm( dot(v[:, idxpair*2], timereversal * conj(v[:, idxpair*2-1])) )
+                #@assert(norm( dot(v[:, idxpair*2], timereversal * conj(v[:, idxpair*2-1])) ) ≈ 1, "pair eigenvectors?"  )
                 v[:, idxpair*2] = timereversal * conj(v[:, idxpair*2-1])    # T = U_T K
             end
+            =#
             eigenvaluegrid[idx] = u[selectbands]
             eigenvectorgrid[idx] = v[:, selectbands]
         elseif t == :POSZERO || t == :POSHALF || t == :POSINT
@@ -284,8 +224,11 @@ function z2index(uc::UnitCell{O},
     z2indexreal = (F-A) / (2π)
     z2indexint = round(Int, z2indexreal)
     if ! ( abs(z2indexreal - z2indexint) < atol )
-        warn("$z2indexreal is not close to integer")
+        @warn "$z2indexreal is not close to integer"
     end
+
+    @info "A/2π = $(A/2π)"
+    @info "F/2π = $(F/2π)"
     return mod(round(z2indexreal, precision(z2indexreal) ÷ 2, 2), 2)
     #return mod(z2indexint, 2)
 end
