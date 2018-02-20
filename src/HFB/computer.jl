@@ -733,6 +733,7 @@ function freeze(computer ::HFBComputer{O},
 
     # 3/3. Delta
     for (idx, Δ) in enumerate(Δs)
+        #info("Adding $Δ to the frozen hoppings")
         (isdiag, i, j, r, _) = computer.Δ_registry[idx]
 
         @assert( !isdiag )
@@ -743,6 +744,8 @@ function freeze(computer ::HFBComputer{O},
         Ri = whichunitcell(unitcell, iname, fract2carte(unitcell, icoord))
         Rj = whichunitcell(unitcell, jname, fract2carte(unitcell, icoord) + r)
 
+        #@show ( Δ, i, j + norb, Ri, Rj)
+        #@show (-Δ, j, i + norb, Rj, Ri)
         push!(hoppings, HoppingOffdiagonal{Complex128}( Δ , i, j + norb, Ri, Rj))
         push!(hoppings, HoppingOffdiagonal{Complex128}(-Δ , j, i + norb, Rj, Ri))
     end
