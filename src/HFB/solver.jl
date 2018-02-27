@@ -227,11 +227,13 @@ function looppython(solver ::HFBSolver{O},
     sol
 end
 
+#=
 function isvalidsolution(solver ::HFBSolver{O},
                          solution ::HFBSolution;
                          tolerance::Real = sqrt(eps(Float64))) ::Bool where {O}
     return isvalidsolution{O}(solver.hfbcomputer, solution; tolerance=tolerance)
 end
+=#
 
 
 # ===== Functions from HFBComputer
