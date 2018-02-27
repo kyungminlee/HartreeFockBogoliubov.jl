@@ -133,7 +133,7 @@ function z2index(uc::UnitCell{O},
                 maxdiff = maximum(abs.((hk2).' - hk))
                 if maxdiff > atol
                     @warn "Hamiltonian is not time reversal symmetric (maxdiff = $maxdiff)"
-                    return NaN
+                    #return NaN
                 end
             end
             kramerpairup!(u, v, timereversal; tolerance=max(atol, rtol))
