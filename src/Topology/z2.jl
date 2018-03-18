@@ -99,6 +99,8 @@ function z2index(uc::UnitCell{O},
         end,
         "Hamiltonian at reciprocal lattice vectors should be the same as that at 0.")
 
+    maxDiffTimeReversal = 0.0
+
     hk = zeros(Complex128, norb, norb)
     for (idx, (t, idx2)) in igrid
         if t == :TRIZERO || t == :TRIHALF
@@ -131,10 +133,14 @@ function z2index(uc::UnitCell{O},
                 #println()
 
                 maxdiff = maximum(abs.((hk2).' - hk))
+                maxDiffTimeReversal = max(maxDiffTimeReversal, maxdiff)
                 if maxdiff > atol
                     @warn "Hamiltonian is not time reversal symmetric (maxdiff = $maxdiff)"
                     #return NaN
                 end
+            end
+            if maxDiffTimeReversal > atol
+                return ( NaN, maxDiffTimeReversal )
             end
             kramerpairup!(u, v, timereversal; tolerance=max(atol, rtol))
 
@@ -229,7 +235,9 @@ function z2index(uc::UnitCell{O},
 
     @info "A/2π = $(A/2π)"
     @info "F/2π = $(F/2π)"
-    return mod(round(z2indexreal, precision(z2indexreal) ÷ 2, 2), 2)
+
+
+    return ( mod(round(z2indexreal, precision(z2indexreal) ÷ 2, 2), 2), maxDiffTimeReversal )
     #return mod(z2indexint, 2)
 end
 
