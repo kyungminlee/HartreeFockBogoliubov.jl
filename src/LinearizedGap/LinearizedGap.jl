@@ -1,6 +1,7 @@
 __precompile__()
 module LinearizedGap
 
+using MicroLogging
 using HartreeFockBogoliubov
 
 
@@ -70,7 +71,7 @@ function linearizedpairingkernel(
                 if abs(T) > tolerance
                     lindhards[n, m, ik] = 0.5 / (T * (1 + cosh(E1 / T)))
                 else
-                    warn("Lindhard: Temperature and energy difference both zero")
+                    @warn "Lindhard: Temperature and energy difference both zero"
                     lindhards[n, m, ik] = 0.5 / (tolerance * (1 + cosh(E1 / tolerance)))
                 end
             end
