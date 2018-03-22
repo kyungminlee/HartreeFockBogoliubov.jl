@@ -146,13 +146,17 @@
                 <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
         <li class="main active"><a href="#momentum-space-formulation">Momentum Space Formulation</a></li>
+            <li><a href="#hopping-elements">Hopping Elements</a></li>
+            <li><a href="#expectation-values">Expectation Values</a></li>
+            <li><a href="#grand-potential">Grand Potential</a></li>
     </ul>
 </div></div>
                 <div class="col-md-9" role="main">
 
 <p><a id='Momentum-Space-Formulation-1'></a></p>
 <h1 id="momentum-space-formulation">Momentum Space Formulation</h1>
-<p>Hopping Elements</p>
+<p><a id='Hopping-Elements-1'></a></p>
+<h3 id="hopping-elements">Hopping Elements</h3>
 <p>
 <script type="math/tex; mode=display">
 \sum_{\mathbf{R}}
@@ -182,7 +186,7 @@
 <script type="math/tex; mode=display">
 \sum_{\mathbf{R}}
     c_{\alpha}(\mathbf{R} + \boldsymbol{\rho}_\alpha)
-    c_{\beta}(\mathbf{R} + \boldsymbol{\rho}_\beta) 
+    c_{\beta}(\mathbf{R} + \boldsymbol{\rho}_\beta)
   =
     \sum_{\mathbf{k}}
     e^{i \mathbf{k} \cdot (\boldsymbol{\rho}_\beta - \boldsymbol{\rho}_\alpha)}
@@ -190,7 +194,8 @@
     c_{\beta}(\mathbf{k})
 </script>
 </p>
-<p>Expectation Values</p>
+<p><a id='Expectation-Values-1'></a></p>
+<h3 id="expectation-values">Expectation Values</h3>
 <p>
 <script type="math/tex; mode=display">
 \rho_{\alpha \beta}
@@ -215,7 +220,69 @@ t_{\alpha\beta}
         U_{\alpha n}
         V_{\beta n}^{*}
 </script>
-</p></div>
+</p>
+<p><a id='Grand-Potential-1'></a></p>
+<h3 id="grand-potential">Grand Potential</h3>
+<p>
+<script type="math/tex; mode=display">
+E = \mathrmtr} \left[ \left( T + \frac{1}{2} \Gamma \right) \rho + \frac{1}{2} \Delta t^{\dagger} \right]
+  = E_{T} + E_{\Gamma} + E_{\Delta}
+</script>
+</p>
+<p>where</p>
+<p>
+<script type="math/tex; mode=display">
+\begin{align}
+E_{T} = \mathrm{tr} \left( T \rho \right) \\
+E_{\Gamma} = \frac{1}{2} \mathrm{tr} \left( \Gamma \rho        \right) \\
+E_{\Delta} = \frac{1}{2} \mathrm{tr} \left( \Delta t^{\dagger} \right)
+\end{align}
+</script>
+</p>
+<p>In momentum space</p>
+<p>
+<script type="math/tex; mode=display">
+\begin{align}
+T_{ij}^{\mathbf{k}} &= T_{ij} e^{i \mathbf{k} \cdot \boldsymbol{\rho}_{ij}}
+\rho_{ij} = \frac{1}{N} \sum_{\mathbf{k}} \rho_{ij}^{\mathbf{k}} e^{-i \mathbf{k} \cdot \boldsymbol{\rho}_{ij}}
+\end{align}
+</script>
+</p>
+<p>Thus</p>
+<p>
+<script type="math/tex; mode=display">
+\begin{align}
+E_{T}
+  &= \sum_{ij} T_{ij} \rho_{ji}
+  &= \sum_{ij} T_{ij}
+     \frac{1}{N} \sum_{\mathbf{k}} \rho_{ji}^{\mathbf{k}} e^{-i \mathbf{k} \cdot \boldsymbol{\rho}_{ji} }
+  &= \frac{1}{N} \sum_{\mathbf{k}} \sum_{ij} T_{ij} e^{i \mathbf{k} \cdot \boldsymbol{\rho}_{ij} }
+      \rho_{ji}^{\mathbf{k}} \\
+  &= \frac{1}{N} \sum_{ij}
+      \sum_{\mathbf{k}}
+      T_{ij}^{\mathbf{k}}
+      \rho_{ji}^{\mathbf{k}}
+\end{align}
+</script>
+</p>
+<p>Similarly for Γ and Δ:</p>
+<p>
+<script type="math/tex; mode=display">
+\begin{align}
+E_{\Gamma}
+  &= \frac{1}{2} \frac{1}{N} \sum_{ij}
+    \sum_{\mathbf{k}}
+    \Gamma_{ij}^{\mathbf{k}}
+    \rho_{ji}^{\mathbf{k}} \\
+E_{\Delta}
+  &= \frac{1}{2} \frac{1}{N} \sum_{ij}
+    \sum_{\mathbf{k}}
+    \Delta_{ij}^{\mathbf{k}}
+    \t_{ij}^{\mathbf{k}}^{*} \\
+\end{align}
+</script>
+</p>
+<p>Here however, Γ and Δ need to be consistent with ρ and t.</p></div>
         </div>
 
         <footer class="col-md-12">
