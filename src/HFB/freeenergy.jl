@@ -16,8 +16,10 @@ S = - \sum_{i} f_i \log f_i
 ```
 Here i runs through all nambu indices.
 
+**Should not be used**, since (Γ, Δ) and (ρ, t) are not self-consistent
+
 """
-function hfbfreeenergy(solver::HFBSolver{O},
+function hfbfreeenergy_naive(solver::HFBSolver{O},
                        solution::HFBSolution) where {O}
     fermi = solver.hfbcomputer.fermi
     norb = numorbital(solver.hfbcomputer.unitcell)
@@ -43,13 +45,16 @@ function hfbfreeenergy(solver::HFBSolver{O},
         u = ψ[:, 1, :]
         v = ψ[:, 2, :]
 
-        ρ(i::Int, j::Int) = sum(f .* u[i, :] .* conj(u[j, :]))
-        t(i::Int, j::Int) = sum(f .* u[i, :] .* conj(v[j, :]))
+        uf = u * Diagonal(f)
+        ρmat = uf * (u')
+        tmat = uf * (v')
+        #ρ(i::Int, j::Int) = sum(f .* u[i, :] .* conj(u[j, :]))
+        #t(i::Int, j::Int) = sum(f .* u[i, :] .* conj(v[j, :]))
 
         for i=1:norb, j=1:norb
-            E_T += real( T[i,j] * ρ(j,i) )
-            E_Γ += real( Γ[i,j] * ρ(j,i) )
-            E_Δ += real( Δ[i,j] * conj(t(i,j)) )
+            E_T += real( T[i,j] * ρmat[j,i] )
+            E_Γ += real( Γ[i,j] * ρmat[j,i] )
+            E_Δ += real( Δ[i,j] * conj(tmat[i,j]) )
         end
         # f already contains both positive and negative energy states
         fp = [max(x, sqrt(eps(Float64))) for x in f]
@@ -60,6 +65,102 @@ function hfbfreeenergy(solver::HFBSolver{O},
     Ω = F / length(solver.momentumgrid)
     return (E,S,Ω)
 end
+
+
+#=
+function hopping_energy(hop::HoppingDiagonal{R},
+                        ρ ::AbstractMatrix{C},
+                        momentum::AbstractVector{K}) where {R <:Real, C <:Number, K <:Real}
+                        t, i, Ri = hop.amplitude, hop.i, hop.Ri
+    return t * real(ρ[i,i])
+end
+
+function hopping_energy(hop::HoppingOffDiagonal{R},
+                        ρ ::AbstractMatrix{C},
+                        momentum::AbstractVector{K}) where {R <:Real, C <:Number, K <:Real}
+    t, i, j, Ri, Rj = hop.amplitude, hop.i, hop.j, hop.Ri, hop.Rj
+    return t * real(ρ[i,i])
+end
+=#
+
+function pairing_energy(int ::InteractionDiagonal{R},
+                        t ::AbstractMatrix{C},
+                        momentum::AbstractVector{R2}) where {R <: Real, C<:Number, R2<:Real}
+    v, i, j = int.amplitude, int.i, int.j
+    return v * real( t[i,j] * conj(t[j,i]) )
+end
+
+function pairing_energy(int ::InteractionOffdiagonal{C1},
+                        t::AbstractMatrix{C2},
+                        momentum::AbstractVector{R}) where {C1 <: Real, C2<: Number, R<:Real}
+    v, i, j, k, l = int.amplitude, int.i, int.j, int.k, int.l
+    return 2 * ( v * (tmat[k,l] * conj(t[j,i]) + t[l,k] * conj(t[i,j])) )
+end
+
+function hfbfreeenergy(solver::HFBSolver{O},
+                       solution::HFBSolution;
+                       update::Function=simpleupdate,
+                       ) where {O}
+    fermi = solver.hfbcomputer.fermi
+    newsolution = let
+        newsol = deepcopy(solution)
+        update(newsol, getnextsolution(solver, solution))
+        newsol
+    end
+    return hfbfreeenergy(solver, solution, newsolution)
+end
+
+function hfbfreeenergy(solver::HFBSolver{O},
+                       solution::HFBSolution,
+                       newsolution::HFBSolution) where {O}
+    fermi = solver.hfbcomputer.fermi
+    norb = numorbital(solver.hamiltonian.unitcell)
+
+    # compute H with old solution, Γ and Δ with new solution
+    computeH = makehamiltonian(solver.hfbcomputer, solution.Γ, solution.Δ)
+    computeT = makehoppingmatrix(solver.hfbcomputer)
+    computeΓ = makeGammamatrix(solver.hfbcomputer, newsolution.Γ)
+    computeΔ = makeDeltamatrix(solver.hfbcomputer, newsolution.Δ)
+
+    E_T = 0.0
+    E_Γ = 0.0
+    E_Δ = 0.0
+    S = 0.0
+    for k in solver.momentumgrid
+        H = computeH(k)
+        T = computeT(k)
+        Γ = computeΓ(k)
+        Δ = computeΔ(k)
+
+        (eigenvalues, eigenvectors) = eig(Hermitian(H))
+        f = [fermi(e) for e in eigenvalues]
+        ψ = reshape(eigenvectors, (norb, 2, norb*2))
+        u = ψ[:, 1, :]
+        v = ψ[:, 2, :]
+
+        uf = u * Diagonal(f)
+        ρmat = uf * (u')
+        tmat = uf * (v')
+
+        for i=1:norb, j=1:norb
+            E_T += real( T[i,j] * ρmat[j,i] )
+            E_Γ += real( Γ[i,j] * ρmat[j,i] )
+            E_Δ += real( Δ[i,j] * conj(tmat[i,j]) )
+        end
+        # f already contains both positive and negative energy states
+        fp = [max(x, sqrt(eps(Float64))) for x in f]
+        S -= sum( fp .* log.(fp) )
+    end
+    E = E_T + 0.5 * E_Γ + 0.5 * E_Δ
+    F = E - solver.hfbcomputer.temperature * S
+    Ω = F / length(solver.momentumgrid)
+    return (E,S,Ω)
+end
+
+
+
+
+
 
 
 function hoppingenergy(hopping::Spec.HoppingDiagonal{R},
