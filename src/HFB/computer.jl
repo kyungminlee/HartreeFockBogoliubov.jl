@@ -377,7 +377,7 @@ end
 Return a generator of Γ matrix (which is a function of momentum)
 """
 function makeGammamatrix(computer::HFBComputer,
-                         Γs ::AbstractVector{<:Number}) ::Function
+                         theΓs ::AbstractVector{<:Number}) ::Function
     norb = numorbital(computer.unitcell)
     Γ_registry = copy(computer.Γ_registry)
     Γs = Vector{Complex128}(theΓs)
