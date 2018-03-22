@@ -48,5 +48,8 @@ function chernnumber(uc::UnitCell{O},
     end
     chn = flux / (2π)
     chnint = round(chn)
-    @assert(isapprox(chn, chnint; atol=tol), "Chern number should be almost integer")
+    if ! isapprox(chn, chnint; atol=tol)
+        @warn( "Chern number should be almost integer")
+    end
+    return chn
 end

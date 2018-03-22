@@ -1,37 +1,6 @@
 using MicroLogging
 import DataStructures: OrderedDict
 
-#=
-function timereversalindexgrid(shape::AbstractVector{<:Integer})
-ranges = [0:(2*n-1) for n in shape]
-hypercubicgrid = map((x) -> [x...], Base.product(ranges...))
-
-pointtypes = OrderedDict{Vector{Int}, Tuple{Symbol, Vector{Int}}}()
-
-for i in hypercubicgrid
-j = [mod(-x, 2*n) for (x, n) in zip(i, shape)]
-if (i[end] == 0 || i[end] == shape[end])
-if i == j
-pointtypes[i] = (:TRI, i)
-elseif haskey(pointtypes, j)
-pointtypes[i] = (:NEG, j)
-else
-pointtypes[i] = (:POS, i)
-end
-else
-if i == j
-@assert(False)
-elseif haskey(pointtypes, j)
-pointtypes[i] = (:NEGINT, j)
-else
-pointtypes[i] = (:POSINT, i)
-end
-end
-end
-return pointtypes
-end
-=#
-
 """
 z2index
 
@@ -49,7 +18,7 @@ Compute Z2 index of time-reversal-invariant Hamiltonian.
 * `tol ::Real = sqrt(eps(Float64))`
 
 # Returns
-The Z2 index
+(The Z2 index,  max| Hₖ - T⁻¹HₖT | for k in TRIMs)
 """
 function z2index(uc::UnitCell{O},
                  hops::AbstractVector{Hopping},
@@ -102,6 +71,25 @@ function z2index(uc::UnitCell{O},
     maxDiffTimeReversal = 0.0
 
     hk = zeros(Complex128, norb, norb)
+
+    # Check Time Reversal First
+    for (idx, (t, idx2)) in igrid
+        if t == :TRIZERO || t == :TRIHALF
+            k = kgrid[(i+1 for i in idx)...]
+            hk[:] = 0.0
+            hkgen(k, hk)
+            hk2 = timereversal' * hk * timereversal
+
+            maxdiff = maximum(abs.((hk2).' - hk))
+            maxDiffTimeReversal = max(maxDiffTimeReversal, maxdiff)
+        end
+    end
+
+    if maxDiffTimeReversal > atol
+        @warn "Hamiltonian is not time reversal symmetric ( max| Hₖ - T⁻¹HₖT | = $maxDiffTimeReversal )"
+        return ( NaN, maxDiffTimeReversal )
+    end
+
     for (idx, (t, idx2)) in igrid
         if t == :TRIZERO || t == :TRIHALF
             k = kgrid[(i+1 for i in idx)...]
@@ -109,58 +97,8 @@ function z2index(uc::UnitCell{O},
             hkgen(k, hk)
             u, v = eig(Hermitian(0.5 * (hk + hk')))
             @debug("Eigenvalues at TRIM ($k) = $u")
-            #=
-            for idxpair in 1:(norb÷2)
-                @assert(isapprox(u[idxpair*2-1], u[idxpair*2]; rtol=rtol, atol=atol),
-                        "$idxpair's eigenpair $(u[idxpair*2-1]) and $(u[idxpair*2-1]) should be equal.")
-                #@show norm( dot(v[:, idxpair*2], timereversal * conj(v[:, idxpair*2-1])) )
-                #@assert(norm( dot(v[:, idxpair*2], timereversal * conj(v[:, idxpair*2-1])) ) ≈ 1, "pair eigenvectors?"  )
-                v[:, idxpair*2] = timereversal * conj(v[:, idxpair*2-1])   # T = U_T K
-            end
-            =#
 
-            let
-                #@show timereversal
-                #@show timereversal + timereversal'
-
-                hk2 = timereversal' * hk * timereversal
-
-                #println("== hk ==")
-                #display((hk))
-                #println()
-                #println("== conj(hk2) ==")
-                #display(conj(hk2))
-                #println()
-
-                maxdiff = maximum(abs.((hk2).' - hk))
-                maxDiffTimeReversal = max(maxDiffTimeReversal, maxdiff)
-                if maxdiff > atol
-                    @warn "Hamiltonian is not time reversal symmetric (maxdiff = $maxdiff)"
-                    #return NaN
-                end
-            end
-            if maxDiffTimeReversal > atol
-                return ( NaN, maxDiffTimeReversal )
-            end
             kramerpairup!(u, v, timereversal; tolerance=max(atol, rtol))
-
-            #@debug("Cheking whether the new v is unitary")
-            #let
-                #a = [abs(x) < sqrt(eps(Float64)) ? 0.0 : x for x in (v * v')]
-                #b = [abs(x) < sqrt(eps(Float64)) ? 0.0 : x for x in (v' * v)]
-                #@debug "v * v' = $(a)"
-                #@debug "v * v' = $(a)"
-            #end
-
-            #=
-            for idxpair in selectpairs
-                @assert(isapprox(u[idxpair*2-1], u[idxpair*2]; rtol=rtol, atol=atol),
-                        "$idxpair's eigenpair $(u[idxpair*2-1]) and $(u[idxpair*2-1]) should be equal.")
-                @show norm( dot(v[:, idxpair*2], timereversal * conj(v[:, idxpair*2-1])) )
-                #@assert(norm( dot(v[:, idxpair*2], timereversal * conj(v[:, idxpair*2-1])) ) ≈ 1, "pair eigenvectors?"  )
-                v[:, idxpair*2] = timereversal * conj(v[:, idxpair*2-1])    # T = U_T K
-            end
-            =#
             eigenvaluegrid[idx] = u[selectbands]
             eigenvectorgrid[idx] = v[:, selectbands]
         elseif t == :POSZERO || t == :POSHALF || t == :POSINT

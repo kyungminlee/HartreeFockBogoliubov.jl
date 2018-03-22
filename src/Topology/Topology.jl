@@ -1,6 +1,8 @@
 __precompile__()
 module Topology
 
+using MicroLogging
+
 using ..Lattice
 using ..Spec
 using ..HFB
