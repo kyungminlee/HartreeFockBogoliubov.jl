@@ -18,7 +18,7 @@ Modules = [HartreeFockBogoliubov.Spec]
 Modules = [HartreeFockBogoliubov.Generator]
 ```
 
-# Topology
+## Topology
 
 ```@autodocs
 Modules = [HartreeFockBogoliubov.Topology]
