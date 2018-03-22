@@ -69,15 +69,15 @@ t_{\alpha\beta}
 ### Grand Potential
 
 ```math
-E = \mathrmtr} \left[ \left( T + \frac{1}{2} \Gamma \right) \rho + \frac{1}{2} \Delta t^{\dagger} \right]
+E = \mathrm{tr} \left[ \left( T + \frac{1}{2} \Gamma \right) \rho + \frac{1}{2} \Delta t^{\dagger} \right]
   = E_{T} + E_{\Gamma} + E_{\Delta}
 ```
 where
 ```math
 \begin{align}
-E_{T} = \mathrm{tr} \left( T \rho \right) \\
-E_{\Gamma} = \frac{1}{2} \mathrm{tr} \left( \Gamma \rho        \right) \\
-E_{\Delta} = \frac{1}{2} \mathrm{tr} \left( \Delta t^{\dagger} \right)
+E_{T} &= \mathrm{tr} \left( T \rho \right) \\
+E_{\Gamma} &= \frac{1}{2} \mathrm{tr} \left( \Gamma \rho        \right) \\
+E_{\Delta} &= \frac{1}{2} \mathrm{tr} \left( \Delta t^{\dagger} \right)
 \end{align}
 ```
 
@@ -94,11 +94,11 @@ Thus
 \begin{align}
 E_{T}
   &= \sum_{ij} T_{ij} \rho_{ji}
-  &= \sum_{ij} T_{ij}
+   = \sum_{ij} T_{ij}
      \frac{1}{N} \sum_{\mathbf{k}} \rho_{ji}^{\mathbf{k}} e^{-i \mathbf{k} \cdot \boldsymbol{\rho}_{ji} }
-  &= \frac{1}{N} \sum_{\mathbf{k}} \sum_{ij} T_{ij} e^{i \mathbf{k} \cdot \boldsymbol{\rho}_{ij} }
-      \rho_{ji}^{\mathbf{k}} \\
-  &= \frac{1}{N} \sum_{ij}
+   = \frac{1}{N} \sum_{\mathbf{k}} \sum_{ij} T_{ij} e^{i \mathbf{k} \cdot \boldsymbol{\rho}_{ij} }
+      \rho_{ji}^{\mathbf{k}}
+   = \frac{1}{N} \sum_{ij}
       \sum_{\mathbf{k}}
       T_{ij}^{\mathbf{k}}
       \rho_{ji}^{\mathbf{k}}
@@ -116,7 +116,7 @@ E_{\Delta}
   &= \frac{1}{2} \frac{1}{N} \sum_{ij}
     \sum_{\mathbf{k}}
     \Delta_{ij}^{\mathbf{k}}
-    \t_{ij}^{\mathbf{k}}^{*} \\
+    {t_{ij}^{\mathbf{k}} }^{*} \\
 \end{align}
 ```
 Here however, Γ and Δ need to be consistent with ρ and t.
