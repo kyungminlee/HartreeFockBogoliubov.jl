@@ -87,8 +87,8 @@ function linearizedpairingkernel(
 
                 kernel_element = zero(Complex128)
                 for (ik, momentum) in enumerate(momentumgrid)
-                    phase1 = exp(1im * dot(momentum, -rij2 + rij3) )
-                    phase2 = exp(1im * dot(momentum, -rij2 - rij3) )
+                    phase1 = cis(dot(momentum, -rij2 + rij3))
+                    phase2 = cis(dot(momentum, -rij2 - rij3))
                     for n in 1:num_eigen, m in 1:num_eigen
                         ψ1 = eigenstates_plusk[:, n, ik]
                         ψ2 = eigenstates_minusk[:, m, ik]
