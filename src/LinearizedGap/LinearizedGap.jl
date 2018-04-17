@@ -30,7 +30,6 @@ function linearizedpairingkernel(
     num_pairing = length(hfbcomputer.Δ_registry)
 
     momentumgrid = Lattice.momentumgrid(unitcell, size)
-    #@show momentumgrid
     num_momentum = length(momentumgrid)
 
     hoppinghamiltonian = HFB.makehoppingmatrix(hfbcomputer)
@@ -64,7 +63,6 @@ function linearizedpairingkernel(
             f1 = fermis_plusk[n, ik]
             f2 = fermis_minusk[m, ik]
             if abs(E1 + E2) > tolerance
-                #@show ( 1.0 - f1 - f2 ) / ( E1 + E2 )
                 lindhards[n, m, ik] = ( 1.0 - f1 - f2 ) / ( E1 + E2 )
             else
                 T = hfbcomputer.temperature
@@ -90,6 +88,7 @@ function linearizedpairingkernel(
                     phase1 = cis(dot(momentum, -rij2 + rij3))
                     phase2 = cis(dot(momentum, -rij2 - rij3))
                     for n in 1:num_eigen, m in 1:num_eigen
+                        #=
                         ψ1 = eigenstates_plusk[:, n, ik]
                         ψ2 = eigenstates_minusk[:, m, ik]
 
@@ -98,6 +97,20 @@ function linearizedpairingkernel(
                         kernel_element += lindhard * (
                         ψ1[i2] * ψ2[j2] * conj(ψ1[i3] * ψ2[j3]) * phase1
                         - ψ1[i2] * ψ2[j2] * conj(ψ1[j3] * ψ2[i3]) * phase2 )
+                        =#
+                        lindhard = lindhards[n, m, ik]
+                        ψ1i2 = eigenstates_plusk[i2, n, ik]
+                        ψ1i3 = eigenstates_plusk[i3, n, ik]
+                        ψ2i2 = eigenstates_minusk[i2, m, ik]
+                        ψ2i3 = eigenstates_minusk[i3, m, ik]
+                        ψ1j2 = eigenstates_plusk[j2, n, ik]
+                        ψ1j3 = eigenstates_plusk[j3, n, ik]
+                        ψ2j2 = eigenstates_minusk[j2, m, ik]
+                        ψ2j3 = eigenstates_minusk[j3, m, ik]
+
+                        kernel_element += lindhard * (
+                            ψ1i2 * ψ2j2 * conj(ψ1i3 * ψ2j3) * phase1
+                            - ψ1i2 * ψ2j2 * conj(ψ1j3 * ψ2i3) * phase2 )
                     end
                 end
                 kernel_element /= length(momentumgrid)
