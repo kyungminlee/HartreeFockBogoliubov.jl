@@ -108,9 +108,7 @@ function linearizedpairingkernel(
                         ψ2j2 = eigenstates_minusk[j2, m, ik]
                         ψ2j3 = eigenstates_minusk[j3, m, ik]
 
-                        kernel_element += lindhard * (
-                            ψ1i2 * ψ2j2 * conj(ψ1i3 * ψ2j3) * phase1
-                            - ψ1i2 * ψ2j2 * conj(ψ1j3 * ψ2i3) * phase2 )
+                        kernel_element += lindhard * ψ1i2 * ψ2j2 * ( conj(ψ1i3 * ψ2j3) * phase1 - conj(ψ1j3 * ψ2i3) * phase2 )
                     end
                 end
                 kernel_element /= length(momentumgrid)
