@@ -1,7 +1,9 @@
 __precompile__()
 module LinearizedGap
 
-using MicroLogging
+if VERSION < v"0.7-"
+    using MicroLogging
+end
 using HartreeFockBogoliubov
 
 

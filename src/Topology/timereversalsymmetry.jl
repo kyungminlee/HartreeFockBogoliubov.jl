@@ -4,7 +4,9 @@ export isvalidtimereversalmatrix
 export istimereversal, iscanonicaltimereversalinvariant, timereversalindexgrid, degenerategroups
 export kramerpairup!, kramerpairupblock!
 
-using MicroLogging
+if VERSION < v"0.7-"
+    using MicroLogging
+end
 
 """
     isvalidtimereversalmatrix
@@ -16,8 +18,8 @@ Test whether the given matrix is a valid unitary matrix for the time reversal op
     ```
 
     ``U`` must satisfy the two conditions:
-    1. ``U U^{\dagger} = 1`` (from unitarity of ``U``)
-    2. ``U = - U^{\mathsf{T}}`` (from `T^2 = -1`)
+    1. ``U U^{\\dagger} = 1`` (from unitarity of ``U``)
+    2. ``U = - U^{\\mathsf{T}}`` (from `T^2 = -1`)
 """
 function isvalidtimereversalmatrix(
             mat::AbstractMatrix{<:Number};
