@@ -4,8 +4,8 @@ module LinearizedGap
 if VERSION < v"0.7-"
     using MicroLogging
 end
+using LinearAlgebra
 using HartreeFockBogoliubov
-
 
 using ..Lattice
 import ..Spec
@@ -39,9 +39,9 @@ function linearizedpairingkernel(
     # 1. Compute eigenenergies
     # Eigenstates of non-interacting Hamiltonian H0
     eigenenergies_plusk = zeros(Float64, (num_orbital, num_momentum))
-    eigenstates_plusk = zeros(Complex128, (num_orbital, num_orbital, num_momentum))
+    eigenstates_plusk = zeros(Complex{Float64}, (num_orbital, num_orbital, num_momentum))
     eigenenergies_minusk = zeros(Float64, (num_orbital, num_momentum))
-    eigenstates_minusk = zeros(Complex128, (num_orbital, num_orbital, num_momentum))
+    eigenstates_minusk = zeros(Complex{Float64}, (num_orbital, num_orbital, num_momentum))
 
     for (idx_momentum, momentum) in enumerate(momentumgrid)
         hk = hoppinghamiltonian(momentum)
@@ -79,13 +79,13 @@ function linearizedpairingkernel(
     end
 
     ##@show hfbcomputer.t_registry
-    kernel_pp = zeros(Complex128, (num_pairing, num_pairing))
+    kernel_pp = zeros(Complex{Float64}, (num_pairing, num_pairing))
     for (ibond3, (_, i3, j3, rij3, _)) in enumerate(hfbcomputer.Δ_registry)
         for (ibond1, (_, i1, j1, rij1, srcs)) in enumerate(hfbcomputer.Δ_registry)
             for (srcidx, v, neg) in srcs
                 (_, i2, j2, rij2) = hfbcomputer.t_registry[srcidx]
 
-                kernel_element = zero(Complex128)
+                kernel_element = zeros(Complex{Float64})
                 for (ik, momentum) in enumerate(momentumgrid)
                     phase1 = cis(dot(momentum, -rij2 + rij3))
                     phase2 = cis(dot(momentum, -rij2 - rij3))

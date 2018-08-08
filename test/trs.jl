@@ -1,6 +1,6 @@
+using LinearAlgebra
 using DataStructures
-
-using HartreeFockBogoliubov: Topology
+using HartreeFockBogoliubov.Topology
 
 function chopsmall(arr ::AbstractArray{C}; tolerance=sqrt(eps(Float64))) where {C<:Real}
     out = similar(arr)
@@ -36,11 +36,11 @@ function main()
 
     @show isvalidtimereversalmatrix(uT)
 
-    v1 = zeros(Complex128, 8, 8)
+    v1 = zeros(Complex{Float64}, 8, 8)
 
     # TODO ALSO CHECK  COMPLEX
     for idxpair in 1:4
-        vec = rand(Complex128, 8)
+        vec = rand(Complex{Float64}, 8)
         for idxprev in 1:(2*idxpair-1)
             vec -= v1[:, idxprev] * dot(v1[:, idxprev], vec)
         end
@@ -111,16 +111,16 @@ function main()
 
     println("CANONICAL?")
 
-    println("v1.' * uT * v1")
-    display(chopsmall(v1.' * uT * v1))
+    println("transpose(v1) * uT * v1")
+    display(chopsmall(transpose(v1) * uT * v1))
     println()
 
-    println("v2.' * uT * v2")
-    display(chopsmall(v2.' * uT * v2))
+    println("transpose(v2) * uT * v2")
+    display(chopsmall(transpose(v2) * uT * v2))
     println()
 
-    println("v3.' * uT * v3")
-    display(chopsmall(v3.' * uT * v3))
+    println("transpose(v3) * uT * v3")
+    display(chopsmall(transpose(v3) * uT * v3))
     println()
 
 end

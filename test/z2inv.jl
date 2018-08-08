@@ -18,11 +18,13 @@
 =#
 using DataStructures
 import PyPlot
-
+using Printf
 
 using HartreeFockBogoliubov
-import HartreeFockBogoliubov: Spec, Generator, HFB, Topology
-using HartreeFockBogoliubov: HFB
+using HartreeFockBogoliubov.Spec
+using HartreeFockBogoliubov.Generator
+using HartreeFockBogoliubov.Topology
+using HartreeFockBogoliubov.HFB
 
 
 
@@ -128,7 +130,7 @@ end
 
 function main1()
     Eg = 0.4
-    for mAB in linspace(0, Eg, 11)
+    for mAB in range(0, stop=Eg, length=11)
         λIsing = (Eg - mAB) / (3.0*sqrt(3.0))
         kmh1 = makekanemelehamiltonian(0.0, 1.0, mAB, λIsing, 0.0, 0.0)
         #@show numorbital(kmh1.unitcell)
@@ -202,7 +204,7 @@ end
 
 
 function testpwave()
-    for μ in linspace(-6, 0, 121)
+    for μ in range(-6, stop=0, length=121)
         t = 1.0
         #μ = 0.3
         V = 1.0
@@ -268,7 +270,7 @@ function main2()
   kg2 = momentumgrid(kmh1.unitcell, [8, 8])
 
   #for k in kg
-  #  out = zeros(Complex128, (norb, norb))
+  #  out = zeros(Complex{Float64}, (norb, norb))
   #  hk = ham(k, out)
   #end
   #@show out
@@ -299,8 +301,8 @@ function main2()
   for (pc1, (pt, pc2)) in g
     k = kg2[(pc1+1)...]
     if pt == :TRI
-      hk = zeros(Complex128, (norb, norb))
-      #hkprime = zeros(Complex128, (norb, norb))
+      hk = zeros(Complex{Float64}, (norb, norb))
+      #hkprime = zeros(Complex{Float64}, (norb, norb))
       ham2(k, hk)
       #ham2(-k, hkprime)
       hkprime = timereversalmatrix * hk * timereversalmatrix'

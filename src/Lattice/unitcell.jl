@@ -14,7 +14,8 @@ export dimension,
        whichunitcell,
        momentumgrid
 
-import Base.zeros
+       using LinearAlgebra
+       import Base.zero
 
 
 """
@@ -319,7 +320,7 @@ function whichunitcell(uc ::UnitCell{O}, name ::O, fc ::FractCoord;
 end
 
 
-function zeros(uc::UnitCell; dtype::DataType=Complex128)
+function zero(uc::UnitCell; dtype::DataType=Complex{Float64})
     norb = numorbital(uc)
     Base.zeros(dtype, (norb, norb))
 end
@@ -329,7 +330,7 @@ function momentumgrid(uc::UnitCell, shape::AbstractVector{<:Integer})
     @assert(length(shape) == dimension(uc), "dimension mismatch")
     @assert(all((x) -> x>0, shape), "shape should be positive")
 
-    ranges = [linspace(0,1,n+1)[1:end-1] for n in shape]
+    ranges = [range(0,stop=1,length=n+1)[1:end-1] for n in shape]
 
     cubicgrid = map((x) -> [x...], Base.product(ranges...))
     #momentumgrid = map((x) -> transpose(uc.reciprocallatticevectors) * x, cubicgrid)

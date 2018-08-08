@@ -386,14 +386,14 @@ end
 
 
 function localize(hopping::HoppingDiagonal{R}) where {R <: Real}
-    return HoppingDiagonal{R}(hopping.amplitude, hopping.i, zeros(hopping.Ri))
+    return HoppingDiagonal{R}(hopping.amplitude, hopping.i, zero(hopping.Ri))
 end
 
 function localize(hopping::HoppingOffdiagonal{C}) where {C <: Number}
     return HoppingOffdiagonal{C}(hopping.amplitude,
                                  hopping.i,
                                  hopping.j,
-                                 zeros(hopping.Ri),
+                                 zero(hopping.Ri),
                                  hopping.Rj - hopping.Ri)
 end
 
@@ -401,7 +401,7 @@ function localize(interaction::InteractionDiagonal{R}) where {R <: Real}
     return InteractionDiagonal{R}(interaction.amplitude,
                                   interaction.i,
                                   interaction.j,
-                                  zeros(interaction.Ri),
+                                  zero(interaction.Ri),
                                   interaction.Rj - interaction.Ri)
 end
 
@@ -411,7 +411,7 @@ function localize(interaction::InteractionOffdiagonal{C}) where {C <: Number}
                                      interaction.j,
                                      interaction.k,
                                      interaction.l,
-                                     zeros(interaction.Ri),
+                                     zero(interaction.Ri),
                                      interaction.Rj - interaction.Ri,
                                      interaction.Rk - interaction.Ri,
                                      interaction.Rl - interaction.Ri)
@@ -508,7 +508,7 @@ isless(hop1 ::HoppingOffdiagonal, hop2::HoppingDiagonal) = false
 function simplify(hamiltonian::FullHamiltonian{O}) where {O}
 
     hopdiadict = Dict{Int, Float64}()
-    hopoffdict = Dict{Tuple{Int, Int, Vector{Int}}, Complex128}()
+    hopoffdict = Dict{Tuple{Int, Int, Vector{Int}}, Complex{Float64}}()
 
     for hop in hoppings
         if isa(newhop, HoppingDiagonal)

@@ -102,12 +102,12 @@ end
 
 
 struct MeasurementValue
-    particlehole ::Vector{Complex128}
-    particleparticle ::Vector{Complex128}
+    particlehole ::Vector{Complex{Float64}}
+    particleparticle ::Vector{Complex{Float64}}
 
     function MeasurementValue(ml::MeasurementList)
-        ph = zeros(Complex128, length(ml.particlehole))
-        pp = zeros(Complex128, length(ml.particleparticle))
+        ph = zeros(Complex{Float64}, length(ml.particlehole))
+        pp = zeros(Complex{Float64}, length(ml.particleparticle))
         return new(ph, pp)
     end
 end
