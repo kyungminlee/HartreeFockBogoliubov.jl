@@ -1,5 +1,6 @@
 
 using ..Generator
+using LinearAlgebra
 
 """
     chernnumber
@@ -22,9 +23,9 @@ function chernnumber(uc::UnitCell{O},
     nsel = length(selectband)
 
     eigenvaluegrid = zeros(Float64, (nk, nsel))
-    eigenvectorgrid = zeros(Complex128, (nk, norb, nsel))
+    eigenvectorgrid = zeros(Complex{Float64}, (nk, norb, nsel))
 
-    hk = zeros(Complex128, (norb, norb))
+    hk = zeros(Complex{Float64}, (norb, norb))
     for (i, k) in enumerate(kgrid)
         hk[:] = 0.0
         hkgen(k, hk)
