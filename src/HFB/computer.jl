@@ -530,7 +530,7 @@ function makegreencollectors(computer::HFBComputer{O}) ::Function where {O}
                  eigenvalues ::AbstractVector{<:Real},
                  eigenvectors ::AbstractMatrix{<:Number},
                  ρout ::AbstractVector{Complex{Float64}},
-                 tout ::AbstractVector{Complex{Float64}}) ::Void
+                 tout ::AbstractVector{Complex{Float64}}) ::Nothing
 
         @assert(length(eigenvalues) == 2*norb)
         @assert(size(eigenvectors) == (2*norb, 2*norb))
