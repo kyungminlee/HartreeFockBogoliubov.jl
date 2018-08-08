@@ -15,19 +15,22 @@ matrix:
         - julia -e 'Pkg.test("HartreeFockBogoliubov", coverage=true)'
       after_success:
         - julia -e 'cd(Pkg.dir("HartreeFockBogoliubov")); Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'
-        - julia -e 'Pkg.add("Documenter")'
-        - julia -e 'cd(Pkg.dir("HartreeFockBogoliubov")); include(joinpath("docs", "make.jl"))'
     - julia: 0.7
       script:
         - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
-        - julia -e 'Pkg.build()'
-        - julia -e 'Pkg.test("HartreeFockBogoliubov", coverage=true)'
+        - julia --project -e 'import Pkg; Pkg.build("Conda")' 
+        - julia --project -e 'import Pkg; Pkg.build("PyCall"); import PyCall'
+        - julia --project -e 'import Pkg; Pkg.build()'
+        - julia --project --check-bounds=yes -e 'import Pkg; Pkg.test(; coverage=true)'
+          #- julia --project -e 'import Pkg; Pkg.test("HartreeFockBogoliubov", coverage=true)'
       after_success:
-        - julia -e 'cd(Pkg.dir("HartreeFockBogoliubov")); Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'
+        - julia --project -e 'import Pkg; cd(Pkg.dir("HartreeFockBogoliubov")); Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'
+        - julia --project -e 'import Pkg; Pkg.add("Documenter"); include(joinpath("docs", "make.jl"))'
+          #- julia --project -e 'import Pkg; Pkg.add("Documenter")'
     - julia: nightly
       script:
         - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
-        - julia -e 'Pkg.build()'
-        - julia -e 'Pkg.test("HartreeFockBogoliubov", coverage=true)'
+        - julia -e 'import Pkg; Pkg.build()'
+        - julia -e 'import Pkg; Pkg.test("HartreeFockBogoliubov", coverage=true)'
       after_success:
-        - julia -e 'cd(Pkg.dir("HartreeFockBogoliubov")); Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'
+        - julia -e 'import Pkg; cd(Pkg.dir("HartreeFockBogoliubov")); Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'
