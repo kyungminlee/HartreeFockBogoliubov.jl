@@ -243,7 +243,7 @@ end
 import Base: copy
 
 copy(x::HFBSolution) = HFBSolution(copy(x.ρ), copy(x.t), copy(x.Γ), copy(x.Δ))
-copy{O}(x::HFBHint{O}) = HFBHint{O}(copy(x.ρ), copy(x.t))
+copy(x::HFBHint{O}) where {O} = HFBHint{O}(copy(x.ρ), copy(x.t))
 
 import Base: +, -, *, /, \
 
