@@ -1,6 +1,9 @@
 using HartreeFockBogoliubov
-using HartreeFockBogoliubov: Spec, Generator, HFB, Dictify
-#using JSON
+using HartreeFockBogoliubov.Spec
+using HartreeFockBogoliubov.Generator
+using HartreeFockBogoliubov.HFB
+using HartreeFockBogoliubov.Dictify
+
 using DataStructures
 
 function newhubbard(μ::Real, t::Real, U::Real, V::Real)

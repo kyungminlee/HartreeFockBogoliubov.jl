@@ -1,7 +1,9 @@
-using Base.Test
+using Test
 
 using HartreeFockBogoliubov
-using HartreeFockBogoliubov: Spec, Generator, HFB
+using HartreeFockBogoliubov.Spec
+using HartreeFockBogoliubov.Generator
+using HartreeFockBogoliubov.HFB
 
 
 @generated function ≂(x, y)

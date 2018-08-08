@@ -7,8 +7,8 @@ function myload(text)
 end
 
 function myconv(obj)
-    const hexpat = r"[+-]?0x([0-9a-fA-F]+(\.[0-9a-f]*)?|(\.[0-9a-f]*))(p[+-]?[0-9a-f]+)?"i
-    const complexkeyword = sort(["real", "imag"])
+    hexpat = r"[+-]?0x([0-9a-fA-F]+(\.[0-9a-f]*)?|(\.[0-9a-f]*))(p[+-]?[0-9a-f]+)?"i
+    complexkeyword = sort(["real", "imag"])
     if isa(obj, Dict)
         #if sort(keys(obj)) == complexkeyword
         if haskey(obj, "real") && haskey(obj, "imag")
@@ -33,7 +33,7 @@ function myconv(obj)
     end
 end
 
-tuplify(obj::Vector) = (map(tuplify, obj)...)
+tuplify(obj::Vector) = (map(tuplify, obj)...,)
 tuplify(obj::Tuple) = map(tuplify, obj)
 tuplify(obj) = obj
 
@@ -118,7 +118,7 @@ function load_Γ_registry(data)
         col ::Int = item["Col"]
         vec ::Vector{Float64} = item["Vec"]
         @assert(index == index2)
-        sources = Tuple{Int, Complex128, Bool}[
+        sources = Tuple{Int, Complex{Float64}, Bool}[
         (src["Index"], src["Amplitude"], src["Conjugate"])
         for src in item["Sources"]
             ]
@@ -136,7 +136,7 @@ function load_Γ_registry(data)
             col ::Int = item["Col"]
             vec ::Vector{Float64} = item["Vec"]
             @assert(index == index2)
-            sources = Tuple{Int, Complex128, Bool}[
+            sources = Tuple{Int, Complex{Float64}, Bool}[
             (src["Index"], src["Amplitude"], src["Conjugate"])
             for src in item["Sources"]
                 ]

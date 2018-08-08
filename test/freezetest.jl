@@ -3,8 +3,9 @@ using Base.Test
 using DataStructures
 
 using HartreeFockBogoliubov
-import HartreeFockBogoliubov: Spec, Generator, HFB
-using HartreeFockBogoliubov: HFB
+using HartreeFockBogoliubov.Spec
+using HartreeFockBogoliubov.Generator
+using HartreeFockBogoliubov.HFB
 
 """
 maketriplethamiltonian
@@ -136,8 +137,8 @@ end
     hamiltonian2 = let
         foo = Generator.generatefast(nambuunitcell, nambuhoppings)
         norb = numorbital(nambuunitcell)
-        function ret(k ::AbstractVector{Float64}) ::Matrix{Complex128}
-            out = zeros(Complex128, (norb, norb))
+        function ret(k ::AbstractVector{Float64}) ::Matrix{Complex{Float64}}
+            out = zeros(Complex{Float64}, (norb, norb))
             foo(k, out)
             return out
         end

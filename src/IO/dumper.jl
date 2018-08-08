@@ -1,6 +1,7 @@
 export dumpall
 export mydump
 
+using Printf
 
 function mydump(io::IO, x::Integer)
     @printf(io, "%d", x)

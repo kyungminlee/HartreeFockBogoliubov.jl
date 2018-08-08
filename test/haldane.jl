@@ -3,8 +3,10 @@ import PyPlot
 
 
 using HartreeFockBogoliubov
-import HartreeFockBogoliubov: Spec, Generator, HFB, Topology
-using HartreeFockBogoliubov: HFB
+using HartreeFockBogoliubov.Spec
+using HartreeFockBogoliubov.Generator
+using HartreeFockBogoliubov.Topology
+using HartreeFockBogoliubov.HFB
 
 function makehaldanemodel(μ ::Float64,
                           t ::Float64,
@@ -70,7 +72,7 @@ function main()
   kg = momentumgrid(haldanemodel.unitcell, [16, 16])
 
   for (i, k) in enumerate(kg)
-    out = zeros(Complex128, (norb, norb))
+    out = zeros(Complex{Float64}, (norb, norb))
     ham(k, out)
     
   end
@@ -95,7 +97,7 @@ function main()
     norb = numorbital(haldanemodel.unitcell)*2
     generator = Generator.generatefast(nambuunitcell, ham2)
     function(k::AbstractVector{<:Real})
-      out = zeros(Complex128, (norb, norb))
+      out = zeros(Complex{Float64}, (norb, norb))
       generator(k, out)
       return out
     end

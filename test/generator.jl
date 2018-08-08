@@ -1,3 +1,5 @@
+using LinearAlgebra
+
 #=
 @testset "Generator" begin
   uc = UnitCell([1.0 0.0; 0.0 1.0])
@@ -11,19 +13,19 @@
   hopembed_off = Embed.EmbedHoppingOffdiagonal(uc, hopspec_off)
 
   func = Generator.generatefast(uc, hopembed_dia)
-  out = zeros(Complex128, (2,2))
+  out = zeros(Complex{Float64}, (2,2))
 
   @show out
   func([0.0, 0.0], out)
   @show out
 
   func = Generator.generatefast(uc, hopembed_off)
-  out = zeros(Complex128, (2,2))
+  out = zeros(Complex{Float64}, (2,2))
   @show out
   func([0.0, 0.0], out)
   @show out
 
-  out = zeros(Complex128, (2,2))
+  out = zeros(Complex{Float64}, (2,2))
   @show out
   func([0.1, 0.0], out)
   @show out
@@ -49,9 +51,9 @@ end
 
   func1 = Generator.generatefast(uc, hamspec.hoppings)
 
-  for kx in linspace(0.0, 2.0*pi, 16+1)
-    out1 = zeros(Complex128, (1,1))
-    out2 = zeros(Complex128, (1,1))
+  for kx in range(0.0, stop=2.0*pi, length=16+1)
+    out1 = zeros(Complex{Float64}, (1,1))
+    out2 = zeros(Complex{Float64}, (1,1))
     func1([kx], out1)
     ek = (t0
           + t1 * cis(kx) + conj(t1) * cis(-kx)
@@ -85,8 +87,8 @@ end
 
   func1 = Generator.generatefast(uc, hopspecs)
 
-  for kx in linspace(4.0, 4.0, 8)
-    for ky in linspace(-4.0, 4.0, 8)
+  for kx in range(4.0, stop=4.0, length=8)
+    for ky in range(-4.0, stop=4.0, length=8)
       k = [kx, ky]
       mat = begin
         phase = (cis(dot(k, a1)) + cis(dot(k, a2)) + cis(dot(k, a3)) )
@@ -95,7 +97,7 @@ end
         [  0  T1 ;  T1c  0 ]
       end
 
-      out1 = zeros(Complex128, (2, 2))
+      out1 = zeros(Complex{Float64}, (2, 2))
       func1(k, out1)
 
       @test isapprox(out1, mat)
@@ -123,17 +125,17 @@ end
   hopembed = Embed.EmbedHopping[Embed.embed(uc, hop) for hop in hopspec]
 
   func = Generator.generate(uc, hopembed)
-  out = zeros(Complex128, (2,2))
+  out = zeros(Complex{Float64}, (2,2))
   @show out
   func([0.0, 0.0], out)
   @show out
 
-  out = zeros(Complex128, (2,2))
+  out = zeros(Complex{Float64}, (2,2))
   @show out
   func([0.0001, 0.0002], out)
   @show out
 
-  out = zeros(Complex128, (2,2))
+  out = zeros(Complex{Float64}, (2,2))
   @show out
   func([0.0001, 0.0002], out)
   @show out

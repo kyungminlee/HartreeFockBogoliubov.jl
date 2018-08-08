@@ -1,7 +1,10 @@
 using Base.Test
 
 using HartreeFockBogoliubov
-using HartreeFockBogoliubov: Spec, Generator, HFB, Dictify
+using HartreeFockBogoliubov.Spec
+using HartreeFockBogoliubov.Generator
+using HartreeFockBogoliubov.HFB
+using HartreeFockBogoliubov.Dictify
 
 #=
 @testset "single-site" begin
@@ -91,7 +94,7 @@ using HartreeFockBogoliubov: Spec, Generator, HFB, Dictify
 
   let
     hk = Generator.generatefast(computer.unitcell, computer.hoppings)
-    out = zeros(Complex128, (2,2))
+    out = zeros(Complex{Float64}, (2,2))
     hk([0.0, 0.0], out)
   end
 
@@ -107,7 +110,7 @@ using HartreeFockBogoliubov: Spec, Generator, HFB, Dictify
   (Γs, Δs) = HartreeFockBogoliubovModel.makesourcefields(
                 computer,
                 (x...) -> rand(rng, Float64),
-                (x...) -> rand(rng, Complex128),
+                (x...) -> rand(rng, Complex{Float64}),
                 )
 
   for idx in 1:length(Γs)
@@ -172,8 +175,8 @@ end
 
     Γs, Δs = HFB.computetargetfields(computer, ρs, ts)
 
-    kxs = linspace(0, 2*π, 16+1)[1:end-1]
-    kys = linspace(0, 2*π, 16+1)[1:end-1]
+    kxs = range(0, stop=2*π, length=16+1)[1:end-1]
+    kys = range(0, stop=2*π, length=16+1)[1:end-1]
 
     for run in 1:100
       ham = HFB.makehamiltonian(computer, Γs, Δs)
