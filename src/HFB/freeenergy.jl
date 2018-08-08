@@ -39,7 +39,7 @@ function hfbfreeenergy_naive(solver::HFBSolver{O},
         Γ = computeΓ(k)
         Δ = computeΔ(k)
 
-        (eigenvalues, eigenvectors) = eig(Hermitian(H))
+        (eigenvalues, eigenvectors) = (eigen(Hermitian(H))...,)
         f = [fermi(e) for e in eigenvalues]
         ψ = reshape(eigenvectors, (norb, 2, norb*2))
         u = ψ[:, 1, :]
@@ -132,7 +132,7 @@ function hfbfreeenergy(solver::HFBSolver{O},
         Γ = computeΓ(k)
         Δ = computeΔ(k)
 
-        (eigenvalues, eigenvectors) = eig(Hermitian(H))
+        (eigenvalues, eigenvectors) = (eigen(Hermitian(H))...,)
         f = [fermi(e) for e in eigenvalues]
         ψ = reshape(eigenvectors, (norb, 2, norb*2))
         u = ψ[:, 1, :]
@@ -231,7 +231,7 @@ function hfbgrandpotential(solver::HFBSolver{O},
         #Γ = computeΓ(k)
         #Δ = computeΔ(k)
 
-        (eigenvalues, eigenvectors) = eig(Hermitian(H))
+        (eigenvalues, eigenvectors) = (eigen(Hermitian(H))...,)
         f = [fermi(e) for e in eigenvalues]
         ψ = reshape(eigenvectors, (norb, 2, norb*2))
         u = ψ[:, 1, :]

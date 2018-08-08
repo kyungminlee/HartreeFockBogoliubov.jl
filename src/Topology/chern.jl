@@ -29,7 +29,7 @@ function chernnumber(uc::UnitCell{O},
     for (i, k) in enumerate(kgrid)
         hk[:] = 0.0
         hkgen(k, hk)
-        u, v = eig(Hermitian(0.5 * (hk + hk')))
+        u, v = (eigen(Hermitian(0.5 * (hk + hk')))...,)
         eigenvaluegrid[i, :]     = u[selectband]
         eigenvectorgrid[i, :, :] = v[:, selectband]
     end
