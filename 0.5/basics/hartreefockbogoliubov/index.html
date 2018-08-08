@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <meta name="author" content="kyungminlee">
+        <link rel="canonical" href="https://kyungminlee.org/HartreeFockBogoliubov.jl/basics/hartreefockbogoliubov/">
+        <link rel="shortcut icon" href="../../img/favicon.ico">
+        <title>Hartree-Fock-Bogoliubov Theory - HartreeFockBogoliubov.jl</title>
+        <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../../css/font-awesome-4.5.0.css" rel="stylesheet">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="../../css/highlight.css">
+        <link href="../../assets/Documenter.css" rel="stylesheet">
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+        <script src="../../js/jquery-1.10.2.min.js"></script>
+        <script src="../../js/bootstrap-3.0.3.min.js"></script>
+        <script src="../../js/highlight.pack.js"></script> 
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="../..">HartreeFockBogoliubov.jl</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+                <!-- Main navigation -->
+                <ul class="nav navbar-nav">
+                    <li >
+                        <a href="../..">Home</a>
+                    </li>
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Basic Theory <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            
+<li class="active">
+    <a href="./">Hartree-Fock-Bogoliubov Theory</a>
+</li>
+                            
+<li >
+    <a href="../hfbequation/">Hartree-Fock-Bogoliubov Equations</a>
+</li>
+                            
+<li >
+    <a href="../hfbdecomposition/">Hartree-Fock-Bogoliubov Decomposition</a>
+</li>
+                            
+<li >
+    <a href="../momentumspace/">Momentum Space Formulation</a>
+</li>
+                            
+<li >
+    <a href="../topology/">Topological Invariants</a>
+</li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">User Guide <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            
+<li >
+    <a href="../../guide/lattice/">Lattice</a>
+</li>
+                            
+<li >
+    <a href="../../guide/hamiltonian/">Hamiltonian</a>
+</li>
+                            
+<li >
+    <a href="../../guide/hfb/">HFB</a>
+</li>
+                            
+<li >
+    <a href="../../guide/linearizedgap/">Linearized Gap Equation</a>
+</li>
+                            
+<li >
+    <a href="../../guide/topology/">Topology</a>
+</li>
+                            
+<li >
+    <a href="../../guide/example/">Example</a>
+</li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Internals <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            
+<li >
+    <a href="../../internals/">Internals</a>
+</li>
+                            
+<li >
+    <a href="../../internals/hartreefockbogoliubov/">More</a>
+</li>
+                        </ul>
+                    </li>
+                </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                        <i class="fa fa-search"></i> Search
+                    </a>
+                </li>
+                    <li >
+                        <a rel="next" href="../..">
+                            <i class="fa fa-arrow-left"></i> Previous
+                        </a>
+                    </li>
+                    <li >
+                        <a rel="prev" href="../hfbequation/">
+                            Next <i class="fa fa-arrow-right"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/master/docs/src/basics/hartreefockbogoliubov.md"><i class="fa fa-github"></i> Edit on GitHub</a>
+                    </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+        <div class="container">
+                <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+        <li class="main active"><a href="#hartree-fock-bogoliubov-theory">Hartree-Fock-Bogoliubov Theory</a></li>
+            <li><a href="#expectation-values">Expectation Values</a></li>
+    </ul>
+</div></div>
+                <div class="col-md-9" role="main">
+
+<p><a id='Hartree-Fock-Bogoliubov-Theory-1'></a></p>
+<h1 id="hartree-fock-bogoliubov-theory">Hartree-Fock-Bogoliubov Theory</h1>
+<p>This document contains basics of Hartree-Fock-Bogoliubov Theory. We will follow <a href="http://escholarship.org/uc/item/3xm630cr" title="Alan Goodman, Finite-Temperature Hartree-Fock-Bogoliubov Theory, LBNL Paper LBL-11151 (1980)">Goodman</a>.</p>
+<p>
+<script type="math/tex; mode=display">
+  H =  \sum_{ij} T_{ij} c_{i}^{*} c_{j}
+     + \frac{1}{4} \sum_{ijkl} V_{ijkl} c_{i}^{*} c_{j}^{*} c_{l} c_{k}
+</script>
+</p>
+<p>The finite-temperature properties of the system described by the above Hamiltonian can be computed using the density matrix</p>
+<p>
+<script type="math/tex; mode=display">
+\begin{align}
+D &= \frac{e^{-\beta H}}{Z} \\
+Z &= \mathrm{Tr} e^{-\beta H}
+\end{align}
+</script>
+</p>
+<p>In Hartree-Fock-Bogoliubov theory, we approximate the Hamiltonian $H$ by a non-interacting Hamiltonian of "quasiparticles"</p>
+<p>
+<script type="math/tex; mode=display">
+H_{\text{HFB}} = E_0 + \sum_{n} E_{n} a_{n}^{*} a_{n}
+</script>
+</p>
+<p>The quasiparticle operator $a$ is related to $c$ in the following way:</p>
+<p>
+<script type="math/tex; mode=display">
+c_{i} = \sum_{n} \left( U_{in} a_{n} + V_{in} a_{n}^{*} \right)
+</script>
+</p>
+<p>The HFB density matrix is given by</p>
+<p>
+<script type="math/tex; mode=display">
+\begin{align}
+  D_{\text{HFB}} &= \frac{1}{Z_{\text{HFB}}} e^{-\beta \sum_{n} E_{n} \hat{n}_{n} } \\
+  Z_{\text{HFB}} &= \mathrm{Tr} e^{-\beta \sum_{n} E_{n} \hat{n}_{n} }
+\end{align}
+</script>
+</p>
+<p>where</p>
+<p>
+<script type="math/tex; mode=display">
+\hat{n}_{n} = a_{n}^{*} a_{n}
+</script>
+</p>
+<p>is the quasiparticle number operator.</p>
+<p>The HFB partition function can be calculated:</p>
+<p>
+<script type="math/tex; mode=display">
+Z_{\text{HFB}} = \prod_{n} \left( 1 + e^{-\beta E_{n}} \right)
+</script>
+</p>
+<p>and the density matrix is given in terms of the quasiparticle number operator</p>
+<p>
+<script type="math/tex; mode=display">
+D_{\text{HFB}} = Z_{\text{HFB}}^{-1}
+\prod_{n}
+\left[
+  e^{-\beta E_{n}} \hat{n}_{n} + (1 - \hat{n}_{n})
+\right]
+= \prod_{n} \left[ f_{n} \hat{n}_{n} + (1-f_{n}) (1 - \hat{n}_{n}) \right]
+</script>
+</p>
+<p>where</p>
+<p>
+<script type="math/tex; mode=display">
+f_{n} = \frac{1}{1 + e^{\beta E_{n}}}
+</script>
+</p>
+<p>is the Fermi-Dirac distribution function for the nth quasiparticle</p>
+<p>Single-quasparticle density matrix $\overline{\rho}$  and pairing tensor $\overline{t}$</p>
+<p>
+<script type="math/tex; mode=display">
+\begin{align}
+\overline{\rho}_{ij}
+  &= \left\langle a_{j}^{*} a_{i} \right\rangle
+   = \mathrm{Tr} \left( D a_{j}^{*} a_{i} \right) \\
+\overline{t}_{ij}
+  &= \left\langle a_{j} a_{i} \right\rangle
+   = \mathrm{Tr} \left( D a_{j} a_{i} \right)
+\end{align}
+</script>
+</p>
+<p>Within HFB,</p>
+<p>
+<script type="math/tex; mode=display">
+\begin{align}
+  \overline{\rho}_{ij} = \delta_{ij} f_{i} \\
+  \overline{t}_{ij} = 0
+\end{align}
+</script>
+</p>
+<p>The single-particle density matrix and pairing tensor are</p>
+<p>
+<script type="math/tex; mode=display">
+\begin{align}
+\rho_{ij}
+  &= \left\langle c_{j}^{*} c_{i} \right\rangle
+  = \mathrm{Tr} \left( D c_{j}^{*} c_{i} \right) \\
+t_{ij}
+  &= \left\langle c_{j} c_{i} \right\rangle
+  = \mathrm{Tr} \left( D c_{j} c_{i} \right)
+\end{align}
+</script>
+</p>
+<p>
+<script type="math/tex; mode=display">
+\begin{align}
+  \rho &= U f U^{\dagger} + V (1-f) V^{\dagger} \\
+  t    &= U f V^{\intercal} + V (1-f) U^{\intercal}
+\end{align}
+</script>
+</p>
+<p>where $f_{ij} = \delta_{ij} f_{i}$.</p>
+<p><a id='Expectation-Values-1'></a></p>
+<h3 id="expectation-values">Expectation Values</h3>
+<p>Wick's theorem</p>
+<p>
+<script type="math/tex; mode=display">
+\left\langle c_{i}^{*} c_{j}^{*} c_{l} c_{k} \right\rangle
+=
+\left\langle c_{i}^{*} c_{k} \right\rangle
+\left\langle c_{j}^{*} c_{l} \right\rangle
+- \left\langle c_{i}^{*} c_{l} \right\rangle
+\left\langle c_{j}^{*} c_{k} \right\rangle
++ \left\langle c_{i}^{*} c_{j}^{*} \right\rangle
+\left\langle c_{l} c_{k} \right\rangle
+</script>
+</p>
+<p>
+<script type="math/tex; mode=display">
+\begin{align}
+E &= \mathrm{tr}
+\left[
+  \left( T + \frac{1}{2} \Gamma \right) \rho + \frac{1}{2} \Delta t^{\dagger}
+\right] \\
+S &= - k_B \sum_{i} \left[ f_{i} \ln f_{i} + (1-f_{i}) \ln (1-f_i)\right] \\
+N &= \mathrm{tr} \rho
+\end{align}
+</script>
+</p>
+<p>
+<script type="math/tex; mode=display">
+\begin{align}
+\Gamma_{ij} = \sum_{kl} V_{ikjl} \rho_{lk} \\
+\Delta_{ij} = \frac{1}{2} \sum_{kl} V_{ijkl} t_{kl} \\
+\end{align}
+</script>
+</p>
+<p>The grand potential</p>
+<p>
+<script type="math/tex; mode=display">
+\Omega
+= \sum_{ij} (T - \mu)_{ij} \rho_{ji}
++ \frac{1}{2} \sum_{ijkl} V_{ijkl} \rho_{lj} \rho_{ki}
++ \frac{1}{4} \sum_{ijkl} V_{ijkl} t_{ij}^{*} t_{kl}
++ k_B T \sum_{i} \left[ f_{i} \ln f_{i} + (1-f_{i}) \ln (1-f_i)\right]
+</script>
+</p>
+<hr /></div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+                <p>Copyright (c) 2016 Kyungmin Lee</p>
+            <p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>var base_url = '../..';</script>
+        <script src="../../js/base.js"></script>
+        <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script src="../../assets/mathjaxhelper.js"></script>
+        <script src="../../search/require.js"></script>
+        <script src="../../search/search.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form role="form">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="Keyboard Shortcuts Modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Keyboard Shortcuts</h4>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td><kbd>&larr;</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td><kbd>&rarr;</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    </body>
+</html>
