@@ -7,6 +7,7 @@ export kramerpairup!, kramerpairupblock!
 if VERSION < v"0.7-"
     using MicroLogging
 end
+using LinearAlgebra
 
 """
     isvalidtimereversalmatrix
@@ -27,9 +28,9 @@ function isvalidtimereversalmatrix(
     (nr, nc) = size(mat)
     if nr != nc
         return false
-    elseif ! isapprox(mat + mat.', zeros(mat); atol=tol)
+    elseif ! isapprox(mat + transpose(mat), zero(mat); atol=tol)
         return false
-    elseif ! isapprox(mat * mat', eye(mat); atol=tol)
+    elseif ! isapprox(mat * adjoint(mat), eye(mat); atol=tol)
         return false
     else
         return true
@@ -38,8 +39,8 @@ end
 
 
 function istimereversal(a ::AbstractMatrix{C2}, theta ::AbstractMatrix{C1}) where {C1 <: Number, C2 <: Number}
-  @show maximum(abs.( a - conj(theta' * a * theta)))
-  return all(isapprox.( a - conj(theta' * a * theta), 0
+  @show maximum(abs.( a - conj(adjoint(theta) * a * theta)))
+  return all(isapprox.( a - conj(adjoint(theta) * a * theta), 0
                           ; atol=sqrt(eps(Float64))))
 end
 
@@ -183,7 +184,7 @@ function getnambuphase(
     for (idx, (t, idx2)) in igrid
         Δ1 = Δgrid[idx]
         Δ2 = Δgrid[idx2]
-        Δ1c = conj(timereversalmatrix * Δ * timereversalmatrix')
+        Δ1c = conj(timereversalmatrix * Δ * adjoint(timereversalmatrix))
         Δ1cf = [Iterators.flatten(Δ1c)...]
         Δ2f  = [Iterators.flatten(Δ2)...]
 

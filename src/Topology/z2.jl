@@ -2,6 +2,7 @@ if VERSION < v"0.7-"
     using MicroLogging
 end
 import DataStructures: OrderedDict
+using LinearAlgebra
 
 """
 z2index
@@ -52,15 +53,15 @@ function z2index(uc::UnitCell{O},
     end
 
     # check time reversal
-    @assert(all(isapprox.(timereversal + timereversal.', 0.0; rtol=rtol, atol=atol)),
+    @assert(all(isapprox.(timereversal + transpose(timereversal), 0.0; rtol=rtol, atol=atol)),
             "timereversalmatrix need to be antisymmetric")
-    @assert(isapprox(timereversal*timereversal', eye(norb); rtol=rtol, atol=atol),
+    @assert(isapprox(timereversal*adjoint(timereversal), eye(norb); rtol=rtol, atol=atol),
             "timereversalmatrix need to be unitary")
 
     @assert(let
-            hk0 = zeros(Complex128, norb, norb)
-            hk1 = zeros(Complex128, norb, norb)
-            hk2 = zeros(Complex128, norb, norb)
+            hk0 = zeros(Complex{Float64}, norb, norb)
+            hk1 = zeros(Complex{Float64}, norb, norb)
+            hk2 = zeros(Complex{Float64}, norb, norb)
 
             hkgen([0.0, 0.0], hk0)
             hkgen(squareuc.reciprocallatticevectors[:,1], hk1)
@@ -72,7 +73,7 @@ function z2index(uc::UnitCell{O},
 
     maxDiffTimeReversal = 0.0
 
-    hk = zeros(Complex128, norb, norb)
+    hk = zeros(Complex{Float64}, norb, norb)
 
     # Check Time Reversal First
     for (idx, (t, idx2)) in igrid
@@ -82,7 +83,7 @@ function z2index(uc::UnitCell{O},
             hkgen(k, hk)
             hk2 = timereversal' * hk * timereversal
 
-            maxdiff = maximum(abs.((hk2).' - hk))
+            maxdiff = maximum(abs.(copy(transpose(hk2)) - hk))
             maxDiffTimeReversal = max(maxDiffTimeReversal, maxdiff)
         end
     end

@@ -5,8 +5,9 @@ Generator submodule
 """
 module Generator
 
-using ..Lattice
+using LinearAlgebra
 
+using ..Lattice
 using ..Spec
 
 
@@ -19,7 +20,7 @@ function generatefast(uc ::UnitCell{O}, hop::HoppingDiagonal{R}) where {O, R<:Re
     v = hop.amplitude
     i = hop.i
 
-    function(momentum ::AbstractVector{Float64}, out::AbstractArray{Complex128, 2})
+    function(momentum ::AbstractVector{Float64}, out::AbstractArray{Complex{Float64}, 2})
         @assert(size(momentum) == (ndim,))
         @assert(size(out) == (norb, norb))
         out[i,i] += v
@@ -40,7 +41,7 @@ function generatefast(uc ::UnitCell{O}, hop::HoppingOffdiagonal{C}) where {O, C<
     rj = fract2carte(uc, getorbitalcoord(uc, hop.j) + hop.Rj)
     rij = rj - ri
 
-    function(momentum ::AbstractVector{Float64}, out::AbstractArray{Complex128, 2})
+    function(momentum ::AbstractVector{Float64}, out::AbstractArray{Complex{Float64}, 2})
         @assert(size(momentum) == (ndim,))
         @assert(size(out) == (norb, norb))
         phase = cis(dot(momentum, rij))
@@ -60,7 +61,7 @@ function generatefast(uc ::UnitCell{O},
     norb = numorbital(uc)
     funcs = [generatefast(uc, hop) for hop in hops]
 
-    function(momentum ::AbstractVector{Float64}, out::AbstractArray{Complex128, 2})
+    function(momentum ::AbstractVector{Float64}, out::AbstractArray{Complex{Float64}, 2})
         for func in funcs
             func(momentum, out)
         end

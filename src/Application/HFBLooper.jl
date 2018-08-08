@@ -5,8 +5,9 @@ import YAML
 
 using ProgressMeter
 using HartreeFockBogoliubov
-import HartreeFockBogoliubov: Spec, Generator, HFB
-using HartreeFockBogoliubov: HFB
+import HartreeFockBogoliubov.Spec
+import HartreeFockBogoliubov.Generator
+using HartreeFockBogoliubov.HFB
 
 
 function detectresult(outpath)

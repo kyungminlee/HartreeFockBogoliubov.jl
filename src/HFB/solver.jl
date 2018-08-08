@@ -8,6 +8,8 @@ export getnextsolution,
        simpleupdate,
        isvalidsolution
 
+using LinearAlgebra
+
 """
 """
 mutable struct HFBSolver{O}
@@ -84,10 +86,10 @@ end
 function getnextsolutionthreaded(solver ::HFBSolver{O},
                                  sol ::HFBSolution) ::HFBSolution where {O}
     newsol = newhfbsolution(solver.hfbcomputer)
-    const ham = makehamiltonian(solver.hfbcomputer, sol.Γ, sol.Δ)
+    ham = makehamiltonian(solver.hfbcomputer, sol.Γ, sol.Δ)
 
-    threadedρ = [zeros(newsol.ρ) for tid in 1:Threads.nthreads()]
-    threadedt = [zeros(newsol.t) for tid in 1:Threads.nthreads()]
+    threadedρ = [zero(newsol.ρ) for tid in 1:Threads.nthreads()]
+    threadedt = [zero(newsol.t) for tid in 1:Threads.nthreads()]
 
     num_momentum = length(solver.momentumgrid)
     Threads.@threads for idx_momentum in 1:num_momentum
@@ -259,9 +261,9 @@ end
 #=
 function totalfreeenergy(solver ::HFBSolver{T}, sol::HFBSolution) where T
   error("Not Implemented")
-  const computeT = generatehoppingfast(solver.hamiltonian)
-  const norb::Int = numorbital(solver.unitcell)
-  const computeH = makehamiltonian(solver.hfbcomputer, sol.Γ, sol.Δ)
+  computeT = generatehoppingfast(solver.hamiltonian)
+  norb::Int = numorbital(solver.unitcell)
+  computeH = makehamiltonian(solver.hfbcomputer, sol.Γ, sol.Δ)
 
   for k in solver.momentumgrid
     Hmat = computeH(k)
