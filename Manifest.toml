@@ -15,9 +15,9 @@ version = "1.0.1"
 
 [[Conda]]
 deps = ["Compat", "JSON", "VersionParsing"]
-git-tree-sha1 = "b76a441539d66a18ba34df28d34dc5b9202164a3"
+git-tree-sha1 = "a47f9a2c7b80095e6a935536795635522fe27f5d"
 uuid = "8f4d0f93-b110-5947-807f-2305c1781a2d"
-version = "1.0.0"
+version = "1.0.1"
 
 [[DataStructures]]
 deps = ["InteractiveUtils", "REPL", "Random", "Serialization", "Test"]
@@ -82,10 +82,10 @@ deps = ["Unicode"]
 uuid = "de0858da-6303-5e67-8744-51eddeeeb8d7"
 
 [[ProgressMeter]]
-deps = ["Compat"]
-git-tree-sha1 = "30d3473425cdb13b23ff10dfc7727be8bcc2871a"
+deps = ["Printf", "Random", "Test"]
+git-tree-sha1 = "09e653f4b0a3c44628f0bdd0a0e58bc92e0264ef"
 uuid = "92933f4c-e287-5a05-a399-4b506db050ca"
-version = "0.5.6"
+version = "0.6.0"
 
 [[PyCall]]
 deps = ["Compat", "Conda", "MacroTools", "VersionParsing"]
