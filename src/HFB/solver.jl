@@ -55,7 +55,7 @@ function getnextsolution(solver ::HFBSolver{T}, sol ::HFBSolution) ::HFBSolution
     ham = makehamiltonian(solver.hfbcomputer, sol.Γ, sol.Δ)
     for momentum in solver.momentumgrid
         hk = ham(momentum)
-        (eivals, eivecs) = eig(Hermitian(hk))
+        (eivals, eivecs) = (eigen(Hermitian(hk))...,)
         solver.greencollectors(momentum, eivals, eivecs, newsol.ρ, newsol.t)
     end
     newsol.ρ /= length(solver.momentumgrid)
@@ -96,7 +96,7 @@ function getnextsolutionthreaded(solver ::HFBSolver{O},
         momentum = solver.momentumgrid[idx_momentum]
         tid = Threads.threadid()
         hk = ham(momentum)
-        (eivals, eivecs) = eig(Hermitian(hk))
+        (eivals, eivecs) = (eigen(Hermitian(hk))...,)
         solver.greencollectors(momentum, eivals, eivecs, threadedρ[tid], threadedt[tid])
     end
 
@@ -268,7 +268,7 @@ function totalfreeenergy(solver ::HFBSolver{T}, sol::HFBSolution) where T
   for k in solver.momentumgrid
     Hmat = computeH(k)
     Tmat = reshape(H, (norb, 2, norb, 2))[:,1,:,1]
-    (eigenvalues, eigenvectors) = eig(Hermitian(H))
+    (eigenvalues, eigenvectors) = (eigem(Hermitian(H))...,)
     ψ = reshape(eigenvectors, (norb, 2, norb*2))
     u = ψ[:, 1, :]
     v = ψ[:, 2, :]

@@ -45,12 +45,12 @@ function linearizedpairingkernel(
 
     for (idx_momentum, momentum) in enumerate(momentumgrid)
         hk = hoppinghamiltonian(momentum)
-        (w, v) = eig(Hermitian(hk))
+        (w, v) = (eigen(Hermitian(hk))...,)
         eigenenergies_plusk[:, idx_momentum] = w
         eigenstates_plusk[:, :, idx_momentum] = v
 
         hk = hoppinghamiltonian(-momentum)
-        (w, v) = eig(Hermitian(hk))
+        (w, v) = (eigen(Hermitian(hk))...,)
         eigenenergies_minusk[:, idx_momentum] = w
         eigenstates_minusk[:, :, idx_momentum] = v
     end

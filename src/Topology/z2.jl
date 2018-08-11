@@ -98,7 +98,7 @@ function z2index(uc::UnitCell{O},
             k = kgrid[(i+1 for i in idx)...]
             hk[:] = 0.0
             hkgen(k, hk)
-            u, v = eig(Hermitian(0.5 * (hk + hk')))
+            (u, v) = (eigen(Hermitian(0.5 * (hk + hk')))...,)
             @debug("Eigenvalues at TRIM ($k) = $u")
 
             kramerpairup!(u, v, timereversal; tolerance=max(atol, rtol))
@@ -108,7 +108,7 @@ function z2index(uc::UnitCell{O},
             k = kgrid[(i+1 for i in idx)...]
             hk[:] = 0.0
             hkgen(k, hk)
-            u, v = eig(Hermitian(0.5 * (hk + hk')))
+            (u, v) = (eigen(Hermitian(0.5 * (hk + hk')))...,)
             eigenvaluegrid[idx] = u[selectbands]
             eigenvectorgrid[idx] = v[:, selectbands]
         end
