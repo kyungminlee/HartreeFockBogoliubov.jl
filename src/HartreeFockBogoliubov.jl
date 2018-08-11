@@ -20,6 +20,5 @@ include("LinearizedGap/LinearizedGap.jl")
 
 include("IO/dumper.jl")
 include("IO/dictify.jl")
-include("IO/loader.jl")
 
 end
