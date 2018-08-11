@@ -1,165 +1,167 @@
 using JSON
 using DataStructures
 using ArgParse
-import YAML
+using MicroLogging
 
 using ProgressMeter
 using HartreeFockBogoliubov
-import HartreeFockBogoliubov.Spec
-import HartreeFockBogoliubov.Generator
-using HartreeFockBogoliubov.HFB
+import HartreeFockBogoliubov: Spec, Generator, HFB
+using HartreeFockBogoliubov: HFB
 
-
-function detectresult(outpath)
-
-    for resultfilename in ["result_concise.json", "result_history.json"]
+function detectresult(outpath::AbstractString)
+    for resultfilename in ["result.json",]
         result = nothing
         resultfilepath = joinpath(outpath, resultfilename)
-        if isfile(resultfilepath)
-            open(resultfilepath) do file
-                result = JSON.load(file)
+        try
+            if isfile(resultfilepath)
+                open(resultfilepath) do file
+                    result = JSON.parse(file)
+                end
             end
+        catch y
+            result = nothing
         end
+
         if result != nothing
             ρ = [ float(x["re"]) + 1im * float(x["im"]) for x in result["rho"] ]
             t = [ float(x["re"]) + 1im * float(x["im"]) for x in result["t"] ]
             Γ = [ float(x["re"]) + 1im * float(x["im"]) for x in result["Gamma"] ]
             Δ = [ float(x["re"]) + 1im * float(x["im"]) for x in result["Delta"] ]
-            return HFBSolution(ρ,t,Γ,Δ)
+            return (result["BatchRun"], HFBSolution(ρ,t,Γ,Δ))
         end
     end
 
-    for resultfilename in ["result_concise.yaml", "result_history.yaml"]
-        result = nothing
-        resultfilepath = joinpath(outpath, resultfilename)
-        if isfile(resultfilepath)
-            open(resultfilepath) do file
-                prev_yaml = YAML.load_all(file)
-                for s in prev_yaml
-                    result = s
-                end
-            end
-        end
-
-        if result != nothing
-            ρ = [ float(x["real"]) + 1im * float(x["imag"]) for x in result["rho"] ]
-            t = [ float(x["real"]) + 1im * float(x["imag"]) for x in result["t"] ]
-            Γ = [ float(x["real"]) + 1im * float(x["imag"]) for x in result["Gamma"] ]
-            Δ = [ float(x["real"]) + 1im * float(x["imag"]) for x in result["Delta"] ]
-            return HFBSolution(ρ,t,Γ,Δ)
-        end
-    end
-    return nothing
+    return (0, nothing)
 end
 
 function runloop(solver ::HFBSolver;
-    outpath ::AbstractString="out",
-    nwarmup ::Integer = 200,
-    nbunch  ::Integer = 100,
-    nbatch  ::Integer = 500)
-    assert(nwarmup >= 0)
-    assert(nbunch > 0)
-    assert(nbatch >= 0)
+                 outpath ::AbstractString="out",
+                 nwarmup ::Integer = 200,
+                 nbunch  ::Integer = 100,
+                 nbatch  ::Integer = 500,
+                 tolerance::Float64 = sqrt(eps(Float64)),
+                 noise::Real = 0,
+                 verbose::Bool=false,
+                 update::Function=simpleupdate,
+                 getnextsolution::Function=getnextsolution,
+                 loop::Function=loop)
+
+    @info "Entering runloop"
+    progressbar = verbose && haskey(ENV, "TERM") && (ENV["TERM"] != "dumb")
+
+    @assert(nwarmup >= 0)
+    @assert(nbunch > 0)
+    @assert(nbatch >= 0)
+
+    @info "Making path $(outpath)"
     mkpath(outpath)
 
     hamspec = solver.hamiltonian
     uc = hamspec.unitcell
 
+    @info "Making solution"
     currentsolution = newhfbsolution(solver.hfbcomputer)
-    lastsolution = detectresult(outpath)
+
+    @info "Detecting result"
+    batchrun_offset, lastsolution = detectresult(outpath)
+
     if lastsolution != nothing
         if iscompatible(currentsolution, lastsolution)
-            println("Previous Solution matches in size with current solution")
-            println("Let's use it")
-
+            @info("Using previous solution.")
             currentsolution = lastsolution
+            @info ("Successfully read.")
 
-            println("Successfully read.")
-            println("  maximum |rho|  : ", maximum(abs.(currentsolution.ρ)))
-            println("  maximum |t|    : ", maximum(abs.(currentsolution.t)))
-            println("  maximum |Gamma|: ", maximum(abs.(currentsolution.Γ)))
-            println("  maximum |Delta|: ", maximum(abs.(currentsolution.Δ)))
+            if verbose
+                !isempty(currentsolution.ρ) && @info("  max |rho|  : $(maximum(abs.(currentsolution.ρ)))")
+                !isempty(currentsolution.t) && @info("  max |t|    : $(maximum(abs.(currentsolution.t)))")
+                !isempty(currentsolution.Γ) && @info("  max |Gamma|: $(maximum(abs.(currentsolution.Γ)))")
+                !isempty(currentsolution.Δ) && @info("  max |Delta|: $(maximum(abs.(currentsolution.Δ)))")
+            end
+
+            if abs(noise) > 0
+                @info("Adding noise to the values")
+                currentsolution.ρ[:] += noise * (2*rand(Float64, size(currentsolution.ρ)) - 1)
+                currentsolution.t[:] += noise * (2*rand(Complex128, size(currentsolution.t)) - 1 - 1im)
+                currentsolution.Γ[:] += noise * (2*rand(Float64, size(currentsolution.Γ)) - 1)
+                currentsolution.Δ[:] += noise * (2*rand(Complex128, size(currentsolution.Δ)) - 1 - 1im)
+            end
         else
-            println("Previous solution has different size from current solution")
-            println("Something is wrong. Just using the new solution")
+            @warn("Previous solution has wrong size. Using new random solution.")
+            batchrun_offset = 0
+            randomize!(solver.hfbcomputer, currentsolution)
         end
     else
+        @info "Result not found"
+        batchrun_offset = 0
         randomize!(solver.hfbcomputer, currentsolution)
     end
 
-    function nogammaupdate(sol::HFBSolution, newsol::HFBSolution)
-        simpleupdate(sol, newsol)
-        sol.Γ[:] = 0
-        sol
+    if batchrun_offset == 0
+        @info("Warming up")
+        if progressbar
+            @showprogress for run in 1:nwarmup
+                currentsolution = getnextsolution(solver, currentsolution)
+                currentsolution.Γ[:] = 0
+            end
+        else
+            for run in 1:nwarmup
+                currentsolution = getnextsolution(solver, currentsolution)
+                currentsolution.Γ[:] = 0
+            end
+        end
     end
-
-    println("Warm Up")
-    for run in 1:nwarmup
-        currentsolution = getnextsolution(solver, currentsolution)
-        currentsolution.Γ[:] = 0
-    end
-
 
     for batchrun in 1:nbatch
-        println("BATCH $batchrun")
-        nrun = nbunch + (batchrun % 2);
-        p = Progress(nrun)
-
-        callback = verbose ? (i, n) -> next!(p) : (i, n) -> nothing
+        verbose && @info("BATCH $(batchrun + batchrun_offset)")
+        callback = if progressbar
+            p = Progress(nbunch)
+            (i, n) -> next!(p)
+        else
+            (i, n) -> nothing
+        end
 
         starttime = now()
         previoussolution = copy(currentsolution)
-        currentsolution = loop(solver,
-                               currentsolution,
-                               nbunch + (batchrun % 2);
-                               update=nogammaupdate,
-                               callback=callback,
-                               )
+        currentsolution = loop(solver, currentsolution, nbunch;
+                               update=update, callback=callback)
         endtime = now()
-        println("Duration: ", (endtime - starttime))
+        verbose && @info("Duration: $(endtime - starttime)")
 
-        maxdiff1 = maximum(abs.(currentsolution.ρ - previoussolution.ρ))
-        maxdiff2 = maximum(abs.(currentsolution.t - previoussolution.t))
+        maxdiff1 = isempty(currentsolution.ρ) ? 0.0 : maximum(abs.(currentsolution.ρ - previoussolution.ρ))
+        maxdiff2 = isempty(currentsolution.t) ? 0.0 : maximum(abs.(currentsolution.t - previoussolution.t))
         maxdiff = max(maxdiff1, maxdiff2)
 
-        println("MaxDiff_rho = $maxdiff1")
-        println("MaxDiff_t   = $maxdiff2")
-        println("MaxDiff     = $maxdiff")
-
-        open(joinpath(outpath, "result_history.yaml"), "a") do file
-            FMT(x...) = begin
-                foreach(z -> mydump(file, z), x)
-                println(file)
-            end
-            FMT("---")
-            FMT("BatchRun: ",    batchrun)
-            FMT("rho: ",         currentsolution.ρ)
-            FMT("t: ",           currentsolution.t)
-            FMT("Gamma: ",       currentsolution.Γ)
-            FMT("Delta: ",       currentsolution.Δ)
-            FMT("MaxDiff_rho: ", maxdiff1)
-            FMT("MaxDiff_t: ",   maxdiff2)
-            FMT("StartTime: ",   starttime)
-            FMT("EndTime: ",     endtime)
-            FMT("...")
+        (E, S, Ω) = hfbfreeenergy(solver, currentsolution; update=update)
+        if verbose
+            @info("Grand Potential = $Ω")
+            @info("MaxDiff_rho = $maxdiff1")
+            @info("MaxDiff_t   = $maxdiff2")
         end
 
-        open(joinpath(outpath, "result_concise.yaml"), "w") do file
-            FMT(x...) = begin
-                foreach(z -> mydump(file, z), x)
-                println(file)
-            end
-            FMT("---")
-            FMT("BatchRun: ",    batchrun)
-            FMT("rho: ",         currentsolution.ρ)
-            FMT("t: ",           currentsolution.t)
-            FMT("Gamma: ",       currentsolution.Γ)
-            FMT("Delta: ",       currentsolution.Δ)
-            FMT("MaxDiff_rho: ", maxdiff1)
-            FMT("MaxDiff_t: ",   maxdiff2)
-            FMT("StartTime: ",   starttime)
-            FMT("EndTime: ",     endtime)
-            FMT("...")
+        if isfile(joinpath(outpath, "result.json"))
+            mv(joinpath(outpath, "result.json"),
+               joinpath(outpath, "previous_result.json"),
+               remove_destination=true)
         end
+        open(joinpath(outpath, "result.json"), "w") do file
+            outdict = OrderedDict([
+                                   ("BatchRun",    batchrun_offset + batchrun),
+                                   ("rho",         currentsolution.ρ),
+                                   ("t",           currentsolution.t),
+                                   ("Gamma",       currentsolution.Γ),
+                                   ("Delta",       currentsolution.Δ),
+                                   ("GrandPotential", Ω),
+                                   ("MaxDiff_rho", maxdiff1),
+                                   ("MaxDiff_t",   maxdiff2),
+                                   ("StartTime",   Dates.format(starttime, "yyyy-mm-ddTHH:MM:SS.s")),
+                                   ("EndTime",     Dates.format(endtime, "yyyy-mm-ddTHH:MM:SS.s")),
+                                  ])
+            JSON.print(file, outdict)
+        end
+
+        if maxdiff < tolerance
+            return
+        end
+
     end
 end
