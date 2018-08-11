@@ -4,7 +4,7 @@ language: julia
 os:
   - linux
 env:
-  - PYTHON="" CONDA_JL_VERSION=3
+  - CONDA_JL_VERSION=3 CONDA_JL_HOME="${HOME}/miniconda3" PYTHON="${HOME}/miniconda3/bin/python"
 matrix:
   include:
 #    - julia: 0.6
