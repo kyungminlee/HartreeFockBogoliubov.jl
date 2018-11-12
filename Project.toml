@@ -1,7 +1,7 @@
 name = "HartreeFockBogoliubov"
 uuid = "804d6816-852b-11e8-156d-fdb6b2597e74"
 authors = ["Kyungmin Lee <kyungmin.lee.42@gmail.com>"]
-version = "0.5.2-dev"
+version = "0.5.5"
 
 [deps]
 ArgParse = "c7e460c6-2fb9-53a9-8c5b-16f535851c63"

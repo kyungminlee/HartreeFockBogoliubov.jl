@@ -1,4 +1,3 @@
-__precompile__()
 module Topology
 
 if VERSION < v"0.7-"

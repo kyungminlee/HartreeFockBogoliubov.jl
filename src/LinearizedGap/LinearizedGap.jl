@@ -1,4 +1,3 @@
-__precompile__()
 module LinearizedGap
 
 if VERSION < v"0.7-"
