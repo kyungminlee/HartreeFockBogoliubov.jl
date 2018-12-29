@@ -34,7 +34,7 @@ function maketripletmdhamiltonian(μ ::Float64,
     c1 = b1 - b2
     c2 = b2 - b3
 
-    unitcell = newunitcell([c1 c2], OrbitalType=Tuple{Symbol, Int64, Symbol})
+    unitcell = make_unitcell([c1 c2], OrbitalType=Tuple{Symbol, Int64, Symbol})
     for spin in [:UP, :DN]
         addorbital!(unitcell, (:A, 1, spin), carte2fract(unitcell, a0))
         addorbital!(unitcell, (:B, 1, spin), carte2fract(unitcell, a1))

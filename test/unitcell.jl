@@ -2,14 +2,14 @@
   latticevectors = [0.5 0.0; 0.0 1.0]
 
   @testset "Constructor" begin
-    uc = newunitcell(latticevectors)
+    uc = make_unitcell(latticevectors)
     @test isapprox(uc.latticevectors, latticevectors)
     @test isapprox(uc.reducedreciprocallatticevectors, [2.0 0.0; 0.0 1.0])
     @test isapprox(uc.reciprocallatticevectors, [4*pi 0.0; 0.0 2*pi])
   end
 
   @testset "Methods" begin
-    uc = newunitcell(latticevectors)
+    uc = make_unitcell(latticevectors)
     fc1 = FractCoord([0, 0], [0.5, 0.0])
     fc2 = FractCoord([0, 0], [0.0, 0.5])
     addorbital!(uc, "Ox", fc1)
@@ -36,7 +36,7 @@
   end
 
   @testset "Type" begin
-    uc = newunitcell(latticevectors; OrbitalType=typeof((:up, "A")))
+    uc = make_unitcell(latticevectors; OrbitalType=typeof((:up, "A")))
     fc = Dict("Ox" => FractCoord([0, 0], [0.5, 0.0]),
               "Oy" => FractCoord([0, 0], [0.0, 0.5]))
     for orbital in ["Ox", "Oy"]
@@ -53,7 +53,7 @@
 
 #=
   @testset "kspace" begin
-    uc = newunitcell([1.0 0.0; 0.5 sqrt(3.0)*0.5]; OrbitalType=Symbol)
+    uc = make_unitcell([1.0 0.0; 0.5 sqrt(3.0)*0.5]; OrbitalType=Symbol)
     kg = momentumgrid(uc, [3,4])
     @show uc.reciprocallatticevectors
     using PyPlot

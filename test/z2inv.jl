@@ -45,7 +45,7 @@ function makekanemelehamiltonian(μ ::Float64,
   #c1 = b1 - b2
   #c2 = b2 - b3
 
-  unitcell = newunitcell([b1 b2], OrbitalType=Tuple{Symbol, Symbol})
+  unitcell = make_unitcell([b1 b2], OrbitalType=Tuple{Symbol, Symbol})
   for spin in [:UP, :DN]
     addorbital!(unitcell, (:A, spin), carte2fract(unitcell, a0))
     addorbital!(unitcell, (:B, spin), carte2fract(unitcell, a1))
@@ -208,7 +208,7 @@ function testpwave()
         t = 1.0
         #μ = 0.3
         V = 1.0
-        unitcell = newunitcell([[1.0, 0.0] [0.0, 1.0]]; OrbitalType=Tuple{Symbol, Symbol})
+        unitcell = make_unitcell([[1.0, 0.0] [0.0, 1.0]]; OrbitalType=Tuple{Symbol, Symbol})
         for spin in [:UP, :DN]
             addorbital!(unitcell, (:A, spin), carte2fract(unitcell, [0.0, 0.0]))
         end

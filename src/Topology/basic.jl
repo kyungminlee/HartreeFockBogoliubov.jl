@@ -16,7 +16,7 @@ function squarify(uc::Lattice.UnitCell{O}) where {O}
 
     origin = FractCoord(zeros(Int, newdimension), zeros(Float64, newdimension))
 
-    newuc = newunitcell(newlatticevectors; OrbitalType=O)
+    newuc = make_unitcell(newlatticevectors; OrbitalType=O)
     for (orbname, fc) in uc.orbitals
         addorbital!(newuc, orbname, origin)
     end

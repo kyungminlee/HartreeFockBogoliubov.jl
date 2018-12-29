@@ -1,6 +1,6 @@
 @testset "Spec" begin
 
-  uc = newunitcell([1.0 0.0; 0.0 1.0])
+  uc = make_unitcell([1.0 0.0; 0.0 1.0])
   addorbital!(uc, "A", FractCoord([0,0], [0.5, 0.0]))
   addorbital!(uc, "B", FractCoord([0,0], [0.0, 0.5]))
 

@@ -10,7 +10,7 @@ using HartreeFockBogoliubov.Dictify
 @testset "single-site" begin
 
   latticevectors = [1.0 0.0; 0.0 1.0]
-  unitcell = newunitcell(latticevectors, OrbitalType=Symbol)
+  unitcell = make_unitcell(latticevectors, OrbitalType=Symbol)
 
   addorbital!(unitcell, :UP, FractCoord([0, 0], [0.0, 0.0]))
   addorbital!(unitcell, :DN, FractCoord([0, 0], [0.0, 0.0]))
@@ -140,7 +140,7 @@ end
 
 @testset "squarehubbard" begin
   latticevectors = [1.0 0.0 ; 0.0 1.0]
-  unitcell = newunitcell(latticevectors, OrbitalType=Symbol)
+  unitcell = make_unitcell(latticevectors, OrbitalType=Symbol)
   addorbital!(unitcell, :UP, FractCoord([0,0], [0.0, 0.0]))
   addorbital!(unitcell, :DN, FractCoord([0,0], [0.0, 0.0]))
 
@@ -210,7 +210,7 @@ using BenchmarkTools, Compat
 
 @testset "pairinghubbard" begin
     latticevectors = [1.0 0.0 ; 0.0 1.0]
-    unitcell = newunitcell(latticevectors, OrbitalType=Symbol)
+    unitcell = make_unitcell(latticevectors, OrbitalType=Symbol)
     addorbital!(unitcell, :UP, FractCoord([0,0], [0.0, 0.0]))
     addorbital!(unitcell, :DN, FractCoord([0,0], [0.0, 0.0]))
 

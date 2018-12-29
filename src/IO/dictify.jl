@@ -188,7 +188,7 @@ const DICTHANDLER = Dict(
         orbitals = objectify(d["orbitals"])
         OrbitalType = typejoin([typeof(orb[1]) for orb in orbitals]...)
         OrbitalType = isa(OrbitalType, DataType) ? OrbitalType : Any
-        uc = newunitcell(latticevectors; OrbitalType=OrbitalType)
+        uc = make_unitcell(latticevectors; OrbitalType=OrbitalType)
         for orb in orbitals
             addorbital!(uc, orb[1], orb[2])
         end

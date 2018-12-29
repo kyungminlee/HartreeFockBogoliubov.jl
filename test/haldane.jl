@@ -21,7 +21,7 @@ function makehaldanemodel(μ ::Float64,
   b2 = a1 - a3
   b3 = a2 - a1
 
-  unitcell = newunitcell([b1 b2], OrbitalType=Symbol)
+  unitcell = make_unitcell([b1 b2], OrbitalType=Symbol)
   addorbital!(unitcell, :A, carte2fract(unitcell, a0))
   addorbital!(unitcell, :B, carte2fract(unitcell, a1))
 
@@ -74,11 +74,11 @@ function main()
   for (i, k) in enumerate(kg)
     out = zeros(Complex{Float64}, (norb, norb))
     ham(k, out)
-    
+
   end
   =#
   @show Topology.chernnumber(haldanemodel.unitcell, haldanemodel.hoppings, 16, 16, 1:1)
-  
+
   hfb_haldanemodel = HFBHamiltonian(haldanemodel)
   hfb_computer = HFBComputer(hfb_haldanemodel, 0.0)
   hfb_solution = newhfbsolution(hfb_computer)
@@ -92,7 +92,7 @@ function main()
 
   hkgen1 = makehamiltonian(hfb_computer, hfb_solution.Γ, hfb_solution.Δ)
   (nambuunitcell, ham2) = freeze(hfb_computer, hfb_solution.Γ, hfb_solution.Δ)
-  
+
   hkgen2 = let
     norb = numorbital(haldanemodel.unitcell)*2
     generator = Generator.generatefast(nambuunitcell, ham2)

@@ -7,7 +7,7 @@ using HartreeFockBogoliubov.Dictify
 using DataStructures
 
 function newhubbard(μ::Real, t::Real, U::Real, V::Real)
-  unitcell = newunitcell(eye(2), OrbitalType=Symbol)
+  unitcell = make_unitcell(eye(2), OrbitalType=Symbol)
   addorbital!(unitcell, :UP, FractCoord([0, 0], [0.0, 0.0]))
   addorbital!(unitcell, :DN, FractCoord([0, 0], [0.0, 0.0]))
 
@@ -32,7 +32,7 @@ using YAML
 using JSON
 
 if true
-  o1 = newunitcell([1 2; 3 4.0])
+  o1 = make_unitcell([1 2; 3 4.0])
   @show o1
 
   d1 = dictify(o1)
