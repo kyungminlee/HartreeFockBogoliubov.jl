@@ -9,7 +9,6 @@ struct HoppingMeanField{C<:Number}
     target ::Tuple{Int, Int, Vector{Int}}
     source ::Tuple{Int, Int, Vector{Int}}
     star ::Bool
-
     function HoppingMeanField{C}(
             amplitude ::C,
             target::Tuple{<:Integer, <:Integer, <:AbstractVector{<:Integer}},
@@ -55,7 +54,6 @@ struct PairingMeanField{C<:Number}
     target ::Tuple{Int, Int, Vector{Int}}
     source ::Tuple{Int, Int, Vector{Int}}
     negate ::Bool
-
     function PairingMeanField{C}(
                 amplitude ::C,
                 target::Tuple{<:Integer, <:Integer, <:AbstractVector{<:Integer}},
@@ -100,7 +98,8 @@ end
 """
 mutable struct HFBHamiltonian{O}
     unitcell ::UnitCell{O}
-    hoppings ::Vector{Hopping}
+    hoppings_diagonal ::Vector{HoppingDiagonal}
+    hoppings_offdiagonal ::Vector{HoppingOffdiagonal}
     particle_hole_interactions ::Vector{HoppingMeanField}
     particle_particle_interactions ::Vector{PairingMeanField}
 end
@@ -110,12 +109,14 @@ end
 """
 function HFBHamiltonian(
             unitcell ::UnitCell{O},
-            hoppings ::AbstractVector{Hopping},
+            hoppings_diagonal ::AbstractVector{HoppingDiagonal},
+            hoppings_offdiagonal ::AbstractVector{HoppingOffdiagonal},
             particle_hole_interactions ::AbstractVector{HoppingMeanField},
-            particle_particle_interactions ::AbstractVector{PairingMeanField}
+            particle_particle_interactions ::AbstractVector{PairingMeanField},
         ) where {O}
     return HFBHamiltonian{O}(unitcell,
-                             hoppings,
+                             hoppings_diagonal,
+                             hoppings_offdiagonal,
                              particle_hole_interactions,
                              particle_particle_interactions)
 end
@@ -125,9 +126,13 @@ end
 """
 function HFBHamiltonian(fullhamiltonian ::FullHamiltonian{O}) where {O}
     unitcell = fullhamiltonian.unitcell
-    hoppings = fullhamiltonian.hoppings
-    model = HFBHamiltonian{O}(unitcell, hoppings, [], [])
-    for interaction in fullhamiltonian.interactions
+    hoppings_diagonal = fullhamiltonian.hoppings_diagonal
+    hoppings_offdiagonal = fullhamiltonian.hoppings_offdiagonal
+    model = HFBHamiltonian{O}(unitcell, hoppings_diagonal, hoppings_offdiagonal, [], [])
+    for interaction in fullhamiltonian.interactions_diagonal
+        addinteraction!(model, interaction)
+    end
+    for interaction in fullhamiltonian.interactions_offdiagonal
         addinteraction!(model, interaction)
     end
     return model
@@ -144,7 +149,6 @@ function addinteraction!(model ::HFBHamiltonian{O},
     v = specint.amplitude
     (i, j) = (specint.i, specint.j)
     (Ri, Rj) = (specint.Ri, specint.Rj)
-
     Γs = [
         HoppingMeanField( v, (i, i, Ri-Ri), (j, j, Rj-Rj)),
         HoppingMeanField( v, (j, j, Rj-Rj), (i, i, Ri-Ri)),
@@ -168,7 +172,6 @@ function addinteraction!(model ::HFBHamiltonian{O},
     (k, l) = (specint.k, specint.l)
     (Ri, Rj) = (specint.Ri, specint.Rj)
     (Rk, Rl) = (specint.Rk, specint.Rl)
-
     Γs = [
         HoppingMeanField( v, (i, k, Rk-Ri), (l, j, Rj-Rl)),
         HoppingMeanField(-v, (i, l, Rl-Ri), (k, j, Rj-Rk)),

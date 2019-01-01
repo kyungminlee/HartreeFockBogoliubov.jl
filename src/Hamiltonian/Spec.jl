@@ -23,9 +23,10 @@ Represents
 ```math
   t c_{i}^{*} c_{i}
 ```
+
   # Members
   * `amplitude ::R`
-  * `i ::Int`: name of orbital
+  * `i ::Int`: index of orbital
   * `Ri ::Vector{Int}`: which unit cell? (indexed by a1, and a2)
 """
 struct HoppingDiagonal{R<:Real}
@@ -57,12 +58,14 @@ Represents
   t c_{i}^{*} c_{j} + t^* c_{j}^{*} c_{i}
 ```
 
+`t`, `i`, `j` and the unitcell-coordinates `Ri` and `Rj` are stored.
+Require that `(i, Ri) <= (j, Rj)`
+
+
   # Members
   * `amplitude :: C`
-  * `i ::T`
-  * `j ::T`
-  * `Ri ::Vector{Int}`
-  * `Rj ::Vector{Int}`
+  * `i, j ::T`
+  * `Ri, Rj ::Vector{Int}`
 """
 struct HoppingOffdiagonal{C<:Number}
     amplitude ::C
@@ -75,8 +78,13 @@ struct HoppingOffdiagonal{C<:Number}
                                    j::Integer,
                                    Ri::AbstractVector{<:Integer},
                                    Rj::AbstractVector{<:Integer}) where {C<:Number}
-        @assert(length(Ri) == length(Rj))
-        if i > j
+        if length(Ri) != length(Rj)
+            throw(ArgumentError("Ri and Rj must be of same length"))
+        elseif (i, Ri) == (j, Rj)
+            throw(ArgumentError("not an off-diagonal element"))
+        end
+
+        if (i, Ri) > (j, Rj)
             (i,j) = (j,i)
             (Ri, Rj) = (Rj, Ri)
             v = conj(v)
@@ -105,10 +113,8 @@ Represents
 
   # Members
   * `amplitude ::R`
-  * `i ::T`
-  * `j ::T`
-  * `Ri ::Vector{Int}`
-  * `Rj ::Vector{Int}`
+  * `i, j ::Int`
+  * `Ri, Rj ::Vector{Int}`
 """
 struct InteractionDiagonal{R<:Real}
     amplitude ::R
@@ -121,9 +127,12 @@ struct InteractionDiagonal{R<:Real}
                                     j::Integer,
                                     Ri::AbstractVector{<:Integer},
                                     Rj::AbstractVector{<:Integer}) where {R<:Real}
-        @assert(length(Ri) == length(Rj))
-        @assert(!(i == j && Ri == Rj))
-        if i > j
+        if length(Ri) != length(Rj)
+            throw(ArgumentError("Ri and Rj must be of same length"))
+        elseif (i, Ri) == (j, Rj)
+            throw(ArgumentError("not allowed by fermion statistics"))
+        end
+        if (i, Ri) > (j, Rj)
             (i,j) = (j,i)
             (Ri, Rj) = (Rj, Ri)
             v = conj(v)
@@ -155,16 +164,12 @@ Represents
 
 Only keep the first term (and require i < j, k < l, i <= k)
 
+Ordering of orbitals by `(i, Ri)`
+
   # Members
   * `amplitude ::C`
-  * `i ::T`
-  * `j ::T`
-  * `k ::T`
-  * `l ::T`
-  * `Ri ::Vector{Int}`
-  * `Rj ::Vector{Int}`
-  * `Rk ::Vector{Int}`
-  * `Rl ::Vector{Int}`
+  * `i, j, k, l ::Int`
+  * `Ri, Rj, Rk, Rl ::Vector{Int}`
 """
 struct InteractionOffdiagonal{C<:Number}
     amplitude ::C
@@ -185,26 +190,34 @@ struct InteractionOffdiagonal{C<:Number}
                                        Rj::AbstractVector{<:Integer},
                                        Rk::AbstractVector{<:Integer},
                                        Rl::AbstractVector{<:Integer}) where {C<:Number}
-        @assert(length(Ri) == length(Rj) == length(Rk) == length(Rl))
-        @assert(i != j)
-        @assert(k != l)
-        if i > j
+        if !(length(Ri) == length(Rj) == length(Rk) == length(Rl))
+            throw(ArgumentError("R's must be of same length"))
+        end
+
+        if (i, Ri) == (j, Rj)
+            throw(ArgumentError("i, j not allowed by fermion statistics"))
+        elseif (i, Ri) > (j, Rj)
             (i, j) = (j, i)
             (Ri, Rj) = (Rj, Ri)
             v = -v
         end
 
-        if k > l
+        if (k, Rk) == (l, Rl)
+            throw(ArgumentError("k, l not allowed by fermion statistics"))
+        elseif (k, Rk) > (l, Rl)
             (k, l) = (l, k)
             (Rk, Rl) = (Rl, Rk)
             v = -v
         end
 
-        if i > k
+        if (i, Ri, j, Rj) == (k, Rk, l, Rl)
+            throw(ArgumentError("not an off-diagonal element"))
+        elseif (i, Ri, j, Rj) > (k, Rk, l, Rl)
             (i, j, k, l) = (k, l, i, j)
             (Ri, Rj, Rk, Rl) = (Rk, Rl, Ri, Rj)
             v = conj(v)
         end
+
         return new{C}(v, i, j, k, l, Ri, Rj, Rk, Rl)
     end
 end
@@ -244,8 +257,10 @@ const Interaction = Union{InteractionDiagonal, InteractionOffdiagonal}
 """
 mutable struct FullHamiltonian{O}
     unitcell ::UnitCell{O}
-    hoppings ::Vector{Hopping}
-    interactions ::Vector{Interaction}
+    hoppings_diagonal ::Vector{HoppingDiagonal}
+    hoppings_offdiagonal ::Vector{HoppingOffdiagonal}
+    interactions_diagonal ::Vector{InteractionDiagonal}
+    interactions_offdiagonal ::Vector{InteractionOffdiagonal}
 end
 
 
@@ -257,11 +272,13 @@ end
   # Arguments
   * `unitcell ::UnitCell`
 """
-FullHamiltonian(unitcell::UnitCell{O}) where {O} = FullHamiltonian{O}(unitcell, [], [])
+FullHamiltonian(unitcell::UnitCell{O}) where {O} = FullHamiltonian{O}(unitcell, [], [], [], [])
 
 
 """
     hoppingbycarte{T}
+
+Make a hopping element with cartesian coordinates.
 
   # Arguments
   * `uc ::UnitCell{T}`
@@ -283,6 +300,8 @@ end
 
 """
     hoppingbycarte{T}
+
+Make a hopping element with cartesian coordinates.
 
   # Arguments
   * `uc ::UnitCell{T}`
@@ -309,6 +328,8 @@ end
 """
     interactionbycarte{T}
 
+Make an interaction element with cartesian coordinates.
+
   # Arguments
     * `uc ::UnitCell{T}`
     * `amplitude ::Number`
@@ -333,6 +354,8 @@ end
 
 """
     interactionbycarte{T}
+
+Make an interaction element with cartesian coordinates.
 
   # Arguments
     * `uc ::UnitCell{T}`
@@ -366,7 +389,12 @@ function interactionbycarte(uc ::UnitCell{O},
 end
 
 
+"""
+    islocal
 
+Check if the hopping element is local (i.e. Ri is zero)
+
+"""
 function islocal(hopping::HoppingDiagonal{R}) where {R <: Real}
     return iszero(hopping.Ri)
 end
@@ -384,11 +412,16 @@ function islocal(interaction::InteractionOffdiagonal{C}) where {C <: Number}
 end
 
 
-function localize(hopping::HoppingDiagonal{R}) where {R <: Real}
+"""
+    localized
+
+Return a hopping element that is local (i.e. Ri is zero)
+"""
+function localized(hopping::HoppingDiagonal{R}) where {R <: Real}
     return HoppingDiagonal{R}(hopping.amplitude, hopping.i, zero(hopping.Ri))
 end
 
-function localize(hopping::HoppingOffdiagonal{C}) where {C <: Number}
+function localized(hopping::HoppingOffdiagonal{C}) where {C <: Number}
     return HoppingOffdiagonal{C}(hopping.amplitude,
                                  hopping.i,
                                  hopping.j,
@@ -396,7 +429,7 @@ function localize(hopping::HoppingOffdiagonal{C}) where {C <: Number}
                                  hopping.Rj - hopping.Ri)
 end
 
-function localize(interaction::InteractionDiagonal{R}) where {R <: Real}
+function localized(interaction::InteractionDiagonal{R}) where {R <: Real}
     return InteractionDiagonal{R}(interaction.amplitude,
                                   interaction.i,
                                   interaction.j,
@@ -404,7 +437,8 @@ function localize(interaction::InteractionDiagonal{R}) where {R <: Real}
                                   interaction.Rj - interaction.Ri)
 end
 
-function localize(interaction::InteractionOffdiagonal{C}) where {C <: Number}
+function localized(interaction::InteractionOffdiagonal{C}) where {C <: Number}
+    # Since i,j,k,l already is ordered in the interaction term, not need to worry about which one to localize.
     return InteractionOffdiagonal{C}(interaction.amplitude,
                                      interaction.i,
                                      interaction.j,
@@ -430,7 +464,7 @@ function addhopping!(hamiltonian ::FullHamiltonian{O},
     @assert(1 <= hopping.i <= numorbital(hamiltonian.unitcell),
             "orbital $(hopping.i) not defined in unit cell")
     if abs(hopping.amplitude) > tol
-        push!(hamiltonian.hoppings, hopping)
+        push!(hamiltonian.hoppings_diagonal, hopping)
     end
 end
 
@@ -450,7 +484,7 @@ function addhopping!(hamiltonian ::FullHamiltonian{O},
     @assert(1 <= hopping.j <= numorbital(hamiltonian.unitcell),
             "orbital $(hopping.j) not defined in unit cell")
     if abs(hopping.amplitude) > tol
-        push!(hamiltonian.hoppings, hopping)
+        push!(hamiltonian.hoppings_offdiagonal, hopping)
     end
 end
 
@@ -470,7 +504,7 @@ function addinteraction!(hamiltonian ::FullHamiltonian{O},
     @assert(1 <= interaction.j <= numorbital(hamiltonian.unitcell),
             "orbital $(interaction.j) not defined in unit cell")
     if abs(interaction.amplitude) > tol
-        push!(hamiltonian.interactions, interaction)
+        push!(hamiltonian.interactions_diagonal, interaction)
     end
 end
 
@@ -494,7 +528,7 @@ function addinteraction!(hamiltonian ::FullHamiltonian{O},
     @assert(1 <= interaction.l <= numorbital(hamiltonian.unitcell),
             "orbital $(interaction.l) not defined in unit cell")
     if abs(interaction.amplitude) > tol
-        push!(hamiltonian.interactions, interaction)
+        push!(hamiltonian.interactions_offdiagonal, interaction)
     end
 end
 
@@ -507,8 +541,9 @@ isless(hop1 ::HoppingOffdiagonal, hop2::HoppingDiagonal) = false
 function simplify(hamiltonian::FullHamiltonian{O}) where {O}
 
     hopdiadict = Dict{Int, Float64}()
-    hopoffdict = Dict{Tuple{Int, Int, Vector{Int}}, Complex{Float64}}()
+    hopoffdict = Dict{Tuple{Int, Int, Vector{Int}}, ComplexF64}()
 
+    #=
     for hop in hoppings
         if isa(newhop, HoppingDiagonal)
             k = hop.i
@@ -526,10 +561,27 @@ function simplify(hamiltonian::FullHamiltonian{O}) where {O}
             end
         end
     end
+    =#
+
+    for hop in hoppings_diagonal
+            k = hop.i
+            if haskey(hopdiadict, k)
+                hopdiadict[k].amplitude += hop.amplitude
+            else
+                hopdiadict[k] = hop
+            end
+    end
+    for hop in hoppings_offdiagonal
+        k = (hop.i, hop.j, hop.Rj - hop.Ri)
+        if haskey(hopoffdict, k)
+            hopoffdict[k].amplitude += hop.amplitude
+        else
+            hopoffdict[k] = hop
+        end
+    end
 
     # TODO
     error("unimplemented")
-
 
     #newhamiltonian = FullHamiltonian{O}(hamiltonian.unitcell)
     #for hop in hamiltonian.hoppings

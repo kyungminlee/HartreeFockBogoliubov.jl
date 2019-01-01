@@ -1,22 +1,19 @@
 export HFBComputer
-export HFBSolution
-export HFBHint
-export makesourcefields,
-       computetargetfields,
-       makehamiltonian,
-       makegreencollectors,
-       newhfbhint,
-       newhfbsolution,
+export make_hfbamplitude,
+       make_hfbfield,
+       compute_hfbfield!,
+       make_hamiltonian,
+       make_greencollector,
+       make_hint,
        randomize!,
-       fixhfbsolution,
-       iscompatible,
-       isvalidsolution
+       isvalid
 
-export makehoppingmatrix,
-       makeGammamatrix,
-       makeDeltamatrix
+export clearΓ!,
+       clearΔ!
 
-export freeze
+export make_hoppingmatrix,
+       make_Gammamatrix,
+       make_Deltamatrix
 
 using LinearAlgebra
 using HartreeFockBogoliubov
@@ -46,7 +43,7 @@ Its elements are:
      (1) conjugation is needed (for ρ/Γ) or
      (2) minus sign is needed (for t/Δ).
 """
-const DeployRow = Tuple{Bool, Int, Int, Vector{Float64}, Vector{Tuple{Int, Complex{Float64}, Bool}}}
+const DeployRow = Tuple{Bool, Int, Int, Vector{Float64}, Vector{Tuple{Int, ComplexF64, Bool}}}
 
 
 """
@@ -55,7 +52,8 @@ Hamiltonian.
 """
 mutable struct HFBComputer{O}
     unitcell ::UnitCell{O}
-    hoppings ::Vector{Spec.Hopping}
+    hoppings_diagonal ::Vector{Spec.HoppingDiagonal}
+    hoppings_offdiagonal ::Vector{Spec.HoppingOffdiagonal}
     temperature ::Float64
 
     fermi ::Function
@@ -68,17 +66,18 @@ end
 
 """
 """
-function HFBComputer(unitcell::UnitCell{O},
-                     hoppings::AbstractVector{Spec.Hopping},
-                     temperature::Real) where {O}
+function HFBComputer(unitcell ::UnitCell{O},
+                     hoppings_diagonal ::AbstractVector{Spec.HoppingDiagonal},
+                     hoppings_offdiagonal ::AbstractVector{Spec.HoppingOffdiagonal},
+                     temperature ::Real) where {O}
     fermi = fermidirac(temperature)
-    return HFBComputer{O}(unitcell, hoppings, temperature, fermi, [], [], [], [])
+    return HFBComputer{O}(unitcell, hoppings_diagonal, hoppings_offdiagonal, temperature, fermi, [], [], [], [])
 end
 
 
 """
 """
-function makeparticleholeregistry(ham::HFBHamiltonian{O}) where {O}
+function make_particleholeregistry(ham::HFBHamiltonian)
     function getdistance(i ::Int, j ::Int, Rij::Vector{Int}) ::Vector{Float64}
         ri, rj = getorbitalcoord(ham.unitcell, i), getorbitalcoord(ham.unitcell, j)
         rj = rj + Rij
@@ -145,7 +144,7 @@ end
 
 """
 """
-function makeparticleparticleregistry(ham::HFBHamiltonian{O}) where {O}
+function make_particleparticleregistry(ham::HFBHamiltonian)
     function getdistance(i ::Int, j ::Int, Rij::Vector{Int}) ::Vector{Float64}
         ri, rj = getorbitalcoord(ham.unitcell, i), getorbitalcoord(ham.unitcell, j)
         rj = rj + Rij
@@ -198,123 +197,50 @@ function makeparticleparticleregistry(ham::HFBHamiltonian{O}) where {O}
 end
 
 
-function HFBComputer(ham::HFBHamiltonian{O},
-                     temperature::Real;
-                     ttol=eps(Float64),
-                     etol=sqrt(eps(Float64))) where {O}
-    @assert(ttol >= 0.0, "ttol should be non-negative")
-    @assert(etol >= 0.0, "etol should be non-negative")
-    @assert(temperature >= 0, "temperature should be non-negative")
+function HFBComputer(ham ::HFBHamiltonian{O},
+                     temperature ::Real;
+                     ttol ::Real=eps(Float64),
+                     etol ::Real=sqrt(eps(Float64))) where {O}
     dim = dimension(ham.unitcell)
 
     unitcell = ham.unitcell
-    hoppings = ham.hoppings
+    hoppings_diagonal = ham.hoppings_diagonal
+    hoppings_offdiagonal = ham.hoppings_offdiagonal
     fermi = fermidirac(temperature)
 
-    (ρ_registry, Γ_registry) = makeparticleholeregistry(ham)
-    (t_registry, Δ_registry) = makeparticleparticleregistry(ham)
+    (ρ_registry, Γ_registry) = make_particleholeregistry(ham)
+    (t_registry, Δ_registry) = make_particleparticleregistry(ham)
 
     return HFBComputer{O}(unitcell,
-                          hoppings,
+                          hoppings_diagonal,
+                          hoppings_offdiagonal,
                           temperature, fermi,
                           ρ_registry, t_registry,
                           Γ_registry, Δ_registry)
 end
 
-mutable struct HFBSolution
-    ρ ::Vector{Complex{Float64}}
-    t ::Vector{Complex{Float64}}
-    Γ ::Vector{Complex{Float64}}
-    Δ ::Vector{Complex{Float64}}
-end
 
-mutable struct HFBHint{O}
-    ρ ::Dict{Tuple{O, O, Vector{Int}}, Complex{Float64}}
-    t ::Dict{Tuple{O, O, Vector{Int}}, Complex{Float64}}
-end
-
-function iscompatible(s1 ::HFBSolution, s2::HFBSolution)
-    return (length(s1.ρ) == length(s2.ρ) &&
-            length(s1.t) == length(s2.t) &&
-            length(s1.Γ) == length(s2.Γ) &&
-            length(s1.Δ) == length(s2.Δ))
+function clearΓ!(computer::HFBComputer)
+    for (i, item) in enumerate(computer.Γ_registry)
+        computer.Γ_registry[i] = (item[1:end-1]..., [])
+    end
 end
 
 
-import Base: copy
-
-copy(x::HFBSolution) = HFBSolution(copy(x.ρ), copy(x.t), copy(x.Γ), copy(x.Δ))
-copy(x::HFBHint{O}) where {O} = HFBHint{O}(copy(x.ρ), copy(x.t))
-
-#import Base: +, -, *, /, \
-import Base.+
-import Base.-
-import Base.*
-import Base./
-import Base.\
-
-
-function +(sol1::HFBSolution) ::HFBSolution
-    HFBSolution(sol1.ρ, sol1.t, sol1.Γ, sol1.Δ)
-end
-
-function -(sol1::HFBSolution) ::HFBSolution
-    HFBSolution(-sol1.ρ, -sol1.t, -sol1.Γ, -sol1.Δ)
-end
-
-function +(sol1::HFBSolution, sol2::HFBSolution) ::HFBSolution
-    HFBSolution(sol1.ρ + sol2.ρ, sol1.t + sol2.t,
-                sol1.Γ + sol2.Γ, sol1.Δ + sol2.Δ)
-end
-
-function -(sol1::HFBSolution, sol2::HFBSolution) ::HFBSolution
-    HFBSolution(sol1.ρ - sol2.ρ, sol1.t - sol2.t,
-                sol1.Γ - sol2.Γ, sol1.Δ - sol2.Δ)
-end
-
-function *(sol1::HFBSolution, value :: T) ::HFBSolution where {T <: Number}
-    HFBSolution(sol1.ρ * value, sol1.t * value,
-                sol1.Γ * value, sol1.Δ * value)
-end
-
-function *(value :: T, sol1::HFBSolution) ::HFBSolution where {T <: Number}
-    HFBSolution(value * sol1.ρ, value * sol1.t,
-                value * sol1.Γ, value * sol1.Δ)
-end
-
-function /(sol1::HFBSolution, value :: T) ::HFBSolution where {T <: Number}
-    HFBSolution(sol1.ρ / value, sol1.t / value,
-                sol1.Γ / value, sol1.Δ / value)
-end
-
-function \(value :: T, sol1::HFBSolution) ::HFBSolution where {T <: Number}
-    HFBSolution(value \ sol1.ρ, value \ sol1.t,
-                value \ sol1.Γ, value \ sol1.Δ)
-end
-
-import Base: isapprox
-
-function isapprox(sol1::HFBSolution, sol2::HFBSolution;
-                  atol::Real=sqrt(eps(Float64)),
-                  rtol::Real=sqrt(eps(Float64)),
-                  nans::Bool=false) ::Bool
-    return (isapprox(sol1.ρ, sol2.ρ; rtol=rtol, atol=atol, nans=nans) &&
-            isapprox(sol1.t, sol2.t; rtol=rtol, atol=atol, nans=nans) &&
-            isapprox(sol1.Γ, sol2.Γ; rtol=rtol, atol=atol, nans=nans) &&
-            isapprox(sol1.Δ, sol2.Δ; rtol=rtol, atol=atol, nans=nans) )
+function clearΔ!(computer::HFBComputer)
+    for (i, item) in enumerate(computer.Δ_registry)
+        computer.Δ_registry[i] = (item[1:end-1]..., [])
+    end
 end
 
 
-
-#TODO: move funcρ and funct to the back
 """
 func : (idx, i, j, r) -> val
 """
-function makesourcefields(computer ::HFBComputer{O},
-                          funcρ ::Function, funct ::Function,
-                         ) where {O}
-    ρs = zeros(Complex{Float64}, length(computer.ρ_registry))
-    ts = zeros(Complex{Float64}, length(computer.t_registry))
+function make_hfbamplitude(computer ::HFBComputer,
+                          funcρ ::Function, funct ::Function) ::HFBAmplitude
+    ρs = zeros(ComplexF64, length(computer.ρ_registry))
+    ts = zeros(ComplexF64, length(computer.t_registry))
 
     for (idx, (isdiag, i, j, r)) in enumerate(computer.ρ_registry)
         v = funcρ(idx, i, j, r)
@@ -328,29 +254,41 @@ function makesourcefields(computer ::HFBComputer{O},
     for (idx, (i, j, r)) in enumerate(computer.t_registry)
         ts[idx] = funct(idx, i, j, r)
     end
-    return (ρs, ts)
+    return HFBAmplitude(ρs, ts)
 end
 
 
 """
 func : (idx, i, j, r) -> 0
 """
-function makesourcefields(computer ::HFBComputer{O}) where {O}
-    ρs = zeros(Complex{Float64}, length(computer.ρ_registry))
-    ts = zeros(Complex{Float64}, length(computer.t_registry))
-    return (ρs, ts)
+function make_hfbamplitude(computer ::HFBComputer) ::HFBAmplitude
+    ρs = zeros(ComplexF64, length(computer.ρ_registry))
+    ts = zeros(ComplexF64, length(computer.t_registry))
+    return HFBAmplitude(ρs, ts)
 end
+
 
 """
 Compute Γ and Δ from ρ and t.
 """
-function computetargetfields(computer ::HFBComputer{O},
-                             ρs ::AbstractVector{<:Number},
-                             ts ::AbstractVector{<:Number}) where {O}
-    Γs = zeros(Complex{Float64}, length(computer.Γ_registry))
-    Δs = zeros(Complex{Float64}, length(computer.Δ_registry))
+function make_hfbfield(computer ::HFBComputer) ::HFBField
+    Γs = zeros(ComplexF64, length(computer.Γ_registry))
+    Δs = zeros(ComplexF64, length(computer.Δ_registry))
+    return HFBField(Γs, Δs)
+end
+
+
+"""
+Compute Γ and Δ from ρ and t.
+"""
+function make_hfbfield(computer ::HFBComputer,
+                       hfbamplitude ::HFBAmplitude) ::HFBField
+    ρs = hfbamplitude.ρ
+    ts = hfbamplitude.t
+    Γs = zeros(ComplexF64, length(computer.Γ_registry))
+    Δs = zeros(ComplexF64, length(computer.Δ_registry))
     for (tgtidx, (_, i, j, r, srcs)) in enumerate(computer.Γ_registry)
-        value = 0.0 + 0.00im
+        value = zero(ComplexF64)
         for (srcidx, amplitude, star) in srcs
             value += amplitude * (star ? conj(ρs[srcidx]) : ρs[srcidx])
         end
@@ -358,78 +296,115 @@ function computetargetfields(computer ::HFBComputer{O},
     end
 
     for (tgtidx, (_, i, j, r, srcs)) in enumerate(computer.Δ_registry)
-        value = 0.0 + 0.00im
+        value = zero(ComplexF64)
         for (srcidx, amplitude, neg) in srcs
             value += amplitude * (neg ? -ts[srcidx] : ts[srcidx])
         end
         Δs[tgtidx] = value
     end
-    return (Γs, Δs)
+    return HFBField(Γs, Δs)
 end
+
+
+"""
+Compute Γ and Δ from ρ and t.
+"""
+function compute_hfbfield!(hfbfield ::HFBField,
+                           computer ::HFBComputer,
+                           hfbamplitude ::HFBAmplitude) ::HFBField
+    ρs = hfbamplitude.ρ
+    ts = hfbamplitude.t
+    for (tgtidx, (_, i, j, r, srcs)) in enumerate(computer.Γ_registry)
+        value = zero(ComplexF64)
+        for (srcidx, amplitude, star) in srcs
+            value += amplitude * (star ? conj(ρs[srcidx]) : ρs[srcidx])
+        end
+        hfbfield.Γ[tgtidx] = value
+    end
+
+    for (tgtidx, (_, i, j, r, srcs)) in enumerate(computer.Δ_registry)
+        value = zero(ComplexF64)
+        for (srcidx, amplitude, neg) in srcs
+            value += amplitude * (neg ? -ts[srcidx] : ts[srcidx])
+        end
+        hfbfield.Δ[tgtidx] = value
+    end
+    hfbfield
+end
+
+
 
 """
 Return a generator of hopping matrix (which is a function of momentum)
 """
-function makehoppingmatrix(computer::HFBComputer) ::Function
+function make_hoppingmatrix(computer::HFBComputer) ::Function
     norb = numorbital(computer.unitcell)
-    hk = Generator.generatefast(computer.unitcell, computer.hoppings)
-    function ret(k ::AbstractVector{Float64}) ::Matrix{Complex{Float64}}
-        out = zeros(Complex{Float64}, (norb, norb))
-        hk( k, out )
+    hk = Generator.hopping_inplace(computer.unitcell, computer.hoppings_diagonal, computer.hoppings_offdiagonal)
+
+    function ret(momentum ::AbstractVector{Float64}) ::Matrix{ComplexF64}
+        out = zeros(ComplexF64, (norb, norb))
+        hk(momentum, out)
         return out
     end
 end
 
+
 """
 Return a generator of Γ matrix (which is a function of momentum)
 """
-function makeGammamatrix(computer::HFBComputer,
-                         theΓs ::AbstractVector{<:Number}) ::Function
+function make_Gammamatrix(computer::HFBComputer,
+                          theΓs ::AbstractVector{<:Number}) ::Function
     norb = numorbital(computer.unitcell)
-    Γ_registry = copy(computer.Γ_registry)
-    Γs = Vector{Complex{Float64}}(theΓs)
+    Γ_registry = deepcopy(computer.Γ_registry)
+    Γs = Vector{ComplexF64}(theΓs)
     @assert(length(Γ_registry) == length(Γs))
     for ((isdiag, i, j, r, _), Γ) in zip(Γ_registry, Γs)
         if isdiag
-            @assert(i==j && all(x -> isapprox(x, 0.0), r))
-            @assert(isapprox(imag(Γ), 0.0))
+            @assert(i==j && all(x -> isapprox(x, 0), r))
+            @assert(isapprox(imag(Γ), 0))
         else
-            @assert(!(i==j && all(x -> isapprox(x, 0.0), r)))
+            @assert(!(i==j && all(x -> isapprox(x, 0), r)))
         end
     end
-    function ret(k ::AbstractVector{Float64}) ::Matrix{Complex{Float64}}
-        out = zeros(Complex{Float64}, (norb, norb))
+    function ret(momentum ::AbstractVector{Float64}) ::Matrix{ComplexF64}
+        out = zeros(ComplexF64, (norb, norb))
         for ((isdiag, i, j, r, _), Γ) in zip(Γ_registry, Γs)
             if isdiag
                 out[i,i] += real(Γ)
             else
-                phase = cis(dot( k, r))
-                out[i,j] += Γ * phase
-                out[j,i] += conj(Γ * phase)
+                phase = cis(dot(momentum, r))
+                Γp = Γ * phase
+                out[i,j] += Γp
+                out[j,i] += conj(Γp)
             end
         end
         return out
     end
 end
 
+function make_Gammamatrix(computer ::HFBComputer,
+                          hfbfield ::HFBField) ::Function
+    return make_Gammamatrix(computer, hfbfield.Γ)
+end
+
 
 """
 Return a generator of Δ matrix (which is a function of momentum)
 """
-function makeDeltamatrix(computer::HFBComputer,
-                         theΔs ::AbstractVector{<:Number}) ::Function
+function make_Deltamatrix(computer::HFBComputer,
+                          theΔs ::AbstractVector{<:Number}) ::Function
     norb = numorbital(computer.unitcell)
-    Δ_registry = copy(computer.Δ_registry)
-    Δs = Vector{Complex{Float64}}(theΔs)
+    Δ_registry = deepcopy(computer.Δ_registry)
+    Δs = Vector{ComplexF64}(theΔs)
     @assert(length(Δ_registry) == length(Δs))
     for ((isdiag, i, j, r, _), Δ) in zip(Δ_registry, Δs)
         @assert( !isdiag )
-        @assert( !(i==j && all(x -> isapprox(x, 0.0), r)) )
+        @assert( !(i==j && all(x -> isapprox(x, 0), r)) )
     end
-    function ret(k ::AbstractVector{Float64}) ::Matrix{Complex{Float64}}
-        out = zeros(Complex{Float64}, (norb, norb))
+    function ret(momentum ::AbstractVector{Float64}) ::Matrix{ComplexF64}
+        out = zeros(ComplexF64, (norb, norb))
         for ((isdiag, i, j, r, _), Δ) in zip(Δ_registry, Δs)
-            phase = cis(dot(k, r))
+            phase = cis(dot(momentum, r))
             out[i,j] += Δ * phase
             out[j,i] -= Δ * conj(phase)
         end
@@ -437,52 +412,63 @@ function makeDeltamatrix(computer::HFBComputer,
     end
 end
 
+function make_Deltamatrix(computer ::HFBComputer,
+                          hfbfield ::HFBField) ::Function
+    return make_Deltamatrix(computer, hfbfield.Δ)
+end
+
+
 """
 """
-function makehamiltonian(computer ::HFBComputer,
-                         theΓs ::AbstractVector{<:Number},
-                         theΔs ::AbstractVector{<:Number}) ::Function
+function make_hamiltonian(computer ::HFBComputer,
+                          theΓs ::AbstractVector{<:Number},
+                          theΔs ::AbstractVector{<:Number}) ::Function
     norb = numorbital(computer.unitcell)
-    hk = Generator.generatefast(computer.unitcell, computer.hoppings)
-    Γ_registry = copy(computer.Γ_registry)
-    Δ_registry = copy(computer.Δ_registry)
-    Γs = Vector{Complex{Float64}}(theΓs)
-    Δs = Vector{Complex{Float64}}(theΔs)
+    hk = Generator.hopping_inplace(computer.unitcell, computer.hoppings_diagonal, computer.hoppings_offdiagonal)
+    Γ_registry = deepcopy(computer.Γ_registry)
+    Δ_registry = deepcopy(computer.Δ_registry)
+    Γs = Vector{ComplexF64}(theΓs)
+    Δs = Vector{ComplexF64}(theΔs)
 
     @assert(length(Γ_registry) == length(Γs))
     @assert(length(Δ_registry) == length(Δs))
 
     for ((isdiag, i, j, r, _), Γ) in zip(Γ_registry, Γs)
         if isdiag
-            @assert(i==j && all(x -> isapprox(x, 0.0), r))
-            @assert(isapprox(imag(Γ), 0.0))
+            @assert(i==j && all(x -> isapprox(x, 0), r))
+            @assert(isapprox(imag(Γ), 0))
         else
-            @assert(!(i==j && all(x -> isapprox(x, 0.0), r)))
+            @assert(!(i==j && all(x -> isapprox(x, 0), r)))
         end
     end
     for ((isdiag, i, j, r, _), Δ) in zip(Δ_registry, Δs)
         @assert( !isdiag )
-        @assert( !(i==j && all(x -> isapprox(x, 0.0), r)) )
+        @assert( !(i==j && all(x -> isapprox(x, 0), r)) )
     end
 
-    function ret(k ::AbstractVector{Float64}) ::Matrix{Complex{Float64}}
-        out = zeros(Complex{Float64}, (norb, 2, norb, 2))
-        h11 = view(out, :, 1, :, 1)
-        h12 = view(out, :, 1, :, 2)
-        h21 = view(out, :, 2, :, 1)
-        h22 = view(out, :, 2, :, 2)
+    function ret(momentum ::AbstractVector{Float64}) ::Matrix{ComplexF64}
+        #out = zeros(ComplexF64, (norb, 2, norb, 2))
+        #h11 = view(out, :, 1, :, 1)
+        #h12 = view(out, :, 1, :, 2)
+        #h21 = view(out, :, 2, :, 1)
+        #h22 = view(out, :, 2, :, 2)
+        out = zeros(ComplexF64, (2, norb, 2, norb))
+        h11 = view(out, 1, :, 1, :)
+        h12 = view(out, 1, :, 2, :)
+        h21 = view(out, 2, :, 1, :)
+        h22 = view(out, 2, :, 2, :)
 
         # 1/3. non-interacting kinetic part
-        hk( k, h11)
-        hk(-k, h22)
+        hk( momentum, h11)
+        hk(-momentum, h22)
 
         # 2/3. Gamma
         for ((isdiag, i, j, r, _), Γ) in zip(Γ_registry, Γs)
             if isdiag
                 h11[i,i] += real(Γ)
-                h22[i,i] += real(Γ)
+                h22[i,i] += real(Γ) # Note: The sign will be flipped after the loop
             else
-                phase = cis(dot( k, r))
+                phase = cis(dot(momentum, r))
                 h11[i,j] += Γ * phase
                 h22[i,j] += Γ * conj(phase)
                 h11[j,i] += conj(Γ * phase)
@@ -493,7 +479,7 @@ function makehamiltonian(computer ::HFBComputer,
 
         # 3/3. Delta
         for ((isdiag, i, j, r, _), Δ) in zip(Δ_registry, Δs)
-            phase = cis(dot(k, r))
+            phase = cis(dot(momentum, r))
             val1 = Δ * phase
             val2 = Δ * conj(phase)
             h12[i,j] += val1
@@ -501,44 +487,55 @@ function makehamiltonian(computer ::HFBComputer,
             h21[j,i] += conj(val1)
             h21[i,j] -= conj(val2)
         end
-        return reshape(out, (norb*2, norb*2))
+        return reshape(out, (2*norb, 2*norb))
     end
 end
 
+function make_hamiltonian(computer ::HFBComputer,
+                          hfbfield ::HFBField) ::Function
+    return make_hamiltonian(computer, hfbfield.Γ, hfbfield.Δ)
+end
+
+function make_hamiltonian(computer ::HFBComputer,
+                          hfbamplitude ::HFBAmplitude) ::Function
+    hfbfield = make_hfbfield(computer, hfbamplitude)
+    return make_hamiltonian(computer, hfbfield.Γ, hfbfield.Δ)
+end
+
+
 """
-    makegreencollectors
+    make_greencollector
 
 Returns a function which has the following signature
 ```
 collector(k, eigenvalues, eigenvectors, ρout, tout)
 ```
 """
-function makegreencollectors(computer::HFBComputer{O}) ::Function where {O}
+function make_greencollector(computer::HFBComputer{O}) ::Function where {O}
     fermi = computer.fermi
     norb = numorbital(computer.unitcell)
-    ρ_registry = copy(computer.ρ_registry)
-    t_registry = copy(computer.t_registry)
+    ρ_registry = deepcopy(computer.ρ_registry)
+    t_registry = deepcopy(computer.t_registry)
 
     for (isdiag, i, j, r) in ρ_registry
-        @assert(isdiag == (i==j && all(x -> isapprox(x, 0.0), r)))
+        @assert(isdiag == (i==j && all(x -> isapprox(x, 0), r)))
     end
     for (isdiag, i, j, r) in t_registry
-        @assert(!isdiag && !(i==j && all(x -> isapprox(x, 0.0), r)))
+        @assert(!isdiag && !(i==j && all(x -> isapprox(x, 0), r)))
     end
 
     function ret(k::AbstractVector{<:Real},
                  eigenvalues ::AbstractVector{<:Real},
                  eigenvectors ::AbstractMatrix{<:Number},
-                 ρout ::AbstractVector{Complex{Float64}},
-                 tout ::AbstractVector{Complex{Float64}}) ::Nothing
+                 hfbamplitude ::HFBAmplitude) ::Nothing
 
         @assert(length(eigenvalues) == 2*norb)
         @assert(size(eigenvectors) == (2*norb, 2*norb))
 
         f = [fermi(e) for e in eigenvalues]
-        ψ = reshape(eigenvectors, (norb, 2, norb*2))
-        u = view(ψ, :, 1, :)
-        v = view(ψ, :, 2, :)
+        ψ = reshape(eigenvectors, (2, norb, 2*norb))
+        u = view(ψ, 1, :, :)
+        v = view(ψ, 2, :, :)
 
         uf = u * Diagonal(f)
         ρmat = uf * (u')
@@ -546,32 +543,24 @@ function makegreencollectors(computer::HFBComputer{O}) ::Function where {O}
 
         for (idx, (isdiag, i, j, r)) in enumerate(ρ_registry)
             if isdiag
-                ρout[idx] += real( ρmat[i,i] )
+                hfbamplitude.ρ[idx] += real( ρmat[i,i] )
             else
-                ρout[idx] += ρmat[i, j] * cis(-dot(k, r))
+                hfbamplitude.ρ[idx] += ρmat[i, j] * cis(-dot(k, r))
             end
         end
         for (idx, (isdiag, i, j, r)) in enumerate(t_registry)
-            tout[idx] += tmat[i, j] * cis(-dot(k, r))
+            hfbamplitude.t[idx] += tmat[i, j] * cis(-dot(k, r))
         end
         nothing
     end
 end
 
-"""
-  Return a zero solution
-"""
-function newhfbsolution(computer::HFBComputer{O}) ::HFBSolution where {O}
-    ρ, t = HFB.makesourcefields(computer)
-    Γ, Δ = HFB.computetargetfields(computer, ρ, t)
-    return HFBSolution(ρ, t, Γ, Δ)
-end
 
 """
     Check if hint contains ρ
 """
-function newhfbsolution(computer::HFBComputer{O}, hint::HFBHint{O}) ::HFBSolution where {O}
-    ρ, t = HFB.makesourcefields(computer)
+function make_hfbamplitude(computer::HFBComputer{O}, hint::HFBAmplitudeHint{O}) ::HFBAmplitude where {O}
+    hfbamplitude = HFB.make_hfbamplitude(computer)
     unitcell = computer.unitcell
 
     for (ρidx, (i, j, r)) in enumerate(computer.ρ_registry)
@@ -581,9 +570,9 @@ function newhfbsolution(computer::HFBComputer{O}, hint::HFBHint{O}) ::HFBSolutio
         Rj = whichunitcell(unitcell, jname, fract2carte(unitcell, icoord) + r)
         R = Rj - Ri
         if haskey(hint.ρ, (iname, jname, R))
-            ρ[ρidx] = hint.ρ[iname, jname, R]
+            hfbamplitude.ρ[ρidx] = hint.ρ[iname, jname, R]
         elseif haskey(hint.ρ, (jname, iname, -R))
-            ρ[ρidx] = conj(hint.ρ[jname, iname, -R])
+            hfbamplitude.ρ[ρidx] = conj(hint.ρ[jname, iname, -R])
         end
     end
 
@@ -594,21 +583,20 @@ function newhfbsolution(computer::HFBComputer{O}, hint::HFBHint{O}) ::HFBSolutio
         Rj = whichunitcell(unitcell, jname, fract2carte(unitcell, icoord) + r)
         R = Rj - Ri
         if haskey(hint.t, (iname, jname, R))
-            t[tidx] = hint.t[iname, jname, R]
+            hfbamplitude.t[tidx] = hint.t[iname, jname, R]
         elseif haskey(hint.t, (jname, iname, -R))
-            t[tidx] = conj(hint.t[jname, iname, -R])
+            hfbamplitude.t[tidx] = conj(hint.t[jname, iname, -R])
         end
     end
-
-    Γ, Δ = HFB.computetargetfields(computer, ρ, t)
-    return HFBSolution(ρ, t, Γ, Δ)
+    return hfbamplitude
 end
 
+
 """
 """
-function newhfbhint(computer::HFBComputer{O}, sol::HFBSolution) ::HFBHint{O} where {O}
-    ρ = Dict{Tuple{O, O, Vector{Int}}, Complex{Float64}}()
-    t = Dict{Tuple{O, O, Vector{Int}}, Complex{Float64}}()
+function make_hint(computer::HFBComputer{O}, sol::HFBAmplitude) ::HFBAmplitudeHint{O} where {O}
+    ρ = Dict{Tuple{O, O, Vector{Int}}, ComplexF64}()
+    t = Dict{Tuple{O, O, Vector{Int}}, ComplexF64}()
     uc = computer.unitcell
 
     for (ρidx, (_, i, j, rij)) in enumerate(computer.ρ_registry)
@@ -617,7 +605,7 @@ function newhfbhint(computer::HFBComputer{O}, sol::HFBSolution) ::HFBHint{O} whe
         Ri = whichunitcell(uc, iname, fract2carte(uc, icoord))
         Rj = whichunitcell(uc, jname, fract2carte(uc, icoord) + rij)
         @assert(!haskey(ρ, (iname, jname, Rj-Ri)))
-        ρ[iname,jname,Rj-Ri] = sol.ρ[ρidx]
+        ρ[iname,jname,Rj-Ri] = sol.ρs[ρidx]
     end
 
     for (tidx, (_, i, j, rij)) in enumerate(computer.t_registry)
@@ -626,153 +614,51 @@ function newhfbhint(computer::HFBComputer{O}, sol::HFBSolution) ::HFBHint{O} whe
         Ri = whichunitcell(uc, iname, fract2carte(uc, icoord))
         Rj = whichunitcell(uc, jname, fract2carte(uc, icoord) + rij)
         @assert(!haskey(t, (iname, jname, Rj-Ri)))
-        t[iname,jname,Rj-Ri] = sol.t[tidx]
+        t[iname,jname,Rj-Ri] = sol.ts[tidx]
     end
 
-    return HFBHint{O}(ρ, t)
+    return HFBAmplitudeHint{O}(ρ, t)
 end
 
-"""
-Recompute Γ and Δ from ρ and t in a `HFBSolution`
-"""
-function fixhfbsolution(computer::HFBComputer{O}, sol ::HFBSolution) where {O}
-    sol.Γ[:], sol.Δ[:] = HFB.computetargetfields(computer, sol.ρ, sol.t)
-end
 
 """
-Randomize a solution
+Randomize a hfbamplitude
 """
-function randomize!(computer::HFBComputer{O}, sol ::HFBSolution) where {O}
-    sol.ρ[:] = (rand(Float64, length(sol.ρ)))
-    sol.t[:] = (rand(Complex{Float64}, length(sol.t)))
-    sol.Γ[:], sol.Δ[:] = HFB.computetargetfields(computer, sol.ρ, sol.t)
+function randomize!(computer::HFBComputer, sol ::HFBAmplitude)
+    sol.ρ[:] = rand(Float64, length(sol.ρ))
+    sol.t[:] = rand(ComplexF64, length(sol.t))
 end
+
 
 """
 """
-function nambufy(uc::UnitCell{O}, hop::HoppingDiagonal{R}) where {O, R<:Real}
-    norb = numorbital(uc)
-    hop1 = HoppingDiagonal{R}( hop.amplitude, hop.i, hop.Ri)
-    hop2 = HoppingDiagonal{R}(-hop.amplitude, hop.i+norb, hop.Ri)
-    return (hop1, hop2)
-end
-
-"""
-"""
-function nambufy(uc::UnitCell{O}, hop::HoppingOffdiagonal{C}) where {O, C<:Number}
-    norb = numorbital(uc)
-    hop1 = HoppingOffdiagonal{C}(      hop.amplitude,  hop.i     , hop.j     , hop.Ri, hop.Rj)
-    hop2 = HoppingOffdiagonal{C}(-conj(hop.amplitude), hop.i+norb, hop.j+norb, hop.Ri, hop.Rj)
-    return (hop1, hop2)
-end
-
-function nambufy(unitcell::UnitCell{O}) where {O<:Tuple}
-    NewOrbitalType = Tuple{O.parameters..., Symbol}
-    nambuunitcell = Lattice.newunitcell(unitcell.latticevectors; OrbitalType=NewOrbitalType)
-    for (orb, fc) in unitcell.orbitals
-        addorbital!(nambuunitcell, (orb..., :PARTICLE), fc)
+function isvalid(computer ::HFBComputer,
+                 solution ::HFBAmplitude;
+                 tolerance ::Real=sqrt(eps(Float64))) ::Bool
+    if (length(computer.ρ_registry) != length(solution.ρ) ||
+        length(computer.t_registry) != length(solution.t))
+        return false
     end
-    for (orb, fc) in unitcell.orbitals
-        addorbital!(nambuunitcell, (orb..., :HOLE), fc)
-    end
-    return nambuunitcell
-end
-
-"""
-"""
-function nambufy(unitcell::UnitCell{O}) where {O}
-    NewOrbitalType = Tuple{O, Symbol}
-    nambuunitcell = Lattice.newunitcell(unitcell.latticevectors; OrbitalType=NewOrbitalType)
-    for (orb, fc) in unitcell.orbitals
-        addorbital!(nambuunitcell, (orb, :PARTICLE), fc)
-    end
-    for (orb, fc) in unitcell.orbitals
-        addorbital!(nambuunitcell, (orb, :HOLE), fc)
-    end
-    return nambuunitcell
-end
-
-"""
-    freeze
-
-    Create a hopping hamiltonian out of HFB Hamiltonian and Solution
-
-    Order:
-    electrons......, HOLE......
-"""
-function freeze(computer ::HFBComputer{O},
-                Γs ::AbstractVector{<:Number},
-                Δs ::AbstractVector{<:Number}) where {O}
-    norb = numorbital(computer.unitcell)
-    unitcell = computer.unitcell
-    nambuunitcell = nambufy(unitcell)
-    hoppings = Hopping[]
-    for hop in computer.hoppings
-        (hop1, hop2) = nambufy(unitcell, hop)
-        push!(hoppings, hop1)
-        push!(hoppings, hop2)
-    end
-
-    # 2/3. Gamma
-    for (idx, Γ) in enumerate(Γs)
-        (isdiag, i, j, r, _) = computer.Γ_registry[idx]
-        if isdiag
-            @assert(i==j && all(x -> isapprox(x, 0.0), r))
-            @assert(isapprox(imag(Γ), 0.0))
-
-            iname, icoord = getorbital(unitcell, i)
-            Ri = whichunitcell(unitcell, iname, fract2carte(unitcell, icoord))
-
-            push!(hoppings, HoppingDiagonal{Float64}( real(Γ), i, Ri))
-            push!(hoppings, HoppingDiagonal{Float64}(-real(Γ), i+norb, Ri))
-        else
-            @assert(!(i==j && all(x -> isapprox(x, 0.0), r)))
-
-            iname, icoord = getorbital(unitcell, i)
-            jname, jcoord = getorbital(unitcell, j)
-            Ri = whichunitcell(unitcell, iname, fract2carte(unitcell, icoord))
-            Rj = whichunitcell(unitcell, jname, fract2carte(unitcell, icoord) + r)
-
-            push!(hoppings, HoppingOffdiagonal{Complex{Float64}}( Γ      , i, j, Ri, Rj))
-            push!(hoppings, HoppingOffdiagonal{Complex{Float64}}(-conj(Γ), i+norb, j+norb, Ri, Rj))
+    for (idx, (isdiag, i, j, r)) in enumerate(computer.ρ_registry)
+        if isdiag && ! isapprox(imag(solution.ρ[idx]), 0; atol=tolerance)
+            return false
         end
     end
-
-    # 3/3. Delta
-    for (idx, Δ) in enumerate(Δs)
-        #info("Adding $Δ to the frozen hoppings")
-        (isdiag, i, j, r, _) = computer.Δ_registry[idx]
-
-        @assert( !isdiag )
-        @assert( !(i==j && all(x -> isapprox(x, 0.0), r)) )
-
-        iname, icoord = getorbital(unitcell, i)
-        jname, jcoord = getorbital(unitcell, j)
-        Ri = whichunitcell(unitcell, iname, fract2carte(unitcell, icoord))
-        Rj = whichunitcell(unitcell, jname, fract2carte(unitcell, icoord) + r)
-
-        #@show ( Δ, i, j + norb, Ri, Rj)
-        #@show (-Δ, j, i + norb, Rj, Ri)
-        push!(hoppings, HoppingOffdiagonal{Complex{Float64}}( Δ , i, j + norb, Ri, Rj))
-        push!(hoppings, HoppingOffdiagonal{Complex{Float64}}(-Δ , j, i + norb, Rj, Ri))
-    end
-    return (nambuunitcell, hoppings)
+    return true
 end
 
+
 """
 """
-function isvalidsolution(computer ::HFBComputer{O},
-                         solution ::HFBSolution;
-                         tolerance::Real = sqrt(eps(Float64))) ::Bool where {O}
-    if (length(computer.ρ_registry) != length(solution.ρ) ||
-        length(computer.t_registry) != length(solution.t) ||
-        length(computer.Γ_registry) != length(solution.Γ) ||
+function isvalid(computer ::HFBComputer,
+                 solution ::HFBField;
+                 tolerance ::Real=sqrt(eps(Float64))) ::Bool
+    if (length(computer.Γ_registry) != length(solution.Γ) ||
         length(computer.Δ_registry) != length(solution.Δ) )
         return false
     end
-
-    for (idx, (isdiag, i, j, r)) in enumerate(computer.ρ_registry)
-        if isdiag && ! isapprox(imag(solution.ρ[idx]), 0; atol=tolerance)
+    for (idx, (isdiag, i, j, r, _)) in enumerate(computer.Γ_registry)
+        if isdiag && ! isapprox(imag(solution.Γ[idx]), 0; atol=tolerance)
             return false
         end
     end

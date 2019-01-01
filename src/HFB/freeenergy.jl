@@ -2,8 +2,6 @@
 export hfbgrandpotential
 export hfbfreeenergy
 
-
-
 raw"""
 
 Compute Ω = E - T S
@@ -20,19 +18,19 @@ Here i runs through all nambu indices.
 
 """
 function hfbfreeenergy_naive(solver::HFBSolver{O},
-                       solution::HFBSolution) where {O}
+                             tf::HFBField) where {O}
     fermi = solver.hfbcomputer.fermi
     norb = numorbital(solver.hfbcomputer.unitcell)
 
-    computeH = makehamiltonian(solver.hfbcomputer, solution.Γ, solution.Δ)
-    computeT = makehoppingmatrix(solver.hfbcomputer)
-    computeΓ = makeGammamatrix(solver.hfbcomputer, solution.Γ)
-    computeΔ = makeDeltamatrix(solver.hfbcomputer, solution.Δ)
+    computeH = make_hamiltonian(solver.hfbcomputer, tf)
+    computeT = make_hoppingmatrix(solver.hfbcomputer)
+    computeΓ = make_Gammamatrix(solver.hfbcomputer, tf)
+    computeΔ = make_Deltamatrix(solver.hfbcomputer, tf)
 
-    E_T = 0.0
-    E_Γ = 0.0
-    E_Δ = 0.0
-    S = 0.0
+    E_T = zero(Float64)
+    E_Γ = zero(Float64)
+    E_Δ = zero(Float64)
+    S = zero(Float64)
     for k in solver.momentumgrid
         H = computeH(k)
         T = computeT(k)
@@ -41,16 +39,13 @@ function hfbfreeenergy_naive(solver::HFBSolver{O},
 
         (eigenvalues, eigenvectors) = (eigen(Hermitian(H))...,)
         f = [fermi(e) for e in eigenvalues]
-        ψ = reshape(eigenvectors, (norb, 2, norb*2))
-        u = ψ[:, 1, :]
-        v = ψ[:, 2, :]
+        ψ = reshape(eigenvectors, (2, norb, 2*norb))
+        u = ψ[1, :, :]
+        v = ψ[2, :, :]
 
         uf = u * Diagonal(f)
         ρmat = uf * (u')
         tmat = uf * (v')
-        #ρ(i::Int, j::Int) = sum(f .* u[i, :] .* conj(u[j, :]))
-        #t(i::Int, j::Int) = sum(f .* u[i, :] .* conj(v[j, :]))
-
         for i=1:norb, j=1:norb
             E_T += real( T[i,j] * ρmat[j,i] )
             E_Γ += real( Γ[i,j] * ρmat[j,i] )
@@ -83,49 +78,49 @@ function hopping_energy(hop::HoppingOffDiagonal{R},
 end
 =#
 
-function pairing_energy(int ::InteractionDiagonal{R},
-                        t ::AbstractMatrix{C},
-                        momentum::AbstractVector{R2}) where {R <: Real, C<:Number, R2<:Real}
+function pairing_energy(int ::InteractionDiagonal{<:Real},
+                        t ::AbstractMatrix{<:Number},
+                        momentum::AbstractVector{<:Real})
     v, i, j = int.amplitude, int.i, int.j
     return v * real( t[i,j] * conj(t[j,i]) )
 end
 
-function pairing_energy(int ::InteractionOffdiagonal{C1},
-                        t::AbstractMatrix{C2},
-                        momentum::AbstractVector{R}) where {C1 <: Real, C2<: Number, R<:Real}
+function pairing_energy(int ::InteractionOffdiagonal{<:Number},
+                        t::AbstractMatrix{<:Number},
+                        momentum::AbstractVector{<:Real})
     v, i, j, k, l = int.amplitude, int.i, int.j, int.k, int.l
     return 2 * ( v * (tmat[k,l] * conj(t[j,i]) + t[l,k] * conj(t[i,j])) )
 end
 
-function hfbfreeenergy(solver::HFBSolver{O},
-                       solution::HFBSolution;
-                       update::Function=simpleupdate,
-                       ) where {O}
+function hfbfreeenergy(solver::HFBSolver,
+                       hfbfield::HFBField;
+                       update::Function=simpleupdate)
     fermi = solver.hfbcomputer.fermi
-    newsolution = let
-        newsol = deepcopy(solution)
-        update(newsol, getnextsolution(solver, solution))
-        newsol
+    newhfbfield = let
+        newhfbamplitude = next_hfbamplitude(solver, hfbfield)
+        newhfbfield = deepcopy(hfbfield)
+        update(newhfbfield, make_hfbfield(solver, newhfbamplitude))
+        newhfbfield
     end
-    return hfbfreeenergy(solver, solution, newsolution)
+    return hfbfreeenergy(solver, hfbfield, newhfbfield)
 end
 
-function hfbfreeenergy(solver::HFBSolver{O},
-                       solution::HFBSolution,
-                       newsolution::HFBSolution) where {O}
+function hfbfreeenergy(solver::HFBSolver,
+                       tf::HFBField,
+                       ntf::HFBField)
     fermi = solver.hfbcomputer.fermi
     norb = numorbital(solver.hamiltonian.unitcell)
 
     # compute H with old solution, Γ and Δ with new solution
-    computeH = makehamiltonian(solver.hfbcomputer, solution.Γ, solution.Δ)
-    computeT = makehoppingmatrix(solver.hfbcomputer)
-    computeΓ = makeGammamatrix(solver.hfbcomputer, newsolution.Γ)
-    computeΔ = makeDeltamatrix(solver.hfbcomputer, newsolution.Δ)
+    computeH = make_hamiltonian(solver.hfbcomputer, tf)
+    computeT = make_hoppingmatrix(solver.hfbcomputer)
+    computeΓ = make_Gammamatrix(solver.hfbcomputer, ntf)
+    computeΔ = make_Deltamatrix(solver.hfbcomputer, ntf)
 
-    E_T = 0.0
-    E_Γ = 0.0
-    E_Δ = 0.0
-    S = 0.0
+    E_T = zero(Float64)
+    E_Γ = zero(Float64)
+    E_Δ = zero(Float64)
+    S = zero(Float64)
     for k in solver.momentumgrid
         H = computeH(k)
         T = computeT(k)
@@ -134,9 +129,9 @@ function hfbfreeenergy(solver::HFBSolver{O},
 
         (eigenvalues, eigenvectors) = (eigen(Hermitian(H))...,)
         f = [fermi(e) for e in eigenvalues]
-        ψ = reshape(eigenvectors, (norb, 2, norb*2))
-        u = ψ[:, 1, :]
-        v = ψ[:, 2, :]
+        ψ = reshape(eigenvectors, (2, norb, 2*norb))
+        u = ψ[1, :, :]
+        v = ψ[2, :, :]
 
         uf = u * Diagonal(f)
         ρmat = uf * (u')
@@ -158,11 +153,6 @@ function hfbfreeenergy(solver::HFBSolver{O},
 end
 
 
-
-
-
-
-
 function hoppingenergy(hopping::Spec.HoppingDiagonal{R},
                        ρ::Function) where {R<:Real}
     v = hopping.amplitude
@@ -174,8 +164,6 @@ function hoppingenergy(hopping::Spec.HoppingOffdiagonal{C},
                        ρ::Function) where {C<:Number}
 
 end
-
-
 
 
 # Faulty
@@ -191,10 +179,10 @@ end
 
 # OK?
 function interactionenergy(solver::HFBSolver{O},
-                           solution::HFBSolution) where {O}
-    E = 0.0
+                           solution::HFBAmplitude) where {O}
+    E = zero(Float64)
     for (idx_Γ, (diag, i, j, R, srcs)) in enumerate(solver.hfbcomputer.Γ_registry)
-        E_Γ = 0.0
+        E_Γ = zero(Float64)
         idx_ρ0 = 0
         for (idx_ρ2, (diag2, i2, j2, R2)) in enumerate(solver.hfbcomputer.ρ_registry)
             if i == i2 && j == j2 && R == R2
@@ -213,18 +201,18 @@ end
 
 
 function hfbgrandpotential(solver::HFBSolver{O},
-                           solution::HFBSolution) where {O}
+                           hfbfield::HFBField) where {O}
     fermi = solver.hfbcomputer.fermi
     norb = numorbital(solver.hfbcomputer.unitcell)
 
-    computeH = makehamiltonian(solver.hfbcomputer, solution.Γ, solution.Δ)
+    computeH = makehamiltonian(solver.hfbcomputer, hfbfield)
     computeT = makehoppingmatrix(solver.hfbcomputer)
     #computeΓ = makeGammamatrix(solver.hfbcomputer, solution.Γ)
     #computeΔ = makeDeltamatrix(solver.hfbcomputer, solution.Δ)
 
-    E_T = 0.0
-    E_V = 0.0
-    S = 0.0
+    E_T = zero(Float64)
+    E_V = zero(Float64)
+    S = zero(Float64)
     for k in solver.momentumgrid
         H = computeH(k)
         T = computeT(k)
@@ -233,9 +221,9 @@ function hfbgrandpotential(solver::HFBSolver{O},
 
         (eigenvalues, eigenvectors) = (eigen(Hermitian(H))...,)
         f = [fermi(e) for e in eigenvalues]
-        ψ = reshape(eigenvectors, (norb, 2, norb*2))
-        u = ψ[:, 1, :]
-        v = ψ[:, 2, :]
+        ψ = reshape(eigenvectors, (2, norb, 2*norb))
+        u = ψ[1, :, :]
+        v = ψ[2, :, :]
 
         ρ(i::Int, j::Int) = sum(f .* u[i, :] .* conj(u[j, :]))
         t(i::Int, j::Int) = sum(f .* u[i, :] .* conj(v[j, :]))

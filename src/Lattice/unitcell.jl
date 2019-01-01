@@ -14,8 +14,8 @@ export dimension,
        whichunitcell,
        momentumgrid
 
-       using LinearAlgebra
-       import Base.zero
+using LinearAlgebra
+import Base.zero
 
 
 """
@@ -317,7 +317,7 @@ end
 function carte2fract(unitcell ::UnitCell,
                      cc ::CarteCoord;
                      tol ::Real=sqrt(eps(Float64)))
-    if dimension(unitcell) != dimension(cc)
+    if dimension(unitcell) != length(cc)
         throw(ArgumentError("unitcell and cartecoord must have the same dimension"))
     end
     fc = transpose(unitcell.reducedreciprocallatticevectors) * cc
@@ -373,7 +373,7 @@ function whichunitcell(uc ::UnitCell{O},
 end
 
 
-function zero(uc::UnitCell; dtype::DataType=Complex{Float64})
+function zero(uc::UnitCell; dtype::DataType=ComplexF64)
     norb = numorbital(uc)
     return Base.zeros(dtype, (norb, norb))
 end
@@ -388,7 +388,7 @@ function momentumgrid(uc::UnitCell, shape::AbstractVector{<:Integer})
     if length(shape) != dimension(uc)
         throw(ArgumentError("dimension mismatch"))
     elseif !all((x) -> x>0, shape)
-        throw(ArgumentError("shape should be positive")
+        throw(ArgumentError("shape should be positive"))
     end
     ranges = [range(0,stop=1,length=n+1)[1:end-1] for n in shape]
     cubicgrid = map((x) -> [x...], Base.product(ranges...))
