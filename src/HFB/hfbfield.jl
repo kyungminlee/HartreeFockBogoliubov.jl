@@ -5,6 +5,7 @@ export HFBAmplitude,
 
 export iscompatible
 
+using DataStructures
 
 mutable struct HFBAmplitude
     ρ ::Vector{ComplexF64}
@@ -37,11 +38,12 @@ function iscompatible(s1 ::HFBField, s2::HFBField) ::Bool
 end
 
 
-import Base: copy
+import Base.copy
 
 copy(x::HFBAmplitude) = HFBAmplitude(copy(x.ρ), copy(x.t))
 copy(x::HFBField) = HFBField(copy(x.Γ), copy(x.Δ))
 copy(x::HFBAmplitudeHint{O}) where {O} = HFBAmplitudeHint{O}(copy(x.ρ), copy(x.t))
+copy(x::HFBFieldHint{O}) where {O} = HFBFieldHint{O}(copy(x.Γ), copy(x.Δ))
 
 import Base.+
 import Base.-
@@ -67,7 +69,7 @@ import Base.\
 /(sol1::HFBField, value ::Real) = HFBField(sol1.Γ / value, sol1.Δ / value)
 \(value ::Real, sol1::HFBField) = HFBField(value \ sol1.Γ, value \ sol1.Δ)
 
-import Base: isapprox
+import Base.isapprox
 
 function isapprox(sol1::HFBAmplitude, sol2::HFBAmplitude;
                   atol::Real=sqrt(eps(Float64)),
