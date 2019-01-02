@@ -45,7 +45,7 @@ fc2 = carte2fract(latticevectors, cc)
 A `UnitCell` is defined by lattice vectors and orbitals (orbitals here contain all possible degrees of freedom, such as spin, physical "orbital", sublattice, etc.).
 
 ```julia
-unitcell = newunitcell([1.0 0.0; 0.0 1.0]; OrbitalType=Tuple{Symbol, Symbol})
+unitcell = make_unitcell([1.0 0.0; 0.0 1.0]; OrbitalType=Tuple{Symbol, Symbol})
 addorbital!(unitcell, (:A, :UP), FractCoord([0,0], [0.0, 0.0]))
 addorbital!(unitcell, (:A, :DN), FractCoord([0,0], [0.0, 0.0]))
 ```

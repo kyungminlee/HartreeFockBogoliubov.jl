@@ -13,6 +13,8 @@ include("Hamiltonian/Generator.jl")
 
 include("HFB/HFB.jl")
 
+include("Util/Util.jl")
+
 include("Topology/Topology.jl")
 
 include("LinearizedGap/LinearizedGap.jl")

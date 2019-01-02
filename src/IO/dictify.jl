@@ -142,17 +142,22 @@ function dictify(solver::HFB.HFBSolver{O}) where {O}
 end
 
 
-function dictify(solution::HFB.HFBSolution)
+function dictify(solution::HFB.HFBAmplitude)
     OrderedDict(
-        "type" => "HFBSolution",
+        "type" => "HFBAmplitude",
         "rho" => dictify(solution.ρ),
         "t" => dictify(solution.t),
-        "Gamma" => dictify(solution.Γ),
-        "Delta" => dictify(solution.Δ),
         )
 end
 
 
+function dictify(solution::HFB.HFBField)
+    OrderedDict(
+        "type" => "HFBField",
+        "Gamma" => dictify(solution.Γ),
+        "Delta" => dictify(solution.Δ),
+        )
+end
 
 
 objectify(obj::Number) = obj
@@ -188,7 +193,7 @@ const DICTHANDLER = Dict(
         orbitals = objectify(d["orbitals"])
         OrbitalType = typejoin([typeof(orb[1]) for orb in orbitals]...)
         OrbitalType = isa(OrbitalType, DataType) ? OrbitalType : Any
-        uc = newunitcell(latticevectors; OrbitalType=OrbitalType)
+        uc = make_unitcell(latticevectors; OrbitalType=OrbitalType)
         for orb in orbitals
             addorbital!(uc, orb[1], orb[2])
         end
@@ -232,7 +237,8 @@ const DICTHANDLER = Dict(
     end,
     "Hamiltonian" => d -> begin
         unitcell = objectify(d["unitcell"])
-        hoppings = objectify(d["hoppings"])
+        hoppings_diagonal = objectify(d["hoppings_diagonal"])
+        hoppings_offdiagonal = objectify(d["hoppings_offdiagonal"])
         interactions = objectify(d["interactions"])
         hamspec = Spec.Hamiltonian(unitcell)
         for hop in hoppings
@@ -261,24 +267,27 @@ const DICTHANDLER = Dict(
 
     "HFBHamiltonian" => d -> begin
         unitcell = objectify(d["unitcell"])
-        hoppings = Spec.Hopping[objectify(d["hoppings"])...]
+        hoppings_diagonal = Spec.HoppingDiagonal[objectify(d["hoppings_diagonal"])...]
+        hoppings_offdiagonal = Spec.HoppingOffdiagonal[objectify(d["hoppings_offdiagonal"])...]
         particle_hole_interactions = HFB.HoppingMeanField[objectify(d["particle_hole_interactions"])...]
         particle_particle_interactions = HFB.PairingMeanField[objectify(d["particle_particle_interactions"])...]
         return HFB.HFBHamiltonian(unitcell,
-                                  hoppings,
+                                  hoppings_diagonal,
+                                  hoppings_offdiagonal,
                                   particle_hole_interactions,
                                   particle_particle_interactions)
     end,
 
     "HFBComputer" => d -> begin
         unitcell = objectify(d["unitcell"])
-        hoppings = Spec.Hopping[objectify(d["hoppings"])...]
+        hoppings_diagonal = Spec.HoppingDiagonal[objectify(d["hoppings_diagonal"])...]
+        hoppings_offdiagonal = Spec.HoppingOffdiagonal[objectify(d["hoppings_offdiagonal"])...]
         temperature = d["temperature"]
         ρ_registry = objectify(d["rho_registry"])
         t_registry = objectify(d["t_registry"])
         Γ_registry = objectify(d["Gamma_registry"])
         Δ_registry = objectify(d["Delta_registry"])
-        comp = HFB.HFBComputer(unitcell, hoppings, temperature)
+        comp = HFB.HFBComputer(unitcell, hoppings_diagonal, hoppings_offdiagonal, temperature)
         comp.ρ_registry = ρ_registry
         comp.t_registry = t_registry
         comp.Γ_registry = Γ_registry

@@ -8,3 +8,5 @@ example/
 testapp/
 
 *.swp
+
+deps/build\.log

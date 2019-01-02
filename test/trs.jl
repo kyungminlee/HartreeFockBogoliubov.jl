@@ -36,11 +36,11 @@ function main()
 
     @show isvalidtimereversalmatrix(uT)
 
-    v1 = zeros(Complex{Float64}, 8, 8)
+    v1 = zeros(ComplexF64, 8, 8)
 
     # TODO ALSO CHECK  COMPLEX
     for idxpair in 1:4
-        vec = rand(Complex{Float64}, 8)
+        vec = rand(ComplexF64, 8)
         for idxprev in 1:(2*idxpair-1)
             vec -= v1[:, idxprev] * dot(v1[:, idxprev], vec)
         end

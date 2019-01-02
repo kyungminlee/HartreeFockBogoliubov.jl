@@ -37,7 +37,7 @@ function z2index(uc::UnitCell{O},
     squareuc = squarify(uc)
     norb = numorbital(squareuc)
     @assert(mod(norb, 2) == 0)
-    hkgen = Generator.generatefast(squareuc, hops)
+    hkgen = Generator.hopping_inplace(squareuc, hops)
 
     kgrid = momentumgrid(squareuc, [n1*2, n2*2])
     igrid = timereversalindexgrid(n1, n2)
@@ -59,9 +59,9 @@ function z2index(uc::UnitCell{O},
             "timereversalmatrix need to be unitary")
 
     @assert(let
-            hk0 = zeros(Complex{Float64}, norb, norb)
-            hk1 = zeros(Complex{Float64}, norb, norb)
-            hk2 = zeros(Complex{Float64}, norb, norb)
+            hk0 = zeros(ComplexF64, norb, norb)
+            hk1 = zeros(ComplexF64, norb, norb)
+            hk2 = zeros(ComplexF64, norb, norb)
 
             hkgen([0.0, 0.0], hk0)
             hkgen(squareuc.reciprocallatticevectors[:,1], hk1)
@@ -73,7 +73,7 @@ function z2index(uc::UnitCell{O},
 
     maxDiffTimeReversal = 0.0
 
-    hk = zeros(Complex{Float64}, norb, norb)
+    hk = zeros(ComplexF64, norb, norb)
 
     # Check Time Reversal First
     for (idx, (t, idx2)) in igrid

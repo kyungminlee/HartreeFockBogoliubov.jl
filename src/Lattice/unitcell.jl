@@ -1,5 +1,5 @@
 export UnitCell
-export newunitcell
+export make_unitcell
 export dimension,
        numorbital,
        hasorbital,
@@ -14,17 +14,21 @@ export dimension,
        whichunitcell,
        momentumgrid
 
-       using LinearAlgebra
-       import Base.zero
+using LinearAlgebra
+import Base.zero
 
 
 """
-    UnitCell{T}
+    UnitCell{O}
+
+# Parameters
+* `O`: type of "orbital". Any type can be used, but we recommend using `String` or tuple of `String` and `Int`
+       for compatibility with JSON.
 
 # Members
 * `latticevectors ::Array{Float64, 2}`: Lattice vectors
 * `reducedreciprocallatticevectors ::Array{Float64, 2}`: Reduced reciprocal lattice vectors (transpose of inverse of `latticevectors`)
-* `reciprocallatticevectors ::Array{Float64, 2}`: Reciprocal lattice vectors
+* `reciprocallatticevectors ::Array{Float64, 2}`: Reciprocal lattice vectors. `2π * reducedreciprocallatticevectors`
 * `orbitals ::Vector{Tuple{T, FractCoord}}`: List of orbitals within unit cell
 * `orbitalindices ::Dict{T, Int}`: Indices of orbitals
 """
@@ -40,12 +44,14 @@ mutable struct UnitCell{O}
                          reducedreciprocallatticevectors ::AbstractArray{<:Real, 2},
                          reciprocallatticevectors ::AbstractArray{<:Real, 2},
                          orbitalindices ::Dict{O, Int}) where {O}
-        @assert(! (O <: Integer), "OrbitalType should not be integer to avoid confusion")
+        if (O <: Integer)
+            throw(ArgumentError("OrbitalType should not be integer to avoid confusion"))
+        end
         new{O}(latticevectors,
-        orbitals,
-        reducedreciprocallatticevectors,
-        reciprocallatticevectors,
-        orbitalindices)
+               orbitals,
+               reducedreciprocallatticevectors,
+               reciprocallatticevectors,
+               orbitalindices)
     end
 end
 
@@ -62,45 +68,51 @@ Construct a one-dimensional lattice.
 # Optional Arguments
 * `tol=sqrt(eps(Float64))`: Tolerance
 """
-function newunitcell(latticeconstant ::AbstractFloat;
-                     OrbitalType::DataType=Any,
-                     tol=sqrt(eps(Float64)))
-    return newunitcell(reshape([latticeconstant], (1,1));
-                       OrbitalType=OrbitalType, tol=tol)
+function make_unitcell(latticeconstant ::AbstractFloat;
+                       OrbitalType::DataType=Any,
+                       tol=sqrt(eps(Float64)))
+    return make_unitcell(reshape([latticeconstant], (1,1));
+                         OrbitalType=OrbitalType, tol=tol)
 end
 
 
 """
     UnitCell
 
+Construct an n-dimensional lattice.
+
 # Arguments
-* `latticevectors ::Array{Float64, 2}`: Lattice vectors
+* `latticevectors ::AbstractArray{<:AbstractFloat, 2}`: Lattice vectors
 * `OrbitalType::DataType`
 
 # Optional Arguments
 * `tol=sqrt(eps(Float64))`: Epsilon
 """
-function newunitcell(latticevectors ::AbstractArray{<:AbstractFloat, 2};
-                     OrbitalType::DataType=Any,
-                     tol=sqrt(eps(Float64)))
+function make_unitcell(latticevectors ::AbstractArray{<:AbstractFloat, 2};
+                       OrbitalType::DataType=Any,
+                       tol ::Real=sqrt(eps(Float64)))
     (ndim, ndim_) = size(latticevectors)
-    @assert(ndim == ndim_, "lattice vectors has dimension ($(ndim), $(ndim_))")
-    @assert(abs(det(latticevectors)) > tol,
-    "lattice vectors define zero volume $(latticevectors)")
+    if ndim != ndim_
+        throw(ArgumentError("lattice vectors has dimension ($(ndim), $(ndim_))"))
+    elseif abs(det(latticevectors)) <= tol
+        throw(ArgumentError("lattice vectors define zero volume $(latticevectors)"))
+    elseif tol < 0
+        throw(ArgumentError("tol must be non-negative"))
+    end
 
     reduced_rlv = transpose(inv(latticevectors))
     orbitals = Tuple{OrbitalType, FractCoord}[]
     orbitalindices = Dict{OrbitalType, Int}()
     return UnitCell{OrbitalType}(latticevectors, orbitals,
-                                 reduced_rlv, 2*pi*reduced_rlv, orbitalindices)
+                                 reduced_rlv, 2*π*reduced_rlv, orbitalindices)
 end
 
 
-function newunitcell(latticevectors::AbstractVector{<:AbstractVector};
-                     OrbitalType::DataType=Any,
-                     tol=sqrt(eps(Float64)))
+function make_unitcell(latticevectors::AbstractVector{<:AbstractVector};
+                       OrbitalType::DataType=Any,
+                       tol ::Real=sqrt(eps(Float64)))
     lv = hcat(latticevectors...)
-    return newunitcell(lv; OrbitalType=OrbitalType, tol=tol)
+    return make_unitcell(lv; OrbitalType=OrbitalType, tol=tol)
 end
 
 
@@ -109,7 +121,7 @@ end
 
 Spatial dimension of the unit cell.
 """
-function dimension(uc ::UnitCell{O}) where {O}
+function dimension(uc ::UnitCell)
     return size(uc.latticevectors)[1]
 end
 
@@ -122,7 +134,7 @@ Number of orbitals of the unit cell.
 # Arguments
 * `uc ::UnitCell`
 """
-function numorbital(uc ::UnitCell{O}) where {O}
+function numorbital(uc ::UnitCell)
     return length(uc.orbitals)
 end
 
@@ -141,8 +153,11 @@ function addorbital!(uc ::UnitCell{O},
                      orbitalname ::O,
                      orbitalcoord ::FractCoord) where {O}
     (ndim, ndim_) = size(uc.latticevectors)
-    @assert(dimension(orbitalcoord) == ndim, "orbitalcoord has wrong dimension")
-    @assert(!haskey(uc.orbitalindices, orbitalname), "duplicate orbital name")
+    if dimension(orbitalcoord) != ndim
+        throw(ArgumentError("orbitalcoord has wrong dimension"))
+    elseif haskey(uc.orbitalindices, orbitalname)
+        throw(ArgumentError( "duplicate orbital name"))
+    end
     push!(uc.orbitals, (orbitalname, orbitalcoord))
     index = length(uc.orbitalindices)+1
     uc.orbitalindices[orbitalname] = index
@@ -181,11 +196,14 @@ end
 """
     getorbital
 
-Get the orbital with the given name.
+    Get the orbital (its orbital name and its fractional coordinates) with the given name.
 
 # Arguments
 * `uc ::UnitCell{O}`
 * `name ::O`
+
+# Return
+* `(orbitalname, fractcoord)`
 """
 function getorbital(uc ::UnitCell{O}, name ::O) where {O}
     return uc.orbitals[ uc.orbitalindices[name] ]
@@ -195,9 +213,14 @@ end
 """
     getorbitalcoord
 
+    Get the fractional coordinates of the orbital with the given name.
+
 # Arguments
 * `uc ::UnitCell{O}`
 * `name ::O`
+
+# Return
+* `fractcoord`
 """
 function getorbitalcoord(uc ::UnitCell{O}, name ::O) where {O}
     return getorbital(uc, name)[2]
@@ -210,11 +233,14 @@ end
 # Arguments
 * `uc ::UnitCell{T}`
 * `name ::T`
+
+# Return
+* `(index, fractcoord)`
 """
 function getorbitalindexcoord(uc ::UnitCell{O}, name::O) where {O}
-    idx = getorbitalindex(uc, name)
-    coord = getorbitalcoord(uc, idx)
-    return (idx, coord)
+    index = getorbitalindex(uc, name)
+    coord = getorbitalcoord(uc, index)
+    return (index, coord)
 end
 
 
@@ -223,10 +249,13 @@ end
 
 # Arguments
 * `uc ::UnitCell{T}`
-* `idx ::Integer`
+* `index ::Integer`
+
+# Return
+* `(orbitalname, fractcoord)`
 """
-function getorbital(uc ::UnitCell, idx::Integer)
-    return uc.orbitals[idx]
+function getorbital(uc ::UnitCell, index::Integer)
+    return uc.orbitals[index]
 end
 
 
@@ -235,10 +264,13 @@ end
 
 # Arguments
 * `uc ::UnitCell`
-* `idx ::Integer`
+* `index ::Integer`
+
+# Return
+* `orbitalname`
 """
-function getorbitalname(uc ::UnitCell, idx ::Integer)
-    return uc.orbitals[idx][1]
+function getorbitalname(uc ::UnitCell, index ::Integer)
+    return uc.orbitals[index][1]
 end
 
 
@@ -248,9 +280,12 @@ end
 # Arguments
 * `uc ::UnitCell`
 * `idx ::Integer`
+
+# Return
+* `fractcoord`
 """
-function getorbitalcoord(uc ::UnitCell, idx ::Integer)
-    return uc.orbitals[idx][2]
+function getorbitalcoord(uc ::UnitCell, index ::Integer)
+    return uc.orbitals[index][2]
 end
 
 
@@ -263,6 +298,9 @@ end
 * `fc ::FractCoord`
 """
 function fract2carte(unitcell ::UnitCell, fc ::FractCoord)
+    if dimension(unitcell) != dimension(fc)
+        throw(ArgumentError("unitcell and fractcoord must have the same dimension"))
+    end
     mc = fc.whole + fc.fraction
     cc = unitcell.latticevectors * mc
     return CarteCoord(cc)
@@ -278,8 +316,10 @@ end
 """
 function carte2fract(unitcell ::UnitCell,
                      cc ::CarteCoord;
-                     tol::Real=sqrt(eps(Float64)))
-    #fc = inv(unitcell.latticevectors) * cc
+                     tol ::Real=sqrt(eps(Float64)))
+    if dimension(unitcell) != length(cc)
+        throw(ArgumentError("unitcell and cartecoord must have the same dimension"))
+    end
     fc = transpose(unitcell.reducedreciprocallatticevectors) * cc
     w = Int[fld(x, 1.0) for x in fc]
     f = Float64[mod(x, 1.0) for x in fc]
@@ -296,44 +336,62 @@ end
 """
     whichunitcell
 
-Return which unit cell the specificied orbital/cartesian coordinates belongs to.
+# Return
+* `R ::Vector{Int}`: which unit cell the specificied orbital/cartesian coordinates belongs to.
 """
-function whichunitcell(uc ::UnitCell{O}, name ::O, cc ::CarteCoord;
-    tol::Real=sqrt(eps(Float64))) where {O}
+function whichunitcell(uc ::UnitCell{O},
+                       name ::O,
+                       cc ::CarteCoord;
+                       tol ::Real=sqrt(eps(Float64))) where {O}
     fc1 = getorbitalcoord(uc, name)
     fc2 = carte2fract(uc, cc)
-    @assert(isapprox(fc1.fraction, fc2.fraction; rtol=tol),
-            "$(fc1.fraction) != $(fc2.fraction) [tol=$(tol)]")
+    if !isapprox(fc1.fraction, fc2.fraction; rtol=tol)
+        throw(ArgumentError("$(fc1.fraction) != $(fc2.fraction) [tol=$(tol)]"))
+    end
     R = fc2.whole - fc1.whole
     return R
 end
 
 
-function whichunitcell(uc ::UnitCell{O}, name ::O, fc ::FractCoord;
-    tol::Real=sqrt(eps(Float64))) where {O}
+"""
+    whichunitcell
+
+# Return
+* `R ::Vector{Int}`: which unit cell the specificied orbital/cartesian coordinates belongs to.
+"""
+function whichunitcell(uc ::UnitCell{O},
+                       name ::O,
+                       fc ::FractCoord;
+                       tol ::Real=sqrt(eps(Float64))) where {O}
     fc1 = getorbitalcoord(uc, name)
     fc2 = fc
-    @assert(isapprox(fc1.fraction, fc2.fraction; rtol=tol),
-            "$(fc1.fraction) != $(fc2.fraction) [tol=$(tol)]")
+    if !isapprox(fc1.fraction, fc2.fraction; rtol=tol)
+        throw(ArgumentError("$(fc1.fraction) != $(fc2.fraction) [tol=$(tol)]"))
+    end
     R = fc2.whole - fc1.whole
     return R
 end
 
 
-function zero(uc::UnitCell; dtype::DataType=Complex{Float64})
+function zero(uc::UnitCell; dtype::DataType=ComplexF64)
     norb = numorbital(uc)
-    Base.zeros(dtype, (norb, norb))
+    return Base.zeros(dtype, (norb, norb))
 end
 
 
+"""
+    momentumgrid
+
+Generate an n-dimensional grid of momenta of given shape
+"""
 function momentumgrid(uc::UnitCell, shape::AbstractVector{<:Integer})
-    @assert(length(shape) == dimension(uc), "dimension mismatch")
-    @assert(all((x) -> x>0, shape), "shape should be positive")
-
+    if length(shape) != dimension(uc)
+        throw(ArgumentError("dimension mismatch"))
+    elseif !all((x) -> x>0, shape)
+        throw(ArgumentError("shape should be positive"))
+    end
     ranges = [range(0,stop=1,length=n+1)[1:end-1] for n in shape]
-
     cubicgrid = map((x) -> [x...], Base.product(ranges...))
-    #momentumgrid = map((x) -> transpose(uc.reciprocallatticevectors) * x, cubicgrid)
     momentumgrid = map((x) -> uc.reciprocallatticevectors * x, cubicgrid)
     return momentumgrid
 end

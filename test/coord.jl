@@ -23,7 +23,7 @@
   end
 
   @testset "failures" begin
-    @test_throws AssertionError FractCoord([-1, 1], [1.0, 2.0])
+    @test_throws ArgumentError FractCoord([-1, 1], [1.0, 2.0])
   end
 
   @testset "isapprox" begin
