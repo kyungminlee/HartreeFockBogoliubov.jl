@@ -117,7 +117,7 @@ struct InteractionDiagonal{R<:Real}
         if (i, Ri) > (j, Rj)
             (i,j) = (j,i)
             (Ri, Rj) = (Rj, Ri)
-            v = conj(v)
+            #v = conj(v)
         end
         return new{R}(v, i, j, Ri, Rj)
     end
