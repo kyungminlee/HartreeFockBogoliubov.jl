@@ -67,6 +67,26 @@
     @test getorbitalname(uc, 2) == (:dn, "Ox")
   end
 
+  @testset "Conversion fract2carte/carte2fract" begin
+    latticevectors = [0.5 0.0; 0.0 1.0]
+    uc = make_unitcell(latticevectors)
+
+    rawfractcoord = [-1.2, 1.5]
+
+    correctfractcoord = FractCoord([-2, 1], [0.8, 0.5])
+    correctcartecoord = [-0.6, 1.5]
+
+    fractcoord = FractCoord(rawfractcoord)
+    cartecoord = fract2carte(uc, fractcoord)
+    newfractcoord = carte2fract(uc, cartecoord)
+    @test isapprox(fractcoord, correctfractcoord)
+    @test isapprox(cartecoord, correctcartecoord)
+    @test isapprox(newfractcoord, correctfractcoord)
+  end
+
+
+
+
   @testset "momentumgrid" begin
     uc = make_unitcell([1.0 0.0; 0.0 1.0]; OrbitalType=String)
     kg = momentumgrid(uc, [2,3])

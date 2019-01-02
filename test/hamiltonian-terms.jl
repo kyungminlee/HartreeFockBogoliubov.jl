@@ -45,6 +45,7 @@
 
             @test isapprox(io1, io2)
         end
+
         # TODO(kyungminlee, 20190102): Keep writing the testset
     end
 
