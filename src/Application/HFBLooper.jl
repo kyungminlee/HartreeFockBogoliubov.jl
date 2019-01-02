@@ -1,11 +1,21 @@
+module HFBLooper
+
+export detectresult
+export runloop
+
+
+using Dates
 using JSON
 using DataStructures
-using ArgParse
+#using ArgParse
 
 using ProgressMeter
 using HartreeFockBogoliubov
-import HartreeFockBogoliubov: Spec, Generator, HFB
-using HartreeFockBogoliubov: HFB
+import HartreeFockBogoliubov.Spec
+import HartreeFockBogoliubov.Generator
+import HartreeFockBogoliubov.HFB
+using HartreeFockBogoliubov.HFB
+
 
 function detectresult(outpath ::AbstractString)
     for resultfilename in ["result.json",]
@@ -97,6 +107,7 @@ function runloop(solver ::HFBSolver;
         batchrun_offset = 0
         randomize!(solver, current_hfbamplitude)
         current_hfbfield = make_hfbfield(solver, current_hfbamplitude)
+        fill!(current_hfbfield.Γ, 0)
     end
 
     callback = if progressbar
@@ -105,6 +116,8 @@ function runloop(solver ::HFBSolver;
     else
         (i, n) -> nothing
     end
+
+    @info current_hfbfield.Δ
 
     if batchrun_offset == 0 #TODO WHY?
         verbose && @info "Warming up"
@@ -167,3 +180,7 @@ function runloop(solver ::HFBSolver;
 
     end
 end
+
+
+
+end #module HFBLooper
