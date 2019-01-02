@@ -68,7 +68,6 @@ function hopping_inplace(uc ::UnitCell{O},
 end
 
 
-
 """
     hopping_inplace
 """
@@ -168,10 +167,6 @@ function hopping_inplace(uc ::UnitCell{O},
         return out
     end
 end
-
-
-
-
 
 
 """
