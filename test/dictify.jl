@@ -6,7 +6,7 @@ using HartreeFockBogoliubov.Dictify
 
 using DataStructures
 
-function newhubbard(μ::Real, t::Real, U::Real, V::Real)
+function make_hubbard(μ::Real, t::Real, U::Real, V::Real)
   unitcell = make_unitcell(eye(2), OrbitalType=Symbol)
   addorbital!(unitcell, :UP, FractCoord([0, 0], [0.0, 0.0]))
   addorbital!(unitcell, :DN, FractCoord([0, 0], [0.0, 0.0]))
@@ -57,7 +57,7 @@ begin
   V = 0.4
   nx, ny = 4,4
   temperature = 0.0
-  ham = newhubbard(μ,t,U,V)
+  ham = make_hubbard(μ,t,U,V)
   solver = HFBSolver(ham, [nx, ny], temperature)
   currentsolution = newhfbsolution(solver.hfbcomputer)
 

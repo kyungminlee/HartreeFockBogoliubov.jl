@@ -28,12 +28,12 @@ using HartreeFockBogoliubov.HFB
 
 
 
-function makekanemelehamiltonian(μ ::Float64,
-                                 t ::Float64,
-                                 mAB ::Float64,
-                                 λIsing ::Float64,
-                                 U ::Float64,
-                                 V ::Float64)
+function make_kanemelehamiltonian(μ ::Float64,
+                                  t ::Float64,
+                                  mAB ::Float64,
+                                  λIsing ::Float64,
+                                  U ::Float64,
+                                  V ::Float64)
   a0 = [ 0.0, 0.0]
   a1 = [ 0.0, 1.0]
   a2 = [-sqrt(3.0) * 0.5,-0.5]
@@ -151,7 +151,7 @@ end
 
 
 function main2()
-    kmh1 = makekanemelehamiltonian(0.0, 1.0, 0.0, 0.4, -1.0, 0.0)
+    kmh1 = make_kanemelehamiltonian(0.0, 1.0, 0.0, 0.4, -1.0, 0.0)
     unitcell = kmh1.unitcell
     nambuunitcell = HFB.nambufy(unitcell)
 
@@ -168,38 +168,35 @@ function main2()
     display(full(nambutimereversalmatrix))
     println()
 
-
-    #hfb_computer = HFBComputer(hfb_kmh1, 0.0)
     hfb_solver = HFBSolver(kmh1, [12, 12], 0)
 
-    hfb_solution = newhfbsolution(hfb_solver.hfbcomputer)
-    hfb_solution.Γ[:] = 0.0
-    hfb_solution.Δ[:] = 0.3
+    hfb_hfbamplitude = make_hfbamplitude(hfb_solver)
+    hfb_hfbfield = make_hfbfield(hfb_solver, hfb_hfbamplitude)
+    fill!(hfb_hfbfield.Γ, 0)
+    fill!(hfb_hfbfield.Δ, 0.3)
 
-    function nogammaupdate(sol::HFBSolution, newsol::HFBSolution)
-        sol.ρ[:] = newsol.ρ[:]
-        sol.t[:] = newsol.t[:]
-        sol.Γ[:] = 0
+    function nogammaupdate(sol::HFBField, newsol::HFBField)
+        fill!(sol.Γ, 0)
         sol.Δ[:] = newsol.Δ[:]
         sol
     end
 
-    hfb_solution = loop(hfb_solver,
-                        hfb_solution,
-                        10;
-                        update=nogammaupdate,
-                        progressbar=true
-                       )
-    hfb_solution.Γ[:] = 0.0
-    hfb_solution.Δ[:] = 1.0
+    hfb_hfbamplitude = loop(hfb_solver,
+                           hfb_hfbamplitude,
+                           10;
+                           update=nogammaupdate,
+                           progressbar=true,
+                          )
+    fill!(hfb_hfbfield.Γ, 0.0)
+    fill!(hfb_hfbfield.Δ, 1.0)
 
-    (nambuunitcell, nambuhoppings) = HFB.freeze(hfb_solver.hfbcomputer, hfb_solution.Γ, hfb_solution.Δ)
+    (nambuunitcell, nambuhoppings_diagonal, nambuhoppings_offdiagonal) = HFB.freeze(hfb_solver.hfbcomputer,hfb_hfbfield)
     @show numorbital(unitcell)
     @show numorbital(nambuunitcell)
     @show nambuunitcell
     @show nambuhoppings
-    @show Topology.z2index(nambuunitcell, nambuhoppings, nambutimereversalmatrix, 12, 12, 1:2)
-    @show Topology.z2index(unitcell, kmh1.hoppings, timereversalmatrix, 12, 12, 1:1)
+    @show Topology.z2index(nambuunitcell, nambuhoppings_diagonal, nambuhoppings_offdiagonal, nambutimereversalmatrix, 12, 12, 1:2)
+    @show Topology.z2index(unitcell, kmh1.hoppings_diagonal, kmh.hoppings_offdiagonal, timereversalmatrix, 12, 12, 1:1)
 end
 
 
@@ -227,9 +224,10 @@ function testpwave()
 
         hfbsolver = HFB.HFBSolver(hamspec, [16, 16], 0.0)
         #@show hfbsolver
-        hfbsolution = newhfbsolution(hfbsolver.hfbcomputer)
-        hfbsolution.Γ[:] = 0.0
-        hfbsolution.Δ[:] = 0.0
+        hfb_hfbamplitude = make_hfbamplitude(hfbsolver)
+        hfb_hfbfield = make_hfbfield(hfbsolver, hfb_hfbamplitude)
+        fill!(hfb_hfbfield.Γ, 0)
+        fill!(hfb_hfbfield.Δ, 0)
 
         #=
         for (idx, (isdiag, i, j, r, _)) in enumerate(hfbsolver.hfbcomputer.Δ_registry)
@@ -243,13 +241,13 @@ function testpwave()
 
         if true
             Δ0 = 0.1
-            hfbsolution.Δ[1] =   Δ0
-            hfbsolution.Δ[2] =  -Δ0
-            hfbsolution.Δ[3] =   Δ0 * im
-            hfbsolution.Δ[4] =  -Δ0 * im
+            hfb_hfbfield.Δ[1] =   Δ0
+            hfb_hfbfield.Δ[2] =  -Δ0
+            hfb_hfbfield.Δ[3] =   Δ0 * im
+            hfb_hfbfield.Δ[4] =  -Δ0 * im
         end
 
-        (nambuunitcell, nambuhoppings) = HFB.freeze(hfbsolver.hfbcomputer, hfbsolution.Γ, hfbsolution.Δ)
+        (nambuunitcell, nambuhoppings) = HFB.freeze(hfbsolver.hfbcomputer, hfb_hfbfield)
         nambutimereversalmatrix = spinhalftimereversal(nambuunitcell, 2)
         #@show hfbsolver.hfbcomputer.Δ_registry
         z = Topology.z2index(nambuunitcell, nambuhoppings, nambutimereversalmatrix, 64, 64, 1:1)
@@ -260,7 +258,7 @@ end
 
 #=
 function main2()
-  kmh1 = makekanemelehamiltonian(0.0, 1.0, 0.0, 0.2, 0.0, 0.0)
+  kmh1 = make_kanemelehamiltonian(0.0, 1.0, 0.0, 0.2, 0.0, 0.0)
   kmh2 = Topology.squarify(kmh1)
   norb = numorbital(kmh1.unitcell)
   ham1 = Generator.generatehoppingfast(kmh1)
@@ -270,7 +268,7 @@ function main2()
   kg2 = momentumgrid(kmh1.unitcell, [8, 8])
 
   #for k in kg
-  #  out = zeros(Complex{Float64}, (norb, norb))
+  #  out = zeros(ComplexF64, (norb, norb))
   #  hk = ham(k, out)
   #end
   #@show out
@@ -301,8 +299,8 @@ function main2()
   for (pc1, (pt, pc2)) in g
     k = kg2[(pc1+1)...]
     if pt == :TRI
-      hk = zeros(Complex{Float64}, (norb, norb))
-      #hkprime = zeros(Complex{Float64}, (norb, norb))
+      hk = zeros(ComplexF64, (norb, norb))
+      #hkprime = zeros(ComplexF64, (norb, norb))
       ham2(k, hk)
       #ham2(-k, hkprime)
       hkprime = timereversalmatrix * hk * timereversalmatrix'

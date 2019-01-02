@@ -8,7 +8,7 @@ using HartreeFockBogoliubov.Generator
 using HartreeFockBogoliubov.HFB
 
 """
-maketriplethamiltonian
+make_triplethamiltonian
 
 # Arguments
 * `μ ::Float64`
@@ -18,11 +18,11 @@ maketriplethamiltonian
 * `U ::Float64`
 * `V ::Float64`
 """
-function maketripletmdhamiltonian(μ ::Float64,
-                                  t ::Float64,
-                                  mAB ::Float64,
-                                  λIsing ::Float64,
-                                  U ::Float64, V ::Float64)
+function make_tripletmdhamiltonian(μ ::Float64,
+                                   t ::Float64,
+                                   mAB ::Float64,
+                                   λIsing ::Float64,
+                                   U ::Float64, V ::Float64)
     a0 = [ 0.0, 0.0]
     a1 = [ 0.0, 1.0]
     a2 = [-sqrt(3.0) * 0.5,-0.5]
@@ -124,22 +124,22 @@ end
     λIsing = 0.2
     U = -3.0
     V = 0.0
-    hamspec = maketripletmdhamiltonian(μ, t, mAB, λIsing, U, V)
+    hamspec = make_tripletmdhamiltonian(μ, t, mAB, λIsing, U, V)
     hfbsolver = HFBSolver(hamspec, [12, 12], 0.0)
 
-    hfbsolution = newhfbsolution(hfbsolver.hfbcomputer)
-    randomize!(hfbsolver.hfbcomputer, hfbsolution)
+    hfbamplitude = make_hfbamplitude(hfbsolver)
+    hfbfield = make_hfbfield(hfbsolver, hfbamplitude)
+    randomize!(hfbsolver, hfbamplitude)
+    hamiltonian1 = make_hamiltonian(hfbsolver, hfbamplitude)
 
-    hamiltonian1 = makehamiltonian(hfbsolver, hfbsolution.Γ, hfbsolution.Δ)
-
-    (nambuunitcell, nambuhoppings) = HFB.freeze(hfbsolver, hfbsolution.Γ, hfbsolution.Δ)
+    (nambuunitcell, nambuhoppings_diagonal, nambuhoppings_offdiagonal) = HFB.freeze(hfbsolver, hfbfield)
 
     hamiltonian2 = let
-        foo = Generator.generatefast(nambuunitcell, nambuhoppings)
+        foo = Generator.hopping_inplace(nambuunitcell, nambuhoppings_diagonal, nambuhoppings_offdiagonal)
         norb = numorbital(nambuunitcell)
-        function ret(k ::AbstractVector{Float64}) ::Matrix{Complex{Float64}}
-            out = zeros(Complex{Float64}, (norb, norb))
-            foo(k, out)
+        function(momentum ::AbstractVector{Float64}) ::Matrix{ComplexF64}
+            out = zeros(ComplexF64, (norb, norb))
+            foo(momentum, out)
             return out
         end
     end

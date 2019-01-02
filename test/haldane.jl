@@ -72,7 +72,7 @@ function main()
   kg = momentumgrid(haldanemodel.unitcell, [16, 16])
 
   for (i, k) in enumerate(kg)
-    out = zeros(Complex{Float64}, (norb, norb))
+    out = zeros(ComplexF64, (norb, norb))
     ham(k, out)
 
   end
@@ -81,23 +81,22 @@ function main()
 
   hfb_haldanemodel = HFBHamiltonian(haldanemodel)
   hfb_computer = HFBComputer(hfb_haldanemodel, 0.0)
-  hfb_solution = newhfbsolution(hfb_computer)
+  hfb_hfbamplitude = make_hfbamplitude(hfb_computer)
 
   srand(1)
-  randomize!(hfb_computer, hfb_solution)
-  #hfb_solution.Γ[:] = 0.0
-  #hfb_solution.Δ[:] = 0.0
+  randomize!(hfb_computer, hfb_hfbamplitude)
+  hfb_hfbfield = make_hfbfield(hfb_computer, hfb_hfbamplitude)
 
-  @show hfb_solution
+  @show hfb_hfbfield
 
-  hkgen1 = makehamiltonian(hfb_computer, hfb_solution.Γ, hfb_solution.Δ)
-  (nambuunitcell, ham2) = freeze(hfb_computer, hfb_solution.Γ, hfb_solution.Δ)
+  hkgen1 = make_hamiltonian(hfb_computer, hfb_hfbfield)
+  (nambuunitcell, ham2_diagonal, ham2_offdiagonal) = freeze(hfb_computer, hfb_hfbfield)
 
   hkgen2 = let
     norb = numorbital(haldanemodel.unitcell)*2
-    generator = Generator.generatefast(nambuunitcell, ham2)
+    generator = Generator.hopping_inplace(nambuunitcell, ham2_diagonal, ham2_offdiagonal)
     function(k::AbstractVector{<:Real})
-      out = zeros(Complex{Float64}, (norb, norb))
+      out = zeros(ComplexF64, (norb, norb))
       generator(k, out)
       return out
     end
