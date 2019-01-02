@@ -22,4 +22,6 @@ include("LinearizedGap/LinearizedGap.jl")
 include("IO/dumper.jl")
 include("IO/dictify.jl")
 
+include("Application/HFBLooper.jl")
+
 end
