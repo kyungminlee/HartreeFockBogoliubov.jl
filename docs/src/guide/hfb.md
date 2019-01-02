@@ -25,7 +25,7 @@ const CollectRow = Tuple{Bool, Int, Int, Vector{Float64}}
 
 `DeployRow` contains necessary information to calculate Γ(i,j) and Δ(i,j), using the measured ρ(i,j) and t(i,j)
 ```julia
-const DeployRow = Tuple{Bool, Int, Int, Vector{Float64}, Vector{Tuple{Int, Complex{Float64}, Bool}}}
+const DeployRow = Tuple{Bool, Int, Int, Vector{Float64}, Vector{Tuple{Int, ComplexF64, Bool}}}
 ```
 
 
@@ -44,7 +44,7 @@ mutable struct HFBSolver{O}
     momentumgrid ::Array{Vector{Float64}}
     hfbhamiltonian ::HFBHamiltonian{O}
     hfbcomputer ::HFBComputer{O}
-    greencollectors ::Function
+    greencollector ::Function
 end
 ```
 
