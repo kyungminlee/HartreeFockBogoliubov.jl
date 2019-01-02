@@ -23,7 +23,9 @@
   end
 
   @testset "failures" begin
-    @test_throws ArgumentError FractCoord([-1, 1], [1.0, 2.0])
+      @test_throws ArgumentError FractCoord([-1, 1], [0.0])
+      @test_throws ArgumentError FractCoord([-1, 1], [1.0, 2.0])
+      @test_throws ArgumentError FractCoord([-1, 1], [0.0, 0.0]; tol=-1)
   end
 
   @testset "isapprox" begin
@@ -35,6 +37,12 @@
     @test isapprox(fractcoord1, fractcoord2)
     @test !isapprox(fractcoord1, fractcoord3)
     @test !isapprox(fractcoord1, fractcoord4)
+  end
+
+  @testset "round" begin
+    fractcoord1 = FractCoord([1, 0], [0.0, 0.0])
+    fractcoord2 = FractCoord([0, 0], [1.0-1E-12, 0.0]; tol=1E-6)
+    @test isapprox(fractcoord1, fractcoord2)
   end
 
   @testset "Operators" begin
