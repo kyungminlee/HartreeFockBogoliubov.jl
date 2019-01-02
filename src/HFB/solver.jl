@@ -1,9 +1,10 @@
 export HFBSolver
 export next_hfbamplitude,
        next_hfbamplitude!,
-       next_hfbsolution,
+       #next_hfbsolution,
        #next_hfbfield,
        next_hfbamplitude_threaded,
+       next_hfbamplitude_threaded!,
        loop,
        loop_threaded,
        #loop_python,
@@ -11,6 +12,14 @@ export next_hfbamplitude,
        isvalid
 
 import LinearAlgebra
+
+function eigh(mat ::Matrix{R}) where {R<:AbstractFloat}
+    return (LinearAlgebra.eigen(LinearAlgebra.Symmetric(mat))...,)
+end
+
+function eigh(mat ::Matrix{C}) where {C<:Complex}
+    return (LinearAlgebra.eigen(LinearAlgebra.Hermitian(mat))...,)
+end
 
 
 """
@@ -26,6 +35,9 @@ mutable struct HFBSolver{O}
     hfbhamiltonian ::HFBHamiltonian{O}
     hfbcomputer ::HFBComputer{O}
     greencollector ::Function
+
+    # Optional
+    eigensolver ::Function
 end
 
 
@@ -34,6 +46,7 @@ end
 function HFBSolver(fullhamiltonian::FullHamiltonian{O},
                    size ::AbstractVector{<:Integer},
                    temperature ::Real;
+                   eigensolver::Function=eigh,
                    tol ::Real=eps(Float64)) ::HFBSolver{O} where {O}
     dim = dimension(fullhamiltonian.unitcell)
     if length(size) != dim
@@ -49,19 +62,23 @@ function HFBSolver(fullhamiltonian::FullHamiltonian{O},
     greencollector = HFB.make_greencollector(hfbcomputer)
     return HFBSolver{O}(fullhamiltonian, size, temperature,
                         momentumgrid,
-                        hfbhamiltonian, hfbcomputer, greencollector)
+                        hfbhamiltonian, hfbcomputer, greencollector,
+                        eigensolver)
 end
 
 
 """
 """
-function next_hfbamplitude!(next_hfbamplitude ::HFBAmplitude, solver ::HFBSolver, hfbfield ::HFBField)
+function next_hfbamplitude!(next_hfbamplitude ::HFBAmplitude,
+                            solver ::HFBSolver,
+                            hfbfield ::HFBField)
     fill!(next_hfbamplitude.ρ, 0)
     fill!(next_hfbamplitude.t, 0)
     ham = make_hamiltonian(solver.hfbcomputer, hfbfield)
     for momentum in solver.momentumgrid
         hk = ham(momentum)
-        (eivals, eivecs) = (LinearAlgebra.eigen(LinearAlgebra.Hermitian(hk))...,)
+        (eivals, eivecs) = solver.eigensolver(hk)
+        #(eivals, eivecs) = (LinearAlgebra.eigen(LinearAlgebra.Hermitian(hk))...,)
         solver.greencollector(momentum, eivals, eivecs, next_hfbamplitude)
     end
     next_hfbamplitude.ρ /= length(solver.momentumgrid)
@@ -72,12 +89,14 @@ end
 
 """
 """
-function next_hfbamplitude(solver ::HFBSolver, hfbfield ::HFBField) ::HFBAmplitude
+function next_hfbamplitude(solver ::HFBSolver,
+                           hfbfield ::HFBField) ::HFBAmplitude
     next_hfbamplitude = make_hfbamplitude(solver.hfbcomputer)
     ham = make_hamiltonian(solver.hfbcomputer, hfbfield)
     for momentum in solver.momentumgrid
         hk = ham(momentum)
-        (eivals, eivecs) = (LinearAlgebra.eigen(LinearAlgebra.Hermitian(hk))...,)
+        #(eivals, eivecs) = (LinearAlgebra.eigen(LinearAlgebra.Hermitian(hk))...,)
+        (eivals, eivecs) = solver.eigensolver(hk)
         solver.greencollector(momentum, eivals, eivecs, next_hfbamplitude)
     end
     next_hfbamplitude.ρ /= length(solver.momentumgrid)
@@ -88,25 +107,10 @@ end
 
 """
 """
-function next_hfbamplitude(solver ::HFBSolver, hfbamplitude ::HFBAmplitude) ::HFBAmplitude
+function next_hfbamplitude(solver ::HFBSolver,
+                           hfbamplitude ::HFBAmplitude) ::HFBAmplitude
     hfbfield = make_hfbfield(solver.hfbcomputer, hfbamplitude)
     return next_hfbamplitude(solver, hfbfield)
-end
-
-
-"""
-"""
-function next_hfbsolution(solver ::HFBSolver, hfbfield ::HFBField) ::HFBAmplitude
-    nsf = make_hfbamplitude(solver.hfbcomputer)
-    ham = make_hamiltonian(solver.hfbcomputer, hfbfield)
-    for momentum in solver.momentumgrid
-        hk = ham(momentum)
-        (eivals, eivecs) = (LinearAlgebra.eigen(LinearAlgebra.Hermitian(hk))...,)
-        solver.greencollector(momentum, eivals, eivecs, nsf)
-    end
-    nsf.ρ /= length(solver.momentumgrid)
-    nsf.t /= length(solver.momentumgrid)
-    return (nsf, make_hfbfield(solver, nsf))
 end
 
 
@@ -117,13 +121,34 @@ function next_hfbfield(solver ::HFBSolver, hfbfield ::HFBField) ::HFBAmplitude
     ham = make_hamiltonian(solver.hfbcomputer, hfbfield)
     for momentum in solver.momentumgrid
         hk = ham(momentum)
-        (eivals, eivecs) = (LinearAlgebra.eigen(LinearAlgebra.Hermitian(hk))...,)
+        #(eivals, eivecs) = (LinearAlgebra.eigen(LinearAlgebra.Hermitian(hk))...,)
+        (eivals, eivecs) = solver.eigensolver(hk)
         solver.greencollector(momentum, eivals, eivecs, nsf)
     end
     nsf.ρ /= length(solver.momentumgrid)
     nsf.t /= length(solver.momentumgrid)
     return make_hfbfield(solver, nsf)
 end
+
+
+#=
+"""
+"""
+function next_hfbsolution(solver ::HFBSolver, hfbfield ::HFBField) ::HFBAmplitude
+    nsf = make_hfbamplitude(solver.hfbcomputer)
+    ham = make_hamiltonian(solver.hfbcomputer, hfbfield)
+    for momentum in solver.momentumgrid
+        hk = ham(momentum)
+        #(eivals, eivecs) = (LinearAlgebra.eigen(LinearAlgebra.Hermitian(hk))...,)
+        (eivals, eivecs) = solver.eigensolver(hk)
+
+        solver.greencollector(momentum, eivals, eivecs, nsf)
+    end
+    nsf.ρ /= length(solver.momentumgrid)
+    nsf.t /= length(solver.momentumgrid)
+    return (nsf, make_hfbfield(solver, nsf))
+end
+=#
 
 
 #=
@@ -160,7 +185,8 @@ function next_hfbamplitude_threaded(solver ::HFBSolver,
         momentum = solver.momentumgrid[idx_momentum]
         tid = Threads.threadid()
         hk = ham(momentum)
-        (eivals, eivecs) = (LinearAlgebra.eigen(LinearAlgebra.Hermitian(hk))...,)
+        #(eivals, eivecs) = (LinearAlgebra.eigen(LinearAlgebra.Hermitian(hk))...,)
+        (eivals, eivecs) = solver.eigensolver(hk)
         solver.greencollector(momentum, eivals, eivecs, threaded_nsf[tid])
     end
 
@@ -172,6 +198,39 @@ function next_hfbamplitude_threaded(solver ::HFBSolver,
     nsf.ρ /= length(solver.momentumgrid)
     nsf.t /= length(solver.momentumgrid)
     return nsf
+end
+
+
+
+"""
+"""
+function next_hfbamplitude_threaded!(next_hfbamplitude ::HFBAmplitude,
+                                     solver ::HFBSolver,
+                                     hfbfield ::HFBField)
+    fill!(next_hfbamplitude.ρ, 0)
+    fill!(next_hfbamplitude.t, 0)
+    ham = make_hamiltonian(solver.hfbcomputer, hfbfield)
+
+    threaded_nsf = [make_hfbamplitude(solver) for tid in 1:Threads.nthreads()]
+
+    num_momentum = length(solver.momentumgrid)
+    Threads.@threads for idx_momentum in 1:num_momentum
+        momentum = solver.momentumgrid[idx_momentum]
+        tid = Threads.threadid()
+        hk = ham(momentum)
+        #(eivals, eivecs) = (LinearAlgebra.eigen(LinearAlgebra.Hermitian(hk))...,)
+        (eivals, eivecs) = solver.eigensolver(hk)
+        solver.greencollector(momentum, eivals, eivecs, threaded_nsf[tid])
+    end
+
+    for tnsf in threaded_nsf
+        next_hfbamplitude.ρ += tnsf.ρ
+        next_hfbamplitude.t += tnsf.t
+    end
+
+    next_hfbamplitude.ρ /= length(solver.momentumgrid)
+    next_hfbamplitude.t /= length(solver.momentumgrid)
+    return next_hfbamplitude
 end
 
 
@@ -246,7 +305,7 @@ function loop_threaded(solver ::HFBSolver,
     hfbamplitude = nothing
     for i in 1:run
         precondition(hfbfield)
-        hfbamplitude = next_hfbamplitude_threaded(solver, hfbfield)
+        next_hfbamplitude_threaded!(hfbamplitude, solver, hfbfield)
         update(hfbfield, make_hfbfield(solver, hfbamplitude))
         callback(i, run)
     end
