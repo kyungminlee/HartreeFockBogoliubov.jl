@@ -15,7 +15,8 @@ export make_hoppingmatrix,
        make_Gammamatrix,
        make_Deltamatrix
 
-using LinearAlgebra
+#using LinearAlgebra
+import DataStructures
 using HartreeFockBogoliubov
 
 """
@@ -312,6 +313,8 @@ Compute Γ and Δ from ρ and t.
 function compute_hfbfield!(hfbfield ::HFBField,
                            computer ::HFBComputer,
                            hfbamplitude ::HFBAmplitude) ::HFBField
+    fill!(hfbfield.Γ, 0)
+    fill!(hfbfield.Δ, 0)
     ρs = hfbamplitude.ρ
     ts = hfbamplitude.t
     for (tgtidx, (_, i, j, r, srcs)) in enumerate(computer.Γ_registry)
@@ -595,8 +598,8 @@ end
 """
 """
 function make_hint(computer::HFBComputer{O}, sol::HFBAmplitude) ::HFBAmplitudeHint{O} where {O}
-    ρ = Dict{Tuple{O, O, Vector{Int}}, ComplexF64}()
-    t = Dict{Tuple{O, O, Vector{Int}}, ComplexF64}()
+    ρ = DataStructures.OrderedDict{Tuple{O, O, Vector{Int}}, ComplexF64}()
+    t = DataStructures.OrderedDict{Tuple{O, O, Vector{Int}}, ComplexF64}()
     uc = computer.unitcell
 
     for (ρidx, (_, i, j, rij)) in enumerate(computer.ρ_registry)

@@ -269,10 +269,12 @@ function loop(solver ::HFBSolver,
               precondition::Function=identity,
               callback::Function=_noop)
     hfbamplitude = make_hfbamplitude(solver)
+    new_hfbfield = make_hfbfield(solver)
     for i in 1:run
         precondition(hfbfield)
         next_hfbamplitude!(hfbamplitude, solver, hfbfield)
-        update(hfbfield, make_hfbfield(solver, hfbamplitude))
+        compute_hfbfield!(new_hfbfield, solver, hfbamplitude)
+        update(hfbfield, new_hfbfield)
         callback(i, run)
     end
     (hfbamplitude, hfbfield)
