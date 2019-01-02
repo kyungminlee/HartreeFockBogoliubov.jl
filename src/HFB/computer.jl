@@ -15,7 +15,7 @@ export make_hoppingmatrix,
        make_Gammamatrix,
        make_Deltamatrix
 
-#using LinearAlgebra
+using LinearAlgebra
 import DataStructures
 using HartreeFockBogoliubov
 

@@ -1,15 +1,15 @@
 name = "HartreeFockBogoliubov"
 uuid = "804d6816-852b-11e8-156d-fdb6b2597e74"
 authors = ["Kyungmin Lee <kyungmin.lee.42@gmail.com>"]
-version = "0.5.5"
+version = "0.6-dev"
 
 [deps]
 ArgParse = "c7e460c6-2fb9-53a9-8c5b-16f535851c63"
 Conda = "8f4d0f93-b110-5947-807f-2305c1781a2d"
 DataStructures = "864edb3b-99cc-5e75-8d2d-829cb0a9cfe8"
+Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
 JSON = "682c06a0-de6a-54ab-a142-c8b1cf79cde6"
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 Printf = "de0858da-6303-5e67-8744-51eddeeeb8d7"
 ProgressMeter = "92933f4c-e287-5a05-a399-4b506db050ca"
-PyCall = "438e738f-606a-5dbb-bf0a-cddfbfd45ab0"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"

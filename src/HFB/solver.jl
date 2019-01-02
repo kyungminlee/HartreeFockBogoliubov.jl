@@ -273,7 +273,7 @@ function loop(solver ::HFBSolver,
     for i in 1:run
         precondition(hfbfield)
         next_hfbamplitude!(hfbamplitude, solver, hfbfield)
-        compute_hfbfield!(new_hfbfield, solver, hfbamplitude)
+        compute_hfbfield!(new_hfbfield, solver.hfbcomputer, hfbamplitude)
         update(hfbfield, new_hfbfield)
         callback(i, run)
     end
@@ -303,12 +303,13 @@ function loop_threaded(solver ::HFBSolver,
                        update::Function=simpleupdate,
                        precondition::Function=identity,
                        callback::Function=_noop)
-    #hfbfield = make_hfbfield(solver, hfbamplitude)
-    hfbamplitude = nothing
+    hfbamplitude = make_hfbamplitude(solver)
+    new_hfbfield = make_hfbfield(solver)
     for i in 1:run
         precondition(hfbfield)
         next_hfbamplitude_threaded!(hfbamplitude, solver, hfbfield)
-        update(hfbfield, make_hfbfield(solver, hfbamplitude))
+        compute_hfbfield!(new_hfbfield, solver.hfbcomputer, hfbamplitude)
+        update(hfbfield, new_hfbfield)
         callback(i, run)
     end
     (hfbamplitude, hfbfield)
