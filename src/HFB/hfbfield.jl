@@ -17,13 +17,13 @@ mutable struct HFBField
 end
 
 mutable struct HFBAmplitudeHint{O}
-    ρ ::Dict{Tuple{O, O, Vector{Int}}, ComplexF64}
-    t ::Dict{Tuple{O, O, Vector{Int}}, ComplexF64}
+    ρ ::OrderedDict{Tuple{O, O, Vector{Int}}, ComplexF64}
+    t ::OrderedDict{Tuple{O, O, Vector{Int}}, ComplexF64}
 end
 
 mutable struct HFBFieldHint{O}
-    Γ ::Dict{Tuple{O, O, Vector{Int}}, ComplexF64}
-    Δ ::Dict{Tuple{O, O, Vector{Int}}, ComplexF64}
+    Γ ::OrderedDict{Tuple{O, O, Vector{Int}}, ComplexF64}
+    Δ ::OrderedDict{Tuple{O, O, Vector{Int}}, ComplexF64}
 end
 
 
