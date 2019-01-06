@@ -6,7 +6,7 @@ makedocs(
 	doctest=false,
 	clean=true,
 	checkdocs=:all,
-	format=Documenter.HTML(),
+	format=Documenter.HTML(prettyurls=true),
 	authors="Kyungmin Lee",
 	sitename="HartreeFockBogoliubov.jl",
 	pages=[
@@ -26,6 +26,7 @@ makedocs(
 				"Topology" => "guide/topology.md",
 				"Example" => "guide/example.md",
 			],
+			"Internals" => "internals.md",
 		]
 	)
 
