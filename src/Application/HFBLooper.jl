@@ -1,14 +1,23 @@
+module HFBLooper
+
+export detectresult
+export runloop
+
+
+using Dates
 using JSON
 using DataStructures
-using ArgParse
-using MicroLogging
+#using ArgParse
 
 using ProgressMeter
 using HartreeFockBogoliubov
-import HartreeFockBogoliubov: Spec, Generator, HFB
-using HartreeFockBogoliubov: HFB
+import HartreeFockBogoliubov.Spec
+import HartreeFockBogoliubov.Generator
+import HartreeFockBogoliubov.HFB
+using HartreeFockBogoliubov.HFB
 
-function detectresult(outpath::AbstractString)
+
+function detectresult(outpath ::AbstractString)
     for resultfilename in ["result.json",]
         result = nothing
         resultfilepath = joinpath(outpath, resultfilename)
@@ -21,138 +30,144 @@ function detectresult(outpath::AbstractString)
         catch y
             result = nothing
         end
-
         if result != nothing
             ρ = [ float(x["re"]) + 1im * float(x["im"]) for x in result["rho"] ]
             t = [ float(x["re"]) + 1im * float(x["im"]) for x in result["t"] ]
             Γ = [ float(x["re"]) + 1im * float(x["im"]) for x in result["Gamma"] ]
             Δ = [ float(x["re"]) + 1im * float(x["im"]) for x in result["Delta"] ]
-            return (result["BatchRun"], HFBSolution(ρ,t,Γ,Δ))
+            return (result["BatchRun"], HFBAmplitude(ρ, t), HFBField(Γ, Δ))
         end
     end
-
-    return (0, nothing)
+    return (0, nothing, nothing)
 end
+
 
 function runloop(solver ::HFBSolver;
                  outpath ::AbstractString="out",
-                 nwarmup ::Integer = 200,
-                 nbunch  ::Integer = 100,
-                 nbatch  ::Integer = 500,
-                 tolerance::Float64 = sqrt(eps(Float64)),
-                 noise::Real = 0,
-                 verbose::Bool=false,
-                 update::Function=simpleupdate,
-                 getnextsolution::Function=getnextsolution,
-                 loop::Function=loop)
+                 nwarmup ::Integer=200,
+                 nbunch  ::Integer=100,
+                 nbatch  ::Integer=500,
+                 tolerance ::Real=sqrt(eps(Float64)),
+                 noise ::Real=0,
+                 verbose ::Bool=false,
+                 update ::Function=simpleupdate,
+                 loop ::Function=loop)
 
-    @info "Entering runloop"
+    verbose && @info "Entering runloop"
     progressbar = verbose && haskey(ENV, "TERM") && (ENV["TERM"] != "dumb")
 
-    @assert(nwarmup >= 0)
-    @assert(nbunch > 0)
-    @assert(nbatch >= 0)
+    if nwarmup < 0
+        throw(ArgumentError("nwarmup must be non-negative"))
+    elseif nbunch <= 0
+        throw(ArgumentError("nbunch must be positive"))
+    elseif nbatch <= 0
+        throw(ArgumentError("nbatch must be non-negative"))
+    end
 
-    @info "Making path $(outpath)"
+    verbose && @info "Making path $(outpath)"
     mkpath(outpath)
 
     hamspec = solver.hamiltonian
     uc = hamspec.unitcell
 
-    @info "Making solution"
-    currentsolution = newhfbsolution(solver.hfbcomputer)
+    verbose && @info "Making solution"
+    current_hfbfield = make_hfbfield(solver)
+    current_hfbamplitude = make_hfbamplitude(solver)
 
-    @info "Detecting result"
-    batchrun_offset, lastsolution = detectresult(outpath)
+    verbose && @info "Detecting result"
+    batchrun_offset, last_hfbamplitude, last_hfbfield = detectresult(outpath)
 
-    if lastsolution != nothing
-        if iscompatible(currentsolution, lastsolution)
-            @info("Using previous solution.")
-            currentsolution = lastsolution
-            @info ("Successfully read.")
+    if last_hfbfield != nothing
+        if iscompatible(current_hfbamplitude, last_hfbamplitude) && iscompatible(current_hfbfield, last_hfbfield)
+            verbose && @info "Using previous solution."
+            current_hfbfield = last_hfbfield
+            current_hfbamplitude = last_hfbamplitude
+            verbose && @info "Successfully read."
 
             if verbose
-                !isempty(currentsolution.ρ) && @info("  max |rho|  : $(maximum(abs.(currentsolution.ρ)))")
-                !isempty(currentsolution.t) && @info("  max |t|    : $(maximum(abs.(currentsolution.t)))")
-                !isempty(currentsolution.Γ) && @info("  max |Gamma|: $(maximum(abs.(currentsolution.Γ)))")
-                !isempty(currentsolution.Δ) && @info("  max |Delta|: $(maximum(abs.(currentsolution.Δ)))")
+                !isempty(current_hfbamplitude.ρ) && @info("  |ρ| : $(minimum(abs.(current_hfbamplitude.ρ))) -- $(maximum(abs.(current_hfbamplitude.ρ)))")
+                !isempty(current_hfbamplitude.t) && @info("  |t| : $(minimum(abs.(current_hfbamplitude.t))) -- $(maximum(abs.(current_hfbamplitude.t)))")
+                !isempty(current_hfbfield.Γ) && @info("  |Γ| : $(minimum(abs.(current_hfbfield.Γ))) -- $(maximum(abs.(current_hfbfield.Γ)))")
+                !isempty(current_hfbfield.Δ) && @info("  |Δ| : $(minimum(abs.(current_hfbfield.Δ))) -- $(maximum(abs.(current_hfbfield.Δ)))")
             end
 
             if abs(noise) > 0
-                @info("Adding noise to the values")
-                currentsolution.ρ[:] += noise * (2*rand(Float64, size(currentsolution.ρ)) - 1)
-                currentsolution.t[:] += noise * (2*rand(Complex128, size(currentsolution.t)) - 1 - 1im)
-                currentsolution.Γ[:] += noise * (2*rand(Float64, size(currentsolution.Γ)) - 1)
-                currentsolution.Δ[:] += noise * (2*rand(Complex128, size(currentsolution.Δ)) - 1 - 1im)
+                verbose && @info("Adding noise to the values")
+                current_hfbfield.Γ[:] += noise * (2*rand(Float64, size(current_hfbfield.Γ)) - 1)
+                current_hfbfield.Δ[:] += noise * (2*rand(Complex128, size(current_hfbfield.Δ)) - 1 - 1im)
             end
         else
-            @warn("Previous solution has wrong size. Using new random solution.")
+            @warn "Previous solution has wrong size. Using new random solution."
             batchrun_offset = 0
-            randomize!(solver.hfbcomputer, currentsolution)
+            randomize!(solver, current_hfbamplitude)
+            current_hfbfield = make_hfbfield(solver, current_hfbamplitude)
         end
     else
-        @info "Result not found"
+        verbose && @info "Result not found"
         batchrun_offset = 0
-        randomize!(solver.hfbcomputer, currentsolution)
+        randomize!(solver, current_hfbamplitude)
+        current_hfbfield = make_hfbfield(solver, current_hfbamplitude)
+        fill!(current_hfbfield.Γ, 0)
     end
 
-    if batchrun_offset == 0
-        @info("Warming up")
-        if progressbar
-            @showprogress for run in 1:nwarmup
-                currentsolution = getnextsolution(solver, currentsolution)
-                currentsolution.Γ[:] = 0
-            end
-        else
-            for run in 1:nwarmup
-                currentsolution = getnextsolution(solver, currentsolution)
-                currentsolution.Γ[:] = 0
-            end
-        end
+    callback = if progressbar
+        p = Progress(nbunch)
+        (i, n) -> next!(p)
+    else
+        (i, n) -> nothing
+    end
+
+    @info current_hfbfield.Δ
+
+    if batchrun_offset == 0 #TODO WHY?
+        verbose && @info "Warming up"
+        (current_hfbamplitude, current_hfbfield) = loop(solver, current_hfbfield, nwarmup;
+                                                        update=update, callback=callback)
     end
 
     for batchrun in 1:nbatch
         verbose && @info("BATCH $(batchrun + batchrun_offset)")
-        callback = if progressbar
-            p = Progress(nbunch)
-            (i, n) -> next!(p)
-        else
-            (i, n) -> nothing
-        end
 
         starttime = now()
-        previoussolution = copy(currentsolution)
-        currentsolution = loop(solver, currentsolution, nbunch;
-                               update=update, callback=callback)
+
+        previous_hfbamplitude = deepcopy(current_hfbamplitude)
+        previous_hfbfield = deepcopy(current_hfbfield)
+
+        (current_hfbamplitude, current_hfbfield) = loop(solver, current_hfbfield, nbunch;
+                                                        update=update, callback=callback)
         endtime = now()
         verbose && @info("Duration: $(endtime - starttime)")
 
-        maxdiff1 = isempty(currentsolution.ρ) ? 0.0 : maximum(abs.(currentsolution.ρ - previoussolution.ρ))
-        maxdiff2 = isempty(currentsolution.t) ? 0.0 : maximum(abs.(currentsolution.t - previoussolution.t))
-        maxdiff = max(maxdiff1, maxdiff2)
+        maxdiff_ρ = isempty(current_hfbamplitude.ρ) ? 0.0 : maximum(abs.(current_hfbamplitude.ρ - previous_hfbamplitude.ρ))
+        maxdiff_t = isempty(current_hfbamplitude.t) ? 0.0 : maximum(abs.(current_hfbamplitude.t - previous_hfbamplitude.t))
+        maxdiff_Γ = isempty(current_hfbfield.Γ) ? 0.0 : maximum(abs.(current_hfbfield.Γ - previous_hfbfield.Γ))
+        maxdiff_Δ = isempty(current_hfbfield.Δ) ? 0.0 : maximum(abs.(current_hfbfield.Δ - previous_hfbfield.Δ))
+        maxdiff = max(maxdiff_ρ, maxdiff_t)
 
-        (E, S, Ω) = hfbfreeenergy(solver, currentsolution; update=update)
+        (E, S, Ω) = hfbfreeenergy(solver, current_hfbfield; update=update)
         if verbose
-            @info("Grand Potential = $Ω")
-            @info("MaxDiff_rho = $maxdiff1")
-            @info("MaxDiff_t   = $maxdiff2")
+            @info("Grand potential = $Ω")
+            @info("max(|Δρ|) = $maxdiff_ρ")
+            @info("max(|Δt|) = $maxdiff_t")
+            @info("max(|ΔΓ|) = $maxdiff_Γ")
+            @info("max(|ΔΔ|) = $maxdiff_Δ")
         end
 
         if isfile(joinpath(outpath, "result.json"))
             mv(joinpath(outpath, "result.json"),
                joinpath(outpath, "previous_result.json"),
-               remove_destination=true)
+               force=true)
         end
         open(joinpath(outpath, "result.json"), "w") do file
             outdict = OrderedDict([
-                                   ("BatchRun",    batchrun_offset + batchrun),
-                                   ("rho",         currentsolution.ρ),
-                                   ("t",           currentsolution.t),
-                                   ("Gamma",       currentsolution.Γ),
-                                   ("Delta",       currentsolution.Δ),
+                                   ("BatchRun",    batchrun_offset+batchrun),
+                                   ("rho",         current_hfbamplitude.ρ),
+                                   ("t",           current_hfbamplitude.t),
+                                   ("Gamma",       current_hfbfield.Γ),
+                                   ("Delta",       current_hfbfield.Δ),
                                    ("GrandPotential", Ω),
-                                   ("MaxDiff_rho", maxdiff1),
-                                   ("MaxDiff_t",   maxdiff2),
+                                   ("MaxDiff_rho", maxdiff_ρ),
+                                   ("MaxDiff_t",   maxdiff_t),
                                    ("StartTime",   Dates.format(starttime, "yyyy-mm-ddTHH:MM:SS.s")),
                                    ("EndTime",     Dates.format(endtime, "yyyy-mm-ddTHH:MM:SS.s")),
                                   ])
@@ -165,3 +180,7 @@ function runloop(solver ::HFBSolver;
 
     end
 end
+
+
+
+end #module HFBLooper

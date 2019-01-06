@@ -32,9 +32,9 @@ struct MeasureParticleHoleOffdiagonal
         rij = rj - ri
 
         if i < j
-            return new(i,j,Rij, rij)
+            return new(i, j,  Rij,  rij)
         else
-            return new(j,i,-Rij, -rij)
+            return new(j, i, -Rij, -rij)
         end
     end
 end
@@ -59,9 +59,9 @@ struct MeasureParticleParticle
         rij = rj - ri
 
         if i < j
-            return new(i,j, Rij,  rij)
+            return new(i, j,  Rij,  rij)
         else
-            return new(j,i,-Rij, -rij)
+            return new(j, i, -Rij, -rij)
         end
     end
 end
@@ -102,12 +102,12 @@ end
 
 
 struct MeasurementValue
-    particlehole ::Vector{Complex{Float64}}
-    particleparticle ::Vector{Complex{Float64}}
+    particlehole ::Vector{ComplexF64}
+    particleparticle ::Vector{ComplexF64}
 
     function MeasurementValue(ml::MeasurementList)
-        ph = zeros(Complex{Float64}, length(ml.particlehole))
-        pp = zeros(Complex{Float64}, length(ml.particleparticle))
+        ph = zeros(ComplexF64, length(ml.particlehole))
+        pp = zeros(ComplexF64, length(ml.particleparticle))
         return new(ph, pp)
     end
 end

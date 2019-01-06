@@ -17,8 +17,10 @@ end
 include("coord.jl")
 include("unitcell.jl")
 
+include("hamiltonian-terms.jl")
 include("spec.jl")
 include("generator.jl")
+
 
 #include("hfb.jl")
 #include("dictify.jl")

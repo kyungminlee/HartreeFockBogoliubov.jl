@@ -12,20 +12,20 @@ using LinearAlgebra
   hopembed_dia = Embed.EmbedHoppingDiagonal(uc, hopspec_dia)
   hopembed_off = Embed.EmbedHoppingOffdiagonal(uc, hopspec_off)
 
-  func = Generator.generatefast(uc, hopembed_dia)
-  out = zeros(Complex{Float64}, (2,2))
+  func = Generator.hopping_inplace(uc, hopembed_dia)
+  out = zeros(ComplexF64, (2,2))
 
   @show out
   func([0.0, 0.0], out)
   @show out
 
-  func = Generator.generatefast(uc, hopembed_off)
-  out = zeros(Complex{Float64}, (2,2))
+  func = Generator.hopping_inplace(uc, hopembed_off)
+  out = zeros(ComplexF64, (2,2))
   @show out
   func([0.0, 0.0], out)
   @show out
 
-  out = zeros(Complex{Float64}, (2,2))
+  out = zeros(ComplexF64, (2,2))
   @show out
   func([0.1, 0.0], out)
   @show out
@@ -38,7 +38,7 @@ end
 
 
 @testset "disp_1D1O" begin
-  uc = newunitcell(1.0)
+  uc = make_unitcell(1.0)
   addorbital!(uc, "A", FractCoord([0], [0.0]))
   t0 = 100.0
   t1 = 10.0 + 0.1im
@@ -49,11 +49,11 @@ end
   addhopping!(hamspec, hoppingbycarte(uc, t1, "A", "A", [0.0], [1.0]))
   addhopping!(hamspec, hoppingbycarte(uc, t2, "A", "A", [0.0], [2.0]))
 
-  func1 = Generator.generatefast(uc, hamspec.hoppings)
+  func1 = Generator.hopping_inplace(uc, hamspec.hoppings_diagonal, hamspec.hoppings_offdiagonal)
 
   for kx in range(0.0, stop=2.0*pi, length=16+1)
-    out1 = zeros(Complex{Float64}, (1,1))
-    out2 = zeros(Complex{Float64}, (1,1))
+    out1 = zeros(ComplexF64, (1,1))
+    out2 = zeros(ComplexF64, (1,1))
     func1([kx], out1)
     ek = (t0
           + t1 * cis(kx) + conj(t1) * cis(-kx)
@@ -74,18 +74,18 @@ end
   b1 = a1 - a2
   b2 = a2 - a3
   b3 = a3 - a1
-  uc = newunitcell([b1 b3])
+  uc = make_unitcell([b1 b3])
   addorbital!(uc, "A", carte2fract(uc, [0.0, 0.0]))
   addorbital!(uc, "B", carte2fract(uc, [0.0,-1.0]))
   #@show uc
 
-  hopspecs = Spec.Hopping[]
+  hopspecs = Spec.HoppingOffdiagonal[]
   t1 = 1.0 + 0.1im
   for r in [a1, a2, a3]
     push!( hopspecs, Spec.hoppingbycarte(uc, t1, "A", "B", [0.0, 0.0], r) )
   end
 
-  func1 = Generator.generatefast(uc, hopspecs)
+  func1 = Generator.hopping_inplace(uc, Spec.HoppingDiagonal[], hopspecs)
 
   for kx in range(4.0, stop=4.0, length=8)
     for ky in range(-4.0, stop=4.0, length=8)
@@ -97,7 +97,7 @@ end
         [  0  T1 ;  T1c  0 ]
       end
 
-      out1 = zeros(Complex{Float64}, (2, 2))
+      out1 = zeros(ComplexF64, (2, 2))
       func1(k, out1)
 
       @test isapprox(out1, mat)
@@ -125,17 +125,17 @@ end
   hopembed = Embed.EmbedHopping[Embed.embed(uc, hop) for hop in hopspec]
 
   func = Generator.generate(uc, hopembed)
-  out = zeros(Complex{Float64}, (2,2))
+  out = zeros(ComplexF64, (2,2))
   @show out
   func([0.0, 0.0], out)
   @show out
 
-  out = zeros(Complex{Float64}, (2,2))
+  out = zeros(ComplexF64, (2,2))
   @show out
   func([0.0001, 0.0002], out)
   @show out
 
-  out = zeros(Complex{Float64}, (2,2))
+  out = zeros(ComplexF64, (2,2))
   @show out
   func([0.0001, 0.0002], out)
   @show out

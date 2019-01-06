@@ -164,8 +164,8 @@ end
 function dumpall(io::IO,
     hamspec ::Spec.FullHamiltonian{T},
     solver ::HFB.HFBSolver{T},
-    currentsolution ::HFB.HFBSolution,
-    previoussolution ::HFB.HFBSolution) where T
+    currentsolution ::HFB.HFBAmplitude,
+    previoussolution ::HFB.HFBAmplitude) where T
     uc = hamspec.unitcell
 
     FMT(x...) = begin
@@ -186,6 +186,7 @@ function dumpall(io::IO,
     for t in currentsolution.t
         FMT(  "    - ", t)
     end
+    #=
     FMT(    "  Gamma:")
     for Γ in currentsolution.Γ
         FMT(  "    - ", Γ)
@@ -194,6 +195,7 @@ function dumpall(io::IO,
     for Δ in currentsolution.Δ
         FMT(  "    - ", Δ)
     end
+    =#
 
     FMT(    "PreviousSolution:")
     FMT(    "  rho:")
@@ -204,6 +206,7 @@ function dumpall(io::IO,
     for t in previoussolution.t
         FMT(  "    - ", t)
     end
+    #=
     FMT(    "  Gamma:")
     for Γ in previoussolution.Γ
         FMT(  "    - ", Γ)
@@ -212,4 +215,5 @@ function dumpall(io::IO,
     for Δ in previoussolution.Δ
         FMT(  "    - ", Δ)
     end
+    =#
 end

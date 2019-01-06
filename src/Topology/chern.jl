@@ -15,7 +15,7 @@ function chernnumber(uc::UnitCell{O},
                      selectband::AbstractVector{<:Integer};
                      tol::Real=sqrt(eps(Float64))) where {O}
     squareuc = squarify(uc)
-    hkgen = Generator.generatefast(squareuc, hoppings)
+    hkgen = Generator.hopping_inplace(squareuc, hoppings)
     norb = numorbital(squareuc)
 
     kgrid = momentumgrid(squareuc, [n1, n2])
@@ -23,9 +23,9 @@ function chernnumber(uc::UnitCell{O},
     nsel = length(selectband)
 
     eigenvaluegrid = zeros(Float64, (nk, nsel))
-    eigenvectorgrid = zeros(Complex{Float64}, (nk, norb, nsel))
+    eigenvectorgrid = zeros(ComplexF64, (nk, norb, nsel))
 
-    hk = zeros(Complex{Float64}, (norb, norb))
+    hk = zeros(ComplexF64, (norb, norb))
     for (i, k) in enumerate(kgrid)
         hk[:] = 0.0
         hkgen(k, hk)

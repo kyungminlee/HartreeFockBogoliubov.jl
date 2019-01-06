@@ -7,6 +7,7 @@ end
 using ..Lattice
 using ..Spec
 using ..HFB
+using ..Util
 
 include("basic.jl")
 include("chern.jl")
