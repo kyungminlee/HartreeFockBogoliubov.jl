@@ -1,11 +1,24 @@
-# HartreeFockBogoliubov
-
-*Hartree-Fock-Bogoliubov Solver* written in [Julia](https://julialang.org)
+# HartreeFockBogoliubov.jl
 
 [![Build Status][travis-img]][travis-url]
 [![Code Coverage][codecov-img]][codecov-url]
 
+## Overview
+
+HartreeFockBogoliubov.jl is a [Julia](https://julialang.org) package for solving interacting fermion Hamiltonian using Hartree-Fock-Bogoliubov (HFB) approach. This project aims to assist fast development of HFB solver for a generic Hamiltonian of the form
+```math
+\mathcal{H} = \sum_{\alpha,\beta} c_{\alpha}^{\dagger} t_{\alpha\beta} c_{\beta}
++ \frac{1}{2} \sum_{\alpha,\beta,\gamma,\delta} V_{\alpha\beta\gamma\delta} c_{\alpha}^{\dagger} c_{\beta}^{\dagger} c_{\delta} c_{\gamma}
+```
+
 ## Installation
+
+HartreeFockBogoliubov.jl is currently not registered in the [Julia Package Listing](https://pkg.julialang.org). To install, type
+```
+add https://github.com/kyungminlee/HartreeFockBogoliubov.jl
+```
+to Julia's package manager.
+
 
 ## Documentation
 

@@ -7,11 +7,6 @@ env:
   - CONDA_JL_VERSION=3 CONDA_JL_HOME="${HOME}/miniconda3" PYTHON="${HOME}/miniconda3/bin/python"
 matrix:
   include:
-    - julia: 0.7
-      script:
-        - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
-        - julia --project -e 'import Pkg; Pkg.build()'
-        - julia --project --check-bounds=yes -e 'import Pkg; Pkg.test(; coverage=false)'
     - julia: 1.0
       script:
         - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
@@ -19,7 +14,8 @@ matrix:
         - julia --project --check-bounds=yes -e 'import Pkg; Pkg.test(; coverage=true)'
       after_success:
         - julia --project -e 'import Pkg; cd(Pkg.dir("HartreeFockBogoliubov")); Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'
-        - julia --project -e 'import Pkg; Pkg.add("Documenter"); include(joinpath("docs", "make.jl"))'
+        - julia --project=docs/ -e 'using Pkg; Pkg.develop(PackageSpec(path=pwd())); Pkg.instantiate()'
+        - julia --project=docs/ docs/make.jl
     - julia: nightly
       script:
         - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
