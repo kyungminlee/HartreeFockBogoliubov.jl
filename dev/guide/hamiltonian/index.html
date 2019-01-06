@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Hamiltonian: Full Interacting Hamiltonian · HartreeFockBogoliubov.jl</title><link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.min.css" rel="stylesheet" type="text/css"/><link href="https://fonts.googleapis.com/css?family=Lato|Roboto+Mono" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.2.0/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link href="../../assets/documenter.css" rel="stylesheet" type="text/css"/></head><body><nav class="toc"><h1>HartreeFockBogoliubov.jl</h1><select id="version-selector" onChange="window.location.href=this.value" style="visibility: hidden"></select><form class="search" id="search-form" action="../../search/"><input id="search-query" name="q" type="text" placeholder="Search docs"/></form><ul><li><a class="toctext" href="../../basics/hartreefockbogoliubov/">Hartree-Fock-Bogoliubov Theory</a></li><li><a class="toctext" href="../../basics/hfbdecomposition/">Hartree-Fock-Bogoliubov Decomposition</a></li><li><a class="toctext" href="../../basics/hfbequation/">HFB Equations</a></li><li><a class="toctext" href="../../basics/momentumspace/">Momentum Space Formulation</a></li><li><a class="toctext" href="../../basics/topology/">Topology</a></li><li><a class="toctext" href="../example/">-</a></li><li class="current"><a class="toctext" href>Hamiltonian: Full Interacting Hamiltonian</a><ul class="internal"><li><a class="toctext" href="#Terms-of-Hamiltonian-1">Terms of Hamiltonian</a></li></ul></li><li><a class="toctext" href="../hfb/">HFB: Hartree-Fock-Bogoliubov</a></li><li><a class="toctext" href="../lattice/">Lattice</a></li><li><a class="toctext" href="../linearizedgap/">LinearizedGap</a></li><li><a class="toctext" href="../topology/">Topology</a></li><li><a class="toctext" href="../../">HartreeFockBogoliubov.jl Documentation</a></li><li><a class="toctext" href="../../internals/">Internal Documentation</a></li><li><a class="toctext" href="../../internals/hartreefockbogoliubov/">Internals</a></li></ul></nav><article id="docs"><header><nav><ul><li><a href>Hamiltonian: Full Interacting Hamiltonian</a></li></ul><a class="edit-page" href="https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/master/docs/src/guide/hamiltonian.md"><span class="fa"></span> Edit on GitHub</a></nav><hr/><div id="topbar"><span>Hamiltonian: Full Interacting Hamiltonian</span><a class="fa fa-bars" href="#"></a></div></header><h1><a class="nav-anchor" id="Hamiltonian:-Full-Interacting-Hamiltonian-1" href="#Hamiltonian:-Full-Interacting-Hamiltonian-1">Hamiltonian: Full Interacting Hamiltonian</a></h1><h2><a class="nav-anchor" id="Terms-of-Hamiltonian-1" href="#Terms-of-Hamiltonian-1">Terms of Hamiltonian</a></h2><p><code>HartreeFockBogoliubov.jl</code> currently supports Hamiltonian with hopping and (quartic) interaction terms. The hopping terms can be grouped into &quot;diagonal&quot; terms and &quot;offdiagonal&quot; terms:</p><div>\[\begin{align}
+H_{\text{diagonal-hopping}} &amp;= \sum_{i} t_{ii} c_{i}^{*} c_{i} \\
+H_{\text{offdiagonal-hopping}} &amp;= \sum_{i \neq j} t_{ij} c_{i}^{*} c_{j}
+\end{align}\]</div><p>The hermiticity of the Hamiltonian requires that <span>$t_{ii}$</span> be real, and <span>$t_{ij} = t_{ji}^{*}$</span>. Thus we can rewrite the offdiagonal term as</p><div>\[H_{\text{offdiagonal-hopping}} = \sum_{i \lt j} t_{ij} c_{i}^{*} c_{j} + t_{ij}^{*} c_{j}^{*} c_{i}\]</div><p>To incorporate this we define two <code>struct</code>s: <code>HoppingDiagonal</code> and <code>HoppingOffdiagonal</code>:</p><pre><code class="language-julia">struct HoppingDiagonal{R&lt;:Real}
+    amplitude ::R
+    i ::Int
+    Ri ::Vector{Int}
+end
+
+struct HoppingOffdiagonal{C&lt;:Number}
+    amplitude ::C
+    i ::Int
+    j ::Int
+    Ri ::Vector{Int}
+    Rj ::Vector{Int}
+end</code></pre><p><code>i</code> and <code>j</code> are integers representing the &quot;index&quot; of the orbital, and <code>Ri</code> and <code>Rj</code> represents which unitcell they are in. The &quot;unitcell coordinates&quot; <code>Ri</code> and <code>Rj</code> are necessary for the representation of the Hamiltonian in the momentum space. A single <code>HoppingOffdiagonal</code> represents both <span>$t_{ij} c_{i}^{*} c_{j}$</span> and its hermitian conjugate.</p><p>Similarly for the interaction, two structs are defined:</p><pre><code class="language-julia">struct InteractionDiagonal{R&lt;:Real}
+    amplitude ::R
+    i ::Int
+    j ::Int
+    Ri ::Vector{Int}
+    Rj ::Vector{Int}
+end
+
+struct InteractionOffdiagonal{C&lt;:Number}
+    amplitude ::C
+    i ::Int
+    j ::Int
+    k ::Int
+    l ::Int
+    Ri ::Vector{Int}
+    Rj ::Vector{Int}
+    Rk ::Vector{Int}
+    Rl ::Vector{Int}
+end</code></pre><p>which represent</p><div>\[U c_{i}^{*} c_{j}^{*} c_{j} c_{i}, \qquad i \lt j\]</div><p>and</p><div>\[U     c_{i}^{*} c_{j}^{*} c_{l} c_{k} +
+U^{*} c_{k}^{*} c_{l}^{*} c_{j} c_{i}, \qquad
+i \lt j \wedge k \lt l \wedge [ i \lt k \vee ( i = k \wedge j \lt l )]\]</div><p>In other words, (i,j) and (k,l) each need to be in lexicographical order, as well as <span>$(i,j) &lt; (k,l)$</span>.</p><p>The following unions are defined</p><pre><code class="language-julia">const Hopping = Union{HoppingDiagonal, HoppingOffdiagonal}
+const Interaction = Union{InteractionDiagonal, InteractionOffdiagonal}</code></pre><h3><a class="nav-anchor" id="Functions-Creating-Terms-1" href="#Functions-Creating-Terms-1">Functions Creating Terms</a></h3><p><code>HartreeFockBogoliubov.jl</code> provides functions that allows generation of hopping terms and interaction terms from the orbital names and their <code>CarteCoord</code>: <code>hoppingbycarte</code> and <code>interactionbycarte</code>.</p><h3><a class="nav-anchor" id="FullHamiltonian-1" href="#FullHamiltonian-1">FullHamiltonian</a></h3><p>The full interacting Hamiltonian is represented by the <code>FullHamiltonian</code> class</p><pre><code class="language-julia">mutable struct FullHamiltonian{O}
+    unitcell ::UnitCell{O}
+    hoppings ::Vector{Hopping}
+    interactions ::Vector{Interaction}
+end</code></pre><p><code>addhopping!</code> and <code>addinteraction!</code>.</p><footer><hr/><a class="previous" href="../example/"><span class="direction">Previous</span><span class="title">-</span></a><a class="next" href="../hfb/"><span class="direction">Next</span><span class="title">HFB: Hartree-Fock-Bogoliubov</span></a></footer></article></body></html>

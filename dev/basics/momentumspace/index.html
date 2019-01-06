@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Momentum Space Formulation · HartreeFockBogoliubov.jl</title><link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.min.css" rel="stylesheet" type="text/css"/><link href="https://fonts.googleapis.com/css?family=Lato|Roboto+Mono" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.2.0/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link href="../../assets/documenter.css" rel="stylesheet" type="text/css"/></head><body><nav class="toc"><h1>HartreeFockBogoliubov.jl</h1><select id="version-selector" onChange="window.location.href=this.value" style="visibility: hidden"></select><form class="search" id="search-form" action="../../search/"><input id="search-query" name="q" type="text" placeholder="Search docs"/></form><ul><li><a class="toctext" href="../hartreefockbogoliubov/">Hartree-Fock-Bogoliubov Theory</a></li><li><a class="toctext" href="../hfbdecomposition/">Hartree-Fock-Bogoliubov Decomposition</a></li><li><a class="toctext" href="../hfbequation/">HFB Equations</a></li><li class="current"><a class="toctext" href>Momentum Space Formulation</a><ul class="internal"></ul></li><li><a class="toctext" href="../topology/">Topology</a></li><li><a class="toctext" href="../../guide/example/">-</a></li><li><a class="toctext" href="../../guide/hamiltonian/">Hamiltonian: Full Interacting Hamiltonian</a></li><li><a class="toctext" href="../../guide/hfb/">HFB: Hartree-Fock-Bogoliubov</a></li><li><a class="toctext" href="../../guide/lattice/">Lattice</a></li><li><a class="toctext" href="../../guide/linearizedgap/">LinearizedGap</a></li><li><a class="toctext" href="../../guide/topology/">Topology</a></li><li><a class="toctext" href="../../">HartreeFockBogoliubov.jl Documentation</a></li><li><a class="toctext" href="../../internals/">Internal Documentation</a></li><li><a class="toctext" href="../../internals/hartreefockbogoliubov/">Internals</a></li></ul></nav><article id="docs"><header><nav><ul><li><a href>Momentum Space Formulation</a></li></ul><a class="edit-page" href="https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/master/docs/src/basics/momentumspace.md"><span class="fa"></span> Edit on GitHub</a></nav><hr/><div id="topbar"><span>Momentum Space Formulation</span><a class="fa fa-bars" href="#"></a></div></header><h1><a class="nav-anchor" id="Momentum-Space-Formulation-1" href="#Momentum-Space-Formulation-1">Momentum Space Formulation</a></h1><h3><a class="nav-anchor" id="Hopping-Elements-1" href="#Hopping-Elements-1">Hopping Elements</a></h3><div>\[\sum_{\mathbf{R}}
+    c_{\alpha}^{*}(\mathbf{R} + \boldsymbol{\rho}_\alpha)
+    c_{\beta}(\mathbf{R} + \boldsymbol{\rho}_\beta)
+  =
+    \sum_{\mathbf{k}}
+    e^{i \mathbf{k} \cdot (\boldsymbol{\rho}_\beta - \boldsymbol{\rho}_\alpha)}
+    c_{\alpha}^{*}(\mathbf{k})
+    c_{\beta}(\mathbf{k})\]</div><p>Pairing Elements</p><div>\[\sum_{\mathbf{R}}
+    c_{\alpha}^{*}(\mathbf{R} + \boldsymbol{\rho}_\alpha)
+    c_{\beta}^{*}(\mathbf{R} + \boldsymbol{\rho}_\beta)
+  =
+    \sum_{\mathbf{k}}
+    e^{i \mathbf{k} \cdot (\boldsymbol{\rho}_\beta - \boldsymbol{\rho}_\alpha)}
+    c_{\alpha}^{*}(\mathbf{k})
+    c_{\beta}^{*}(-\mathbf{k})\]</div><div>\[\sum_{\mathbf{R}}
+    c_{\alpha}(\mathbf{R} + \boldsymbol{\rho}_\alpha)
+    c_{\beta}(\mathbf{R} + \boldsymbol{\rho}_\beta)
+  =
+    \sum_{\mathbf{k}}
+    e^{i \mathbf{k} \cdot (\boldsymbol{\rho}_\beta - \boldsymbol{\rho}_\alpha)}
+    c_{\alpha}(-\mathbf{k})
+    c_{\beta}(\mathbf{k})\]</div><h3><a class="nav-anchor" id="Expectation-Values-1" href="#Expectation-Values-1">Expectation Values</a></h3><div>\[\rho_{\alpha \beta}
+  =
+      \frac{1}{N}
+      \sum_{\mathbf{k}}
+      e^{-i \mathbf{k} \cdot ( \boldsymbol{\rho}_{\beta} - \boldsymbol{\rho}_{\alpha} ) }
+      \sum_{n}
+       f(\epsilon_n) U_{\alpha n} U_{\beta n}^{*}\]</div><div>\[t_{\alpha\beta}
+  =
+      \frac{1}{N}
+      \sum_{\mathbf{k}_\alpha, \mathbf{k}_\beta}
+      e^{-i \mathbf{k} \cdot ( \boldsymbol{\rho}_{\beta}
+                        -\boldsymbol{\rho}_{\alpha} ) }
+      \sum_{n}
+        f(\epsilon_n )
+        U_{\alpha n}
+        V_{\beta n}^{*}\]</div><h3><a class="nav-anchor" id="Grand-Potential-1" href="#Grand-Potential-1">Grand Potential</a></h3><div>\[E = \mathrm{tr} \left[ \left( T + \frac{1}{2} \Gamma \right) \rho + \frac{1}{2} \Delta t^{\dagger} \right]
+  = E_{T} + E_{\Gamma} + E_{\Delta}\]</div><p>where</p><div>\[\begin{align}
+E_{T} &amp;= \mathrm{tr} \left( T \rho \right) \\
+E_{\Gamma} &amp;= \frac{1}{2} \mathrm{tr} \left( \Gamma \rho        \right) \\
+E_{\Delta} &amp;= \frac{1}{2} \mathrm{tr} \left( \Delta t^{\dagger} \right)
+\end{align}\]</div><p>In momentum space</p><div>\[\begin{align}
+T_{ij}^{\mathbf{k}} &amp;= T_{ij} e^{i \mathbf{k} \cdot \boldsymbol{\rho}_{ij}}
+\rho_{ij} = \frac{1}{N} \sum_{\mathbf{k}} \rho_{ij}^{\mathbf{k}} e^{-i \mathbf{k} \cdot \boldsymbol{\rho}_{ij}}
+\end{align}\]</div><p>Thus</p><div>\[\begin{align}
+E_{T}
+  &amp;= \sum_{ij} T_{ij} \rho_{ji}
+   = \sum_{ij} T_{ij}
+     \frac{1}{N} \sum_{\mathbf{k}} \rho_{ji}^{\mathbf{k}} e^{-i \mathbf{k} \cdot \boldsymbol{\rho}_{ji} }
+   = \frac{1}{N} \sum_{\mathbf{k}} \sum_{ij} T_{ij} e^{i \mathbf{k} \cdot \boldsymbol{\rho}_{ij} }
+      \rho_{ji}^{\mathbf{k}}
+   = \frac{1}{N} \sum_{ij}
+      \sum_{\mathbf{k}}
+      T_{ij}^{\mathbf{k}}
+      \rho_{ji}^{\mathbf{k}}
+\end{align}\]</div><p>Similarly for Γ and Δ:</p><div>\[\begin{align}
+E_{\Gamma}
+  &amp;= \frac{1}{2} \frac{1}{N} \sum_{ij}
+    \sum_{\mathbf{k}}
+    \Gamma_{ij}^{\mathbf{k}}
+    \rho_{ji}^{\mathbf{k}} \\
+E_{\Delta}
+  &amp;= \frac{1}{2} \frac{1}{N} \sum_{ij}
+    \sum_{\mathbf{k}}
+    \Delta_{ij}^{\mathbf{k}}
+    {t_{ij}^{\mathbf{k}} }^{*} \\
+\end{align}\]</div><p>Here however, Γ and Δ need to be consistent with ρ and t.</p><footer><hr/><a class="previous" href="../hfbequation/"><span class="direction">Previous</span><span class="title">HFB Equations</span></a><a class="next" href="../topology/"><span class="direction">Next</span><span class="title">Topology</span></a></footer></article></body></html>
