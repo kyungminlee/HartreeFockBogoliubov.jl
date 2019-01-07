@@ -392,4 +392,868 @@ var documenterSearchIndex = {"docs": [
     "text": "A list of all internal documentation sorted by module.Pages = [joinpath(\"internals\", f) for f in readdir(\"internals\")]"
 },
 
+{
+    "location": "internals/hartreefockbogoliubov/#",
+    "page": "Internals",
+    "title": "Internals",
+    "category": "page",
+    "text": ""
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#Internals-1",
+    "page": "Internals",
+    "title": "Internals",
+    "category": "section",
+    "text": ""
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Lattice.CarteCoord",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.Lattice.CarteCoord",
+    "category": "type",
+    "text": "CarteCoord\n\nCartesian coordinates. Vector{Float64}.\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Lattice.FractCoord",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.Lattice.FractCoord",
+    "category": "type",
+    "text": "FractCoord\n\nFractional coordinates.\n\nMembers\n\nwhole ::Vector{Int}: Integer part of fractional coordinates\nfraction ::Vector{Float64}: [0,1) part of fractional coordinates\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Lattice.UnitCell",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.Lattice.UnitCell",
+    "category": "type",
+    "text": "UnitCell{O}\n\nParameters\n\nO: type of \"orbital\". Any type can be used, but we recommend using String or tuple of String and Int      for compatibility with JSON.\n\nMembers\n\nlatticevectors ::Array{Float64, 2}: Lattice vectors\nreducedreciprocallatticevectors ::Array{Float64, 2}: Reduced reciprocal lattice vectors (transpose of inverse of latticevectors)\nreciprocallatticevectors ::Array{Float64, 2}: Reciprocal lattice vectors. 2π * reducedreciprocallatticevectors\norbitals ::Vector{Tuple{T, FractCoord}}: List of orbitals within unit cell\norbitalindices ::Dict{T, Int}: Indices of orbitals\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Lattice.addorbital!-Union{Tuple{O}, Tuple{UnitCell{O},O,FractCoord}} where O",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.Lattice.addorbital!",
+    "category": "method",
+    "text": "addorbital!\n\nAdd an orbital to the unit cell.\n\nArguments\n\nuc ::UnitCell{T}\norbitalname ::{T}\norbitalcoord ::FractCoord\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Lattice.carte2fract-Tuple{AbstractArray{#s23,2} where #s23<:AbstractFloat,Array{Float64,1}}",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.Lattice.carte2fract",
+    "category": "method",
+    "text": "carte2fract\n\nArguments\n\nlatticevectors ::AbstractArray{<:AbstractFloat, 2}: square matrix whose columns are lattice vectors.\ncc ::CarteCoord: cartesian coordinates\ntol ::Real=sqrt(eps(Float64)): tolerance\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Lattice.carte2fract-Tuple{UnitCell,Array{Float64,1}}",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.Lattice.carte2fract",
+    "category": "method",
+    "text": "carte2fract\n\nArguments\n\nlatticevectors ::Array{Float64, 2}\ncc ::CarteCoord\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Lattice.dimension-Tuple{FractCoord}",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.Lattice.dimension",
+    "category": "method",
+    "text": "dimension\n\nDimension of the fractional coordinates\n\nArguments\n\nfc ::FractCoord: Fractional coordinates.\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Lattice.dimension-Tuple{UnitCell}",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.Lattice.dimension",
+    "category": "method",
+    "text": "dimension\n\nSpatial dimension of the unit cell.\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Lattice.fract2carte-Tuple{AbstractArray{#s31,2} where #s31<:AbstractFloat,FractCoord}",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.Lattice.fract2carte",
+    "category": "method",
+    "text": "fract2carte\n\nArguments\n\nlatticevectors ::AbstractArray{<:AbstractFloat, 2}: square matrix whose columns are lattice vectors.\nfc ::FractCoord: fractional coordinates\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Lattice.fract2carte-Tuple{UnitCell,FractCoord}",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.Lattice.fract2carte",
+    "category": "method",
+    "text": "fract2carte\n\nArguments\n\nlatticevectors ::Array{Float64, 2}\nfc ::FractCoord\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Lattice.getorbital-Tuple{UnitCell,Integer}",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.Lattice.getorbital",
+    "category": "method",
+    "text": "getorbital\n\nArguments\n\nuc ::UnitCell{T}\nindex ::Integer\n\nReturn\n\n(orbitalname, fractcoord)\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Lattice.getorbital-Union{Tuple{O}, Tuple{UnitCell{O},O}} where O",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.Lattice.getorbital",
+    "category": "method",
+    "text": "getorbital\n\nGet the orbital (its orbital name and its fractional coordinates) with the given name.\n\nArguments\n\nuc ::UnitCell{O}\nname ::O\n\nReturn\n\n(orbitalname, fractcoord)\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Lattice.getorbitalcoord-Tuple{UnitCell,Integer}",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.Lattice.getorbitalcoord",
+    "category": "method",
+    "text": "getorbitalcoord\n\nArguments\n\nuc ::UnitCell\nidx ::Integer\n\nReturn\n\nfractcoord\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Lattice.getorbitalcoord-Union{Tuple{O}, Tuple{UnitCell{O},O}} where O",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.Lattice.getorbitalcoord",
+    "category": "method",
+    "text": "getorbitalcoord\n\nGet the fractional coordinates of the orbital with the given name.\n\nArguments\n\nuc ::UnitCell{O}\nname ::O\n\nReturn\n\nfractcoord\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Lattice.getorbitalindex-Union{Tuple{O}, Tuple{UnitCell{O},O}} where O",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.Lattice.getorbitalindex",
+    "category": "method",
+    "text": "getorbitalindex\n\nGet index of the given orbital.\n\nArguments\n\nuc ::UnitCell{O}\nname ::O\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Lattice.getorbitalindexcoord-Union{Tuple{O}, Tuple{UnitCell{O},O}} where O",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.Lattice.getorbitalindexcoord",
+    "category": "method",
+    "text": "getorbitalindexcoord\n\nArguments\n\nuc ::UnitCell{T}\nname ::T\n\nReturn\n\n(index, fractcoord)\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Lattice.getorbitalname-Tuple{UnitCell,Integer}",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.Lattice.getorbitalname",
+    "category": "method",
+    "text": "getorbitalname\n\nArguments\n\nuc ::UnitCell\nindex ::Integer\n\nReturn\n\norbitalname\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Lattice.hasorbital-Union{Tuple{O}, Tuple{UnitCell{O},O}} where O",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.Lattice.hasorbital",
+    "category": "method",
+    "text": "hasorbital{T}\n\nTest whether the unit cell contains the orbital of given name.\n\nArguments\n\nuc ::UnitCell{O}\nname ::O\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Lattice.make_unitcell-Tuple{AbstractArray{#s28,2} where #s28<:AbstractFloat}",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.Lattice.make_unitcell",
+    "category": "method",
+    "text": "UnitCell\n\nConstruct an n-dimensional lattice.\n\nArguments\n\nlatticevectors ::AbstractArray{<:AbstractFloat, 2}: Lattice vectors\nOrbitalType::DataType\n\nOptional Arguments\n\ntol=sqrt(eps(Float64)): Epsilon\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Lattice.make_unitcell-Tuple{AbstractFloat}",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.Lattice.make_unitcell",
+    "category": "method",
+    "text": "UnitCell\n\nConstruct a one-dimensional lattice.\n\nArguments\n\nlatticeconstant ::Float64: Lattice constant\nOrbitalType: List of orbitals\n\nOptional Arguments\n\ntol=sqrt(eps(Float64)): Tolerance\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Lattice.momentumgrid-Tuple{UnitCell,AbstractArray{#s33,1} where #s33<:Integer}",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.Lattice.momentumgrid",
+    "category": "method",
+    "text": "momentumgrid\n\nGenerate an n-dimensional grid of momenta of given shape\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Lattice.numorbital-Tuple{UnitCell}",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.Lattice.numorbital",
+    "category": "method",
+    "text": "numorbital\n\nNumber of orbitals of the unit cell.\n\nArguments\n\nuc ::UnitCell\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Lattice.whichunitcell-Union{Tuple{O}, Tuple{UnitCell{O},O,Array{Float64,1}}} where O",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.Lattice.whichunitcell",
+    "category": "method",
+    "text": "whichunitcell\n\nReturn\n\nR ::Vector{Int}: which unit cell the specificied orbital/cartesian coordinates belongs to.\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Lattice.whichunitcell-Union{Tuple{O}, Tuple{UnitCell{O},O,FractCoord}} where O",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.Lattice.whichunitcell",
+    "category": "method",
+    "text": "whichunitcell\n\nReturn\n\nR ::Vector{Int}: which unit cell the specificied orbital/cartesian coordinates belongs to.\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#Base.isapprox-Tuple{FractCoord,FractCoord}",
+    "page": "Internals",
+    "title": "Base.isapprox",
+    "category": "method",
+    "text": "isapprox(x, y; rtol::Real=atol>0 ? 0 : √eps, atol::Real=0, nans::Bool=false, norm::Function)\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#Lattice-1",
+    "page": "Internals",
+    "title": "Lattice",
+    "category": "section",
+    "text": "Modules = [HartreeFockBogoliubov.Lattice]"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Spec",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.Spec",
+    "category": "module",
+    "text": "Submodule `Spec`\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Spec.Hopping",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.Spec.Hopping",
+    "category": "constant",
+    "text": "Hopping\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Spec.Interaction",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.Spec.Interaction",
+    "category": "constant",
+    "text": "Interaction\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Spec.FullHamiltonian",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.Spec.FullHamiltonian",
+    "category": "type",
+    "text": "FullHamiltonian\n\nMembers\n\nunitcell ::UnitCell\nhoppings ::Vector{Hopping}\ninteractions ::Vector{Interaction}\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Spec.FullHamiltonian-Union{Tuple{UnitCell{O}}, Tuple{O}} where O",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.Spec.FullHamiltonian",
+    "category": "method",
+    "text": "Hamiltonian\n\nCreate an empty Hamiltonian\n\nArguments\n\nunitcell ::UnitCell\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Spec.HoppingDiagonal",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.Spec.HoppingDiagonal",
+    "category": "type",
+    "text": "HoppingDiagonal{R<:Real}\n\nRepresents\n\n  t c_i^* c_i\n\nMembers\n\namplitude ::R\ni ::Int: index of orbital\nRi ::Vector{Int}: which unit cell? (indexed by a1, and a2)\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Spec.HoppingDiagonal-Union{Tuple{R}, Tuple{R,Integer,AbstractArray{#s33,1} where #s33<:Integer}} where R<:Real",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.Spec.HoppingDiagonal",
+    "category": "method",
+    "text": "\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Spec.HoppingOffdiagonal",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.Spec.HoppingOffdiagonal",
+    "category": "type",
+    "text": "HoppingOffdiagonal{C<:Number}\n\nRepresents\n\n  t c_i^* c_j + t^* c_j^* c_i\n\nt, i, j and the unitcell-coordinates Ri and Rj are stored. Require that (i, Ri) <= (j, Rj)\n\nMembers\n\namplitude :: C\ni, j ::T\nRi, Rj ::Vector{Int}\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Spec.InteractionDiagonal",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.Spec.InteractionDiagonal",
+    "category": "type",
+    "text": "InteractionDiagonal{R<:Real}\n\nRepresents\n\n    U c_i^* c_j^* c_j c_i\n\nMembers\n\namplitude ::R\ni, j ::Int\nRi, Rj ::Vector{Int}\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Spec.InteractionOffdiagonal",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.Spec.InteractionOffdiagonal",
+    "category": "type",
+    "text": "InteractionOffdiagonal{C<:Number}\n\ni < j, k < l, i < k or (i == k and j < l)\n\nRepresents\n\n   U     c_i^* c_j^* c_l c_k\n + U^* c_k^* c_l^* c_j c_i\n\nOnly keep the first term (and require i < j, k < l, i <= k)\n\nOrdering of orbitals by (i, Ri)\n\nMembers\n\namplitude ::C\ni, j, k, l ::Int\nRi, Rj, Rk, Rl ::Vector{Int}\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Spec.addhopping!-Union{Tuple{C}, Tuple{O}, Tuple{FullHamiltonian{O},HoppingOffdiagonal{C}}} where C<:Number where O",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.Spec.addhopping!",
+    "category": "method",
+    "text": "addhopping!\n\nArguments\n\nhamiltonian ::Hamiltonian\nhopping ::HoppingOffdiagonal\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Spec.addhopping!-Union{Tuple{R}, Tuple{O}, Tuple{FullHamiltonian{O},HoppingDiagonal{R}}} where R<:Real where O",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.Spec.addhopping!",
+    "category": "method",
+    "text": "addhopping!\n\nArguments\n\nhamiltonian ::Hamiltonian\nhopping ::HoppingDiagonal\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Spec.addinteraction!-Union{Tuple{C}, Tuple{O}, Tuple{FullHamiltonian{O},InteractionOffdiagonal{C}}} where C<:Number where O",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.Spec.addinteraction!",
+    "category": "method",
+    "text": "addinteraction!\n\nArguments\n\nhamiltonian ::Hamiltonian\ninteraction ::InteractionOffdiagonal\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Spec.addinteraction!-Union{Tuple{R}, Tuple{O}, Tuple{FullHamiltonian{O},InteractionDiagonal{R}}} where R<:Real where O",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.Spec.addinteraction!",
+    "category": "method",
+    "text": "addinteraction!\n\nArguments\n\nhamiltonian ::Hamiltonian\ninteraction ::InteractionDiagonal\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Spec.hoppingbycarte-Union{Tuple{C}, Tuple{O}, Tuple{UnitCell{O},C,O,O,Array{Float64,1},Array{Float64,1}}} where C<:Number where O",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.Spec.hoppingbycarte",
+    "category": "method",
+    "text": "hoppingbycarte{T}\n\nMake a hopping element with cartesian coordinates.\n\nArguments\n\nuc ::UnitCell{T}\namplitude ::Number\ni ::T\nj ::T\nri ::CarteCoord\nrj ::CarteCoord\ntol ::Real : Optional. Defaults to sqrt(eps(Float64))\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Spec.hoppingbycarte-Union{Tuple{R}, Tuple{O}, Tuple{UnitCell{O},R,O,Array{Float64,1}}} where R<:Real where O",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.Spec.hoppingbycarte",
+    "category": "method",
+    "text": "hoppingbycarte{T}\n\nMake a hopping element with cartesian coordinates.\n\nArguments\n\nuc ::UnitCell{T}\namplitude ::Real\ni ::T\nri ::CarteCoord\ntol ::Real : Optional. Defaults to sqrt(eps(Float64))\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Spec.interactionbycarte-Union{Tuple{C}, Tuple{O}, Tuple{UnitCell{O},C,O,O,O,O,Array{Float64,1},Array{Float64,1},Array{Float64,1},Array{Float64,1}}} where C<:Number where O",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.Spec.interactionbycarte",
+    "category": "method",
+    "text": "interactionbycarte{T}\n\nMake an interaction element with cartesian coordinates.\n\nArguments\n\n* `uc ::UnitCell{T}`\n* `amplitude ::Number`\n* `i ::T`\n* `j ::T`\n* `k ::T`\n* `l ::T`\n* `ri ::CarteCoord`\n* `rj ::CarteCoord`\n* `rk ::CarteCoord`\n* `rl ::CarteCoord`\n* `tol ::Real` : Optional. Defaults to `sqrt(eps(Float64))`\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Spec.interactionbycarte-Union{Tuple{R}, Tuple{O}, Tuple{UnitCell{O},R,O,O,Array{Float64,1},Array{Float64,1}}} where R<:Real where O",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.Spec.interactionbycarte",
+    "category": "method",
+    "text": "interactionbycarte{T}\n\nMake an interaction element with cartesian coordinates.\n\nArguments\n\n* `uc ::UnitCell{T}`\n* `amplitude ::Number`\n* `i ::T`\n* `j ::T`\n* `ri ::CarteCoord`\n* `rj ::CarteCoord`\n* `tol ::Real` : Optional. Defaults to `sqrt(eps(Float64))`\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Spec.islocal-Union{Tuple{HoppingDiagonal{R}}, Tuple{R}} where R<:Real",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.Spec.islocal",
+    "category": "method",
+    "text": "islocal\n\nCheck if the hopping element is local (i.e. Ri is zero)\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Spec.localized-Union{Tuple{HoppingDiagonal{R}}, Tuple{R}} where R<:Real",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.Spec.localized",
+    "category": "method",
+    "text": "localized\n\nReturn a hopping element that is local (i.e. Ri is zero)\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#Spec-1",
+    "page": "Internals",
+    "title": "Spec",
+    "category": "section",
+    "text": "Modules = [HartreeFockBogoliubov.Spec]"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Generator",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.Generator",
+    "category": "module",
+    "text": "Generator submodule\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Generator.hopping_inplace-Union{Tuple{C}, Tuple{O}, Tuple{UnitCell{O},HoppingOffdiagonal{C}}} where C<:Number where O",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.Generator.hopping_inplace",
+    "category": "method",
+    "text": "hopping_inplace\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Generator.hopping_inplace-Union{Tuple{FullHamiltonian{O}}, Tuple{O}} where O",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.Generator.hopping_inplace",
+    "category": "method",
+    "text": "hopping_inplace\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Generator.hopping_inplace-Union{Tuple{O}, Tuple{UnitCell{O},AbstractArray{HoppingDiagonal,1},AbstractArray{HoppingOffdiagonal,1}}} where O",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.Generator.hopping_inplace",
+    "category": "method",
+    "text": "hopping_inplace\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Generator.hopping_inplace-Union{Tuple{O}, Tuple{UnitCell{O},AbstractArray{HoppingDiagonal,1}}} where O",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.Generator.hopping_inplace",
+    "category": "method",
+    "text": "hopping_inplace\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Generator.hopping_inplace-Union{Tuple{O}, Tuple{UnitCell{O},AbstractArray{HoppingOffdiagonal,1}}} where O",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.Generator.hopping_inplace",
+    "category": "method",
+    "text": "hopping_inplace\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Generator.hopping_inplace-Union{Tuple{O}, Tuple{UnitCell{O},AbstractArray{Union{HoppingDiagonal, HoppingOffdiagonal},1}}} where O",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.Generator.hopping_inplace",
+    "category": "method",
+    "text": "hopping_inplace\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Generator.hopping_inplace-Union{Tuple{R}, Tuple{O}, Tuple{UnitCell{O},HoppingDiagonal{R}}} where R<:Real where O",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.Generator.hopping_inplace",
+    "category": "method",
+    "text": "hopping_inplace\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#Generator-1",
+    "page": "Internals",
+    "title": "Generator",
+    "category": "section",
+    "text": "Modules = [HartreeFockBogoliubov.Generator]"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Topology.isvalidtimereversalmatrix-Tuple{AbstractArray{#s69,2} where #s69<:Number}",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.Topology.isvalidtimereversalmatrix",
+    "category": "method",
+    "text": "isvalidtimereversalmatrix\n\nTest whether the given matrix is a valid unitary matrix for the time reversal operation.\n\n```math\nT = U ⋅ K\n```\n\n``U`` must satisfy the two conditions:\n1. ``U U^{\\dagger} = 1`` (from unitarity of ``U``)\n2. ``U = - U^{\\mathsf{T}}`` (from `T^2 = -1`)\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Topology.squarify-Union{Tuple{FullHamiltonian{O}}, Tuple{O}} where O",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.Topology.squarify",
+    "category": "method",
+    "text": "squarify\n\nArguments\n\nuc::Spec.FullHamiltonian{O}\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Topology.squarify-Union{Tuple{HFBHamiltonian{O}}, Tuple{O}} where O",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.Topology.squarify",
+    "category": "method",
+    "text": "squarify\n\nArguments\n\nuc::HFB.HFBHamiltonian{O}\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Topology.squarify-Union{Tuple{UnitCell{O}}, Tuple{O}} where O",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.Topology.squarify",
+    "category": "method",
+    "text": "squarify\n\nIn order to make the Hamiltoinian a periodic function of momentum, bring all the sites to the origin. In addition, make the unitcell into a square.\n\nArguments\n\nuc::Lattice.UnitCell{O}\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Topology.timereversalindexgrid-Tuple{Integer,Integer}",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.Topology.timereversalindexgrid",
+    "category": "method",
+    "text": "generate k-space grid (which has (2 n1, 2 n2) points TOTAL in the Brillouin zone)\n\nExample\n\nWhen n1 = 4, n2 = 3, this function returns an OrderedDict that represents the following structure\n\ni2|\n  |\n5 | -i -i -i -i -i -i -i -i\n4 | -i -i -i -i -i -i -i -i\n3 | 0h +h +h +h 0h -h -h -h\n2 | +i +i +i +i +i +i +i +i\n1 | +i +i +i +i +i +i +i +i\n0 | 0z +z +z +z 0z -z -z -z\n--+----------------------------\n  |  0  1  2  3  4  5  6  7  i1\n\nwhere 0z, +z, -z are represented respectively by :TRIZERO, :POSZERO, and :NEGZERO, and   0h, +h, -h by :TRIHALF, :POSHALF, and :NEGHALF, and   +i, -i by :POSINT, :NEGINT.\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Topology.chernnumber-Union{Tuple{O}, Tuple{UnitCell{O},AbstractArray{Union{HoppingDiagonal, HoppingOffdiagonal},1},Integer,Integer,AbstractArray{#s30,1} where #s30<:Integer}} where O",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.Topology.chernnumber",
+    "category": "method",
+    "text": "chernnumber\n\nCompute chern number of the band structure defined by the hoppings and the selected bands.\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Topology.getnambuphase-Union{Tuple{O}, Tuple{UnitCell{O},Function,AbstractArray{#s33,2} where #s33<:Number,Integer,Integer}} where O",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.Topology.getnambuphase",
+    "category": "method",
+    "text": "Get the phase of hamiltonian function.     Returns nan if no phase\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Topology.z2index-Union{Tuple{O}, Tuple{UnitCell{O},AbstractArray{Union{HoppingDiagonal, HoppingOffdiagonal},1},AbstractArray{T,2} where T,Integer,Integer,AbstractArray{#s16,1} where #s16<:Integer}} where O",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.Topology.z2index",
+    "category": "method",
+    "text": "z2index\n\nCompute Z2 index of time-reversal-invariant Hamiltonian.\n\nArguments\n\nuc::UnitCell{O}\nhops::AbstractVector{Hopping}\ntimereversal::AbstractMatrix\nn1 ::Integer\nn2 ::Integer\nselectpairs::AbstractVector{<:Integer}\n\nOptional Arguments\n\ntol ::Real = sqrt(eps(Float64))\n\nReturns\n\n(The Z2 index,  max| Hₖ - T⁻¹HₖT | for k in TRIMs)\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#Topology-1",
+    "page": "Internals",
+    "title": "Topology",
+    "category": "section",
+    "text": "Modules = [HartreeFockBogoliubov.Topology]"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.HFBComputer",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.HFB.HFBComputer",
+    "category": "type",
+    "text": "HFBConmputer is a type holding the ρ, t and Γ, Δ of a Hartree-Fock-Bogoliubov Hamiltonian.\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.HFBComputer-Union{Tuple{O}, Tuple{UnitCell{O},AbstractArray{HoppingDiagonal,1},AbstractArray{HoppingOffdiagonal,1},Real}} where O",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.HFB.HFBComputer",
+    "category": "method",
+    "text": "\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.HFBHamiltonian",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.HFB.HFBHamiltonian",
+    "category": "type",
+    "text": "\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.HFBHamiltonian-Union{Tuple{FullHamiltonian{O}}, Tuple{O}} where O",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.HFB.HFBHamiltonian",
+    "category": "method",
+    "text": "\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.HFBHamiltonian-Union{Tuple{O}, Tuple{UnitCell{O},AbstractArray{HoppingDiagonal,1},AbstractArray{HoppingOffdiagonal,1},AbstractArray{HoppingMeanField,1},AbstractArray{PairingMeanField,1}}} where O",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.HFB.HFBHamiltonian",
+    "category": "method",
+    "text": "\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.HFBSolver",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.HFB.HFBSolver",
+    "category": "type",
+    "text": "\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.HFBSolver-Union{Tuple{O}, Tuple{FullHamiltonian{O},AbstractArray{#s70,1} where #s70<:Integer,Real}} where O",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.HFB.HFBSolver",
+    "category": "method",
+    "text": "\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.addinteraction!-Union{Tuple{C}, Tuple{O}, Tuple{HFBHamiltonian{O},InteractionOffdiagonal{C}}} where C<:Number where O",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.HFB.addinteraction!",
+    "category": "method",
+    "text": "Add offdiagonal interaction\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.addinteraction!-Union{Tuple{R}, Tuple{O}, Tuple{HFBHamiltonian{O},InteractionDiagonal{R}}} where R<:Real where O",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.HFB.addinteraction!",
+    "category": "method",
+    "text": "addinteraction!\n\nAdd diagonal interaction\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.compute_hfbfield!-Tuple{HartreeFockBogoliubov.HFB.HFBField,HartreeFockBogoliubov.HFB.HFBComputer,HartreeFockBogoliubov.HFB.HFBAmplitude}",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.HFB.compute_hfbfield!",
+    "category": "method",
+    "text": "Compute Γ and Δ from ρ and t.\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.isvalid-Tuple{HartreeFockBogoliubov.HFB.HFBComputer,HartreeFockBogoliubov.HFB.HFBAmplitude}",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.HFB.isvalid",
+    "category": "method",
+    "text": "\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.isvalid-Tuple{HartreeFockBogoliubov.HFB.HFBComputer,HartreeFockBogoliubov.HFB.HFBField}",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.HFB.isvalid",
+    "category": "method",
+    "text": "\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.loop-Tuple{HartreeFockBogoliubov.HFB.HFBSolver,HartreeFockBogoliubov.HFB.HFBField,Integer}",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.HFB.loop",
+    "category": "method",
+    "text": "loop\n\nPerform selfconsistency loop a number of times with the given precondition and given update functions.\n\nArguments\n\nsolver ::HFBSolver{T}\nsol::HFBAmplitude\nrun::Integer\n\nOptional Arguments\n\nupdate::Function=simpleupdate\nprecondition::Function=identity: on target field\ncallback::Function=_noop: Function called after every update as\n\ncallback(i, run)\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.loop_threaded-Tuple{HartreeFockBogoliubov.HFB.HFBSolver,HartreeFockBogoliubov.HFB.HFBAmplitude,Integer}",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.HFB.loop_threaded",
+    "category": "method",
+    "text": "loop\n\nPerform selfconsistency loop a number of times with the given precondition and given update functions.\n\nArguments\n\nsolver ::HFBSolver{T}\nsf::HFBAmplitude\nrun::Integer\n\nOptional Arguments\n\nupdate::Function=simpleupdate\nprecondition::Function=identity\ncallback::Function=_noop: Function called after every update as\n\ncallback(i, run)\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.make_Deltamatrix-Tuple{HartreeFockBogoliubov.HFB.HFBComputer,AbstractArray{#s33,1} where #s33<:Number}",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.HFB.make_Deltamatrix",
+    "category": "method",
+    "text": "Return a generator of Δ matrix (which is a function of momentum)\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.make_Gammamatrix-Tuple{HartreeFockBogoliubov.HFB.HFBComputer,AbstractArray{#s33,1} where #s33<:Number}",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.HFB.make_Gammamatrix",
+    "category": "method",
+    "text": "Return a generator of Γ matrix (which is a function of momentum)\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.make_greencollector-Union{Tuple{HFBComputer{O}}, Tuple{O}} where O",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.HFB.make_greencollector",
+    "category": "method",
+    "text": "make_greencollector\n\nReturns a function which has the following signature\n\ncollector(k, eigenvalues, eigenvectors, ρout, tout)\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.make_hamiltonian-Tuple{HartreeFockBogoliubov.HFB.HFBComputer,AbstractArray{#s25,1} where #s25<:Number,AbstractArray{#s24,1} where #s24<:Number}",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.HFB.make_hamiltonian",
+    "category": "method",
+    "text": "\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.make_hfbamplitude-Tuple{HartreeFockBogoliubov.HFB.HFBComputer,Function,Function}",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.HFB.make_hfbamplitude",
+    "category": "method",
+    "text": "func : (idx, i, j, r) -> val\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.make_hfbamplitude-Tuple{HartreeFockBogoliubov.HFB.HFBComputer}",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.HFB.make_hfbamplitude",
+    "category": "method",
+    "text": "func : (idx, i, j, r) -> 0\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.make_hfbamplitude-Union{Tuple{O}, Tuple{HFBComputer{O},HFBAmplitudeHint{O}}} where O",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.HFB.make_hfbamplitude",
+    "category": "method",
+    "text": "Check if hint contains ρ\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.make_hfbfield-Tuple{HartreeFockBogoliubov.HFB.HFBComputer,HartreeFockBogoliubov.HFB.HFBAmplitude}",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.HFB.make_hfbfield",
+    "category": "method",
+    "text": "Compute Γ and Δ from ρ and t.\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.make_hfbfield-Tuple{HartreeFockBogoliubov.HFB.HFBComputer}",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.HFB.make_hfbfield",
+    "category": "method",
+    "text": "Compute Γ and Δ from ρ and t.\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.make_hint-Union{Tuple{O}, Tuple{HFBComputer{O},HFBAmplitude}} where O",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.HFB.make_hint",
+    "category": "method",
+    "text": "\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.make_hoppingmatrix-Tuple{HartreeFockBogoliubov.HFB.HFBComputer}",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.HFB.make_hoppingmatrix",
+    "category": "method",
+    "text": "Return a generator of hopping matrix (which is a function of momentum)\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.next_hfbamplitude!-Tuple{HartreeFockBogoliubov.HFB.HFBAmplitude,HartreeFockBogoliubov.HFB.HFBSolver,HartreeFockBogoliubov.HFB.HFBField}",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.HFB.next_hfbamplitude!",
+    "category": "method",
+    "text": "\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.next_hfbamplitude-Tuple{HartreeFockBogoliubov.HFB.HFBSolver,HartreeFockBogoliubov.HFB.HFBAmplitude}",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.HFB.next_hfbamplitude",
+    "category": "method",
+    "text": "\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.next_hfbamplitude-Tuple{HartreeFockBogoliubov.HFB.HFBSolver,HartreeFockBogoliubov.HFB.HFBField}",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.HFB.next_hfbamplitude",
+    "category": "method",
+    "text": "\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.next_hfbamplitude_threaded!-Tuple{HartreeFockBogoliubov.HFB.HFBAmplitude,HartreeFockBogoliubov.HFB.HFBSolver,HartreeFockBogoliubov.HFB.HFBField}",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.HFB.next_hfbamplitude_threaded!",
+    "category": "method",
+    "text": "\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.next_hfbamplitude_threaded-Tuple{HartreeFockBogoliubov.HFB.HFBSolver,HartreeFockBogoliubov.HFB.HFBField}",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.HFB.next_hfbamplitude_threaded",
+    "category": "method",
+    "text": "\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.randomize!-Tuple{HartreeFockBogoliubov.HFB.HFBComputer,HartreeFockBogoliubov.HFB.HFBAmplitude}",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.HFB.randomize!",
+    "category": "method",
+    "text": "Randomize a hfbamplitude\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.CollectRow",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.HFB.CollectRow",
+    "category": "type",
+    "text": "CollectRow is holds info on how to compute ρ or t. Its elements are:\n\nIs diagonal? (only for rho)\nrow orbital\ncol orbital\ndisplacement r(col) - r(row)\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.DeployRow",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.HFB.DeployRow",
+    "category": "type",
+    "text": "DeployRow is holds info on how to compute Γ or Δ. Its elements are:\n\nIs diagonal\nrow orbital\ncol orbital\ndisplacement r(col) - r(row)\nlist of sources, each of which is a tuple of\nindex of ρ or t from which to compute this Γ or Δ.\namplitude (coefficient to multiply to ρ or t)\nboolean indicating whether   (1) conjugation is needed (for ρ/Γ) or   (2) minus sign is needed (for t/Δ).\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.HoppingMeanField",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.HFB.HoppingMeanField",
+    "category": "type",
+    "text": "\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.PairingMeanField",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.HFB.PairingMeanField",
+    "category": "type",
+    "text": "\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.make_particleholeregistry-Tuple{HartreeFockBogoliubov.HFB.HFBHamiltonian}",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.HFB.make_particleholeregistry",
+    "category": "method",
+    "text": "\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.make_particleparticleregistry-Tuple{HartreeFockBogoliubov.HFB.HFBHamiltonian}",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.HFB.make_particleparticleregistry",
+    "category": "method",
+    "text": "\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.next_hfbfield-Tuple{HartreeFockBogoliubov.HFB.HFBSolver,HartreeFockBogoliubov.HFB.HFBField}",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.HFB.next_hfbfield",
+    "category": "method",
+    "text": "\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HFB-1",
+    "page": "Internals",
+    "title": "HFB",
+    "category": "section",
+    "text": "Modules = [HartreeFockBogoliubov.HFB]"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.LinearizedGap.linearizedpairingkernel-Union{Tuple{HFBSolver{O}}, Tuple{O}} where O",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.LinearizedGap.linearizedpairingkernel",
+    "category": "method",
+    "text": "linearizedpairingkernel\n\nCompute the kernel Γ of the linearized gap equation in the pairing channel which is written as Δ = Γ⋅Δ\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#LinearizedGap-1",
+    "page": "Internals",
+    "title": "LinearizedGap",
+    "category": "section",
+    "text": "Modules = [HartreeFockBogoliubov.LinearizedGap]"
+},
+
 ]}
