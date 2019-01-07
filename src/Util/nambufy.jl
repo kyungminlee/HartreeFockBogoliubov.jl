@@ -28,8 +28,8 @@ function nambufy(unitcell::UnitCell{O}) where {O<:Tuple}
     NewOrbitalType = Tuple{String, O.parameters...}
     nambuunitcell = Lattice.make_unitcell(unitcell.latticevectors; OrbitalType=NewOrbitalType)
     for (orb, fc) in unitcell.orbitals
-        addorbital!(nambuunitcell, ("Particle", orb...), fc)
-        addorbital!(nambuunitcell, ("Hole", orb...), fc)
+        addorbital!(nambuunitcell, (orb..., "Particle"), fc)
+        addorbital!(nambuunitcell, (orb..., "Hole"), fc)
     end
     return nambuunitcell
 end
@@ -40,8 +40,8 @@ function nambufy(unitcell::UnitCell{O}) where {O}
     NewOrbitalType = Tuple{String, O}
     nambuunitcell = Lattice.make_unitcell(unitcell.latticevectors; OrbitalType=NewOrbitalType)
     for (orb, fc) in unitcell.orbitals
-        addorbital!(nambuunitcell, ("Particle", orb), fc)
-        addorbital!(nambuunitcell, ("Hole", orb), fc)
+        addorbital!(nambuunitcell, (orb, "Particle"), fc)
+        addorbital!(nambuunitcell, (orb, "Hole"), fc)
     end
     return nambuunitcell
 end
