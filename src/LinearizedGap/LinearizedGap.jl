@@ -1,8 +1,5 @@
 module LinearizedGap
 
-if VERSION < v"0.7-"
-    using MicroLogging
-end
 using LinearAlgebra
 using HartreeFockBogoliubov
 
@@ -18,9 +15,9 @@ Compute the kernel Γ of the linearized gap equation in the pairing channel
 which is written as Δ = Γ⋅Δ
 """
 function linearizedpairingkernel(
-            solver::HFB.HFBSolver{O};
-            tolerance::Float64 = sqrt(eps(Float64))
-        ) where {O}
+            solver ::HFB.HFBSolver;
+            tolerance ::Real=sqrt(eps(Float64))
+        )
 
     unitcell = solver.hamiltonian.unitcell
     size = solver.size
