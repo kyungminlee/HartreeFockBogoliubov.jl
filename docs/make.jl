@@ -27,7 +27,7 @@ makedocs(
 				"Example" => "guide/example.md",
 			],
 			hide("Internals" => "internals.md", 
-			["internals/hartreefockbogoliubov.md",
+				["internals/hartreefockbogoliubov.md",
 			])
 		]
 	)
