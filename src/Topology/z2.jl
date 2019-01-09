@@ -1,6 +1,3 @@
-if VERSION < v"0.7-"
-    using MicroLogging
-end
 import DataStructures: OrderedDict
 using LinearAlgebra
 
