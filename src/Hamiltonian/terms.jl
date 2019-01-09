@@ -44,10 +44,10 @@ Represents
 Require that `(i, Ri) <= (j, Rj)`
 
 
-  # Members
-  * `amplitude :: C`
-  * `i, j ::T`
-  * `Ri, Rj ::Vector{Int}`
+# Members
+* `amplitude ::C`
+* `i, j ::T`
+* `Ri, Rj ::Vector{Int}`
 """
 struct HoppingOffdiagonal{C<:Number}
     amplitude ::C

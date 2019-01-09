@@ -26,13 +26,13 @@ makedocs(
 				"Topology" => "guide/topology.md",
 				"Example" => "guide/example.md",
 			],
-			hide("Internals" => "internals.md", 
-			["internals/hartreefockbogoliubov.md",
+			hide("Internals" => "internals.md",
+				["internals/hartreefockbogoliubov.md",
 			])
 		]
 	)
 
 deploydocs(
-  deps = Deps.pip("pygments", "mkdocs", "python-markdown-math"),
-  repo = "github.com/kyungminlee/HartreeFockBogoliubov.jl.git",
+  deps=Deps.pip("pygments", "mkdocs", "python-markdown-math"),
+  repo="github.com/kyungminlee/HartreeFockBogoliubov.jl.git",
 )

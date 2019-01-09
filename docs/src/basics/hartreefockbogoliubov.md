@@ -1,6 +1,6 @@
 # Hartree-Fock-Bogoliubov Theory
 
-This document contains basics of Hartree-Fock-Bogoliubov Theory. We will follow [Goodman][Goodman80].
+This document contains basics of Hartree-Fock-Bogoliubov Theory. We will follow [Goodman, 1980].
 
 ```math
   H =  \sum_{ij} T_{ij} c_{i}^{*} c_{j}
@@ -49,7 +49,7 @@ D_{\text{HFB}} = Z_{\text{HFB}}^{-1}
 ```
 where
 ```math
-f_{n} = \frac{1}{1 + e^{\beta E_{n}}}
+f_{n} = f(E_n) = \frac{1}{1 + e^{\beta E_{n}}}
 ```
 is the Fermi-Dirac distribution function for the nth quasiparticle
 
@@ -92,8 +92,8 @@ t_{ij}
 where ``f_{ij} = \delta_{ij} f_{i}``.
 
 
-
 ### Expectation Values
+
 Wick's theorem
 ```math
 \left\langle c_{i}^{*} c_{j}^{*} c_{l} c_{k} \right\rangle
@@ -119,8 +119,8 @@ N &= \mathrm{tr} \rho
 
 ```math
 \begin{align}
-\Gamma_{ij} = \sum_{kl} V_{ikjl} \rho_{lk} \\
-\Delta_{ij} = \frac{1}{2} \sum_{kl} V_{ijkl} t_{kl} \\
+\Gamma_{ij} &= \sum_{kl} V_{ikjl} \rho_{lk} \\
+\Delta_{ij} &= \frac{1}{2} \sum_{kl} V_{ijkl} t_{kl} \\
 \end{align}
 ```
 
@@ -133,11 +133,8 @@ The grand potential
 + k_B T \sum_{i} \left[ f_{i} \ln f_{i} + (1-f_{i}) \ln (1-f_i)\right]
 ```
 
-
 ----
 
+References
 
-
-
-
-[Goodman80]: http://escholarship.org/uc/item/3xm630cr "Alan Goodman, Finite-Temperature Hartree-Fock-Bogoliubov Theory, LBNL Paper LBL-11151 (1980)"
+Alan Goodman, "Finite-Temperature Hartree-Fock-Bogoliubov Theory," LBNL Paper LBL-11151 (1980). [LINK](http://escholarship.org/uc/item/3xm630cr)
