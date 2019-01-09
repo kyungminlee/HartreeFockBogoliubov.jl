@@ -15,7 +15,6 @@ add https://github.com/kyungminlee/HartreeFockBogoliubov.jl
 ```
 to Julia's package manager.
 
-
 ## Documentation
 
 [![**STABLE**][docs-stable-img]][docs-stable-url] [![**LATEST**][docs-latest-img]][docs-latest-url]

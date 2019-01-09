@@ -1,0 +1,1 @@
+# Linearized Gap Equation

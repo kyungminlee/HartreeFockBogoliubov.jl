@@ -7,6 +7,12 @@ export nambufy
 export freeze
 
 """
+    nambufy
+
+Makes two copies of the given hopping element, one in the particle basis, and another in the hole basis.
+The Nambu space index is the least significant subindex of the new basis.
+In other words, given a hopping from `i` to `j` with amplitude `t` (i and j starting from 1), the function `nambufy` returns
+two hoppings, one from `2*i-1` to `2*j-1` with amplitude `t`, and another from `2*i` to `2*j` with amplitude `-conj(t)`.
 """
 function nambufy(hop::HoppingDiagonal{R}) where {R<:Real}
     hop1 = HoppingDiagonal{R}( hop.amplitude, hop.i*2-1, hop.Ri)
@@ -14,8 +20,6 @@ function nambufy(hop::HoppingDiagonal{R}) where {R<:Real}
     return (hop1, hop2)
 end
 
-"""
-"""
 function nambufy(hop::HoppingOffdiagonal{C}) where {C<:Number}
     hop1 = HoppingOffdiagonal{C}(      hop.amplitude,  hop.i*2-1, hop.j*2-1, hop.Ri, hop.Rj)
     hop2 = HoppingOffdiagonal{C}(-conj(hop.amplitude), hop.i*2  , hop.j*2  , hop.Ri, hop.Rj)
@@ -23,9 +27,40 @@ function nambufy(hop::HoppingOffdiagonal{C}) where {C<:Number}
 end
 
 """
+    nambufy
+
+Generate a "nambufied" version of a given unitcell, i.e. double the number of orbitals by considering the "particle"
+orbitals and the "hole" orbitals. The new orbitals acquire a new name which follows the row-first convention
+of Julia. For `UnitCell{O}`, if `O` is a tuple of type `Tuple{A, B, ...}`, the new orbital type is
+`Tuple{A, B, ..., String}`. If `O` is not `Tuple`, then the new orbital type is `Tuple{O, String}`.
+
+For example, given a `Unitcell` with orbitals `["UP", "DN"]`, the new `UnitCell` has orbitals
+`[("UP", "Particle"), ("UP", "Hole"), ("DN", "Particle"), ("DN", "Hole")]`
+If, on the other hand, the original `UnitCell` has orbitals
+```julia
+[
+    ("A", "UP"),
+    ("A", "DN"),
+    ("B", "UP"),
+    ("B", "DN"),
+]
+```
+then the new `UnitCell` has orbitals
+```julia
+[
+    ("A", "UP", "Particle"),
+    ("A", "UP", "Hole"),
+    ("A", "DN", "Particle"),
+    ("A", "DN", "Hole"),
+    ("B", "UP", "Particle"),
+    ("B", "UP", "Hole"),
+    ("B", "DN", "Particle"),
+    ("B", "DN", "Hole"),
+]
+```
 """
 function nambufy(unitcell::UnitCell{O}) where {O<:Tuple}
-    NewOrbitalType = Tuple{String, O.parameters...}
+    NewOrbitalType = Tuple{O.parameters..., String}
     nambuunitcell = Lattice.make_unitcell(unitcell.latticevectors; OrbitalType=NewOrbitalType)
     for (orb, fc) in unitcell.orbitals
         addorbital!(nambuunitcell, (orb..., "Particle"), fc)
@@ -34,10 +69,8 @@ function nambufy(unitcell::UnitCell{O}) where {O<:Tuple}
     return nambuunitcell
 end
 
-"""
-"""
 function nambufy(unitcell::UnitCell{O}) where {O}
-    NewOrbitalType = Tuple{String, O}
+    NewOrbitalType = Tuple{O, String}
     nambuunitcell = Lattice.make_unitcell(unitcell.latticevectors; OrbitalType=NewOrbitalType)
     for (orb, fc) in unitcell.orbitals
         addorbital!(nambuunitcell, (orb, "Particle"), fc)
@@ -45,6 +78,7 @@ function nambufy(unitcell::UnitCell{O}) where {O}
     end
     return nambuunitcell
 end
+
 
 """
     freeze
