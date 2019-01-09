@@ -34,7 +34,7 @@ orbitals and the "hole" orbitals. The new orbitals acquire a new name which foll
 of Julia. For `UnitCell{O}`, if `O` is a tuple of type `Tuple{A, B, ...}`, the new orbital type is
 `Tuple{A, B, ..., String}`. If `O` is not `Tuple`, then the new orbital type is `Tuple{O, String}`.
 
-For example, given a `Unitcell` with orbitals `["UP", "DN"]`, the new `UnitCell` has orbitals
+For example, given a `UnitCell` with orbitals `["UP", "DN"]`, the new `UnitCell` has orbitals
 `[("UP", "Particle"), ("UP", "Hole"), ("DN", "Particle"), ("DN", "Hole")]`
 If, on the other hand, the original `UnitCell` has orbitals
 ```julia

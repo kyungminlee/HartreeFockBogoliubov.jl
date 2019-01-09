@@ -40,7 +40,7 @@ end
 
 The anchorpoints are given in units of the reciprocal lattice vectors.
 """
-function momentumpath(unitcell ::Unitcell,
+function momentumpath(unitcell ::UnitCell,
                       anchorpoints ::Vector{Vector{Float64}})
     real_anchorpoints = [unitcell.reciprocallatticevectors * ap for ap in anchorpoints]
     return linpath(real_anchorpoints)
