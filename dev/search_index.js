@@ -61,7 +61,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Hartree-Fock-Bogoliubov Theory",
     "title": "Hartree-Fock-Bogoliubov Theory",
     "category": "section",
-    "text": "This document contains basics of Hartree-Fock-Bogoliubov Theory. We will follow [Goodman][Goodman80].  H =  sum_ij T_ij c_i^* c_j\n     + frac14 sum_ijkl V_ijkl c_i^* c_j^* c_l c_kThe finite-temperature properties of the system described by the above Hamiltonian can be computed using the density matrixbeginalign\nD = frace^-beta HZ \nZ = mathrmTr e^-beta H\nendalignIn Hartree-Fock-Bogoliubov theory, we approximate the Hamiltonian H by a non-interacting Hamiltonian of \"quasiparticles\"H_textHFB = E_0 + sum_n E_n a_n^* a_nThe quasiparticle operator a is related to c in the following way:c_i = sum_n left( U_in a_n + V_in a_n^* right)The HFB density matrix is given bybeginalign\n  D_textHFB = frac1Z_textHFB e^-beta sum_n E_n hatn_n  \n  Z_textHFB = mathrmTr e^-beta sum_n E_n hatn_n \nendalignwherehatn_n = a_n^* a_nis the quasiparticle number operator.The HFB partition function can be calculated:Z_textHFB = prod_n left( 1 + e^-beta E_n right)and the density matrix is given in terms of the quasiparticle number operatorD_textHFB = Z_textHFB^-1\nprod_n\nleft\n  e^-beta E_n hatn_n + (1 - hatn_n)\nright\n= prod_n left f_n hatn_n + (1-f_n) (1 - hatn_n) rightwheref_n = frac11 + e^beta E_nis the Fermi-Dirac distribution function for the nth quasiparticleSingle-quasparticle density matrix overlinerho  and pairing tensor overlinetbeginalign\noverlinerho_ij\n  = leftlangle a_j^* a_i rightrangle\n   = mathrmTr left( D a_j^* a_i right) \noverlinet_ij\n  = leftlangle a_j a_i rightrangle\n   = mathrmTr left( D a_j a_i right)\nendalignWithin HFB,beginalign\n  overlinerho_ij = delta_ij f_i \n  overlinet_ij = 0\nendalignThe single-particle density matrix and pairing tensor arebeginalign\nrho_ij\n  = leftlangle c_j^* c_i rightrangle\n  = mathrmTr left( D c_j^* c_i right) \nt_ij\n  = leftlangle c_j c_i rightrangle\n  = mathrmTr left( D c_j c_i right)\nendalignbeginalign\n  rho = U f U^dagger + V (1-f) V^dagger \n  t    = U f V^intercal + V (1-f) U^intercal\nendalignwhere f_ij = delta_ij f_i."
+    "text": "This document contains basics of Hartree-Fock-Bogoliubov Theory. We will follow [Goodman, 1980].  H =  sum_ij T_ij c_i^* c_j\n     + frac14 sum_ijkl V_ijkl c_i^* c_j^* c_l c_kThe finite-temperature properties of the system described by the above Hamiltonian can be computed using the density matrixbeginalign\nD = frace^-beta HZ \nZ = mathrmTr e^-beta H\nendalignIn Hartree-Fock-Bogoliubov theory, we approximate the Hamiltonian H by a non-interacting Hamiltonian of \"quasiparticles\"H_textHFB = E_0 + sum_n E_n a_n^* a_nThe quasiparticle operator a is related to c in the following way:c_i = sum_n left( U_in a_n + V_in a_n^* right)The HFB density matrix is given bybeginalign\n  D_textHFB = frac1Z_textHFB e^-beta sum_n E_n hatn_n  \n  Z_textHFB = mathrmTr e^-beta sum_n E_n hatn_n \nendalignwherehatn_n = a_n^* a_nis the quasiparticle number operator.The HFB partition function can be calculated:Z_textHFB = prod_n left( 1 + e^-beta E_n right)and the density matrix is given in terms of the quasiparticle number operatorD_textHFB = Z_textHFB^-1\nprod_n\nleft\n  e^-beta E_n hatn_n + (1 - hatn_n)\nright\n= prod_n left f_n hatn_n + (1-f_n) (1 - hatn_n) rightwheref_n = f(E_n) = frac11 + e^beta E_nis the Fermi-Dirac distribution function for the nth quasiparticleSingle-quasparticle density matrix overlinerho  and pairing tensor overlinetbeginalign\noverlinerho_ij\n  = leftlangle a_j^* a_i rightrangle\n   = mathrmTr left( D a_j^* a_i right) \noverlinet_ij\n  = leftlangle a_j a_i rightrangle\n   = mathrmTr left( D a_j a_i right)\nendalignWithin HFB,beginalign\n  overlinerho_ij = delta_ij f_i \n  overlinet_ij = 0\nendalignThe single-particle density matrix and pairing tensor arebeginalign\nrho_ij\n  = leftlangle c_j^* c_i rightrangle\n  = mathrmTr left( D c_j^* c_i right) \nt_ij\n  = leftlangle c_j c_i rightrangle\n  = mathrmTr left( D c_j c_i right)\nendalignbeginalign\n  rho = U f U^dagger + V (1-f) V^dagger \n  t    = U f V^intercal + V (1-f) U^intercal\nendalignwhere f_ij = delta_ij f_i."
 },
 
 {
@@ -69,7 +69,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Hartree-Fock-Bogoliubov Theory",
     "title": "Expectation Values",
     "category": "section",
-    "text": "Wick\'s theoremleftlangle c_i^* c_j^* c_l c_k rightrangle\n=\nleftlangle c_i^* c_k rightrangle\nleftlangle c_j^* c_l rightrangle\n- leftlangle c_i^* c_l rightrangle\nleftlangle c_j^* c_k rightrangle\n+ leftlangle c_i^* c_j^* rightrangle\nleftlangle c_l c_k rightranglebeginalign\nE = mathrmtr\nleft\n  left( T + frac12 Gamma right) rho + frac12 Delta t^dagger\nright \nS = - k_B sum_i left f_i ln f_i + (1-f_i) ln (1-f_i)right \nN = mathrmtr rho\nendalignbeginalign\nGamma_ij = sum_kl V_ikjl rho_lk \nDelta_ij = frac12 sum_kl V_ijkl t_kl \nendalignThe grand potentialOmega\n= sum_ij (T - mu)_ij rho_ji\n+ frac12 sum_ijkl V_ijkl rho_lj rho_ki\n+ frac14 sum_ijkl V_ijkl t_ij^* t_kl\n+ k_B T sum_i left f_i ln f_i + (1-f_i) ln (1-f_i)right[Goodman80]: http://escholarship.org/uc/item/3xm630cr \"Alan Goodman, Finite-Temperature Hartree-Fock-Bogoliubov Theory, LBNL Paper LBL-11151 (1980)\""
+    "text": "Wick\'s theoremleftlangle c_i^* c_j^* c_l c_k rightrangle\n=\nleftlangle c_i^* c_k rightrangle\nleftlangle c_j^* c_l rightrangle\n- leftlangle c_i^* c_l rightrangle\nleftlangle c_j^* c_k rightrangle\n+ leftlangle c_i^* c_j^* rightrangle\nleftlangle c_l c_k rightranglebeginalign\nE = mathrmtr\nleft\n  left( T + frac12 Gamma right) rho + frac12 Delta t^dagger\nright \nS = - k_B sum_i left f_i ln f_i + (1-f_i) ln (1-f_i)right \nN = mathrmtr rho\nendalignbeginalign\nGamma_ij = sum_kl V_ikjl rho_lk \nDelta_ij = frac12 sum_kl V_ijkl t_kl \nendalignThe grand potentialOmega\n= sum_ij (T - mu)_ij rho_ji\n+ frac12 sum_ijkl V_ijkl rho_lj rho_ki\n+ frac14 sum_ijkl V_ijkl t_ij^* t_kl\n+ k_B T sum_i left f_i ln f_i + (1-f_i) ln (1-f_i)rightReferencesAlan Goodman, \"Finite-Temperature Hartree-Fock-Bogoliubov Theory,\" LBNL Paper LBL-11151 (1980). LINK"
 },
 
 {
@@ -109,7 +109,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Hartree-Fock-Bogoliubov Decomposition",
     "title": "Diagonal Interaction",
     "category": "section",
-    "text": "Let us first consider the diagonal interaction of the form  V c_1^* c_2^* c_2 c_1 which is the Hermitian conjugate of itself. Following [Goodman][Goodman80], this interaction decomposes into the following mean fields in the particle-hole and particle-particle channels:Interaction PH Channel PP Channel\nV(1212) =  V Γ(11) =  V ρ(22) Δ(12) =  ½ V t(12)\nV(1221) = -V Γ(12) = -V ρ(12) Δ(12) = -½ V t(21)\nV(2112) = -V Γ(21) = -V ρ(21) Δ(21) = -½ V t(12)\nV(2121) =  V Γ(22) =  V ρ(11) Δ(21) =  ½ V t(21)Here, the equal sign \'=\' does not indicate equality. Rather, it refers to the contribution of the right hand side to the mean field on the left hand side. Some of the mean fields are redundant, as required by the Hermiticity of the Hamiltonian. Overall, we end up withbeginalign\nGamma_11 =  V rho_22 \nGamma_12 = -V rho_12 \nGamma_22 =  V rho_11\nendalignin the particle-hole channel, andbeginalign\nDelta_12 =  V t_12\nendalignin the particle-particle channel."
+    "text": "Let us first consider the diagonal interaction of the form  V c_1^* c_2^* c_2 c_1 which is the Hermitian conjugate of itself. Following [Goodman][Goodman80], this interaction decomposes into the following mean fields in the particle-hole and particle-particle channels:Interaction PH Channel PP Channel\nV(1212) =  V Γ(11) =  V ρ(22) Δ(12) =  ½ V t(12)\nV(1221) = -V Γ(12) = -V ρ(12) Δ(12) = -½ V t(21)\nV(2112) = -V Γ(21) = -V ρ(21) Δ(21) = -½ V t(12)\nV(2121) =  V Γ(22) =  V ρ(11) Δ(21) =  ½ V t(21)Here, the equal sign \'=\' does not indicate equality; it refers to the contribution of the right hand side to the mean field on the left hand side. Some of the mean fields are redundant, as required by the Hermiticity of the Hamiltonian. Overall, we end up withbeginalign\nGamma_11 =  V rho_22 \nGamma_12 = -V rho_12 \nGamma_22 =  V rho_11\nendalignin the particle-hole channel, andbeginalign\nDelta_12 =  V t_12\nendalignin the particle-particle channel."
 },
 
 {
@@ -117,7 +117,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Hartree-Fock-Bogoliubov Decomposition",
     "title": "Offdiagonal Interaction",
     "category": "section",
-    "text": "Now let us consider the offdiagonal interaction term of the form  V c_1^* c_2^* c_4 c_3Given this term in the interaction, it is implied that its Hermitian conjugate  V^* c_3^* c_4^* c_2 c_1is also included in the Hamiltonian. The two terms (the explicit term and its Hermitian conjugate) decomposes intoInteraction PH Channel PP-Channel\nV(1234) =  V Γ(13) =  V ρ(42) Δ(12) =  ½ V t(34)\nV(1243) = -V Γ(14) = -V ρ(32) Δ(12) = -½ V t(43)\nV(2134) = -V Γ(23) = -V ρ(41) Δ(21) = -½ V t(34)\nV(2143) =  V Γ(24) =  V ρ(31) Δ(21) =  ½ V t(43)\n  \nV(3412) =  V* Γ(31) =  V ρ(24) Δ(34) =  ½ V t(12)\nV(3421) = -V* Γ(32) = -V ρ(14) Δ(34) = -½ V t(21)\nV(4312) = -V* Γ(41) = -V ρ(23) Δ(43) = -½ V t(12)\nV(4321) =  V* Γ(42) =  V ρ(13) Δ(43) =  ½ V t(21)As we have mentioned above for the diagonal interaction terms, this table contains redundant mean fields. Overwall. we havebeginalign\nGamma_13 =  V  rho_24^* \nGamma_14 = -V  rho_23^* \nGamma_23 = -V  rho_14^* \nGamma_24 =  V  rho_13^*\nendalignin the particle-hole channel andbeginalign\nDelta_12 =  V   t_34 \nDelta_34 =  V^* t_12\nendalignin the particle-particle channel."
+    "text": "Now let us consider the offdiagonal interaction term of the form  V c_1^* c_2^* c_4 c_3Given this term in the interaction, it is implied that its Hermitian conjugate  V^* c_3^* c_4^* c_2 c_1is also included in the Hamiltonian. The two terms (the explicit term and its Hermitian conjugate) decompose intoInteraction PH Channel PP Channel\nV(1234) =  V Γ(13) =  V ρ(42) Δ(12) =  ½ V t(34)\nV(1243) = -V Γ(14) = -V ρ(32) Δ(12) = -½ V t(43)\nV(2134) = -V Γ(23) = -V ρ(41) Δ(21) = -½ V t(34)\nV(2143) =  V Γ(24) =  V ρ(31) Δ(21) =  ½ V t(43)\n  \nV(3412) =  V* Γ(31) =  V ρ(24) Δ(34) =  ½ V t(12)\nV(3421) = -V* Γ(32) = -V ρ(14) Δ(34) = -½ V t(21)\nV(4312) = -V* Γ(41) = -V ρ(23) Δ(43) = -½ V t(12)\nV(4321) =  V* Γ(42) =  V ρ(13) Δ(43) =  ½ V t(21)As we have mentioned above for the diagonal interaction terms, this table contains redundant mean fields. Overall. we havebeginalign\nGamma_13 =  V  rho_24^* \nGamma_14 = -V  rho_23^* \nGamma_23 = -V  rho_14^* \nGamma_24 =  V  rho_13^*\nendalignin the particle-hole channel andbeginalign\nDelta_12 =  V   t_34 \nDelta_34 =  V^* t_12\nendalignin the particle-particle channel."
 },
 
 {
@@ -133,23 +133,39 @@ var documenterSearchIndex = {"docs": [
     "page": "Momentum Space Formulation",
     "title": "Momentum Space Formulation",
     "category": "section",
+    "text": "We can make use of the translation symmetry of the system by working in momentum space."
+},
+
+{
+    "location": "basics/momentumspace/#Self-consistency-Loop-1",
+    "page": "Momentum Space Formulation",
+    "title": "Self-consistency Loop",
+    "category": "section",
     "text": ""
 },
 
 {
-    "location": "basics/momentumspace/#Hopping-Elements-1",
+    "location": "basics/momentumspace/#Hamiltonian-in-Momentum-Space-1",
     "page": "Momentum Space Formulation",
-    "title": "Hopping Elements",
+    "title": "Hamiltonian in Momentum Space",
     "category": "section",
-    "text": "sum_mathbfR\n    c_alpha^*(mathbfR + boldsymbolrho_alpha)\n    c_beta(mathbfR + boldsymbolrho_beta)\n  =\n    sum_mathbfk\n    e^i mathbfk cdot (boldsymbolrho_beta - boldsymbolrho_alpha)\n    c_alpha^*(mathbfk)\n    c_beta(mathbfk)Pairing Elementssum_mathbfR\n    c_alpha^*(mathbfR + boldsymbolrho_alpha)\n    c_beta^*(mathbfR + boldsymbolrho_beta)\n  =\n    sum_mathbfk\n    e^i mathbfk cdot (boldsymbolrho_beta - boldsymbolrho_alpha)\n    c_alpha^*(mathbfk)\n    c_beta^*(-mathbfk)sum_mathbfR\n    c_alpha(mathbfR + boldsymbolrho_alpha)\n    c_beta(mathbfR + boldsymbolrho_beta)\n  =\n    sum_mathbfk\n    e^i mathbfk cdot (boldsymbolrho_beta - boldsymbolrho_alpha)\n    c_alpha(-mathbfk)\n    c_beta(mathbfk)"
+    "text": "Translation in the hopping/pairing Hamiltonian implies that the hopping/pairing terms are summed over all the (Bravais) lattice vectors. Upon Fourier transform, the hopping terms becomesum_mathbfR\n    c_alpha^*(mathbfR + boldsymbolrho_alpha)\n    c_beta(mathbfR + boldsymbolrho_beta)\n  =\n    sum_mathbfk\n    e^i mathbfk cdot (boldsymbolrho_beta - boldsymbolrho_alpha)\n    c_alpha^*(mathbfk)\n    c_beta(mathbfk)and the pairing terms becomesum_mathbfR\n    c_alpha^*(mathbfR + boldsymbolrho_alpha)\n    c_beta^*(mathbfR + boldsymbolrho_beta)\n  =\n    sum_mathbfk\n    e^i mathbfk cdot (boldsymbolrho_beta - boldsymbolrho_alpha)\n    c_alpha^*(mathbfk)\n    c_beta^*(-mathbfk)andsum_mathbfR\n    c_alpha(mathbfR + boldsymbolrho_alpha)\n    c_beta(mathbfR + boldsymbolrho_beta)\n  =\n    sum_mathbfk\n    e^i mathbfk cdot (boldsymbolrho_beta - boldsymbolrho_alpha)\n    c_alpha(-mathbfk)\n    c_beta(mathbfk)"
 },
 
 {
-    "location": "basics/momentumspace/#Expectation-Values-1",
+    "location": "basics/momentumspace/#Expectation-Values-in-Momentum-Space-1",
     "page": "Momentum Space Formulation",
-    "title": "Expectation Values",
+    "title": "Expectation Values in Momentum Space",
     "category": "section",
-    "text": "rho_alpha beta\n  =\n      frac1N\n      sum_mathbfk\n      e^-i mathbfk cdot ( boldsymbolrho_beta - boldsymbolrho_alpha ) \n      sum_n\n       f(epsilon_n) U_alpha n U_beta n^*t_alphabeta\n  =\n      frac1N\n      sum_mathbfk_alpha mathbfk_beta\n      e^-i mathbfk cdot ( boldsymbolrho_beta\n                        -boldsymbolrho_alpha ) \n      sum_n\n        f(epsilon_n )\n        U_alpha n\n        V_beta n^*"
+    "text": "If the Hamiltonian has translation symmetry, the expectation value of the hopping and pairing amplitudes (which are assumed to be the same on every unitcell, of course) can be written as a sum of the expectation values in each momentum sector. The hopping amplitude (or density if diagonal) isrho_alpha beta\n  =\n      frac1N\n      sum_mathbfk\n      e^-i mathbfk cdot ( boldsymbolrho_beta - boldsymbolrho_alpha ) \n      sum_n\n       f(epsilon_n) U_alpha n U_beta n^*whereas the pairing amplitude ist_alphabeta\n  =\n      frac1N\n      sum_mathbfk_alpha mathbfk_beta\n      e^-i mathbfk cdot ( boldsymbolrho_beta\n                        -boldsymbolrho_alpha ) \n      sum_n\n        f(epsilon_n )\n        U_alpha n\n        V_beta n^*"
+},
+
+{
+    "location": "basics/momentumspace/#Free-Energy-1",
+    "page": "Momentum Space Formulation",
+    "title": "Free Energy",
+    "category": "section",
+    "text": "The Hartree-Fock-Bogoliubov can be solved using only the self-consistent loop. There is, however, always a danger of being trapped in a local optimum. In order to get around this issue, we can compute the Hartree-Fock-Bogoliubov free energy of the solution, and compare them to make sure optimal solution has been found."
 },
 
 {
@@ -157,7 +173,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Momentum Space Formulation",
     "title": "Grand Potential",
     "category": "section",
-    "text": "E = mathrmtr left left( T + frac12 Gamma right) rho + frac12 Delta t^dagger right\n  = E_T + E_Gamma + E_Deltawherebeginalign\nE_T = mathrmtr left( T rho right) \nE_Gamma = frac12 mathrmtr left( Gamma rho        right) \nE_Delta = frac12 mathrmtr left( Delta t^dagger right)\nendalignIn momentum spacebeginalign\nT_ij^mathbfk = T_ij e^i mathbfk cdot boldsymbolrho_ij\nrho_ij = frac1N sum_mathbfk rho_ij^mathbfk e^-i mathbfk cdot boldsymbolrho_ij\nendalignThusbeginalign\nE_T\n  = sum_ij T_ij rho_ji\n   = sum_ij T_ij\n     frac1N sum_mathbfk rho_ji^mathbfk e^-i mathbfk cdot boldsymbolrho_ji \n   = frac1N sum_mathbfk sum_ij T_ij e^i mathbfk cdot boldsymbolrho_ij \n      rho_ji^mathbfk\n   = frac1N sum_ij\n      sum_mathbfk\n      T_ij^mathbfk\n      rho_ji^mathbfk\nendalignSimilarly for Γ and Δ:beginalign\nE_Gamma\n  = frac12 frac1N sum_ij\n    sum_mathbfk\n    Gamma_ij^mathbfk\n    rho_ji^mathbfk \nE_Delta\n  = frac12 frac1N sum_ij\n    sum_mathbfk\n    Delta_ij^mathbfk\n    t_ij^mathbfk ^* \nendalignHere however, Γ and Δ need to be consistent with ρ and t."
+    "text": "The energy of a HFB solution can be written asE = mathrmtr left left( T + frac12 Gamma right) rho + frac12 Delta t^dagger right\n  = E_T + E_Gamma + E_Deltawherebeginalign\nE_T = mathrmtr left( T rho right) \nE_Gamma = frac12 mathrmtr left( Gamma rho        right) \nE_Delta = frac12 mathrmtr left( Delta t^dagger right)\nendalignIn momentum spacebeginalign\nT_ij^mathbfk = T_ij e^i mathbfk cdot boldsymbolrho_ij \nrho_ij = frac1N sum_mathbfk rho_ij^mathbfk e^-i mathbfk cdot boldsymbolrho_ij\nendalignThus the expectation value of the kinetic term isbeginalign\nE_T\n  = sum_ij T_ij rho_ji\n   = sum_ij T_ij\n     frac1N sum_mathbfk rho_ji^mathbfk e^-i mathbfk cdot boldsymbolrho_ji \n   = frac1N sum_mathbfk sum_ij T_ij e^i mathbfk cdot boldsymbolrho_ij \n      rho_ji^mathbfk\n   = frac1N sum_ij\n      sum_mathbfk\n      T_ij^mathbfk\n      rho_ji^mathbfk\nendalignSimilarly for Γ and Δ:beginalign\nE_Gamma\n  = frac12 frac1N sum_ij\n    sum_mathbfk\n    Gamma_ij^mathbfk\n    rho_ji^mathbfk \nE_Delta\n  = frac12 frac1N sum_ij\n    sum_mathbfk\n    Delta_ij^mathbfk\n    t_ij^mathbfk ^* \nendalignOne thing to be careful is that, when using these formula, (Γ, Δ) need to be consistent with (ρ, t); in other words, one needs to use the Γ and Δ calculated from the ρ and t. If, on the other hand, one uses (ρ, t) calculated from the HFB Hamiltonian generated with (Γ, Δ), the calculated grand potential may, in fact, be lower than that of the true (HFB) ground state. Of course, this is not an issue once self-consistency is reached."
 },
 
 {
@@ -173,7 +189,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Topological Invariants",
     "title": "Topology",
     "category": "section",
-    "text": "Topology blah."
+    "text": "This module calculates the topological invariants of a hopping Hamiltonian."
 },
 
 {
@@ -185,11 +201,27 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "basics/topology/#Z2-Topological-Index-of-a-Time-Reversal-Invariant-System-1",
+    "location": "basics/topology/#Z-Topological-Index-of-a-Time-Reversal-Invariant-System-1",
     "page": "Topological Invariants",
-    "title": "Z2 Topological Index of a Time-Reversal-Invariant System",
+    "title": "Z₂ Topological Index of a Time-Reversal-Invariant System",
     "category": "section",
-    "text": "[Fu and Kane][Fu06]. [Fukui and Hatsugai][Fukui07].[Kohmoto85]: https://doi.org/10.1016/0003-4916%2885%2990148-4 \"Mahito Kohmoto, Topological invariant and the quantization of the Hall conductance, Ann. Phys. 160, 343 (1985)\"[Fukui05]: https://doi.org/10.1143/JPSJ.74.1674 \"Takahiro Fukui, Yasuhiro Hatsugai, and Hiroshi Suzuki, Chern Numbers in Discretized Brillouin Zone: Efficient Method of Computing (Spin) Hall Conductances, J. Phys. Soc. Jpn. 74, 1674 (2005).\"[Fu06]: https://doi.org/10.1103/PhysRevB.74.195312 \"Liang Fu and C. L. KAne, Time reversal polarization and a Z_2 adiabatic spin pump, Phys. Rev. B 74, 195312 (2006).\"[Fukui07]: https://doi.org/10.1143/JPSJ.76.053702 \"Takahiro Fukui and Yasuhiro Hatsugai, Quantum Spin Hall Effect in Three Dimensional Materials: Lattice Computation of Z2 Topological Invariants and Its Application to Bi and Sb, J. Phys. Soc. Jpn. 76, 053702 (2007).\""
+    "text": "[Fu and Kane][Fu06]. [Fukui and Hatsugai][Fukui07]."
+},
+
+{
+    "location": "basics/topology/#Issue-with-Superconductors-1",
+    "page": "Topological Invariants",
+    "title": "Issue with Superconductors",
+    "category": "section",
+    "text": ""
+},
+
+{
+    "location": "basics/topology/#References-1",
+    "page": "Topological Invariants",
+    "title": "References",
+    "category": "section",
+    "text": "Mahito Kohmoto, Topological invariant and the quantization of the Hall conductance, Ann. Phys. 160, 343 (1985). Kohmoto85\nTakahiro Fukui, Yasuhiro Hatsugai, and Hiroshi Suzuki, Chern Numbers in Discretized Brillouin Zone: Efficient Method of Computing (Spin) Hall Conductances, J. Phys. Soc. Jpn. 74, 1674 (2005). Fukui05\nLiang Fu and C. L. KAne, Time reversal polarization and a Z_2 adiabatic spin pump, Phys. Rev. B 74, 195312 (2006). Fu06\nTakahiro Fukui and Yasuhiro Hatsugai, Quantum Spin Hall Effect in Three Dimensional Materials: Lattice Computation of Z2 Topological Invariants and Its Application to Bi and Sb, J. Phys. Soc. Jpn. 76, 053702 (2007). Fukui07"
 },
 
 {
@@ -313,11 +345,19 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "guide/linearizedgap/#LinearizedGap-1",
+    "location": "guide/linearizedgap/#LinearizedGap:-Linearized-Gap-Equation-1",
     "page": "Linearized Gap Equation",
-    "title": "LinearizedGap",
+    "title": "LinearizedGap: Linearized Gap Equation",
     "category": "section",
-    "text": "Linearized gap equation. Refer to basics."
+    "text": "This module produces the tree-level interaction kernel in the particle-particle channel."
+},
+
+{
+    "location": "guide/linearizedgap/#Usage-1",
+    "page": "Linearized Gap Equation",
+    "title": "Usage",
+    "category": "section",
+    "text": "solver = HFBSolver(...)\nkernel = linearizedpairingkernel(solver)"
 },
 
 {
@@ -337,19 +377,19 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "guide/topology/#Chern-1",
+    "location": "guide/topology/#Chern-Number-1",
     "page": "Topology",
-    "title": "Chern",
+    "title": "Chern Number",
     "category": "section",
-    "text": ""
+    "text": "To compute the total Chern number of a set of bandsunitcell = make_unitcell(...)\nhoppings = [...]\nn1 = 256\nn2 = 256\nselectbands = [1,2,3]\nch = chernnumber(unitcell, hoppings, n1, n2, selectband; tol=tol)which breaks up the two-dimensional"
 },
 
 {
-    "location": "guide/topology/#Z2-1",
+    "location": "guide/topology/#Z2-Index-1",
     "page": "Topology",
-    "title": "Z2",
+    "title": "Z2 Index",
     "category": "section",
-    "text": "Z2 index of time-reversal invariant topological insulator/superconductor.z2index(...)"
+    "text": "Z2 index of time-reversal invariant topological insulator/superconductor.z2 = z2index(...)"
 },
 
 {
@@ -357,6 +397,14 @@ var documenterSearchIndex = {"docs": [
     "page": "Example",
     "title": "Example",
     "category": "page",
+    "text": ""
+},
+
+{
+    "location": "guide/example/#Example-1",
+    "page": "Example",
+    "title": "Example",
+    "category": "section",
     "text": ""
 },
 
@@ -553,6 +601,14 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Lattice.linpath-Tuple{Array{Array{Float64,1},1}}",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.Lattice.linpath",
+    "category": "method",
+    "text": "momentumpath\n\nGenerate a list of momenta\n\nArguments\n\nanchorpoints\n(Optional) nseg - number of points in each segment\n\n\n\n\n\n"
+},
+
+{
     "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Lattice.make_unitcell-Tuple{AbstractArray{#s28,2} where #s28<:AbstractFloat}",
     "page": "Internals",
     "title": "HartreeFockBogoliubov.Lattice.make_unitcell",
@@ -574,6 +630,14 @@ var documenterSearchIndex = {"docs": [
     "title": "HartreeFockBogoliubov.Lattice.momentumgrid",
     "category": "method",
     "text": "momentumgrid\n\nGenerate an n-dimensional grid of momenta of given shape\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Lattice.momentumpath-Tuple{UnitCell,Array{Array{Float64,1},1}}",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.Lattice.momentumpath",
+    "category": "method",
+    "text": "momentumpath\n\nThe anchorpoints are given in units of the reciprocal lattice vectors.\n\n\n\n\n\n"
 },
 
 {
@@ -677,7 +741,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Internals",
     "title": "HartreeFockBogoliubov.Spec.HoppingOffdiagonal",
     "category": "type",
-    "text": "HoppingOffdiagonal{C<:Number}\n\nRepresents\n\n  t c_i^* c_j + t^* c_j^* c_i\n\nt, i, j and the unitcell-coordinates Ri and Rj are stored. Require that (i, Ri) <= (j, Rj)\n\nMembers\n\namplitude :: C\ni, j ::T\nRi, Rj ::Vector{Int}\n\n\n\n\n\n"
+    "text": "HoppingOffdiagonal{C<:Number}\n\nRepresents\n\n  t c_i^* c_j + t^* c_j^* c_i\n\nt, i, j and the unitcell-coordinates Ri and Rj are stored. Require that (i, Ri) <= (j, Rj)\n\nMembers\n\namplitude ::C\ni, j ::T\nRi, Rj ::Vector{Int}\n\n\n\n\n\n"
 },
 
 {
@@ -857,7 +921,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Topology.isvalidtimereversalmatrix-Tuple{AbstractArray{#s69,2} where #s69<:Number}",
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Topology.isvalidtimereversalmatrix-Tuple{AbstractArray{#s70,2} where #s70<:Number}",
     "page": "Internals",
     "title": "HartreeFockBogoliubov.Topology.isvalidtimereversalmatrix",
     "category": "method",
@@ -917,7 +981,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Internals",
     "title": "HartreeFockBogoliubov.Topology.z2index",
     "category": "method",
-    "text": "z2index\n\nCompute Z2 index of time-reversal-invariant Hamiltonian.\n\nArguments\n\nuc::UnitCell{O}\nhops::AbstractVector{Hopping}\ntimereversal::AbstractMatrix\nn1 ::Integer\nn2 ::Integer\nselectpairs::AbstractVector{<:Integer}\n\nOptional Arguments\n\ntol ::Real = sqrt(eps(Float64))\n\nReturns\n\n(The Z2 index,  max| Hₖ - T⁻¹HₖT | for k in TRIMs)\n\n\n\n\n\n"
+    "text": "z2index\n\nCompute Z₂ index of time-reversal-invariant Hamiltonian.\n\nArguments\n\nuc::UnitCell{O}\nhops::AbstractVector{Hopping}\ntimereversal::AbstractMatrix\nn1 ::Integer\nn2 ::Integer\nselectpairs::AbstractVector{<:Integer}\n\nOptional Arguments\n\ntol ::Real = sqrt(eps(Float64))\n\nReturns\n\n(The Z2 index,  max| Hₖ - T⁻¹HₖT | for k in TRIMs)\n\n\n\n\n\n"
 },
 
 {
@@ -977,7 +1041,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.HFBSolver-Union{Tuple{O}, Tuple{FullHamiltonian{O},AbstractArray{#s70,1} where #s70<:Integer,Real}} where O",
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.HFBSolver-Union{Tuple{O}, Tuple{FullHamiltonian{O},AbstractArray{#s71,1} where #s71<:Integer,Real}} where O",
     "page": "Internals",
     "title": "HartreeFockBogoliubov.HFB.HFBSolver",
     "category": "method",
@@ -1241,7 +1305,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.LinearizedGap.linearizedpairingkernel-Union{Tuple{HFBSolver{O}}, Tuple{O}} where O",
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.LinearizedGap.linearizedpairingkernel-Tuple{HartreeFockBogoliubov.HFB.HFBSolver}",
     "page": "Internals",
     "title": "HartreeFockBogoliubov.LinearizedGap.linearizedpairingkernel",
     "category": "method",
