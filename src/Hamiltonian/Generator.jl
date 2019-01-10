@@ -73,7 +73,7 @@ function hopping_inplace(uc ::UnitCell{O},
                          hops ::AbstractVector{Hopping}) where {O}
     hops_diag = HoppingDiagonal[]
     hops_offdiag = HoppingOffdiagonal[]
-    for hop in hops:
+    for hop in hops
         if isa(hop, HoppingDiagonal)
             push!(hops_diag, hop)
         elseif isa(hop, HoppingOffdiagonal)
