@@ -1,13 +1,10 @@
-if VERSION < v"0.7-"
-    using MicroLogging
-end
 import DataStructures: OrderedDict
 using LinearAlgebra
 
 """
 z2index
 
-Compute Z2 index of time-reversal-invariant Hamiltonian.
+Compute Z₂ index of time-reversal-invariant Hamiltonian.
 
 # Arguments
 * `uc::UnitCell{O}`

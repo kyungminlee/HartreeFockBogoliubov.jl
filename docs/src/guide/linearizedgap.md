@@ -1,4 +1,10 @@
-# LinearizedGap
+# LinearizedGap: Linearized Gap Equation
 
-Linearized gap equation.
-Refer to basics.
+This module produces the tree-level interaction kernel in the particle-particle channel.
+
+## Usage
+
+```
+solver = HFBSolver(...)
+kernel = linearizedpairingkernel(solver)
+```

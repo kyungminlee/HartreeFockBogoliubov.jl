@@ -50,9 +50,7 @@ function hopping_inplace(uc ::UnitCell{O}, hop::HoppingOffdiagonal{C}) where {O,
 end
 
 
-"""
-    hopping_inplace
-"""
+#=
 function hopping_inplace(uc ::UnitCell{O},
                          hops ::AbstractVector{Hopping}) where {O}
     ndim = dimension(uc)
@@ -66,7 +64,31 @@ function hopping_inplace(uc ::UnitCell{O},
         return out
     end
 end
+=#
 
+"""
+    hopping_inplace
+"""
+function hopping_inplace(uc ::UnitCell{O},
+                         hops ::AbstractVector{Hopping}) where {O}
+    hops_diag = HoppingDiagonal[]
+    hops_offdiag = HoppingOffdiagonal[]
+    for hop in hops
+        if isa(hop, HoppingDiagonal)
+            push!(hops_diag, hop)
+        elseif isa(hop, HoppingOffdiagonal)
+            push!(hops_offdiag, hop)
+        else
+            assert(false, "Hopping should be either diagonal or offdiagonal")
+        end
+    end
+    func_diag = hopping_inplace(uc, hops_diag)
+    func_offdiag = hopping_inplace(uc, hops_offdiag)
+    function(momentum ::AbstractVector{Float64}, out::AbstractArray{ComplexF64, 2})
+        func_diag(momentum, out)
+        func_offdiag(momentum, out)
+    end
+end
 
 """
     hopping_inplace

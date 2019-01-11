@@ -11,7 +11,7 @@ export dictify, objectify
 dictify(obj::Number) = obj
 dictify(obj::AbstractString) = obj
 dictify(obj::AbstractArray) = [dictify(x) for x in obj]
-dictify(obj::Dict) = Dict(dictify(k) => dictify(v) for (k, v) in obj)
+dictify(obj::AbstractDict) = OrderedDict(dictify(k) => dictify(v) for (k, v) in obj)
 dictify(obj::Symbol) = OrderedDict("type" => "Symbol", "value" => string(obj))
 
 function dictify(obj::Tuple)
@@ -175,7 +175,7 @@ objectify(obj::AbstractArray{T,N}) where {T,N} = begin
     return convert(AbstractArray{DType,N}, out)
 end
 
-function objectify(obj::Dict)
+function objectify(obj::AbstractDict)
     ks = keys(obj)
     return OrderedDict(objectify(k) => objectify(obj[k]) for k in ks)
 end

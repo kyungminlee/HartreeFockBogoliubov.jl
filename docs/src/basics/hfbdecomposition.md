@@ -55,6 +55,7 @@ H &= \sum_{ij} T_{ij} c_{i}^{*} c_{j}
 \end{align}
 ```
 
+
 ## Diagonal Interaction
 
 Let us first consider the *diagonal* interaction of the form
@@ -70,7 +71,7 @@ which is the Hermitian conjugate of itself. Following [Goodman][Goodman80], this
 | V(2112) = -V | Γ(21) = -V ρ(21) | Δ(21) = -½ V t(12) |
 | V(2121) =  V | Γ(22) =  V ρ(11) | Δ(21) =  ½ V t(21) |
 
-Here, the equal sign '=' does not indicate equality. Rather, it refers to the contribution of the right hand side to the mean field on the left hand side. Some of the mean fields are redundant, as required by the Hermiticity of the Hamiltonian. Overall, we end up with
+Here, the equal sign '=' does not indicate equality; it refers to the contribution of the right hand side to the mean field on the left hand side. Some of the mean fields are redundant, as required by the Hermiticity of the Hamiltonian. Overall, we end up with
 ```math
 \begin{align}
 \Gamma_{11} &=  V \rho_{22} \\
@@ -86,7 +87,9 @@ in the particle-hole channel, and
 ```
 in the particle-particle channel.
 
+
 ## Offdiagonal Interaction
+
 Now let us consider the *offdiagonal* interaction term of the form
 ```math
   V c_{1}^{*} c_{2}^{*} c_{4} c_{3}.
@@ -95,9 +98,9 @@ Given this term in the interaction, it is implied that its Hermitian conjugate
 ```math
   V^{*} c_{3}^{*} c_{4}^{*} c_{2} c_{1}.
 ```
-is also included in the Hamiltonian. The two terms (the explicit term and its Hermitian conjugate) decomposes into
+is also included in the Hamiltonian. The two terms (the explicit term and its Hermitian conjugate) decompose into
 
-| Interaction   | PH Channel       | PP-Channel         |
+| Interaction   | PH Channel       | PP Channel         |
 |:------------- |:---------------- |:------------------ |
 | V(1234) =  V  | Γ(13) =  V ρ(42) | Δ(12) =  ½ V t(34) |
 | V(1243) = -V  | Γ(14) = -V ρ(32) | Δ(12) = -½ V t(43) |
@@ -109,7 +112,7 @@ is also included in the Hamiltonian. The two terms (the explicit term and its He
 | V(4312) = -V* | Γ(41) = -V ρ(23) | Δ(43) = -½ V t(12) |
 | V(4321) =  V* | Γ(42) =  V ρ(13) | Δ(43) =  ½ V t(21) |
 
-As we have mentioned above for the diagonal interaction terms, this table contains redundant mean fields. Overwall. we have
+As we have mentioned above for the diagonal interaction terms, this table contains redundant mean fields. Overall. we have
 ```math
 \begin{align}
 \Gamma_{13} &=  V  \rho_{24}^* \\

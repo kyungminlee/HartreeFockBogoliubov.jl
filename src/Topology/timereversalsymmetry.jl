@@ -4,9 +4,6 @@ export isvalidtimereversalmatrix
 export istimereversal, iscanonicaltimereversalinvariant, timereversalindexgrid, degenerategroups
 export kramerpairup!, kramerpairupblock!
 
-if VERSION < v"0.7-"
-    using MicroLogging
-end
 using LinearAlgebra
 
 """
