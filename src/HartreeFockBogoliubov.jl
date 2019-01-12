@@ -15,6 +15,8 @@ include("HFB/HFB.jl")
 
 include("Util/Util.jl")
 
+include("Symmetry/Symmetry.jl")
+
 include("Topology/Topology.jl")
 
 include("LinearizedGap/LinearizedGap.jl")

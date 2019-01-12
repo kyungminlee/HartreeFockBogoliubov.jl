@@ -1,10 +1,16 @@
-
 export isvalidtimereversalmatrix
-
-export istimereversal, iscanonicaltimereversalinvariant, timereversalindexgrid, degenerategroups
-export kramerpairup!, kramerpairupblock!
+export istimereversal,
+       iscanonicaltimereversalinvariant,
+       timereversalindexgrid,
+       degenerategroups
+export kramerpairup!,
+       kramerpairupblock!
 
 using LinearAlgebra
+
+using ..Lattice
+using ..Spec
+
 
 """
     isvalidtimereversalmatrix
@@ -40,7 +46,6 @@ function istimereversal(a ::AbstractMatrix{C2}, theta ::AbstractMatrix{C1}) wher
   return all(isapprox.( a - conj(adjoint(theta) * a * theta), 0
                           ; atol=sqrt(eps(Float64))))
 end
-
 
 
 function iscanonicaltimereversalinvariant(
@@ -294,4 +299,14 @@ function kramerpairupblock!(a ::AbstractMatrix{C1},
     for i in 1:m
         a[:, i] = vectorout[i]
     end
+end
+
+
+
+
+
+mutable struct TopologicalInvariantSolver
+    unitcell ::UnitCell
+    hoppings ::AbstractVector{Hopping}
+    shape ::Vector{Int}
 end
