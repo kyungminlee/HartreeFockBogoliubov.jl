@@ -1,7 +1,10 @@
-# HartreeFockBogoliubov.jl
+# HartreeFockBogoliubov
 
-[![Build Status][travis-img]][travis-url]
-[![Code Coverage][codecov-img]][codecov-url]
+*A Hartree-Fock-Bogoliubov solver for Julia.*
+
+| **Documentation** | **Build Status** |
+|:-----------------:|:----------------:|
+| [![**STABLE**][docs-stable-img]][docs-stable-url] [![**DEV**][docs-dev-img]][docs-dev-url] | [![Build Status][travis-img]][travis-url] [![Code Coverage][codecov-img]][codecov-url] |
 
 ## Overview
 
@@ -14,10 +17,6 @@ HartreeFockBogoliubov.jl is currently not registered in the [Julia Package Listi
 add https://github.com/kyungminlee/HartreeFockBogoliubov.jl
 ```
 to Julia's package manager.
-
-## Documentation
-
-[![**STABLE**][docs-stable-img]][docs-stable-url] [![**DEV**][docs-dev-img]][docs-dev-url]
 
 [docs-stable-img]: https://img.shields.io/badge/docs-stable-blue.svg
 [docs-stable-url]: http://kyungminlee.org/HartreeFockBogoliubov.jl/stable
