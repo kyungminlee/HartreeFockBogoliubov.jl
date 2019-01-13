@@ -237,7 +237,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Topological Invariants",
     "title": "References",
     "category": "section",
-    "text": "Mahito Kohmoto, Topological invariant and the quantization of the Hall conductance, Ann. Phys. 160, 343 (1985). Kohmoto85\nTakahiro Fukui, Yasuhiro Hatsugai, and Hiroshi Suzuki, Chern Numbers in Discretized Brillouin Zone: Efficient Method of Computing (Spin) Hall Conductances, J. Phys. Soc. Jpn. 74, 1674 (2005). Fukui05\nLiang Fu and C. L. KAne, Time reversal polarization and a Z_2 adiabatic spin pump, Phys. Rev. B 74, 195312 (2006). Fu06\nTakahiro Fukui and Yasuhiro Hatsugai, Quantum Spin Hall Effect in Three Dimensional Materials: Lattice Computation of Z2 Topological Invariants and Its Application to Bi and Sb, J. Phys. Soc. Jpn. 76, 053702 (2007). Fukui07"
+    "text": "Mahito Kohmoto, Topological invariant and the quantization of the Hall conductance, Ann. Phys. 160, 343 (1985). Kohmoto85\nTakahiro Fukui, Yasuhiro Hatsugai, and Hiroshi Suzuki, Chern Numbers in Discretized Brillouin Zone: Efficient Method of Computing (Spin) Hall Conductances, J. Phys. Soc. Jpn. 74, 1674 (2005). Fukui05\nLiang Fu and C. L. Kane, Time reversal polarization and a Z_2 adiabatic spin pump, Phys. Rev. B 74, 195312 (2006). Fu06\nTakahiro Fukui and Yasuhiro Hatsugai, Quantum Spin Hall Effect in Three Dimensional Materials: Lattice Computation of Z2 Topological Invariants and Its Application to Bi and Sb, J. Phys. Soc. Jpn. 76, 053702 (2007). Fukui07"
 },
 
 {
@@ -937,14 +937,6 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Topology.isvalidtimereversalmatrix-Tuple{AbstractArray{#s70,2} where #s70<:Number}",
-    "page": "Internals",
-    "title": "HartreeFockBogoliubov.Topology.isvalidtimereversalmatrix",
-    "category": "method",
-    "text": "isvalidtimereversalmatrix\n\nTest whether the given matrix is a valid unitary matrix for the time reversal operation.\n\n```math\nT = U ⋅ K\n```\n\n``U`` must satisfy the two conditions:\n1. ``U U^{\\dagger} = 1`` (from unitarity of ``U``)\n2. ``U = - U^{\\mathsf{T}}`` (from `T^2 = -1`)\n\n\n\n\n\n"
-},
-
-{
     "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Topology.squarify-Union{Tuple{FullHamiltonian{O}}, Tuple{O}} where O",
     "page": "Internals",
     "title": "HartreeFockBogoliubov.Topology.squarify",
@@ -969,27 +961,11 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Topology.timereversalindexgrid-Tuple{Integer,Integer}",
-    "page": "Internals",
-    "title": "HartreeFockBogoliubov.Topology.timereversalindexgrid",
-    "category": "method",
-    "text": "generate k-space grid (which has (2 n1, 2 n2) points TOTAL in the Brillouin zone)\n\nExample\n\nWhen n1 = 4, n2 = 3, this function returns an OrderedDict that represents the following structure\n\ni2|\n  |\n5 | -i -i -i -i -i -i -i -i\n4 | -i -i -i -i -i -i -i -i\n3 | 0h +h +h +h 0h -h -h -h\n2 | +i +i +i +i +i +i +i +i\n1 | +i +i +i +i +i +i +i +i\n0 | 0z +z +z +z 0z -z -z -z\n--+----------------------------\n  |  0  1  2  3  4  5  6  7  i1\n\nwhere 0z, +z, -z are represented respectively by :TRIZERO, :POSZERO, and :NEGZERO, and   0h, +h, -h by :TRIHALF, :POSHALF, and :NEGHALF, and   +i, -i by :POSINT, :NEGINT.\n\n\n\n\n\n"
-},
-
-{
     "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Topology.chernnumber-Union{Tuple{O}, Tuple{UnitCell{O},AbstractArray{Union{HoppingDiagonal, HoppingOffdiagonal},1},Integer,Integer,AbstractArray{#s30,1} where #s30<:Integer}} where O",
     "page": "Internals",
     "title": "HartreeFockBogoliubov.Topology.chernnumber",
     "category": "method",
     "text": "chernnumber\n\nCompute chern number of the band structure defined by the hoppings and the selected bands.\n\n\n\n\n\n"
-},
-
-{
-    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Topology.getnambuphase-Union{Tuple{O}, Tuple{UnitCell{O},Function,AbstractArray{#s33,2} where #s33<:Number,Integer,Integer}} where O",
-    "page": "Internals",
-    "title": "HartreeFockBogoliubov.Topology.getnambuphase",
-    "category": "method",
-    "text": "Get the phase of hamiltonian function.     Returns nan if no phase\n\n\n\n\n\n"
 },
 
 {
