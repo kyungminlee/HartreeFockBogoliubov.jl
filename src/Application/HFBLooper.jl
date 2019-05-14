@@ -3,11 +3,9 @@ module HFBLooper
 export detectresult
 export runloop
 
-
 using Dates
 using JSON
 using DataStructures
-#using ArgParse
 
 using ProgressMeter
 using HartreeFockBogoliubov
@@ -117,8 +115,6 @@ function runloop(solver ::HFBSolver;
         (i, n) -> nothing
     end
 
-    @info current_hfbfield.Δ
-
     if batchrun_offset == 0 #TODO WHY?
         verbose && @info "Warming up"
         (current_hfbamplitude, current_hfbfield) = loop(solver, current_hfbfield, nwarmup;
@@ -146,11 +142,19 @@ function runloop(solver ::HFBSolver;
 
         (E, S, Ω) = hfbfreeenergy(solver, current_hfbfield; update=update)
         if verbose
+            max_ρ = isempty(current_hfbamplitude.ρ) ? 0.0 : maximum(abs.(current_hfbamplitude.ρ))
+            max_t = isempty(current_hfbamplitude.t) ? 0.0 : maximum(abs.(current_hfbamplitude.t))
+            max_Γ = isempty(current_hfbfield.Γ) ? 0.0 : maximum(abs.(current_hfbfield.Γ))
+            max_Δ = isempty(current_hfbfield.Δ) ? 0.0 : maximum(abs.(current_hfbfield.Δ))
             @info("Grand potential = $Ω")
             @info("max(|Δρ|) = $maxdiff_ρ")
             @info("max(|Δt|) = $maxdiff_t")
             @info("max(|ΔΓ|) = $maxdiff_Γ")
             @info("max(|ΔΔ|) = $maxdiff_Δ")
+            @info("max(|ρ|) = $max_ρ")
+            @info("max(|t|) = $max_t")
+            @info("max(|Γ|) = $max_Γ")
+            @info("max(|Δ|) = $max_Δ")
         end
 
         if isfile(joinpath(outpath, "result.json"))

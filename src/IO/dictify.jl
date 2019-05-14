@@ -83,8 +83,10 @@ function dictify(hamspec::Spec.FullHamiltonian{O}) where {O}
     OrderedDict(
         "type" => "FullHamiltonian",
         "unitcell" => dictify(hamspec.unitcell),
-        "hoppings" => dictify(hamspec.hoppings),
-        "interactions" => dictify(hamspec.interactions)
+        "hoppings_diagonal" => dictify(hamspec.hoppings_diagonal),
+        "hoppings_offdiagonal" => dictify(hamspec.hoppings_offdiagonal),
+        "interactions_diagonal" => dictify(hamspec.interactions_diagonal),
+        "interactions_offdiagonal" => dictify(hamspec.interactions_offdiagonal),
         )
 end
 
@@ -112,7 +114,8 @@ function dictify(ham::HFB.HFBHamiltonian{O}) where {O}
     OrderedDict(
         "type" => "HFBHamiltonian",
         "unitcell" => dictify(ham.unitcell),
-        "hoppings" => dictify(ham.hoppings),
+        "hoppings_diagonal" => dictify(ham.hoppings_diagonal),
+        "hoppings_offdiagonal" => dictify(ham.hoppings_offdiagonal),
         "particle_hole_interactions" => dictify(ham.particle_hole_interactions),
         "particle_particle_interactions" => dictify(ham.particle_particle_interactions),
         )
@@ -122,7 +125,8 @@ function dictify(computer::HFB.HFBComputer{O}) where {O}
     OrderedDict(
         "type" => "HFBComputer",
         "unitcell" => dictify(computer.unitcell),
-        "hoppings" => dictify(computer.hoppings),
+        "hoppings_diagonal" => dictify(computer.hoppings_diagonal),
+        "hoppings_offdiagonal" => dictify(computer.hoppings_offdiagonal),
         "temperature" => computer.temperature,
         "rho_registry" => dictify(computer.ρ_registry),
         "t_registry"   => dictify(computer.t_registry),
