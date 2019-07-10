@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Hartree-Fock-Bogoliubov Theory · HartreeFockBogoliubov.jl</title><link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.min.css" rel="stylesheet" type="text/css"/><link href="https://fonts.googleapis.com/css?family=Lato|Roboto+Mono" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.2.0/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link href="../../assets/documenter.css" rel="stylesheet" type="text/css"/></head><body><nav class="toc"><h1>HartreeFockBogoliubov.jl</h1><select id="version-selector" onChange="window.location.href=this.value" style="visibility: hidden"></select><form class="search" id="search-form" action="../../search/"><input id="search-query" name="q" type="text" placeholder="Search docs"/></form><ul><li><a class="toctext" href="../../">Home</a></li><li><span class="toctext">Basic Theory</span><ul><li class="current"><a class="toctext" href>Hartree-Fock-Bogoliubov Theory</a><ul class="internal"></ul></li><li><a class="toctext" href="../hfbequation/">Hartree-Fock-Bogoliubov Equations</a></li><li><a class="toctext" href="../hfbdecomposition/">Hartree-Fock-Bogoliubov Decomposition</a></li><li><a class="toctext" href="../linearizedgapequation/">Linearized Gap Equation</a></li><li><a class="toctext" href="../momentumspace/">Momentum Space Formulation</a></li><li><a class="toctext" href="../topology/">Topological Invariants</a></li></ul></li><li><span class="toctext">User Guide</span><ul><li><a class="toctext" href="../../guide/lattice/">Lattice</a></li><li><a class="toctext" href="../../guide/hamiltonian/">Hamiltonian</a></li><li><a class="toctext" href="../../guide/hfb/">HFB</a></li><li><a class="toctext" href="../../guide/linearizedgap/">Linearized Gap Equation</a></li><li><a class="toctext" href="../../guide/topology/">Topology</a></li><li><a class="toctext" href="../../guide/example/">Example</a></li></ul></li><li><a class="toctext" href="../../internals/">Internals</a></li></ul></nav><article id="docs"><header><nav><ul><li>Basic Theory</li><li><a href>Hartree-Fock-Bogoliubov Theory</a></li></ul><a class="edit-page" href="https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/master/docs/src/basics/hartreefockbogoliubov.md"><span class="fa"></span> Edit on GitHub</a></nav><hr/><div id="topbar"><span>Hartree-Fock-Bogoliubov Theory</span><a class="fa fa-bars" href="#"></a></div></header><h1><a class="nav-anchor" id="Hartree-Fock-Bogoliubov-Theory-1" href="#Hartree-Fock-Bogoliubov-Theory-1">Hartree-Fock-Bogoliubov Theory</a></h1><p>This document contains basics of Hartree-Fock-Bogoliubov Theory. We will follow [Goodman, 1980].</p><div>\[  H =  \sum_{ij} T_{ij} c_{i}^{*} c_{j}
+     + \frac{1}{4} \sum_{ijkl} V_{ijkl} c_{i}^{*} c_{j}^{*} c_{l} c_{k}\]</div><p>The finite-temperature properties of the system described by the above Hamiltonian can be computed using the density matrix</p><div>\[\begin{align}
+D &amp;= \frac{e^{-\beta H}}{Z} \\
+Z &amp;= \mathrm{Tr} e^{-\beta H}
+\end{align}\]</div><p>In Hartree-Fock-Bogoliubov theory, we approximate the Hamiltonian <span>$H$</span> by a non-interacting Hamiltonian of &quot;quasiparticles&quot;</p><div>\[H_{\text{HFB}} = E_0 + \sum_{n} E_{n} a_{n}^{*} a_{n}\]</div><p>The quasiparticle operator <span>$a$</span> is related to <span>$c$</span> in the following way:</p><div>\[c_{i} = \sum_{n} \left( U_{in} a_{n} + V_{in} a_{n}^{*} \right)\]</div><p>The HFB density matrix is given by</p><div>\[\begin{align}
+  D_{\text{HFB}} &amp;= \frac{1}{Z_{\text{HFB}}} e^{-\beta \sum_{n} E_{n} \hat{n}_{n} } \\
+  Z_{\text{HFB}} &amp;= \mathrm{Tr} e^{-\beta \sum_{n} E_{n} \hat{n}_{n} }
+\end{align}\]</div><p>where</p><div>\[\hat{n}_{n} = a_{n}^{*} a_{n}\]</div><p>is the quasiparticle number operator.</p><p>The HFB partition function can be calculated:</p><div>\[Z_{\text{HFB}} = \prod_{n} \left( 1 + e^{-\beta E_{n}} \right)\]</div><p>and the density matrix is given in terms of the quasiparticle number operator</p><div>\[D_{\text{HFB}} = Z_{\text{HFB}}^{-1}
+\prod_{n}
+\left[
+  e^{-\beta E_{n}} \hat{n}_{n} + (1 - \hat{n}_{n})
+\right]
+= \prod_{n} \left[ f_{n} \hat{n}_{n} + (1-f_{n}) (1 - \hat{n}_{n}) \right]\]</div><p>where</p><div>\[f_{n} = f(E_n) = \frac{1}{1 + e^{\beta E_{n}}}\]</div><p>is the Fermi-Dirac distribution function for the nth quasiparticle</p><p>Single-quasparticle density matrix <span>$\overline{\rho}$</span>  and pairing tensor <span>$\overline{t}$</span></p><div>\[\begin{align}
+\overline{\rho}_{ij}
+  &amp;= \left\langle a_{j}^{*} a_{i} \right\rangle
+   = \mathrm{Tr} \left( D a_{j}^{*} a_{i} \right) \\
+\overline{t}_{ij}
+  &amp;= \left\langle a_{j} a_{i} \right\rangle
+   = \mathrm{Tr} \left( D a_{j} a_{i} \right)
+\end{align}\]</div><p>Within HFB,</p><div>\[\begin{align}
+  \overline{\rho}_{ij} = \delta_{ij} f_{i} \\
+  \overline{t}_{ij} = 0
+\end{align}\]</div><p>The single-particle density matrix and pairing tensor are</p><div>\[\begin{align}
+\rho_{ij}
+  &amp;= \left\langle c_{j}^{*} c_{i} \right\rangle
+  = \mathrm{Tr} \left( D c_{j}^{*} c_{i} \right) \\
+t_{ij}
+  &amp;= \left\langle c_{j} c_{i} \right\rangle
+  = \mathrm{Tr} \left( D c_{j} c_{i} \right)
+\end{align}\]</div><div>\[\begin{align}
+  \rho &amp;= U f U^{\dagger} + V (1-f) V^{\dagger} \\
+  t    &amp;= U f V^{\intercal} + V (1-f) U^{\intercal}
+\end{align}\]</div><p>where <span>$f_{ij} = \delta_{ij} f_{i}$</span>.</p><h3><a class="nav-anchor" id="Expectation-Values-1" href="#Expectation-Values-1">Expectation Values</a></h3><p>Wick&#39;s theorem</p><div>\[\left\langle c_{i}^{*} c_{j}^{*} c_{l} c_{k} \right\rangle
+=
+\left\langle c_{i}^{*} c_{k} \right\rangle
+\left\langle c_{j}^{*} c_{l} \right\rangle
+- \left\langle c_{i}^{*} c_{l} \right\rangle
+\left\langle c_{j}^{*} c_{k} \right\rangle
++ \left\langle c_{i}^{*} c_{j}^{*} \right\rangle
+\left\langle c_{l} c_{k} \right\rangle\]</div><div>\[\begin{align}
+E &amp;= \mathrm{tr}
+\left[
+  \left( T + \frac{1}{2} \Gamma \right) \rho + \frac{1}{2} \Delta t^{\dagger}
+\right] \\
+S &amp;= - k_B \sum_{i} \left[ f_{i} \ln f_{i} + (1-f_{i}) \ln (1-f_i)\right] \\
+N &amp;= \mathrm{tr} \rho
+\end{align}\]</div><div>\[\begin{align}
+\Gamma_{ij} &amp;= \sum_{kl} V_{ikjl} \rho_{lk} \\
+\Delta_{ij} &amp;= \frac{1}{2} \sum_{kl} V_{ijkl} t_{kl} \\
+\end{align}\]</div><p>The grand potential</p><div>\[\Omega
+= \sum_{ij} (T - \mu)_{ij} \rho_{ji}
++ \frac{1}{2} \sum_{ijkl} V_{ijkl} \rho_{lj} \rho_{ki}
++ \frac{1}{4} \sum_{ijkl} V_{ijkl} t_{ij}^{*} t_{kl}
++ k_B T \sum_{i} \left[ f_{i} \ln f_{i} + (1-f_{i}) \ln (1-f_i)\right]\]</div><hr/><p>References</p><p>Alan Goodman, &quot;Finite-Temperature Hartree-Fock-Bogoliubov Theory,&quot; LBNL Paper LBL-11151 (1980). <a href="http://escholarship.org/uc/item/3xm630cr">LINK</a></p><footer><hr/><a class="previous" href="../../"><span class="direction">Previous</span><span class="title">Home</span></a><a class="next" href="../hfbequation/"><span class="direction">Next</span><span class="title">Hartree-Fock-Bogoliubov Equations</span></a></footer></article></body></html>

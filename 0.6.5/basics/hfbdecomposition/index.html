@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Hartree-Fock-Bogoliubov Decomposition · HartreeFockBogoliubov.jl</title><link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.min.css" rel="stylesheet" type="text/css"/><link href="https://fonts.googleapis.com/css?family=Lato|Roboto+Mono" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.2.0/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link href="../../assets/documenter.css" rel="stylesheet" type="text/css"/></head><body><nav class="toc"><h1>HartreeFockBogoliubov.jl</h1><select id="version-selector" onChange="window.location.href=this.value" style="visibility: hidden"></select><form class="search" id="search-form" action="../../search/"><input id="search-query" name="q" type="text" placeholder="Search docs"/></form><ul><li><a class="toctext" href="../../">Home</a></li><li><span class="toctext">Basic Theory</span><ul><li><a class="toctext" href="../hartreefockbogoliubov/">Hartree-Fock-Bogoliubov Theory</a></li><li><a class="toctext" href="../hfbequation/">Hartree-Fock-Bogoliubov Equations</a></li><li class="current"><a class="toctext" href>Hartree-Fock-Bogoliubov Decomposition</a><ul class="internal"><li><a class="toctext" href="#Diagonal-Interaction-1">Diagonal Interaction</a></li><li><a class="toctext" href="#Offdiagonal-Interaction-1">Offdiagonal Interaction</a></li></ul></li><li><a class="toctext" href="../linearizedgapequation/">Linearized Gap Equation</a></li><li><a class="toctext" href="../momentumspace/">Momentum Space Formulation</a></li><li><a class="toctext" href="../topology/">Topological Invariants</a></li></ul></li><li><span class="toctext">User Guide</span><ul><li><a class="toctext" href="../../guide/lattice/">Lattice</a></li><li><a class="toctext" href="../../guide/hamiltonian/">Hamiltonian</a></li><li><a class="toctext" href="../../guide/hfb/">HFB</a></li><li><a class="toctext" href="../../guide/linearizedgap/">Linearized Gap Equation</a></li><li><a class="toctext" href="../../guide/topology/">Topology</a></li><li><a class="toctext" href="../../guide/example/">Example</a></li></ul></li><li><a class="toctext" href="../../internals/">Internals</a></li></ul></nav><article id="docs"><header><nav><ul><li>Basic Theory</li><li><a href>Hartree-Fock-Bogoliubov Decomposition</a></li></ul><a class="edit-page" href="https://github.com/kyungminlee/HartreeFockBogoliubov.jl/blob/master/docs/src/basics/hfbdecomposition.md"><span class="fa"></span> Edit on GitHub</a></nav><hr/><div id="topbar"><span>Hartree-Fock-Bogoliubov Decomposition</span><a class="fa fa-bars" href="#"></a></div></header><h1><a class="nav-anchor" id="Hartree-Fock-Bogoliubov-Decomposition-1" href="#Hartree-Fock-Bogoliubov-Decomposition-1">Hartree-Fock-Bogoliubov Decomposition</a></h1><p>We can write the Hamiltonian in the way that makes the Hermiticity manifest, taking into account duplicates properly</p><div>\[\begin{align}
+H &amp;= \sum_{ij} T_{ij} c_{i}^{*} c_{j}
+ + \frac{1}{4} \sum_{ijkl} c_{i}^{*} c_{j}^{*} c_{l} c_{k}
+\\
+  &amp;= \sum_{i} T_{ii} c_{i}^{*} c_{i}
+    + \sum_{i \lt j} (T_{ij} c_{i}^{*} c_{j} + T_{ij}^{*} c_{j}^{*} c_{i}) \\
+  &amp;\quad
+  + \frac{1}{4} \sum_{i &lt; j}
+  \left[
+      V_{ijij} c_{i}^{*} c_{j}^{*} c_{j} c_{i}
+    - V_{ijij} c_{j}^{*} c_{i}^{*} c_{j} c_{i}
+    - V_{ijij} c_{i}^{*} c_{j}^{*} c_{i} c_{j}
+    + V_{ijij} c_{j}^{*} c_{i}^{*} c_{i} c_{j}
+  \right]
+  \\
+  &amp;\quad
+  + \frac{1}{4} \sum_{\substack{(i&lt;j), (k&lt;l) \\ \text{ and } \\ (i,j) &lt; (k,l) }}
+  \left[
+      V_{ijkl}     c_{i}^{*} c_{j}^{*} c_{l} c_{k}
+    - V_{ijkl}     c_{j}^{*} c_{i}^{*} c_{l} c_{k}
+    - V_{ijkl}     c_{i}^{*} c_{j}^{*} c_{k} c_{l}
+    + V_{ijkl}     c_{j}^{*} c_{i}^{*} c_{k} c_{l} \right.\\
+  &amp;\qquad \left.
+    + V_{ijkl}^{*} c_{k}^{*} c_{l}^{*} c_{j} c_{i}
+    - V_{ijkl}^{*} c_{l}^{*} c_{k}^{*} c_{j} c_{i}
+    - V_{ijkl}^{*} c_{k}^{*} c_{l}^{*} c_{i} c_{j}
+    + V_{ijkl}^{*} c_{l}^{*} c_{k}^{*} c_{i} c_{j}
+  \right]
+\\
+&amp;= \sum_{i} T_{ii} c_{i}^{*} c_{i}
+  + \sum_{i \lt j} (T_{ij} c_{i}^{*} c_{j} + T_{ij}^{*} c_{j}^{*} c_{i}) \\
+&amp;\quad
+  + \sum_{i &lt; j}
+  \left[
+      V_{ijij} c_{i}^{*} c_{j}^{*} c_{j} c_{i}
+  \right]
+  + \sum_{\substack{(i&lt;j), (k&lt;l) \\ \text{ and } \\ (i,j) &lt; (k,l) }}
+  \left[
+      V_{ijkl}     c_{i}^{*} c_{j}^{*} c_{l} c_{k}
+    + V_{ijkl}^{*} c_{k}^{*} c_{l}^{*} c_{j} c_{i}
+  \right]
+\end{align}\]</div><div>\[\begin{align}
+  \Gamma_{ij} &amp;= \sum_{kl} V_{ikjl} \rho_{lk} \\
+  \Gamma_{ik} &amp;= \sum_{jl} V_{ijkl} \rho_{lj} \\
+  \Delta_{ij} &amp;= \frac{1}{2} \sum_{kl} V_{ijkl} t_{kl}
+\end{align}\]</div><h2><a class="nav-anchor" id="Diagonal-Interaction-1" href="#Diagonal-Interaction-1">Diagonal Interaction</a></h2><p>Let us first consider the <em>diagonal</em> interaction of the form</p><div>\[  V c_{1}^{*} c_{2}^{*} c_{2} c_{1} ,\]</div><p>which is the Hermitian conjugate of itself. Following [Goodman][Goodman80], this interaction decomposes into the following mean fields in the particle-hole and particle-particle channels:</p><table><tr><th>Interaction</th><th>PH Channel</th><th>PP Channel</th></tr><tr><td>V(1212) =  V</td><td>Γ(11) =  V ρ(22)</td><td>Δ(12) =  ½ V t(12)</td></tr><tr><td>V(1221) = -V</td><td>Γ(12) = -V ρ(12)</td><td>Δ(12) = -½ V t(21)</td></tr><tr><td>V(2112) = -V</td><td>Γ(21) = -V ρ(21)</td><td>Δ(21) = -½ V t(12)</td></tr><tr><td>V(2121) =  V</td><td>Γ(22) =  V ρ(11)</td><td>Δ(21) =  ½ V t(21)</td></tr></table><p>Here, the equal sign &#39;=&#39; does not indicate equality; it refers to the contribution of the right hand side to the mean field on the left hand side. Some of the mean fields are redundant, as required by the Hermiticity of the Hamiltonian. Overall, we end up with</p><div>\[\begin{align}
+\Gamma_{11} &amp;=  V \rho_{22} \\
+\Gamma_{12} &amp;= -V \rho_{12} \\
+\Gamma_{22} &amp;=  V \rho_{11}
+\end{align}\]</div><p>in the particle-hole channel, and</p><div>\[\begin{align}
+\Delta_{12} =  V t_{12}
+\end{align}\]</div><p>in the particle-particle channel.</p><h2><a class="nav-anchor" id="Offdiagonal-Interaction-1" href="#Offdiagonal-Interaction-1">Offdiagonal Interaction</a></h2><p>Now let us consider the <em>offdiagonal</em> interaction term of the form</p><div>\[  V c_{1}^{*} c_{2}^{*} c_{4} c_{3}.\]</div><p>Given this term in the interaction, it is implied that its Hermitian conjugate</p><div>\[  V^{*} c_{3}^{*} c_{4}^{*} c_{2} c_{1}.\]</div><p>is also included in the Hamiltonian. The two terms (the explicit term and its Hermitian conjugate) decompose into</p><table><tr><th>Interaction</th><th>PH Channel</th><th>PP Channel</th></tr><tr><td>V(1234) =  V</td><td>Γ(13) =  V ρ(42)</td><td>Δ(12) =  ½ V t(34)</td></tr><tr><td>V(1243) = -V</td><td>Γ(14) = -V ρ(32)</td><td>Δ(12) = -½ V t(43)</td></tr><tr><td>V(2134) = -V</td><td>Γ(23) = -V ρ(41)</td><td>Δ(21) = -½ V t(34)</td></tr><tr><td>V(2143) =  V</td><td>Γ(24) =  V ρ(31)</td><td>Δ(21) =  ½ V t(43)</td></tr><tr><td></td><td></td><td></td></tr><tr><td>V(3412) =  V*</td><td>Γ(31) =  V ρ(24)</td><td>Δ(34) =  ½ V t(12)</td></tr><tr><td>V(3421) = -V*</td><td>Γ(32) = -V ρ(14)</td><td>Δ(34) = -½ V t(21)</td></tr><tr><td>V(4312) = -V*</td><td>Γ(41) = -V ρ(23)</td><td>Δ(43) = -½ V t(12)</td></tr><tr><td>V(4321) =  V*</td><td>Γ(42) =  V ρ(13)</td><td>Δ(43) =  ½ V t(21)</td></tr></table><p>As we have mentioned above for the diagonal interaction terms, this table contains redundant mean fields. Overall. we have</p><div>\[\begin{align}
+\Gamma_{13} &amp;=  V  \rho_{24}^* \\
+\Gamma_{14} &amp;= -V  \rho_{23}^* \\
+\Gamma_{23} &amp;= -V  \rho_{14}^* \\
+\Gamma_{24} &amp;=  V  \rho_{13}^*
+\end{align}\]</div><p>in the particle-hole channel and</p><div>\[\begin{align}
+\Delta_{12} &amp;=  V   t_{34} \\
+\Delta_{34} &amp;=  V^* t_{12}
+\end{align}\]</div><p>in the particle-particle channel.</p><footer><hr/><a class="previous" href="../hfbequation/"><span class="direction">Previous</span><span class="title">Hartree-Fock-Bogoliubov Equations</span></a><a class="next" href="../linearizedgapequation/"><span class="direction">Next</span><span class="title">Linearized Gap Equation</span></a></footer></article></body></html>
