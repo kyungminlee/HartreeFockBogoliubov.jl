@@ -6,6 +6,7 @@ export runloop
 using Dates
 using JSON
 using DataStructures
+using CodecXz
 
 using ProgressMeter
 using HartreeFockBogoliubov
@@ -14,15 +15,25 @@ import HartreeFockBogoliubov.Generator
 import HartreeFockBogoliubov.HFB
 using HartreeFockBogoliubov.HFB
 
+#function readresult(resultfilepath ::AbstractString)
+#    (base, ext) = splitext(resultfilepath)
+#end
 
 function detectresult(outpath ::AbstractString)
-    for resultfilename in ["result.json",]
+    for resultfilename in ["result.json.xz", "result.json",]
         result = nothing
         resultfilepath = joinpath(outpath, resultfilename)
         try
             if isfile(resultfilepath)
-                open(resultfilepath) do file
-                    result = JSON.parse(file)
+                if endswith(resultfilepath, ".json.xz")
+                    open(resultfilepath) do file
+                        stream = XzCompressorStream(file)
+                        result = JSON.parse(stream)
+                    end
+                elseif endswith(resultfilepath, ".json")
+                    open(resultfilepath) do file
+                        result = JSON.parse(file)
+                    end
                 end
             end
         catch y
