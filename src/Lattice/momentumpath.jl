@@ -45,3 +45,27 @@ function momentumpath(unitcell ::UnitCell,
     real_anchorpoints = [unitcell.reciprocallatticevectors * ap for ap in anchorpoints]
     return linpath(real_anchorpoints)
 end
+
+
+#function momentumpath(mp ::MomentumPath, segment_length ::Integer)
+#    ks = linpath(mp.anchors, segment_length)
+#    dks = ks[2:end, :] - ks[1:end-1, :]
+#    dls = zeros(Float64, size(dks)[1])
+#    for i in 1:size(dks)[1]
+#        dls[i] = norm(dks[i, :])
+#    end
+#    ls = Float64[0.0, cumsum(dls)...]
+#    ticks = Float64[]
+#    ticklabels = String[]
+#    for i in 1:length(mp.anchors)
+#        push!(ticks, ls[segment_length*(i-1)+1])
+#        push!(ticklabels, mp.anchornames[i])
+#    end
+#    
+#    Dict(
+#        :momentum=> ks,
+#        :momentum_distance => ls,
+#        :ticks => ticks,
+#        :ticklabels => ticklabels,
+#    )
+#end
