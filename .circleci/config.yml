@@ -3,25 +3,17 @@ jobs:
   build:
     working_directory: ~/HartreeFockBogoliubov.jl
     docker:
-      - image: julia:0.6.0
+      - image: julia:latest
     steps:
       - checkout
       - run:
           name: greeting
-          command: 'julia --version'
+          command: "julia --version"
       - run:
-          name: preinstall
+          name: dependency
           command: |
-            julia -e 'Pkg.add("ProgressMeter")'
-            julia -e 'Pkg.add("DataStructures")'
-            julia -e 'Pkg.add("YAML")'
-            julia -e 'Pkg.add("JSON")'
-            julia -e 'Pkg.clone(pwd())'
-            julia -e 'Pkg.add("HartreeFockBogoliubov")'
+            julia --project -e 'import Pkg; Pkg.build()'
       - run:
           name: test
           command: |
-            julia -e 'Pkg.test("HartreeFockBogoliubov")'
-      - store_artifacts:
-          path: test-greeting.xml
-          prefix: tests
+            julia --project --check-bounds=yes -e 'import Pkg; Pkg.test(; coverage=false)'
