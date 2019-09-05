@@ -25,6 +25,15 @@ matrix:
         - julia --project -e 'import Pkg; cd(Pkg.dir("HartreeFockBogoliubov")); Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'
         - julia --project=docs/ -e 'using Pkg; Pkg.develop(PackageSpec(path=pwd())); Pkg.instantiate()'
         - julia --project=docs/ docs/make.jl
+    - julia: 1.2
+      script:
+        - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
+        - julia --project -e 'import Pkg; Pkg.build()'
+        - julia --project --check-bounds=yes -e 'import Pkg; Pkg.test(; coverage=true)'
+      after_success:
+        - julia --project -e 'import Pkg; cd(Pkg.dir("HartreeFockBogoliubov")); Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'
+        - julia --project=docs/ -e 'using Pkg; Pkg.develop(PackageSpec(path=pwd())); Pkg.instantiate()'
+        - julia --project=docs/ docs/make.jl
     - julia: nightly
       script:
         - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
