@@ -777,7 +777,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Spec.addhopping!-Union{Tuple{C}, Tuple{O}, Tuple{HartreeFockBogoliubov.Spec.FullHamiltonian{O},HartreeFockBogoliubov.Spec.HoppingOffdiagonal{C}}} where C<:Number where O",
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Spec.addhopping!-Union{Tuple{C}, Tuple{O}, Tuple{FullHamiltonian{O},HoppingOffdiagonal{C}}} where C<:Number where O",
     "page": "Internals",
     "title": "HartreeFockBogoliubov.Spec.addhopping!",
     "category": "method",
@@ -785,7 +785,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Spec.addhopping!-Union{Tuple{R}, Tuple{O}, Tuple{HartreeFockBogoliubov.Spec.FullHamiltonian{O},HartreeFockBogoliubov.Spec.HoppingDiagonal{R}}} where R<:Real where O",
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Spec.addhopping!-Union{Tuple{R}, Tuple{O}, Tuple{FullHamiltonian{O},HoppingDiagonal{R}}} where R<:Real where O",
     "page": "Internals",
     "title": "HartreeFockBogoliubov.Spec.addhopping!",
     "category": "method",
@@ -793,7 +793,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Spec.addinteraction!-Union{Tuple{C}, Tuple{O}, Tuple{HartreeFockBogoliubov.Spec.FullHamiltonian{O},HartreeFockBogoliubov.Spec.InteractionOffdiagonal{C}}} where C<:Number where O",
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Spec.addinteraction!-Union{Tuple{C}, Tuple{O}, Tuple{FullHamiltonian{O},InteractionOffdiagonal{C}}} where C<:Number where O",
     "page": "Internals",
     "title": "HartreeFockBogoliubov.Spec.addinteraction!",
     "category": "method",
@@ -801,7 +801,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Spec.addinteraction!-Union{Tuple{R}, Tuple{O}, Tuple{HartreeFockBogoliubov.Spec.FullHamiltonian{O},HartreeFockBogoliubov.Spec.InteractionDiagonal{R}}} where R<:Real where O",
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Spec.addinteraction!-Union{Tuple{R}, Tuple{O}, Tuple{FullHamiltonian{O},InteractionDiagonal{R}}} where R<:Real where O",
     "page": "Internals",
     "title": "HartreeFockBogoliubov.Spec.addinteraction!",
     "category": "method",
@@ -841,7 +841,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Spec.islocal-Union{Tuple{HartreeFockBogoliubov.Spec.HoppingDiagonal{R}}, Tuple{R}} where R<:Real",
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Spec.islocal-Union{Tuple{HoppingDiagonal{R}}, Tuple{R}} where R<:Real",
     "page": "Internals",
     "title": "HartreeFockBogoliubov.Spec.islocal",
     "category": "method",
@@ -849,7 +849,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Spec.localized-Union{Tuple{HartreeFockBogoliubov.Spec.HoppingDiagonal{R}}, Tuple{R}} where R<:Real",
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Spec.localized-Union{Tuple{HoppingDiagonal{R}}, Tuple{R}} where R<:Real",
     "page": "Internals",
     "title": "HartreeFockBogoliubov.Spec.localized",
     "category": "method",
@@ -873,7 +873,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Generator.hopping_inplace-Union{Tuple{C}, Tuple{O}, Tuple{UnitCell{O},HartreeFockBogoliubov.Spec.HoppingOffdiagonal{C}}} where C<:Number where O",
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Generator.hopping_inplace-Union{Tuple{C}, Tuple{O}, Tuple{UnitCell{O},HoppingOffdiagonal{C}}} where C<:Number where O",
     "page": "Internals",
     "title": "HartreeFockBogoliubov.Generator.hopping_inplace",
     "category": "method",
@@ -881,7 +881,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Generator.hopping_inplace-Union{Tuple{HartreeFockBogoliubov.Spec.FullHamiltonian{O}}, Tuple{O}} where O",
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Generator.hopping_inplace-Union{Tuple{FullHamiltonian{O}}, Tuple{O}} where O",
     "page": "Internals",
     "title": "HartreeFockBogoliubov.Generator.hopping_inplace",
     "category": "method",
@@ -889,7 +889,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Generator.hopping_inplace-Union{Tuple{O}, Tuple{UnitCell{O},AbstractArray{HartreeFockBogoliubov.Spec.HoppingDiagonal,1},AbstractArray{HartreeFockBogoliubov.Spec.HoppingOffdiagonal,1}}} where O",
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Generator.hopping_inplace-Union{Tuple{O}, Tuple{UnitCell{O},AbstractArray{HoppingDiagonal,1},AbstractArray{HoppingOffdiagonal,1}}} where O",
     "page": "Internals",
     "title": "HartreeFockBogoliubov.Generator.hopping_inplace",
     "category": "method",
@@ -897,7 +897,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Generator.hopping_inplace-Union{Tuple{O}, Tuple{UnitCell{O},AbstractArray{HartreeFockBogoliubov.Spec.HoppingDiagonal,1}}} where O",
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Generator.hopping_inplace-Union{Tuple{O}, Tuple{UnitCell{O},AbstractArray{HoppingDiagonal,1}}} where O",
     "page": "Internals",
     "title": "HartreeFockBogoliubov.Generator.hopping_inplace",
     "category": "method",
@@ -905,7 +905,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Generator.hopping_inplace-Union{Tuple{O}, Tuple{UnitCell{O},AbstractArray{HartreeFockBogoliubov.Spec.HoppingOffdiagonal,1}}} where O",
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Generator.hopping_inplace-Union{Tuple{O}, Tuple{UnitCell{O},AbstractArray{HoppingOffdiagonal,1}}} where O",
     "page": "Internals",
     "title": "HartreeFockBogoliubov.Generator.hopping_inplace",
     "category": "method",
@@ -913,7 +913,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Generator.hopping_inplace-Union{Tuple{O}, Tuple{UnitCell{O},AbstractArray{Union{HartreeFockBogoliubov.Spec.HoppingDiagonal, HartreeFockBogoliubov.Spec.HoppingOffdiagonal},1}}} where O",
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Generator.hopping_inplace-Union{Tuple{O}, Tuple{UnitCell{O},AbstractArray{Union{HoppingDiagonal, HoppingOffdiagonal},1}}} where O",
     "page": "Internals",
     "title": "HartreeFockBogoliubov.Generator.hopping_inplace",
     "category": "method",
@@ -921,7 +921,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Generator.hopping_inplace-Union{Tuple{R}, Tuple{O}, Tuple{UnitCell{O},HartreeFockBogoliubov.Spec.HoppingDiagonal{R}}} where R<:Real where O",
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Generator.hopping_inplace-Union{Tuple{R}, Tuple{O}, Tuple{UnitCell{O},HoppingDiagonal{R}}} where R<:Real where O",
     "page": "Internals",
     "title": "HartreeFockBogoliubov.Generator.hopping_inplace",
     "category": "method",
@@ -937,19 +937,19 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Topology.squarify-Union{Tuple{HartreeFockBogoliubov.HFB.HFBHamiltonian{O}}, Tuple{O}} where O",
-    "page": "Internals",
-    "title": "HartreeFockBogoliubov.Topology.squarify",
-    "category": "method",
-    "text": "squarify\n\nArguments\n\nuc::HFB.HFBHamiltonian{O}\n\n\n\n\n\n"
-},
-
-{
-    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Topology.squarify-Union{Tuple{HartreeFockBogoliubov.Spec.FullHamiltonian{O}}, Tuple{O}} where O",
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Topology.squarify-Union{Tuple{FullHamiltonian{O}}, Tuple{O}} where O",
     "page": "Internals",
     "title": "HartreeFockBogoliubov.Topology.squarify",
     "category": "method",
     "text": "squarify\n\nArguments\n\nuc::Spec.FullHamiltonian{O}\n\n\n\n\n\n"
+},
+
+{
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Topology.squarify-Union{Tuple{HFBHamiltonian{O}}, Tuple{O}} where O",
+    "page": "Internals",
+    "title": "HartreeFockBogoliubov.Topology.squarify",
+    "category": "method",
+    "text": "squarify\n\nArguments\n\nuc::HFB.HFBHamiltonian{O}\n\n\n\n\n\n"
 },
 
 {
@@ -961,7 +961,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Topology.chernnumber-Union{Tuple{O}, Tuple{UnitCell{O},AbstractArray{Union{HartreeFockBogoliubov.Spec.HoppingDiagonal, HartreeFockBogoliubov.Spec.HoppingOffdiagonal},1},Integer,Integer,AbstractArray{#s30,1} where #s30<:Integer}} where O",
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Topology.chernnumber-Union{Tuple{O}, Tuple{UnitCell{O},AbstractArray{Union{HoppingDiagonal, HoppingOffdiagonal},1},Integer,Integer,AbstractArray{#s30,1} where #s30<:Integer}} where O",
     "page": "Internals",
     "title": "HartreeFockBogoliubov.Topology.chernnumber",
     "category": "method",
@@ -969,7 +969,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Topology.z2index-Union{Tuple{O}, Tuple{UnitCell{O},AbstractArray{Union{HartreeFockBogoliubov.Spec.HoppingDiagonal, HartreeFockBogoliubov.Spec.HoppingOffdiagonal},1},AbstractArray{T,2} where T,Integer,Integer,AbstractArray{#s16,1} where #s16<:Integer}} where O",
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.Topology.z2index-Union{Tuple{O}, Tuple{UnitCell{O},AbstractArray{Union{HoppingDiagonal, HoppingOffdiagonal},1},AbstractArray{T,2} where T,Integer,Integer,AbstractArray{#s16,1} where #s16<:Integer}} where O",
     "page": "Internals",
     "title": "HartreeFockBogoliubov.Topology.z2index",
     "category": "method",
@@ -993,7 +993,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.HFBComputer-Union{Tuple{O}, Tuple{UnitCell{O},AbstractArray{HartreeFockBogoliubov.Spec.HoppingDiagonal,1},AbstractArray{HartreeFockBogoliubov.Spec.HoppingOffdiagonal,1},Real}} where O",
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.HFBComputer-Union{Tuple{O}, Tuple{UnitCell{O},AbstractArray{HoppingDiagonal,1},AbstractArray{HoppingOffdiagonal,1},Real}} where O",
     "page": "Internals",
     "title": "HartreeFockBogoliubov.HFB.HFBComputer",
     "category": "method",
@@ -1009,7 +1009,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.HFBHamiltonian-Union{Tuple{HartreeFockBogoliubov.Spec.FullHamiltonian{O}}, Tuple{O}} where O",
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.HFBHamiltonian-Union{Tuple{FullHamiltonian{O}}, Tuple{O}} where O",
     "page": "Internals",
     "title": "HartreeFockBogoliubov.HFB.HFBHamiltonian",
     "category": "method",
@@ -1017,7 +1017,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.HFBHamiltonian-Union{Tuple{O}, Tuple{UnitCell{O},AbstractArray{HartreeFockBogoliubov.Spec.HoppingDiagonal,1},AbstractArray{HartreeFockBogoliubov.Spec.HoppingOffdiagonal,1},AbstractArray{HartreeFockBogoliubov.HFB.HoppingMeanField,1},AbstractArray{HartreeFockBogoliubov.HFB.PairingMeanField,1}}} where O",
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.HFBHamiltonian-Union{Tuple{O}, Tuple{UnitCell{O},AbstractArray{HoppingDiagonal,1},AbstractArray{HoppingOffdiagonal,1},AbstractArray{HoppingMeanField,1},AbstractArray{PairingMeanField,1}}} where O",
     "page": "Internals",
     "title": "HartreeFockBogoliubov.HFB.HFBHamiltonian",
     "category": "method",
@@ -1033,7 +1033,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.HFBSolver-Union{Tuple{O}, Tuple{HartreeFockBogoliubov.Spec.FullHamiltonian{O},AbstractArray{#s71,1} where #s71<:Integer,Real}} where O",
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.HFBSolver-Union{Tuple{O}, Tuple{FullHamiltonian{O},AbstractArray{#s71,1} where #s71<:Integer,Real}} where O",
     "page": "Internals",
     "title": "HartreeFockBogoliubov.HFB.HFBSolver",
     "category": "method",
@@ -1041,7 +1041,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.addinteraction!-Union{Tuple{C}, Tuple{O}, Tuple{HartreeFockBogoliubov.HFB.HFBHamiltonian{O},HartreeFockBogoliubov.Spec.InteractionOffdiagonal{C}}} where C<:Number where O",
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.addinteraction!-Union{Tuple{C}, Tuple{O}, Tuple{HFBHamiltonian{O},InteractionOffdiagonal{C}}} where C<:Number where O",
     "page": "Internals",
     "title": "HartreeFockBogoliubov.HFB.addinteraction!",
     "category": "method",
@@ -1049,7 +1049,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.addinteraction!-Union{Tuple{R}, Tuple{O}, Tuple{HartreeFockBogoliubov.HFB.HFBHamiltonian{O},HartreeFockBogoliubov.Spec.InteractionDiagonal{R}}} where R<:Real where O",
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.addinteraction!-Union{Tuple{R}, Tuple{O}, Tuple{HFBHamiltonian{O},InteractionDiagonal{R}}} where R<:Real where O",
     "page": "Internals",
     "title": "HartreeFockBogoliubov.HFB.addinteraction!",
     "category": "method",
@@ -1113,7 +1113,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.make_greencollector-Union{Tuple{HartreeFockBogoliubov.HFB.HFBComputer{O}}, Tuple{O}} where O",
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.make_greencollector-Union{Tuple{HFBComputer{O}}, Tuple{O}} where O",
     "page": "Internals",
     "title": "HartreeFockBogoliubov.HFB.make_greencollector",
     "category": "method",
@@ -1145,7 +1145,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.make_hfbamplitude-Union{Tuple{O}, Tuple{HartreeFockBogoliubov.HFB.HFBComputer{O},HartreeFockBogoliubov.HFB.HFBAmplitudeHint{O}}} where O",
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.make_hfbamplitude-Union{Tuple{O}, Tuple{HFBComputer{O},HFBAmplitudeHint{O}}} where O",
     "page": "Internals",
     "title": "HartreeFockBogoliubov.HFB.make_hfbamplitude",
     "category": "method",
@@ -1169,7 +1169,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.make_hint-Union{Tuple{O}, Tuple{HartreeFockBogoliubov.HFB.HFBComputer{O},HartreeFockBogoliubov.HFB.HFBAmplitude}} where O",
+    "location": "internals/hartreefockbogoliubov/#HartreeFockBogoliubov.HFB.make_hint-Union{Tuple{O}, Tuple{HFBComputer{O},HFBAmplitude}} where O",
     "page": "Internals",
     "title": "HartreeFockBogoliubov.HFB.make_hint",
     "category": "method",
