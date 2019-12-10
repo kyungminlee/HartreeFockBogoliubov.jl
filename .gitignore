@@ -9,4 +9,6 @@ testapp/
 
 *.swp
 
+Manifest.toml
+
 deps/build\.log
