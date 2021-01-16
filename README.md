@@ -4,7 +4,7 @@
 
 | **Documentation** | **Build Status** |
 |:-----------------:|:----------------:|
-| [![**STABLE**][docs-stable-img]][docs-stable-url] [![**DEV**][docs-dev-img]][docs-dev-url] | [![Build Status][travis-img]][travis-url] [![Code Coverage][codecov-img]][codecov-url] |
+| [![**STABLE**][docs-stable-img]][docs-stable-url] [![**DEV**][docs-dev-img]][docs-dev-url] | [![Build][githubaction-img]][githubaction-url] [![Code Coverage][codecov-img]][codecov-url] |
 
 ## Overview
 
@@ -23,8 +23,8 @@ to Julia's package manager.
 [docs-dev-img]: https://img.shields.io/badge/docs-dev-blue.svg
 [docs-dev-url]: http://kyungminlee.org/HartreeFockBogoliubov.jl/dev
 
-[travis-img]: https://travis-ci.org/kyungminlee/HartreeFockBogoliubov.jl.svg?branch=master
-[travis-url]: https://travis-ci.org/kyungminlee/HartreeFockBogoliubov.jl
+[githubaction-img]: https://github.com/kyungminlee/HartreeFockBogoliubov.jl/workflows/Build/badge.svg
+[githubaction-url]: https://github.com/kyungminlee/HartreeFockBogoliubov.jl/actions?query=workflow%3ABuild
 
 [codecov-img]: https://codecov.io/gh/kyungminlee/HartreeFockBogoliubov.jl/branch/master/graph/badge.svg
 [codecov-url]: https://codecov.io/gh/kyungminlee/HartreeFockBogoliubov.jl
