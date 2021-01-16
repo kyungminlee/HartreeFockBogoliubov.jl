@@ -2,9 +2,9 @@
 
 *A Hartree-Fock-Bogoliubov solver for Julia.*
 
-| **Documentation** | **Build Status** |
-|:-----------------:|:----------------:|
-| [![**STABLE**][docs-stable-img]][docs-stable-url] [![**DEV**][docs-dev-img]][docs-dev-url] | [![Build][githubaction-img]][githubaction-url] [![Code Coverage][codecov-img]][codecov-url] |
+| **Documentation** | **Build Status** | **Code Coverage** |
+|:-----------------:|:----------------:|:-----------------:|
+| [![**STABLE**][docs-stable-img]][docs-stable-url] [![**DEV**][docs-dev-img]][docs-dev-url] | [![Build][githubaction-img]][githubaction-url] | [![Code Coverage][codecov-img]][codecov-url] |
 
 ## Overview
 
