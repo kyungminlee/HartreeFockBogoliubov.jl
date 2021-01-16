@@ -1,0 +1,31 @@
+name: Build
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: julia-actions/setup-julia@v1
+        with:
+          version: "1.5"
+      - name: Update registries
+        run: |
+          julia -e "using Pkg; Pkg.update()"
+          julia -e "using Pkg; Pkg.Registry.add(RegistrySpec(url=\"https://github.com/kyungminlee/KyungminLeeRegistry.jl.git\"))"
+          julia -e "using Pkg; Pkg.update()"
+      - name: Build packages
+        run: julia --project -e 'import Pkg; Pkg.build(); Pkg.precompile()'
+      - name: Run test with coverage
+        run: julia --project --check-bounds=yes -e 'import Pkg; Pkg.test(; coverage=true, julia_args=`--inline=no`)'
+        env:
+          JULIA_NUM_THREADS: "2"
+      - name: Submit coverage
+        run: |
+          julia -e 'using Pkg; Pkg.add("Coverage")'
+          julia -e 'using Coverage; Codecov.submit(Codecov.process_folder())'
+      - name: Documentation
+        run: |
+          julia --project=docs/ -e 'using Pkg; Pkg.develop(PackageSpec(path=pwd())); Pkg.instantiate()'
+          julia --project=docs/ docs/make.jl
+        env:
+          DOCUMENTER_KEY: ${{ secrets.DOCUMENTER_KEY }}
