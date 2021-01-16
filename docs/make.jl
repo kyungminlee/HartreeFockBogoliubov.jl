@@ -36,5 +36,5 @@ makedocs(
 deploydocs(
     repo="github.com/kyungminlee/HartreeFockBogoliubov.jl.git",
     devbranch="dev",
-    deps=Deps.pip("pygments", "mkdocs", "python-markdown-math"),
+    deps=Deps.pip("pygments", "python-markdown-math"),
 )
